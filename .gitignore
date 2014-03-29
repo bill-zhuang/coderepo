@@ -1,0 +1,5 @@
+.settings/*
+library/Zend
+tests/*
+.buildpath
+.zfproject.xml

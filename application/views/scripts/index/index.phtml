@@ -1,0 +1,59 @@
+<script type="text/javascript">
+function generateDownloadLink()
+{
+    var music_url = $('#baidu_music_url').val();
+    if(music_url != '') {
+    	$.ajax({
+    		url: '/index/downloadbaidumusic',
+    		type: 'get',
+    		data: { 
+    			'downlink' : music_url,
+    			},
+    		dataType: 'json',
+    		success: function(music_result){	
+    			console.log(music_result);
+    			if(music_result == '') {
+    				alert('generate download link failed!');
+    				return false;
+    			} else {
+    				$('#generated_baidu_music_url').attr('href', music_result);
+    				$('#generated_baidu_music_url').text(music_result);
+    			}
+    		},
+    			
+    		error: function(XMLHttpRequest, textStatus, errorThrown) {
+    	    	console.log("XMLHttpRequest.status="+XMLHttpRequest.status+
+    	        	   	    "\nXMLHttpRequest.readyState="+XMLHttpRequest.readyState+
+    	                  	"\ntextStatus="+textStatus);
+			}
+    	});
+    } else {
+        alert('music url is empty!');
+    }
+}
+
+function generateUrl()
+{
+	var url = $('#url').val();
+    if(url != '') {
+        url = (url.indexOf('http://') == 0 || url.indexOf('https://') == 0) ? url : ('http://' + url);
+        $('#generated_url').attr('href', url);
+        $('#generated_url').text(url);
+    } else {
+        alert('url is empty!');
+    }
+}
+</script>
+<head>
+</head>
+<body style="margin-left:10px; margin-top:10px;">
+    <h2>variety</h2>
+    Baidu Music download link:&nbsp;&nbsp;
+    <input type="text" id="baidu_music_url" style="width: 500px; height:30px;" placeholder="like:http://music.baidu.com/song/1262598/download?title=&pst=naga&fr="/>&nbsp;&nbsp;
+    <button class="btn" type="button" id="download" onclick="javascript:generateDownloadLink();">Generate real download link</button><br><br>
+    Real download link:(right click and save as.../other will failed!)&nbsp;&nbsp;<a href="#" id="generated_baidu_music_url"></a><br><br>
+    Generate url with underline:&nbsp;&nbsp;
+    <input type="text" id="url" style="width: 800px; height:30px;"/>&nbsp;&nbsp;
+    <button class="btn" type="button" id="generate" onclick="javascript:generateUrl();">Generate</button><br>
+    <a href="#" id="generated_url"></a>
+</body>
