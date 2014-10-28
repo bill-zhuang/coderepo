@@ -3,3 +3,4 @@ library/Zend
 tests/*
 .buildpath
 .zfproject.xml
+.idea
