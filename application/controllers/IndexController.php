@@ -17,9 +17,11 @@ class IndexController extends Zend_Controller_Action
 
     public function downloadbaidumusicAction()
     {
-    	if($_GET && $_GET['downlink'])
+        $real_downloadlink = '';
+        $download_link = trim($this->_getParam('downlink', ''));
+    	if($download_link !== '')
     	{
-    	    $match_count = preg_match(Bill_Regex::BAIDU_MUSIC_DOWNLOAD_LINK, $_GET['downlink'], $match_id);
+    	    $match_count = preg_match(Bill_Regex::BAIDU_MUSIC_DOWNLOAD_LINK, $download_link, $match_id);
     	    if($match_count)
     	    {
     	        $real_downloadlink = 'http://music.baidu.com/data/music/file?link=&song_id=' . $match_id[1];
@@ -29,13 +31,10 @@ class IndexController extends Zend_Controller_Action
     	        {
     	            $real_downloadlink = $header_info['redirect_url'] . '&song_id=' . $match_id[1];
     	        }
-    	        
-    	        echo json_encode($real_downloadlink);
-    	        exit;
     	    }
     	}
     	
-	    echo json_encode('');
+	    echo json_encode($real_downloadlink);
 	    exit;
     }
     
