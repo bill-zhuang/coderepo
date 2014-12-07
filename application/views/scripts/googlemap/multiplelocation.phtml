@@ -1,21 +1,26 @@
-<script type="text/javascript" src="/js/gmaprepo.js"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
-<script type="text/javascript" src="/js/markerclusterer.js"></script>
-<script type="text/javascript">
-function plotMarkers()
-{
-	var lng_lat = <?php echo $this->lng_lat; ?>;
-	markMultiPosition(lng_lat, 'map_canvas_nocluster');
-	markMultiPostionAndCluster(lng_lat, 'map_canvas_cluster');
-}
-</script>
-<head>
-<!-- <title>Google Map</title> -->
-</head>
-<body style="margin-left: 10px; margin-top:10px;" onload="javascript:plotMarkers();">
-    <h2>Google Map</h2><br>
-    Multiple Markers with not cluster & cluster:&nbsp;&nbsp;<br>
-    <div id="map_canvas_nocluster" style="width: 600px; height: 600px; margin-top:10px; border:1px solid gray; float:left;"></div>
-    <div id="map_canvas_cluster" style="width: 600px; height: 600px; margin-top:10px; margin-left:10px; border:1px solid gray; float:left;"></div>
-</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="/css/common.css" rel="stylesheet"/>
+    </head>
+    <body onload="javascript:plotMarkers();">
+        Multiple Markers with not cluster & cluster:&nbsp;&nbsp;<br>
+        <div id="map_canvas_nocluster" style="width: 600px; height: 600px; margin-top:10px; border:1px solid gray; float:left;"></div>
+        <div id="map_canvas_cluster" style="width: 600px; height: 600px; margin-top:10px; margin-left:10px; border:1px solid gray; float:left;"></div>
 
+        <!-- js file & code -->
+        <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="/js/gmaprepo.js"></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
+        <script type="text/javascript" src="/js/markerclusterer.js"></script>
+        <script type="text/javascript">
+        function plotMarkers()
+        {
+            var lng_lat = <?php echo $this->lng_lat; ?>;
+            markMultiPosition(lng_lat, 'map_canvas_nocluster');
+            markMultiPostionAndCluster(lng_lat, 'map_canvas_cluster');
+        }
+        </script>
+    </body>
+</html>

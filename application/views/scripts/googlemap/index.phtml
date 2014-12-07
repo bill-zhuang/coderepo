@@ -1,46 +1,60 @@
-<script type="text/javascript" src="/js/gmaprepo.js"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
-<script type="text/javascript">
-function markLocation()
-{
-    var location = $('#location').val();
-    if(location != '') {
-    	$.ajax({
-    		url: '/googlemap/marklocation',
-    		type: 'get',
-    		data: { 
-    			'location' : location,
-    			},
-    		dataType: 'json',
-    		success: function(coordinate_result){	
-    			console.log(coordinate_result);
-    			if(coordinate_result == '') {
-    				alert('error info');
-    				return false;
-    			} else {
-    				showPosition(coordinate_result.Longitude, coordinate_result.Latitude);
-    			}
-    		},
-    			
-    		error: function(XMLHttpRequest, textStatus, errorThrown) {
-    	    	console.log("XMLHttpRequest.status="+XMLHttpRequest.status+
-    	        	   	    "\nXMLHttpRequest.readyState="+XMLHttpRequest.readyState+
-    	                  	"\ntextStatus="+textStatus);
-    			}
-    	});
-    } else {
-        alert('location can\'t be empty');
-    }
-}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="/css/common.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <h2>Google Map</h2><br>
+        <div class="form-inline">
+            Location:&nbsp;&nbsp;<input type="text" id="location" class="form-control" style="width:500px;"/>
+            <button type="button" class="btn btn-primary" id="mark_position">
+                <span class="glyphicon glyphicon-search"></span>Search
+            </button>
+        </div>
+        <div id="map_canvas" style="width: 600px; height: 600px; margin-top:10px; border:1px solid gray;">
+        </div>
 
-</script>
-<head>
-<!-- <title>Google Map</title> -->
-</head>
-<body style="margin-left: 10px; margin-top:10px;">
-    <h2>Google Map</h2><br>
-    Location:&nbsp;&nbsp;<input type="text" id="location" style="width:500px;height:30px;"/>
-    <button type="button" class="btn" id="mark_position" onclick="javascript:markLocation();">Search</button>
-    <div id="map_canvas" style="width: 600px; height: 600px; margin-top:10px; border:1px solid gray;">
-    </div>
-</body>
+        <!-- js file & code -->
+        <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="/js/gmaprepo.js"></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
+        <script type="text/javascript">
+        $('#location').on('keydown', function(event){
+            if (event.keyCode == 13) {
+                $('#mark_position').click();
+            }
+        });
+
+        $('#mark_position').on('click', function(){
+            var location = $.trim($('#location').val());
+            if(location != '') {
+                $.ajax({
+                    url: '/googlemap/marklocation',
+                    type: 'get',
+                    data: {
+                        'location' : location
+                    },
+                    dataType: 'json',
+                    success: function(coordinate_result){
+                        console.log(coordinate_result);
+                        if(coordinate_result == '') {
+                            alert('error info');
+                        } else {
+                            showPosition(coordinate_result.Longitude, coordinate_result.Latitude);
+                        }
+                    },
+
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("XMLHttpRequest.status="+XMLHttpRequest.status+
+                            "\nXMLHttpRequest.readyState="+XMLHttpRequest.readyState+
+                            "\ntextStatus="+textStatus);
+                    }
+                });
+            } else {
+                alert('location can\'t be empty');
+            }
+        });
+        </script>
+    </body>
+</html>
