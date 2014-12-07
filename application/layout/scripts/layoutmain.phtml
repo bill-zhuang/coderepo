@@ -1,64 +1,91 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Bill Coderepo</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Bill Coderepo</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="/css/dashboard.css" rel="stylesheet">
-  </head>
+        <!-- Bootstrap core CSS -->
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="/css/layout.css" rel="stylesheet"/>
+    </head>
 
-<body>
-<div>
-    <div class="navbar navbar-inverse navbar-fixed-top" style="height:50px; float:left;">
-        <a class="navbar-brand" href="#">Bill</a>
-        <ul class="nav navbar-nav navbar-right" style="margin-right:5px;">
-            <li><a href="#">Waiting...</a></li>
-        </ul>
-    </div>
-    
-    <div class="col-sm-3 col-md-2 sidebar" style="width:200px; height:100%;">
-        <ul class="nav nav-sidebar">
-            <li class="active"><a href="/index">Variety</a></li>
-            <li><a href="/googlemap">Google Map</a></li>
-            <li><a href="/googlemap/multiplelocation">Multiple Markes</a></li>
-            <li><a href="#">Export</a></li>
-        </ul><hr style="border-color:gray;"></hr>
-        <ul class="nav nav-sidebar">
-            <li><a href="#">Baidu map</a></li>
-            <li><a href="#">Nav item again</a></li>
-            <li><a href="#">One more nav</a></li>
-            <li><a href="#">Another nav item</a></li>
-            <li><a href="#">More navigation</a></li>
-        </ul><hr style="border-color:gray;"></hr>
-        <ul class="nav nav-sidebar">
-            <li><a href="#">Nav item again</a></li>
-            <li><a href="#">One more nav</a></li>
-            <li><a href="#">Another nav item</a></li>
-        </ul>
-    </div>
-    <!-- below is for show action view phtml file. -->
-    <div id="main_div" style="margin-left:200px; margin-top:20px; width:1400px; height:100%; float:left;">
-        <?php echo $this->layout()->content;?>
-    </div>
-</div>
+    <body>
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Bill</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Variety<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/index">Other</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Google Map
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/googlemap">Google Map</a></li>
+                            <li><a href="/googlemap/multiplelocation">Multiple Markes</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Baidu Map<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Baidu Map</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 col-md-2 col-lg-1 bill-content bill-sidebar" id="main">
+                <ul class="nav nav-sidebar">
+                </ul>
+            </div>
+            <!-- below is for show action view phtml file. -->
+            <div class="col-sm-10 col-md-10 col-lg-11 bill-content bill-content" id="main_div">
+                <?php echo $this->layout()->content;?>
+            </div>
+        </div>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function(){
-	$('div.col-sm-3.col-md-2.sidebar ul li').click(function(){
-		$('div.col-sm-3.col-md-2.sidebar ul li').removeClass('active');
-		$(this).addClass("active");
-	})
-});
-</script>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/bootstrap/js/jquery.cookie.js"></script>
+        <script>
+        $(document).ready(function(){
+            var li_content = '';
+            var cookie_href = $.cookie('nav-top');
+            if (typeof cookie_href == 'undefined') {
+                li_content = $('ul.nav.navbar-nav li').find('.active');
+            } else {
+                $('ul.nav.navbar-nav li ul li a').each(function(){
+                    if (cookie_href == $(this).attr('href')) {
+                        $(this).parent().parent().parent().addClass('active') //set current class active
+                            .siblings().removeClass('active'); //remove brother class active
+                        //get active ul li
+                        li_content = $(this).parent().siblings().andSelf();
+                    }
+                });
+            }
+            console.log(li_content);
+            if (li_content != '') {
+                $('ul.nav.navbar-nav li.active ul').append(li_content);
+                $('#main ul').empty().append(li_content);
+            }
+        });
 
-</body>
+        $('ul.nav.navbar-nav li ul li a').on('click', function(){
+            var href = $(this).attr('href');
+            $.cookie('nav-top', href, {expires : 1, path : '/'});
+        });
+        </script>
+    </body>
 </html>
-<!-- layout reference: https://github.com/twbs/bootstrap, in example folder(dashboard) -->
