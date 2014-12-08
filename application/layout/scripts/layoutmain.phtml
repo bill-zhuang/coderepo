@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-2 col-md-2 col-lg-1 bill-sidebar" id="main">
+            <div class="col-sm-2 col-md-2 col-lg-1 well bill-sidebar" id="main">
                 <ul class="nav nav-sidebar">
                 </ul>
             </div>
@@ -66,7 +66,7 @@
             if (typeof cookie_href == 'undefined') {
                 li_content = $('ul.nav.navbar-nav li').find('.active');
             } else {
-                $('ul.nav.navbar-nav li ul li a').each(function(){
+                $('ul.nav.navbar-nav li ul li').children('a').each(function(){
                     if (cookie_href == $(this).attr('href')) {
                         $(this).parent().parent().parent().addClass('active') //set current class active
                             .siblings().removeClass('active'); //remove brother class active
@@ -77,8 +77,11 @@
             }
             //console.log(li_content);
             if (li_content != '') {
-                $('ul.nav.navbar-nav li.active ul').append(li_content);
-                $('#main ul').empty().append(li_content);
+                li_content.appendTo('#main > ul, ul.nav.navbar-nav li.dropdown.active ul.dropdown-menu');
+                //notice: below will failed, only one element is append
+                //referrence:http://stackoverflow.com/questions/3636401/jquery-append-to-multiple-elements-fails
+                /*$('ul.nav.navbar-nav li.dropdown.active ul.dropdown-menu').append(li_content);
+                $('#main > ul').empty().append(li_content);*/
             }
         });
 
