@@ -6,7 +6,7 @@
  * Time: 下午1:30
  */
 
-class Application_Models_DBTableFactory extends Zend_Db_Table_Abstract
+class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
 {
     public function __construct($table_name, $section_name = 'localdb')
     {
@@ -25,12 +25,8 @@ class Application_Models_DBTableFactory extends Zend_Db_Table_Abstract
     {
         if (!Zend_Registry::isRegistered($section_name))
         {
-            $db_config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/db.ini', $section_name);print_r($db_config);
-            if ($db_config->adapter == '')
-            {
-                $db_config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/db.ini', 'localdb');
-            }
-
+            $db_config_path = APPLICATION_PATH . '/configs/db.ini';
+            $db_config = new Zend_Config_Ini($db_config_path, $section_name);
             $db_adapter = Zend_Db::factory($db_config->adapter, $db_config->database->toArray());
             Zend_Registry::set($section_name, $db_adapter);
             return $db_adapter;
