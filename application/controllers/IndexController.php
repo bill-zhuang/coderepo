@@ -37,10 +37,5 @@ class IndexController extends Zend_Controller_Action
 	    echo json_encode($real_downloadlink);
 	    exit;
     }
-    
-    public function encodeChineseCharacterInUrl($url)
-    {
-        return preg_replace_callback(Bill_Regex::CHINESE_CHARACTER, function($matches){return urlencode($matches[0]); }, trim($url));
-    }
 }
 
