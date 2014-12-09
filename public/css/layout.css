@@ -21,4 +21,6 @@ ul li.dropdown:hover .dropdown-menu {
     margin-top: 60px;
 }
 
-
+.bill-footer {
+    background: #ededed;
+}
