@@ -31,6 +31,7 @@ class person_DreamhistoryController extends Zend_Controller_Action
         $this->view->page_length = $page_length;
         $this->view->total_pages = ceil($total / $page_length) ? ceil($total / $page_length) : 1;
         $this->view->total = $total;
+        $this->view->start = $start;
         $this->view->keyword = $keyword;
     }
 
