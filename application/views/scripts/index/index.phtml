@@ -5,27 +5,40 @@
         <link href="/css/common.css" rel="stylesheet"/>
     </head>
     <body>
-        <h2>variety</h2>
-        <div class="form-inline">
-            Baidu Music download link:&nbsp;&nbsp;
-            <input type="text" id="baidu_music_url" class="form-control" style="width: 500px;"
-                   placeholder="like:http://music.baidu.com/song/1262598/download?title=&pst=naga&fr="/>&nbsp;&nbsp;
-            <button class="btn" type="button" id="btn_generate_download_link">Generate real download link</button><br><br>
-            Real download link:(right click and save as.../other will failed!)&nbsp;&nbsp;
-            <a href="#" id="generated_baidu_music_url"></a><br><br>
-            
-            Generate url with underline:&nbsp;&nbsp;
-            <input type="text" id="url" class="form-control" style="width: 800px;"/>&nbsp;&nbsp;
-            <button class="btn" type="button" id="btn_generate_url">Generate</button>
+        <div class="panel panel-warning">
+            <!-- panel heading -->
+            <div class="panel-heading">
+                <h2>Variety</h2>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="row">
+                    <form class="form-inline">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            Baidu Music download link:&nbsp;&nbsp;
+                            <input type="text" id="baidu_music_url" class="form-control" style="width: 500px;"
+                                   placeholder="like:http://music.baidu.com/song/1262598/download?title=&pst=naga&fr="/>&nbsp;&nbsp;
+                            <button class="btn" type="button" id="btn_generate_download_link">Generate real download link</button><br><br>
+                            Real download link:(right click and save as.../other will failed!)&nbsp;&nbsp;
+                            <a href="#" id="generated_baidu_music_url"></a>
+                            <hr>
+                            Generate url with underline:&nbsp;&nbsp;
+                            <input type="text" id="url" class="form-control" style="width: 800px;"/>&nbsp;&nbsp;
+                            <button class="btn" type="button" id="btn_generate_url">Generate</button><br/>
+                            <a href="#" id="generated_url" target="_blank"></a>
+                            <hr>
+                            <a href='#exampleModal' data-toggle="modal">Bootstrap Modal Example</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- panel footer -->
+            <!--<div class="panel-footer">
+            </div>-->
         </div>
-        <a href="#" id="generated_url" target="_blank"></a>
-
-        <br/>
-        <a href='#exampleModal' data-toggle="modal">Bootstrap Modal Example</a>
-
         <!-- Bootstrap Modal -->
         <div id="exampleModal" class="modal fade" >
-            <div class="modal-dialog" style="width:300px;height:300px;margin-top:300px;">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -42,9 +55,10 @@
             </div>
         </div>
 
-        <!-- js file & code -->
+        <!-- ------------------------------------------javascript--------------------------------------------------- -->
         <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript">
+        <script src="/js/util.js"></script>
+        <script>
         $('#baidu_music_url').on('keydown', function(event){
             if (event.keyCode == 13) {
                 $('#btn_generate_download_link').click();
@@ -54,28 +68,20 @@
         $('#btn_generate_download_link').on('click', function(){
             var music_url = $.trim($('#baidu_music_url').val());
             if(music_url != '') {
-                $.ajax({
-                    url: '/index/downloadbaidumusic',
-                    type: 'get',
-                    data: {
-                        'downlink' : music_url
-                    },
-                    dataType: 'json',
-                    success: function(music_result){
-                        //console.log(music_result);
-                        if(music_result == '') {
-                            alert('generate download link failed!');
-                        } else {
-                            $('#generated_baidu_music_url').attr('href', music_result).text(music_result);
-                        }
-                    },
-
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log("XMLHttpRequest.status="+XMLHttpRequest.status+
-                            "\nXMLHttpRequest.readyState="+XMLHttpRequest.readyState+
-                            "\ntextStatus="+textStatus);
+                var get_url = '/index/downloadbaidumusic';
+                var get_data = {
+                    'downlink' : music_url
+                };
+                var method = 'get';
+                var success_function = function(music_result){
+                    //console.log(music_result);
+                    if(music_result == '') {
+                        alert('generate download link failed!');
+                    } else {
+                        $('#generated_baidu_music_url').attr('href', music_result).text(music_result);
                     }
-                });
+                };
+                callAjaxWithFunction(get_url, get_data, success_function, method);
             } else {
                 alert('music url is empty!');
             }
