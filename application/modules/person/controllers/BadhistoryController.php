@@ -10,7 +10,7 @@ class person_BadhistoryController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout()->setLayout('layoutmain');
+        $this->_helper->layout()->setLayout('layout');
         $this->_adapter_bad_history = new Application_Model_DBTable_Badhistory();
     }
 
