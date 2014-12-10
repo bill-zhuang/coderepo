@@ -20,7 +20,7 @@ class person_DreamhistoryController extends Zend_Controller_Action
         $keyword = trim($this->_getParam('keyword', ''));
         $current_page = intval($this->_getParam('current_page', 1));
         $page_length = intval($this->_getParam('page_length', 25));
-        $order_by = 'createdtime desc';
+        $order_by = 'dh_create_time desc';
         $start = intval(($current_page - 1) * $page_length);
 
         $data = $this->_adapter_dream_history->getData($page_length, $start, $order_by);
@@ -43,11 +43,11 @@ class person_DreamhistoryController extends Zend_Controller_Action
             $occur_count = $_POST['add_dreamhistory_count'];
             $date = date('Y-m-d H:i:s');
             $data = [
-                'happeneddate' => $occur_date,
-                'count' => $occur_count,
-                'status' => 1,
-                'createdtime' => $date,
-                'updatedtime' => $date
+                'dh_happen_date' => $occur_date,
+                'dh_count' => $occur_count,
+                'dh_status' => 1,
+                'dh_create_time' => $date,
+                'dh_update_time' => $date
             ];
             $affect_rows = $this->_adapter_dream_history->insert($data);
         }
@@ -60,18 +60,18 @@ class person_DreamhistoryController extends Zend_Controller_Action
     {
         $init_date = date('Y-m-d');
         $data = [
-            'happeneddate' => '',
-            'count' => 1,
-            'status' => 1,
-            'createdtime' => '',
-            'updatedtime' => ''
+            'dh_happen_date' => '',
+            'dh_count' => 1,
+            'dh_status' => 1,
+            'dh_create_time' => '',
+            'dh_update_time' => ''
         ];
         for ($i = 0; $i < 100; $i++)
         {
             $init_date = date('Y-m-d', strtotime($init_date . ' + 3 days'));
-            $data['happeneddate'] = $init_date;
-            $data['createdtime'] = $init_date;
-            $data['updatedtime'] = $init_date;
+            $data['dh_happen_date'] = $init_date;
+            $data['dh_create_time'] = $init_date;
+            $data['dh_update_time'] = $init_date;
 
             $this->_adapter_dream_history->insert($data);
         }

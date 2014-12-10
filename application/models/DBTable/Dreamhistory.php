@@ -16,7 +16,7 @@ class Application_Model_DBTable_Dreamhistory extends Application_Model_DBTableFa
     public function getData($limit, $offset, $order_by)
     {
         return $this->select()->reset()
-            ->where('status=?', 1)
+            ->where('dh_status=?', 1)
             ->limit($limit, $offset)
             ->order($order_by)
             ->query()->fetchAll();
@@ -26,7 +26,7 @@ class Application_Model_DBTable_Dreamhistory extends Application_Model_DBTableFa
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('status=?', 1)
+            ->where('dh_status=?', 1)
             ->query()->fetchAll();
 
         return $count[0]['total'];
