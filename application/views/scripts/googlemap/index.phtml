@@ -5,52 +5,65 @@
         <link href="/css/common.css" rel="stylesheet"/>
     </head>
     <body>
-        <h2>Google Map</h2><br>
-        <div class="form-inline">
-            Location:&nbsp;&nbsp;<input type="text" id="location" class="form-control" style="width:500px;"/>
-            <button type="button" class="btn btn-primary" id="mark_position">
-                <span class="glyphicon glyphicon-search"></span>Search
-            </button>
-        </div>
-        <div id="map_canvas" style="width: 600px; height: 600px; margin-top:10px; border:1px solid gray;">
+        <div class="panel panel-warning">
+            <!-- panel heading -->
+            <div class="panel-heading">
+                <h2>Google Map</h2>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="row">
+                    <form class="form-inline">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            Location:&nbsp;&nbsp;<input type="text" id="location" class="form-control" style="width:500px;"/>
+                            <button type="button" class="btn btn-primary" id="btb_mark_location">
+                                <span class="glyphicon glyphicon-search"></span>Search
+                            </button>
+                        </div>
+                    </form>
+                </div><hr>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div id="map_canvas" class="bill-google-map-canvas">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- panel footer -->
+            <!--<div class="panel-footer">
+            </div>-->
         </div>
 
-        <!-- js file & code -->
+        <!-- ------------------------------------------javascript--------------------------------------------------- -->
         <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="/js/gmaprepo.js"></script>
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
-        <script type="text/javascript">
+        <script src="/js/gmaprepo.js"></script>
+        <script src="/js/util.js"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
+        <script>
         $('#location').on('keydown', function(event){
             if (event.keyCode == 13) {
-                $('#mark_position').click();
+                $('#btb_mark_location').click();
             }
         });
 
-        $('#mark_position').on('click', function(){
+        $('#btb_mark_location').on('click', function(){
             var location = $.trim($('#location').val());
             if(location != '') {
-                $.ajax({
-                    url: '/googlemap/marklocation',
-                    type: 'get',
-                    data: {
-                        'location' : location
-                    },
-                    dataType: 'json',
-                    success: function(coordinate_result){
-                        console.log(coordinate_result);
-                        if(coordinate_result == '') {
-                            alert('error info');
-                        } else {
-                            showPosition(coordinate_result.Longitude, coordinate_result.Latitude);
-                        }
-                    },
-
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.log("XMLHttpRequest.status="+XMLHttpRequest.status+
-                            "\nXMLHttpRequest.readyState="+XMLHttpRequest.readyState+
-                            "\ntextStatus="+textStatus);
+                var get_url = '/googlemap/marklocation';
+                var get_data = {
+                    'location' : location
+                };
+                var method = 'get';
+                var success_function = function(coordinate_result){
+                    console.log(coordinate_result);
+                    if(coordinate_result == '') {
+                        alert('error info');
+                    } else {
+                        showPosition(coordinate_result.Longitude, coordinate_result.Latitude);
                     }
-                });
+                };
+                callAjaxWithFunction(get_url, get_data, success_function, method);
             } else {
                 alert('location can\'t be empty');
             }

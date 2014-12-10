@@ -4,17 +4,36 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link href="/css/common.css" rel="stylesheet"/>
     </head>
-    <body onload="javascript:plotMarkers();">
-        Multiple Markers with not cluster & cluster:&nbsp;&nbsp;<br>
-        <div id="map_canvas_nocluster" style="width: 600px; height: 600px; margin-top:10px; border:1px solid gray; float:left;"></div>
-        <div id="map_canvas_cluster" style="width: 600px; height: 600px; margin-top:10px; margin-left:10px; border:1px solid gray; float:left;"></div>
+    <body>
+        <div class="panel panel-warning">
+            <!-- panel heading -->
+            <div class="panel-heading">
+                <h2>Multiple Markers with not cluster & cluster</h2>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div id="map_canvas_nocluster" class="bill-google-map-canvas"></div>
+                        <div id="map_canvas_cluster" class="bill-google-map-canvas bill-margin-left"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- panel footer -->
+            <!--<div class="panel-footer">
+            </div>-->
+        </div>
 
-        <!-- js file & code -->
+        <!-- ------------------------------------------javascript--------------------------------------------------- -->
         <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="/js/gmaprepo.js"></script>
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
-        <script type="text/javascript" src="/js/markerclusterer.js"></script>
-        <script type="text/javascript">
+        <script src="/js/gmaprepo.js"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCefZle2DqxF9i51PTfoZsZoOmvWzKYhF4&sensor=true"></script>
+        <script src="/js/markerclusterer.js"></script>
+        <script>
+        $(document).ready(function(){
+            plotMarkers();
+        });
+
         function plotMarkers()
         {
             var lng_lat = <?php echo $this->lng_lat; ?>;

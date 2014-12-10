@@ -46,3 +46,18 @@ table css
     font-weight: bold;
     color: #ff0000;
 }
+
+/*
+google map canvas css
+*/
+.bill-google-map-canvas {
+    width: 600px;
+    height: 600px;
+    margin-top:10px;
+    border:1px solid gray;
+    float:left;
+}
+
+.bill-margin-left {
+    margin-left: 10px;
+}
