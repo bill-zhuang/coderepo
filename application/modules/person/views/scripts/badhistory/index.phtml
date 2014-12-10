@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <link href="/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
+        <link href="/css/common.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="panel panel-warning">
+            <!-- panel heading -->
+            <div class="panel-heading">
+                <h2>Bad history</h2>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="row">
+                    <form class="form-inline">
+                    <div class="col-sm-10 col-md-10 col-lg-10">
+                        Keyword: <input type="text" class="form-control" id="keyword"/>
+                        <button class="btn btn-primary" type="button" id="btn_search">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span>搜索</span>
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-success" type="button" id="btn_add">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <span>新增</span>
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+                        <select name="page_length" id="page_length" class="form-control">
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100</option>
+                        </select>
+                        &nbsp;<label>每页</label>
+                    </div>
+                    </form>
+                </div><hr>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <table class="table table-striped table-bordered bill_table text-center">
+                            <tr>
+                                <td>序号</td>
+                                <td>日期</td>
+                                <td>次数</td>
+                                <td>创建时间</td>
+                                <td>更新时间</td>
+                                <td>操作</td>
+                            </tr>
+                            <tbody>
+                                <?php for($i = 0, $len = count($this->data); $i < $len; $i++){ ?>
+                                    <tr>
+                                        <td><?php echo $i + 1; ?></td>
+                                        <td><?php echo $this->data[$i]['bh_happen_date']; ?></td>
+                                        <td><?php echo $this->data[$i]['bh_count']; ?></td>
+                                        <td><?php echo $this->data[$i]['bh_create_time']; ?></td>
+                                        <td><?php echo $this->data[$i]['bh_update_time']; ?></td>
+                                        <td>
+                                            <a href="#">修改</a>
+                                            <a href="#">删除</a>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+
+                                <?php if (count($this->data) == 0) { ?>
+                                    <tr>
+                                        <td colspan="6" class="bill_table_no_data">对不起,没有符合条件的数据</td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- panel footer -->
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6 text-left">
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 text-right">
+                        <ul id="pagination" class="pagination-md"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal -->
+        <div id="addbadhistoryModal" class="modal fade">
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header"><span>新增Bad history</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+
+                    <form id="addbadhistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+                        <div class="modal-body">
+                            <span>日期：</span>
+                            <input type="text" name="add_badhistory_date" id="add_badhistory_date" class="form-control form_date"/>
+                            <br /><br />
+                            <span>次数：</span>
+                            <input type="text" name="add_badhistory_count" id="add_badhistory_count" class="form-control"/>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn">提交</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ------------------------------------------javascript--------------------------------------------------- -->
+        <script src="/bootstrap/js/jquery-1.11.0.min.js" charset="UTF-8"></script>
+        <script src="/js/jquery.twbsPagination.min.js"></script>
+        <script src="/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+        <script src="/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+        <script src="/js/util.js"></script>
+        <script>
+        $('.form_date').datetimepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn:  'linked',
+            todayHighlight: 1,
+            language: 'zh-CN',
+            autoclose: 1,
+            minView: 2 //needed, or show time
+        });
+
+        $(document).ready(function(){
+            $('#keyword').val('<?php echo $this->keyword; ?>');
+            $('#page_length').val(<?php echo $this->page_length; ?>);
+        });
+
+        $('#keyword').on('keydown', function(event){
+            if (event.keyCode == 13) {
+                //enter key
+                event.preventDefault();
+                $('#btn_search').click();
+            }
+        });
+
+        $('#btn_search').on('click', function(){
+            var keyword = $.trim($('#keyword').val());
+            var current_page = <?php echo $this->current_page; ?>;
+            var page_length = <?php echo $this->page_length; ?>;
+            search(current_page, page_length, keyword);
+        });
+
+        $('#btn_add').on('click', function(){
+            window.addbadhistoryForm.reset();
+            $('#addbadhistoryModal').modal('show');
+        });
+
+        $('#addbadhistoryForm').on('submit', (function(event){
+            event.preventDefault();
+
+            $('#addbadhistoryForm .modal-footer button[type="submit"]').attr('disabled', true);
+            var post_url = '/person/badhistory/addbadhistory';
+            var post_data = new FormData(this);
+            var msg_success = '';
+            var msg_error = '';
+            callAjaxWithForm(post_url, post_data, msg_success, msg_error);
+        }));
+
+        /*  --------------------------------------------------------------------------------------------------------  */
+        function search(current_page, page_length, keyword)
+        {
+            var params = {
+                'keyword': keyword || $.trim($('#keyword').val()),
+                'current_page': current_page || <?php echo $this->current_page; ?>,
+                'page_length': page_length || <?php echo $this->page_length; ?>
+            };
+            location.href = '/person/badhistory/index?' + $.param(params);
+        }
+
+        $('#pagination').twbsPagination({
+            totalPages: <?php echo $this->total_pages; ?>,
+            startPage: <?php echo $this->current_page; ?>,
+            visiblePages: 7,
+            first: '首页',
+            prev: '上一页',
+            next: '下一页',
+            last: '尾页',
+            onPageClick: function (event, page) {
+                search(page);
+            }
+        });
+
+        $('#page_length').on('change', function(){
+            search(1, this.value);
+        });
+        </script>
+    </body>
+</html>
