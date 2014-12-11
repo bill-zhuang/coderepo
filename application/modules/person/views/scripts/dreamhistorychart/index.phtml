@@ -115,7 +115,11 @@
                 ]
             };
             var line_option = {
-                responsive: true
+                responsive: true,
+                scaleOverride: true,
+                scaleSteps: 8, //y axis length = steps * step_width
+                scaleStepWidth: 1, // y axis
+                scaleStartValue: 0 // y axis start value
             };
             //$('#dream_history_line_chart').get(0).getContent('2d');
             var chart_line_canvas = document.getElementById("dream_history_line_chart").getContext("2d");
