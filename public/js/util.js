@@ -54,6 +54,16 @@ function getCurrentTime()
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+function getRandomColorHex()
+{
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 function callAjaxWithAlert(url, data, msg_success, msg_error, method, is_reload)
 {
     var success_function = function(flag) {
