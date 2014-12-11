@@ -48,4 +48,12 @@ class Application_Model_DBTable_Dreamhistory extends Application_Model_DBTableFa
             ->where('dh_status=?', 1)->where('date_format(dh_happen_date, "%Y-%m")=?', $select_date)
             ->query()->fetchAll();
     }
+
+    public function getTotalDreamHistoryDataByDay()
+    {
+        return $this->select()->reset()
+            ->from($this->_name, array('dh_happen_date as period', 'dh_count as number'))
+            ->where('dh_status=?', 1)
+            ->query()->fetchAll();
+    }
 } 

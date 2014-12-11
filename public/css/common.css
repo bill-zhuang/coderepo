@@ -47,6 +47,11 @@ table css
     color: #ff0000;
 }
 
+.bill_font_bold_green {
+    font-weight: bold;
+    color: #008000;
+}
+
 /*
 google map canvas css
 */

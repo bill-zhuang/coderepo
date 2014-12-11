@@ -28,7 +28,10 @@ class person_DreamhistorychartController extends Zend_Controller_Action
             $chart_data['number'][] = $month_value['number'];
         }
 
+        $all_chart_data = $this->_getAllDreamHistoryDataByDay();
+
         $this->view->chart_data = json_encode($chart_data);
+        $this->view->all_chart_data = json_encode($all_chart_data);
     }
 
     public function getdreamhistorymonthdetailAction()
@@ -40,21 +43,33 @@ class person_DreamhistorychartController extends Zend_Controller_Action
         if (isset($_POST['select_date']))
         {
             $select_date = $_POST['select_date'];
-            try{
-                $group_data = $this->_adapter_dream_history->getTotalDreamHistoryGroupDataByYearMonth($select_date);
-                foreach ($group_data as $group_value)
-                {
-                    $chart_data['period'][] = $group_value['period'];
-                    $chart_data['number'][] = $group_value['number'];
-                }
-            }catch(Exception $e)
+            $group_data = $this->_adapter_dream_history->getTotalDreamHistoryGroupDataByYearMonth($select_date);
+            foreach ($group_data as $group_value)
             {
-                echo $e->getMessage();
+                $chart_data['period'][] = $group_value['period'];
+                $chart_data['number'][] = $group_value['number'];
             }
-
         }
 
         echo json_encode($chart_data);
         exit;
+    }
+
+    private function _getAllDreamHistoryDataByDay()
+    {
+        $all_chart_data = [
+            'period' => [],
+            'number' => [],
+        ];
+        $all_data = $this->_adapter_dream_history->getTotalDreamHistoryDataByDay();
+        foreach ($all_data as $key => $all_value)
+        {
+            $all_chart_data['period'][] = $all_value['period'];
+            $all_chart_data['number'][] = $all_value['number'];
+            $all_chart_data['interval'][] = ($key == 0) ? 0 :
+                intval((strtotime($all_value['period']) - strtotime($all_data[$key - 1]['period'])) / 86400);
+        }
+
+        return $all_chart_data;
     }
 }
