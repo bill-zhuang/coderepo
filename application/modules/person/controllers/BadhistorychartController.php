@@ -30,6 +30,16 @@ class person_BadhistorychartController extends Zend_Controller_Action
                 intval((strtotime($all_value['period']) - strtotime($all_data[$key - 1]['period'])) / 86400);
         }
 
+        $total = count($all_data);
+        $current_date = date('Y-m-d');
+        if ($all_chart_data['period'][$total] != $current_date)
+        {
+            $all_chart_data['period'][] = date('Y-m-d');
+            $all_chart_data['number'][] = 1;
+            $all_chart_data['interval'][] =
+                intval((strtotime($current_date) - strtotime($all_data[$total - 1]['period'])) / 86400);
+        }
+
         $this->view->all_chart_data = json_encode($all_chart_data);
     }
 }
