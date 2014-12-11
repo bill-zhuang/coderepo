@@ -31,4 +31,12 @@ class Application_Model_DBTable_Badhistory extends Application_Model_DBTableFact
 
         return $count[0]['total'];
     }
+
+    public function getTotalBadHistoryDataByDay()
+    {
+        return $this->select()->reset()
+            ->from($this->_name, array('bh_happen_date as period', 'bh_count as number'))
+            ->where('bh_status=?', 1)
+            ->query()->fetchAll();
+    }
 } 

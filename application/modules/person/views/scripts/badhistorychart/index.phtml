@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <link href="/css/common.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="panel panel-warning">
+            <!-- panel heading -->
+            <div class="panel-heading">
+                <h2>Bad history chart</h2>
+            </div>
+            <!-- panel body -->
+            <div class="panel-body">
+                <div class="row">
+                    <form class="form-inline">
+                    </form>
+                </div><hr>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <span class="bill_font_bold_green">All bad history data by day</span>
+                        <div class="bill-chart-canvas_all">
+                            <canvas id="bad_history_line_chart_all"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- panel footer -->
+            <!--<div class="panel-footer">
+            </div>-->
+        </div>
+
+        <!-- ------------------------------------------javascript--------------------------------------------------- -->
+        <script src="/bootstrap/js/jquery-1.11.0.min.js" charset="UTF-8"></script>
+        <script src="/chart.js/Chart.min.js"></script>
+        <script src="/js/util.js"></script>
+        <script>
+        $(document).ready(function(){
+            //all bad history data by day
+            initLineChartAll();
+        });
+
+        function initLineChartAll()
+        {
+            var chart_data = <?php echo $this->all_chart_data; ?>;
+            //console.log(chart_data);
+            var data_period = chart_data['period'];
+            var data_number = chart_data['interval'];
+            if (data_period.length != 0) {
+                var line_data = {
+                    labels : data_period,
+                    datasets: [
+                        {
+                            fillColor: "rgba(151,187,205,0.2)",
+                            strokeColor: "rgba(151,187,205,1)",
+                            pointColor: "rgba(151,187,205,1)",
+                            pointStrokeColor: "#fff",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(220,220,220,1)",
+                            data: data_number
+                        }
+                    ]
+                };
+                var line_option = {
+                    responsive: true
+                };
+                var chart_line_canvas = document.getElementById("bad_history_line_chart_all").getContext("2d");
+                var chart_line = new Chart(chart_line_canvas).Line(line_data, line_option);
+            }
+        }
+        </script>
+    </body>
+</html>
