@@ -13,7 +13,7 @@ class Application_Model_DBTable_Badhistory extends Application_Model_DBTableFact
         parent::__construct('bad_history');
     }
 
-    public function getData($limit, $offset, $order_by)
+    public function getBadHistoryData($limit, $offset, $order_by)
     {
         return $this->select()->reset()
             ->where('bh_status=?', 1)
@@ -22,7 +22,7 @@ class Application_Model_DBTable_Badhistory extends Application_Model_DBTableFact
             ->query()->fetchAll();
     }
 
-    public function getTotalRecordNumber()
+    public function getTotalBadHistoryNumber()
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')

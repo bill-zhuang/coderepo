@@ -23,8 +23,8 @@ class person_DreamhistoryController extends Zend_Controller_Action
         $order_by = 'dh_create_time desc';
         $start = intval(($current_page - 1) * $page_length);
 
-        $data = $this->_adapter_dream_history->getData($page_length, $start, $order_by);
-        $total = $this->_adapter_dream_history->getTotalRecordNumber();
+        $data = $this->_adapter_dream_history->getDreamHistoryData($page_length, $start, $order_by);
+        $total = $this->_adapter_dream_history->getTotalDreamHistoryNumber();
 
         $this->view->data = $data;
         $this->view->current_page = $current_page;

@@ -23,8 +23,8 @@ class person_BadhistoryController extends Zend_Controller_Action
         $order_by = 'bh_create_time desc';
         $start = intval(($current_page - 1) * $page_length);
 
-        $data = $this->_adapter_bad_history->getData($page_length, $start, $order_by);
-        $total = $this->_adapter_bad_history->getTotalRecordNumber();
+        $data = $this->_adapter_bad_history->getBadHistoryData($page_length, $start, $order_by);
+        $total = $this->_adapter_bad_history->getTotalBadHistoryNumber();
 
         $this->view->data = $data;
         $this->view->current_page = $current_page;

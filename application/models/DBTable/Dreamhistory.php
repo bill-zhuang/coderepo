@@ -13,7 +13,7 @@ class Application_Model_DBTable_Dreamhistory extends Application_Model_DBTableFa
         parent::__construct('dream_history');
     }
 
-    public function getData($limit, $offset, $order_by)
+    public function getDreamHistoryData($limit, $offset, $order_by)
     {
         return $this->select()->reset()
             ->where('dh_status=?', 1)
@@ -22,7 +22,7 @@ class Application_Model_DBTable_Dreamhistory extends Application_Model_DBTableFa
             ->query()->fetchAll();
     }
 
-    public function getTotalRecordNumber()
+    public function getTotalDreamHistoryNumber()
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
