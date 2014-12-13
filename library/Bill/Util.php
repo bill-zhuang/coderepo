@@ -46,4 +46,10 @@ class Bill_Util
 
         return $content;
     }
+
+    public static function validDate($date)
+    {
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') == $date;
+    }
 } 
