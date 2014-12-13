@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn">提交</button>
+                            <button type="submit" class="btn" id="btn_submit_add">提交</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </form>
@@ -127,7 +127,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn">提交</button>
+                            <button type="submit" class="btn" id="btn_submit_modify">提交</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </form>
@@ -179,7 +179,7 @@
         $('#addDreamhistoryForm').on('submit', (function(event){
             event.preventDefault();
 
-            $('#addDreamhistoryForm .modal-footer button[type="submit"]').attr('disabled', true);
+            $('#btn_submit_add').attr('disabled', true);
             var post_url = '/person/dreamhistory/adddreamhistory';
             var post_data = new FormData(this);
             var msg_success = '';
@@ -199,7 +199,7 @@
                 $('#modify_dreamhistory_date').val(history_data.dh_happen_date).attr('disabled', true);
                 $('#modify_dreamhistory_count').val(history_data.dh_count);
                 $('#modify_dreamhistory_id').val(history_data.dh_id);
-                $('#modifyDreamhistoryForm .modal-footer button[type="submit"]').attr('disabled', false);
+                $('#btn_submit_modify').attr('disabled', false);
                 $('#modifyDreamhistoryModal').modal('show');
             };
             callAjaxWithFunction(post_url, post_data, success_function, method);
@@ -208,7 +208,7 @@
         $('#modifyDreamhistoryForm').on('submit', (function(event){
             event.preventDefault();
 
-            $('#modifyDreamhistoryForm .modal-footer button[type="submit"]').attr('disabled', true);
+            $('#btn_submit_modify').attr('disabled', true);
             var post_url = '/person/dreamhistory/modifydreamhistory';
             var post_data = new FormData(this);
             var msg_success = 'Modify successfully';
