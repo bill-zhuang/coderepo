@@ -39,4 +39,11 @@ class Application_Model_DBTable_Badhistory extends Application_Model_DBTableFact
             ->where('bh_status=?', 1)
             ->query()->fetchAll();
     }
+
+    public function getBadHistoryDayByID($bh_id)
+    {
+        return $this->select()->reset()
+            ->where('bh_id=?', $bh_id)
+            ->query()->fetch();
+    }
 } 

@@ -41,18 +41,80 @@ class person_BadhistoryController extends Zend_Controller_Action
         if (isset($_POST['add_badhistory_date']))
         {
             $occur_date = $_POST['add_badhistory_date'];
-            $occur_count = $_POST['add_badhistory_count'];
-            $date = date('Y-m-d H:i:s');
-            $data = [
-                'bh_happen_date' => $occur_date,
-                'bh_count' => $occur_count,
-                'bh_status' => 1,
-                'bh_create_time' => $date,
-                'bh_update_time' => $date
-            ];
-            $affect_rows = $this->_adapter_bad_history->insert($data);
+            $occur_count = intval($_POST['add_badhistory_count']);
+            if (Bill_Util::validDate($occur_date) && $occur_count > 1)
+            {
+                $date = date('Y-m-d H:i:s');
+                $data = [
+                    'bh_happen_date' => $occur_date,
+                    'bh_count' => $occur_count,
+                    'bh_status' => 1,
+                    'bh_create_time' => $date,
+                    'bh_update_time' => $date
+                ];
+                $affect_rows = $this->_adapter_bad_history->insert($data);
+            }
         }
         
+        echo json_encode($affect_rows);
+        exit;
+    }
+
+    public function getbadhistoryAction()
+    {
+        $data = [];
+        if (isset($_POST['bh_id']))
+        {
+            $bh_id = intval($_POST['bh_id']);
+            if ($bh_id > 0)
+            {
+                $data = $this->_adapter_bad_history->getBadHistoryDayByID($bh_id);
+            }
+        }
+
+        echo json_encode($data);
+        exit;
+    }
+
+    public function modifybadhistoryAction()
+    {
+        $affect_rows = 0;
+        if (isset($_POST['modify_badhistory_id']))
+        {
+            $bh_id = intval($_POST['modify_badhistory_id']);
+            $bh_count = intval($_POST['modify_badhistory_count']);
+            if ($bh_id > 0 && $bh_count > 0)
+            {
+                $update_data = [
+                    'bh_count' => $bh_count,
+                    'bh_update_time' => date('Y-m-d H:i:s')
+                ];
+                $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id);
+                $affect_rows = $this->_adapter_bad_history->update($update_data, $where);
+            }
+        }
+
+        echo json_encode($affect_rows);
+        exit;
+    }
+
+    public function deletebadhistoryAction()
+    {
+        $affect_rows = 0;
+        if (isset($_POST['bh_id']))
+        {
+            $bh_id = intval($_POST['bh_id']);
+            if ($bh_id > 0)
+            {
+                $update_data = [
+                    'bh_status' => 0,
+                    'bh_update_time' => date('Y-m-d H:i:s')
+                ];
+                $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id);
+                $affect_rows = $this->_adapter_bad_history->update($update_data, $where);
+            }
+        }
+
         echo json_encode($affect_rows);
         exit;
     }
