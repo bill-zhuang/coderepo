@@ -56,4 +56,11 @@ class Application_Model_DBTable_Dreamhistory extends Application_Model_DBTableFa
             ->where('dh_status=?', 1)
             ->query()->fetchAll();
     }
+
+    public function getDreamHistoryDayByID($dh_id)
+    {
+        return $this->select()->reset()
+            ->where('dh_id=?', $dh_id)
+            ->query()->fetch();
+    }
 } 

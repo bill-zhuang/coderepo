@@ -57,8 +57,8 @@
                                         <td><?php echo $this->data[$i]['dh_create_time']; ?></td>
                                         <td><?php echo $this->data[$i]['dh_update_time']; ?></td>
                                         <td>
-                                            <a href="#">修改</a>
-                                            <a href="#">删除</a>
+                                            <a href="#" id="<?php echo 'modify_' . $this->data[$i]['dh_id']; ?>">修改</a>
+                                            <a href="#" id="<?php echo 'delete_' . $this->data[$i]['dh_id']; ?>">删除</a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -99,6 +99,31 @@
                             <br /><br />
                             <span>次数：</span>
                             <input type="text" name="add_dreamhistory_count" id="add_dreamhistory_count" class="form-control"/>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn">提交</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="modifyDreamhistoryModal" class="modal fade">
+            <div class="modal-dialog" >
+                <div class="modal-content">
+                    <div class="modal-header"><span>新增Dream history</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+
+                    <form id="modifyDreamhistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+                        <div class="modal-body">
+                            <span>日期：</span>
+                            <input type="text" name="modify_dreamhistory_date" id="modify_dreamhistory_date" class="form-control form_date"/>
+                            <br /><br />
+                            <span>次数：</span>
+                            <input type="text" name="modify_dreamhistory_count" id="modify_dreamhistory_count" class="form-control"/>
+                            <input type="hidden" name="modify_dreamhistory_id" id="modify_dreamhistory_id"/>
                         </div>
 
                         <div class="modal-footer">
@@ -161,6 +186,50 @@
             var msg_error = '';
             callAjaxWithForm(post_url, post_data, msg_success, msg_error);
         }));
+
+        $('a[id^=modify_]').on('click', function(){
+            //console.log($(this).attr('id'));
+            var dh_id = $(this).attr('id').substr('delete_'.length);
+            var post_url = '/person/dreamhistory/getdreamhistory';
+            var post_data = {
+                dh_id: dh_id
+            };
+            var method = 'post';
+            var success_function = function(history_data){
+                $('#modify_dreamhistory_date').val(history_data.dh_happen_date).attr('disabled', true);
+                $('#modify_dreamhistory_count').val(history_data.dh_count);
+                $('#modify_dreamhistory_id').val(history_data.dh_id);
+                $('#modifyDreamhistoryForm .modal-footer button[type="submit"]').attr('disabled', false);
+                $('#modifyDreamhistoryModal').modal('show');
+            };
+            callAjaxWithFunction(post_url, post_data, success_function, method);
+        });
+
+        $('#modifyDreamhistoryForm').on('submit', (function(event){
+            event.preventDefault();
+
+            $('#modifyDreamhistoryForm .modal-footer button[type="submit"]').attr('disabled', true);
+            var post_url = '/person/dreamhistory/modifydreamhistory';
+            var post_data = new FormData(this);
+            var msg_success = 'Modify successfully';
+            var msg_error = 'Modify failed';
+            callAjaxWithForm(post_url, post_data, msg_success, msg_error);
+        }));
+
+        $('a[id^=delete_]').on('click', function(){
+            //console.log($(this).attr('id'));
+            if (confirm('Delete confirm?')) {
+                var dh_id = $(this).attr('id').substr('delete_'.length);
+                var post_url = '/person/dreamhistory/deletedreamhistory';
+                var post_data = {
+                    dh_id: dh_id
+                };
+                var method = 'post';
+                var msg_success = 'Delete successfully';
+                var msg_error = 'Delete failed';
+                callAjaxWithAlert(post_url, post_data, msg_success, msg_error, method);
+            }
+        });
 
         /*  --------------------------------------------------------------------------------------------------------  */
         function search(current_page, page_length, keyword)
