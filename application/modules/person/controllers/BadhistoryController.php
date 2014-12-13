@@ -26,13 +26,16 @@ class person_BadhistoryController extends Zend_Controller_Action
         $data = $this->_adapter_bad_history->getBadHistoryData($page_length, $start, $order_by);
         $total = $this->_adapter_bad_history->getTotalBadHistoryNumber();
 
-        $this->view->data = $data;
-        $this->view->current_page = $current_page;
-        $this->view->page_length = $page_length;
-        $this->view->total_pages = ceil($total / $page_length) ? ceil($total / $page_length) : 1;
-        $this->view->total = $total;
-        $this->view->start = $start;
-        $this->view->keyword = $keyword;
+        $view_data = [
+            'data' => $data,
+            'current_page' => $current_page,
+            'page_length' => $page_length,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : 1,
+            'total' => $total,
+            'start' => $start,
+            'keyword' => $keyword
+        ];
+        $this->_setViewData($view_data);
     }
 
     public function addbadhistoryAction()
@@ -139,6 +142,14 @@ class person_BadhistoryController extends Zend_Controller_Action
             $this->_adapter_bad_history->insert($data);
         }
         exit;
+    }
+
+    private function _setViewData(array $view_data)
+    {
+        foreach ($view_data as $view_key => $view_value)
+        {
+            $this->view->$view_key = $view_value;
+        }
     }
 
 }
