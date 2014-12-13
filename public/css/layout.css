@@ -10,6 +10,10 @@ ul li.dropdown:hover .dropdown-menu {
     border: 1px solid red;
 }
 
+.bill-layout-width {
+    width: 100%;
+}
+
 .bill-sidebar {
     margin-top: 50px;
     background-color: #F0F8FF;
