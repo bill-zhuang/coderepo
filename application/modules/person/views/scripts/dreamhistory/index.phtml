@@ -182,8 +182,8 @@
             $('#btn_submit_add').attr('disabled', true);
             var post_url = '/person/dreamhistory/adddreamhistory';
             var post_data = new FormData(this);
-            var msg_success = '';
-            var msg_error = '';
+            var msg_success = 'Add successfully';
+            var msg_error = 'Add failed';
             callAjaxWithForm(post_url, post_data, msg_success, msg_error);
         }));
 
