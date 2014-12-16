@@ -1,5 +1,5 @@
 <?php
-require_once APPLICATION_PATH . '/models/DBTable/Dreamhistory.php';
+
 class person_DreamhistorychartController extends Zend_Controller_Action
 {
     /**

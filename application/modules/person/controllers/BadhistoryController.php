@@ -1,5 +1,5 @@
 <?php
-require_once APPLICATION_PATH . '/models/DBTable/Badhistory.php';
+
 class person_BadhistoryController extends Zend_Controller_Action
 {
     /**
