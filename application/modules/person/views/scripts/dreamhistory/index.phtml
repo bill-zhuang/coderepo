@@ -173,6 +173,8 @@
 
         $('#btn_add').on('click', function(){
             window.addDreamhistoryForm.reset();
+            $('#add_dreamhistory_date').val(getCurrentDate());
+            $('#add_dreamhistory_count').val(1);
             $('#btn_submit_add').attr('disabled', false);
             $('#addDreamhistoryModal').modal('show');
         });

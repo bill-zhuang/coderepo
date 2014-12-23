@@ -173,6 +173,8 @@
 
         $('#btn_add').on('click', function(){
             window.addbadhistoryForm.reset();
+            $('#add_badhistory_date').val(getCurrentDate());
+            $('#add_badhistory_count').val(1);
             $('#btn_submit_add').attr('disabled', false);
             $('#addbadhistoryModal').modal('show');
         });

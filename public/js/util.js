@@ -54,6 +54,16 @@ function getCurrentTime()
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+function getCurrentDate()
+{
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+
+    return year + '-' + month + '-' + day;
+}
+
 function getRandomColorHex()
 {
     var letters = '0123456789ABCDEF'.split('');
