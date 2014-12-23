@@ -93,6 +93,11 @@
             //console.log(li_content);
             if (li_content != '') {
                 li_content.appendTo('#main > ul, ul.nav.navbar-nav li.dropdown.active ul.dropdown-menu');
+                $('#main > ul li').children('a').each(function(){
+                    if (cookie_href == $(this).attr('href')) {
+                        $(this).css('color', 'red').css('text-decoration', 'underline');
+                    }
+                });
                 //notice: below will failed, only one element is append
                 //referrence:http://stackoverflow.com/questions/3636401/jquery-append-to-multiple-elements-fails
                 /*$('ul.nav.navbar-nav li.dropdown.active ul.dropdown-menu').append(li_content);
