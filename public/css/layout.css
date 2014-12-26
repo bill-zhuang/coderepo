@@ -33,3 +33,21 @@ ul li.dropdown:hover .dropdown-menu {
     bottom: 0px;
     width: 100%;
 }
+
+/*
+    solution for prevent body scrollbar and shifting when bootstrap modal dialog is loaded
+    reference url: http://stackoverflow.com/questions/19288546/how-can-i-prevent-body-scrollbar-and-shifting-when-twitter-bootstrap-modal-dialo
+ */
+html {
+    overflow: hidden;
+    height: 100%;
+}
+body {
+    overflow: auto;
+    height: 100%;
+}
+
+/* unset bs3 setting */
+.modal-open {
+    overflow: auto;
+}
