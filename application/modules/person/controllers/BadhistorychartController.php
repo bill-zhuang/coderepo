@@ -32,7 +32,7 @@ class person_BadhistorychartController extends Zend_Controller_Action
 
         $total = count($all_data);
         $current_date = date('Y-m-d');
-        if ($all_chart_data['period'][$total] != $current_date)
+        if ($all_chart_data['period'][$total - 1] != $current_date)
         {
             $all_chart_data['period'][] = date('Y-m-d');
             $all_chart_data['number'][] = 1;
