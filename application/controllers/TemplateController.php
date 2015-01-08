@@ -112,7 +112,7 @@ class {module_name}_TemplateController extends Zend_Controller_Action
                     'status' => Bootstrap::INVALID_STATUS,
                     'utime' => date('Y-m-d H:i:s')
                 ];
-                $where = $this->_adapter_{main}->getAdapter()->quoteInto('{primary_key}=?', ${primary_key});
+                $where = $this->_adapter_{main}->getAdapter()->quoteInto('status=1 and {primary_key}=?', ${primary_key});
                 $affected_rows = $this->_adapter_{main}->update($update_data, $where);
                 $this->_adapter_{main}->getAdapter()->commit();
             }
