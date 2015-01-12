@@ -20,7 +20,7 @@ class Bill_Pdo
 	{
 		if(isset($this->dbh))
 		{
-			$query_results = $this->dbh->query($sql_statement);
+			$query_results = $this->dbh->query($sql_statement)->fetchAll();
 
 			if($query_results !== false)
 			{
