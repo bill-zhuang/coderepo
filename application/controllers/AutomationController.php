@@ -11,20 +11,22 @@ class AutomationController extends Zend_Controller_Action
     public $primary_key;
     public $all_batch_id;
     public $batch_id;
+    public $table_prefix;
     
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout()->disableLayout();
-        $this->module_name = 'backend';//modules name here
-        $this->used_tables = [];//table name here
-        $this->controller_name = 'user';//controller name here
-        $this->action_name = 'User';//first letter big, remove prefix of gc_;
-        $this->view->title = '用户管理';
+        $this->module_name = 'person';//modules name here
+        $this->used_tables = ['finance_category'];//table name here
+        $this->controller_name = 'financecategory';//controller name here
+        $this->action_name = 'Financecategory';//first letter big, remove prefix of gc_;
+        $this->view->title = '消费分类管理';
         $this->view_name = strtolower($this->controller_name);
-        $this->primary_key = 'urid';
+        $this->primary_key = 'fc_id';
         $this->all_batch_id = 'all_comments'; //option
         $this->batch_id = 'comment'; //option
+        $this->table_prefix = substr($this->primary_key, 0, strlen($this->primary_key) - 3);
     }
 
     public function indexAction()
@@ -35,7 +37,7 @@ class AutomationController extends Zend_Controller_Action
 
     public function gentablemodelAction()
     {
-        $table_names = [];//table name here
+        $table_names = ['finance_category'];//table name here
         foreach ($table_names as $table_name)
         {
             $new_file_name = '';
@@ -60,7 +62,11 @@ class AutomationController extends Zend_Controller_Action
                     $content = file_get_contents($new_file_path);
                     $write_flag = file_put_contents(
                         $new_file_path,
-                        str_replace(['{class_name}', '{table_name}', '{pkid}'], [$new_file_name, $table_name, $pkid], $content)
+                        str_replace(
+                            ['{class_name}', '{table_name}', '{pkid}', '{table_prefix}'],
+                            [$new_file_name, $table_name, $pkid, $this->table_prefix],
+                            $content
+                        )
                     );
                     if ($write_flag !== false)
                     {
@@ -109,18 +115,20 @@ class AutomationController extends Zend_Controller_Action
                 $content = file_get_contents($new_file_path);
                 $replace_array = ['search' => [], 'replace' => []];
                 $replace_array['search'] = ['TemplateController',
-                        '{module_name}',
-                        '{action_object_name}',
-                        '{action_object_name_first_big_letter}',
-                        '{main}',
-                        '{primary_key}',
+                    '{module_name}',
+                    '{action_object_name}',
+                    '{action_object_name_first_big_letter}',
+                    '{main}',
+                    '{primary_key}',
+                    '{table_prefix}',
                 ];
                 $replace_array['replace'] = [$controller_name . 'Controller',
-                        $module_name,
-                        strtolower($action_name), //action object name here
-                        $action_name, //first letter big
-                        substr($table_array[0], strlen('bill_')), //main select, first table array value, delete 'bill_'
-                        $this->primary_key, //table key
+                    $module_name,
+                    strtolower($action_name), //action object name here
+                    $action_name, //first letter big
+                    $table_array[0], //main select, first table array value
+                    $this->primary_key, //table key
+                    $this->table_prefix,
                 ];
                 file_put_contents($new_file_path, str_replace($replace_array['search'], $replace_array['replace'], $content));
 
@@ -199,6 +207,7 @@ class AutomationController extends Zend_Controller_Action
                     '{page_title}',
                     '{all_batch_id}', //option
                     '{batch_id}', //option
+                    '{table_prefix}',
                 ];
                 $replace_array['replace'] = [
                     $controller_name . 'Controller',
@@ -210,6 +219,7 @@ class AutomationController extends Zend_Controller_Action
                     $this->view->title,
                     $this->all_batch_id,
                     $this->batch_id,
+                    $this->table_prefix,
                 ];
                 $write_flag = file_put_contents($new_file_path, str_replace($replace_array['search'], $replace_array['replace'], $content));
                 if ($write_flag !== false)
