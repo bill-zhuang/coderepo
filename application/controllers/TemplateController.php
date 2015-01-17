@@ -209,7 +209,7 @@ class {module_name}_TemplateController extends Zend_Controller_Action
 
     private function _upload{action_object_name_first_big_letter}Image(${primary_key}, $file_id)
     {
-        $aliyun = new Gc_Tools_Uploadfiles();
+        $aliyun = new Bill_Tools_Uploadfiles();
         $image_url = $aliyun->uploadImageFrom{action_object_name_first_big_letter}($file_id, ${primary_key});
         return $image_url;
     }
@@ -231,7 +231,7 @@ class {module_name}_TemplateController extends Zend_Controller_Action
         }
         if (!empty($base64_contents))
         {
-            $aliyun_upload = new Gc_Tools_Uploadfiles();
+            $aliyun_upload = new Bill_Tools_Uploadfiles();
             $img_urls = $aliyun_upload->uploadImageByBase64Content($base64_contents, '{action_object_name}');
             $content = str_replace($base64_contents, $img_urls, $content);
         }
