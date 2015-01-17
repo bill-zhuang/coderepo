@@ -43,13 +43,10 @@ class AutomationController extends Zend_Controller_Action
             $split_names = explode('_', $table_name);
             foreach ($split_names as $key => $name)
             {
-                if ($key > 0)
-                {
-                    $new_file_name .= $name;
-                    $pkid .= $name[0];
-                }
+                $new_file_name .= $name;
+                $pkid .= $name[0];
             }
-            $pkid .= 'id';
+            $pkid .= '_id';
             $new_file_name[0] = strtoupper($new_file_name[0]);
 
             $template_file_path = APPLICATION_PATH . '/models/Tabletemplate.php';
