@@ -47,7 +47,7 @@
 
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
-                        <table class="table table-striped table-bordered gclass_table text-center">
+                        <table class="table table-striped table-bordered bill_table text-center">
                             <tr>
                                 <td><input type="checkbox" id="{all_batch_id}" name="{all_batch_id}"/></td>
                                 <td>序号</td>
@@ -65,7 +65,7 @@
                                     <td><?php echo $this->data[$i][1]; ?></td>
                                     <td><?php echo $this->data[$i][2]; ?></td>
                                     <td><?php echo $this->data[$i][3]; ?></td>
-                                    <td><?php echo $this->data[$i]['utime']; ?></td>
+                                    <td><?php echo $this->data[$i]['{table_prefix}_update_time']; ?></td>
                                     <td>
                                         <a href="#" id="<?php echo 'modify_' . $this->data[$i]['{primary_key}']; ?>">修改</a>
                                         <a href="#" id="<?php echo 'delete_' . $this->data[$i]['{primary_key}']; ?>">删除</a>
@@ -75,7 +75,7 @@
 
                             <?php if (count($this->data) == 0) { ?>
                                 <tr>
-                                    <td colspan="5" class="gclass_table_no_data">对不起,没有符合条件的数据</td>
+                                    <td colspan="5" class="bill_table_no_data">对不起,没有符合条件的数据</td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -97,7 +97,7 @@
 
         <!-- modal -->
         <div id="add{type_name}Modal" class="modal fade">
-            <div class="modal-dialog gclass_modal_lg" >
+            <div class="modal-dialog bill_modal_lg" >
                 <div class="modal-content">
                     <div class="modal-header">
                         <span>新增</span>
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div id="modify{type_name}Modal" class="modal fade" >
-            <div class="modal-dialog gclass_modal_lg" >
+            <div class="modal-dialog bill_modal_lg" >
                 <div class="modal-content">
                     <div class="modal-header">
                         <span>修改</span>
@@ -227,9 +227,9 @@
             };
             var method = 'post';
             var success_function = function(result){
-                $('#modify_{type_name_low_case}_name').val(result.name);
-                $('#modify_{type_name_low_case}_weight').val(result.weight);
-                CKEDITOR.instances.ck_modify_{type_name_low_case}_intro.setData(result.intro);
+                $('#modify_{type_name_low_case}_name').val(result.{table_prefix}_name);
+                $('#modify_{type_name_low_case}_weight').val(result.{table_prefix}_weight);
+                CKEDITOR.instances.ck_modify_{type_name_low_case}_intro.setData(result.{table_prefix}_intro);
                 $('#modify_{type_name_low_case}_{primary_key}').val(result.{primary_key});
                 $('#btn_submit_modify').attr('disabled', false);
                 $('#modify{type_name}Modal').modal('show');

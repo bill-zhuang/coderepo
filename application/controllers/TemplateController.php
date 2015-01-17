@@ -19,26 +19,26 @@ class {module_name}_TemplateController extends Zend_Controller_Action
         $start_date = $this->_getParam('start_date');
 
         $conditions = [
-            'status' => [
+            '{table_prefix}_status' => [
                 'compare_type' => '= ?',
                 'value' => Bootstrap::VALID_STATUS
             ]
         ];
         if ('' !== $keyword)
         {
-            $conditions['name'] = [
+            $conditions['{table_prefix}_name'] = [
                 'compare_type' => 'like ?',
                 'value' => '%' . $keyword . '%'
             ];
         }
         if ('' != $start_date)
         {
-            $conditions['ctime'] = [
+            $conditions['{table_prefix}_create_time'] = [
                 'compare_type' => '>= ?',
                 'value' => $start_date
             ];
         }
-        $order_by = 'utime desc';
+        $order_by = '{table_prefix}_update_time desc';
         $total = $this->_adapter_{main}->get{action_object_name_first_big_letter}Count($conditions);
         $data = $this->_adapter_{main}->get{action_object_name_first_big_letter}Data($conditions, $page_length, $start, $order_by);
 
@@ -109,8 +109,8 @@ class {module_name}_TemplateController extends Zend_Controller_Action
                 $this->_adapter_{main}->getAdapter()->beginTransaction();
                 ${primary_key} = intval($_POST['{primary_key}']);
                 $update_data = [
-                    'status' => Bootstrap::INVALID_STATUS,
-                    'utime' => date('Y-m-d H:i:s')
+                    '{table_prefix}_status' => Bootstrap::INVALID_STATUS,
+                    '{table_prefix}_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_{main}->getAdapter()->quoteInto('status=1 and {primary_key}=?', ${primary_key});
                 $affected_rows = $this->_adapter_{main}->update($update_data, $where);
@@ -151,12 +151,12 @@ class {module_name}_TemplateController extends Zend_Controller_Action
         $add_time = date('Y-m-d H:i:s');
 
         $data = [
-            'name' => $name,
-            'intro' => $intro,
-            'weight' => $weight,
-            'status' => Bootstrap::VALID_STATUS,
-            'ctime' => $add_time,
-            'utime' => $add_time
+            '{table_prefix}_name' => $name,
+            '{table_prefix}_intro' => $intro,
+            '{table_prefix}_weight' => $weight,
+            '{table_prefix}_status' => Bootstrap::VALID_STATUS,
+            '{table_prefix}_create_time' => $add_time,
+            '{table_prefix}_update_time' => $add_time
         ];
         $affected_rows = $this->_adapter_{main}->insert($data);
         if ($affected_rows > Bootstrap::INIT_AFFECTED_ROWS)
@@ -175,10 +175,10 @@ class {module_name}_TemplateController extends Zend_Controller_Action
         $weight = intval($_POST['modify_{action_object_name}_weight']);
 
         $data = [
-            'name' => $name,
-            'intro' => $intro,
-            'weight' => $weight,
-            'utime' => date('Y-m-d H:i:s')
+            '{table_prefix}_name' => $name,
+            '{table_prefix}_intro' => $intro,
+            '{table_prefix}_weight' => $weight,
+            '{table_prefix}_update_time' => date('Y-m-d H:i:s')
         ];
         $where = $this->_adapter_{main}->getAdapter()->quoteInto('{primary_key}=?', ${primary_key});
         $affected_rows = $this->_adapter_{main}->update($data, $where);
@@ -197,8 +197,8 @@ class {module_name}_TemplateController extends Zend_Controller_Action
         if ($image_url != '')
         {
             $update_data = [
-                'imgurl' => $image_url,
-                'utime' => date('Y-m-d H:i:s')
+                '{table_prefix}_imgurl' => $image_url,
+                '{table_prefix}_update_time' => date('Y-m-d H:i:s')
             ];
             $where = $this->_adapter_{main}->getAdapter()->quoteInto('{primary_key}=?', ${primary_key});
             $affected_rows = $this->_adapter_{main}->update($update_data, $where);
