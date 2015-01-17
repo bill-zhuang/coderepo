@@ -106,12 +106,16 @@
 
                     <form id="add{type_name}Form" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body">
-                            名称：
-                            <input type="text" name="add_{type_name_low_case}_name" id="add_{type_name_low_case}_name" class="form-control"/><br /><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">名称：</span>
+                                <input type="text" name="add_{type_name_low_case}_name" id="add_{type_name_low_case}_name" class="form-control"/>
+                            </div><br />
                             图片：
                             <input type="file" name="add_{type_name_low_case}_image" id="add_{type_name_low_case}_image" accept="image/*"/><br /><br />
-                            权重：
-                            <input type="text" name="add_{type_name_low_case}_weight" id="add_{type_name_low_case}_weight" class="form-control" value='0'/><br /><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">权重：</span>
+                                <input type="text" name="add_{type_name_low_case}_weight" id="add_{type_name_low_case}_weight" class="form-control" value='0'/>
+                            </div><br />
                             简介：
                             <textarea class="ckeditor" id="ck_add_{type_name_low_case}_intro"></textarea>
                             <input type="hidden" id="add_{type_name_low_case}_intro" name="add_{type_name_low_case}_intro"/>
@@ -134,12 +138,16 @@
                     </div>
                     <form id="modify{type_name}Form" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body" >
-                            名称：
-                            <input type="text" name="modify_{type_name_low_case}_name" id="modify_{type_name_low_case}_name" class="form-control"/><br /><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">名称：</span>
+                                <input type="text" name="modify_{type_name_low_case}_name" id="modify_{type_name_low_case}_name" class="form-control"/>
+                            </div><br />
                             图片：
                             <input type="file" name="modify_{type_name_low_case}_image" id="modify_{type_name_low_case}_image" accept="image/*"/><br /><br />
-                            权重：
-                            <input type="text" name="modify_{type_name_low_case}_weight" id="modify_{type_name_low_case}_weight" class="form-control"/><br /><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">权重：</span>
+                                <input type="text" name="modify_{type_name_low_case}_weight" id="modify_{type_name_low_case}_weight" class="form-control" value='0'/>
+                            </div><br />
                             简介：
                             <textarea class="ckeditor" id="ck_modify_{type_name_low_case}_intro"></textarea>
                             <input type="hidden" id="modify_{type_name_low_case}_intro" name="modify_{type_name_low_case}_intro"/>
