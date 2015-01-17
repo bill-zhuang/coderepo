@@ -1,0 +1,21 @@
+var MESSAGE_RESET_PASSWORD_SUCCESS = '重设密码成功';
+var MESSAGE_RESET_PASSWORD_ERROR = '重设密码失败';
+var MESSAGE_ADD_SUCCESS = '新增成功';
+var MESSAGE_ADD_ERROR = '新增失败';
+var MESSAGE_MODIFY_SUCCESS = '修改成功';
+var MESSAGE_MODIFY_ERROR = '修改失败';
+var MESSAGE_SET_SUCCESS = '设置成功';
+var MESSAGE_SET_ERROR = '设置失败';
+var MESSAGE_DELETE_SUCCESS = '删除成功';
+var MESSAGE_DELETE_ERROR = '删除失败';
+
+var MESSAGE_BATCH_SELECT_EMPTY = '请至少选择一个';
+var MESSAGE_DELETE_CONFIRM = '确认删除？';
+
+var MESSAGE_START_TIME_ERROR = '开始时间不能为空';
+var MESSAGE_END_TIME_ERROR = '结束时间不能为空';
+var MESSAGE_NAME_ERROR = '名称不能为空';
+var MESSAGE_WEIGHT_FORMAT_ERROR = '权重必须为大于0的整数';
+var MESSAGE_SCORE_FORMAT_ERROR = '分数必须为大于0的整数';
+var MESSAGE_CONTENT_ERROR = '内容不能为空';
+var MESSAGE_UPLOAD_IMAGE_ERROR = '请上传图片';
