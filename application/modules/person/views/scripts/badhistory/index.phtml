@@ -86,7 +86,7 @@
         </div>
         <!-- modal -->
         <div id="addbadhistoryModal" class="modal fade">
-            <div class="modal-dialog" >
+            <div class="modal-dialog bill_modal_sm" >
                 <div class="modal-content">
                     <div class="modal-header"><span>新增Bad history</span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -94,11 +94,14 @@
 
                     <form id="addbadhistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body">
-                            <span>日期：</span>
-                            <input type="text" name="add_badhistory_date" id="add_badhistory_date" class="form-control form_date"/>
-                            <br /><br />
-                            <span>次数：</span>
-                            <input type="text" name="add_badhistory_count" id="add_badhistory_count" class="form-control"/>
+                            <div class="input-group">
+                                <span class="input-group-addon">日期：</span>
+                                <input type="text" name="add_badhistory_date" id="add_badhistory_date" class="form-control form_date"/>
+                            </div><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">次数：</span>
+                                <input type="text" name="add_badhistory_count" id="add_badhistory_count" class="form-control"/>
+                            </div><br />
                         </div>
 
                         <div class="modal-footer">
@@ -110,19 +113,22 @@
             </div>
         </div>
         <div id="modifyBadhistoryModal" class="modal fade">
-            <div class="modal-dialog" >
+            <div class="modal-dialog bill_modal_sm" >
                 <div class="modal-content">
-                    <div class="modal-header"><span>新增Dream history</span>
+                    <div class="modal-header"><span>修改Dream history</span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
 
                     <form id="modifyBadhistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body">
-                            <span>日期：</span>
-                            <input type="text" name="modify_badhistory_date" id="modify_badhistory_date" class="form-control form_date"/>
-                            <br /><br />
-                            <span>次数：</span>
-                            <input type="text" name="modify_badhistory_count" id="modify_badhistory_count" class="form-control"/>
+                            <div class="input-group">
+                                <span class="input-group-addon">日期：</span>
+                                <input type="text" name="modify_badhistory_date" id="modify_badhistory_date" class="form-control form_date"/>
+                            </div><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">次数：</span>
+                                <input type="text" name="modify_badhistory_count" id="modify_badhistory_count" class="form-control"/>
+                            </div><br />
                             <input type="hidden" name="modify_badhistory_id" id="modify_badhistory_id"/>
                         </div>
 
