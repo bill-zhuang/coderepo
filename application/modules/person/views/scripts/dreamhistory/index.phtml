@@ -86,7 +86,7 @@
         </div>
         <!-- modal -->
         <div id="addDreamhistoryModal" class="modal fade">
-            <div class="modal-dialog" >
+            <div class="modal-dialog bill_modal_sm" >
                 <div class="modal-content">
                     <div class="modal-header"><span>新增Dream history</span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -94,11 +94,14 @@
 
                     <form id="addDreamhistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body">
-                            <span>日期：</span>
-                            <input type="text" name="add_dreamhistory_date" id="add_dreamhistory_date" class="form-control form_date"/>
-                            <br /><br />
-                            <span>次数：</span>
-                            <input type="text" name="add_dreamhistory_count" id="add_dreamhistory_count" class="form-control"/>
+                            <div class="input-group">
+                                <span class="input-group-addon">日期：</span>
+                                <input type="text" name="add_dreamhistory_date" id="add_dreamhistory_date" class="form-control form_date"/>
+                            </div><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">次数：</span>
+                                <input type="text" name="add_dreamhistory_count" id="add_dreamhistory_count" class="form-control"/>
+                            </div><br />
                         </div>
 
                         <div class="modal-footer">
@@ -110,19 +113,22 @@
             </div>
         </div>
         <div id="modifyDreamhistoryModal" class="modal fade">
-            <div class="modal-dialog" >
+            <div class="modal-dialog bill_modal_sm" >
                 <div class="modal-content">
-                    <div class="modal-header"><span>新增Dream history</span>
+                    <div class="modal-header"><span>修改Dream history</span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
 
                     <form id="modifyDreamhistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body">
-                            <span>日期：</span>
-                            <input type="text" name="modify_dreamhistory_date" id="modify_dreamhistory_date" class="form-control form_date"/>
-                            <br /><br />
-                            <span>次数：</span>
-                            <input type="text" name="modify_dreamhistory_count" id="modify_dreamhistory_count" class="form-control"/>
+                            <div class="input-group">
+                                <span class="input-group-addon">日期：</span>
+                                <input type="text" name="modify_dreamhistory_date" id="modify_dreamhistory_date" class="form-control form_date"/>
+                            </div><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">次数：</span>
+                                <input type="text" name="modify_dreamhistory_count" id="modify_dreamhistory_count" class="form-control"/>
+                            </div><br />
                             <input type="hidden" name="modify_dreamhistory_id" id="modify_dreamhistory_id"/>
                         </div>
 
