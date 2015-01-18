@@ -61,4 +61,13 @@ class Application_Model_DbTable_Financecategory extends Application_Model_DBTabl
             ->query()->fetchAll();
         return $data[0]['total'] == 0 ? false : true;
     }
+
+    public function getFinaceCategoryName($fc_id)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'fc_name')
+            ->where('fc_id=?', $fc_id)
+            ->query()->fetch();
+        return isset($data['fc_name']) ? $data['fc_name'] : '';
+    }
 }

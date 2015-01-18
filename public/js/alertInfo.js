@@ -14,8 +14,10 @@ var MESSAGE_DELETE_CONFIRM = '确认删除？';
 
 var MESSAGE_START_TIME_ERROR = '开始时间不能为空';
 var MESSAGE_END_TIME_ERROR = '结束时间不能为空';
+var MESSAGE_DATE_ERROR = '时间不能为空';
 var MESSAGE_NAME_ERROR = '名称不能为空';
 var MESSAGE_WEIGHT_FORMAT_ERROR = '权重必须为大于0的整数';
 var MESSAGE_SCORE_FORMAT_ERROR = '分数必须为大于0的整数';
 var MESSAGE_CONTENT_ERROR = '内容不能为空';
 var MESSAGE_UPLOAD_IMAGE_ERROR = '请上传图片';
+var MESSAGE_MONEY_FORMAT_ERROR = '金额格式错误';
