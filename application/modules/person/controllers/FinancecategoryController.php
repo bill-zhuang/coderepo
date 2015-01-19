@@ -144,6 +144,19 @@ class person_FinancecategoryController extends Zend_Controller_Action
         echo json_encode($data);
         exit;
     }
+
+    public function getfinancesubcategoryAction()
+    {
+        $data = [];
+        if (isset($_POST['parent_id']))
+        {
+            $parent_id = intval($_POST['parent_id']);
+            $data = $this->_adapter_finance_category->getFinanceSubcategory($parent_id);
+        }
+
+        echo json_encode($data);
+        exit;
+    }
     
     private function _addFinancecategory()
     {

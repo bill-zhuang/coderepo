@@ -70,4 +70,28 @@ class Application_Model_DbTable_Financecategory extends Application_Model_DBTabl
             ->query()->fetch();
         return isset($data['fc_name']) ? $data['fc_name'] : '';
     }
+
+    public function getFinanceSubcategory($parent_id)
+    {
+        $subcategory_data = $this->select()->reset()
+            ->from($this->_name, ['fc_id', 'fc_name'])
+            ->where('fc_parent_id=?', $parent_id)->where('fc_status=?', 1)
+            ->query()->fetchAll();
+        $data = [];
+        foreach ($subcategory_data as $subcategory_value)
+        {
+            $data[$subcategory_value['fc_id']] = $subcategory_value['fc_name'];
+        }
+
+        return $data;
+    }
+
+    public function getFinanceParentCategory($fc_id)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'fc_parent_id')
+            ->where('fc_id=?', $fc_id)
+            ->query()->fetch();
+        return isset($data['fc_parent_id']) ? $data['fc_parent_id'] : 0;
+    }
 }
