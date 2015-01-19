@@ -37,4 +37,24 @@ class Application_Model_DbTable_Financepayment extends Application_Model_DBTable
             ->where('fp_id=?', $fp_id)
             ->query()->fetch();
     }
+
+    public function getTotalPaymentHistoryGroupData()
+    {
+        return $this->select()->reset()
+            ->from($this->_name, ['date_format(fp_payment_date, "%Y-%m") as period', 'sum(fp_payment) as payment'])
+            ->where('fp_status=?', 1)
+            ->group('date_format(fp_payment_date, "%Y%m")')
+            ->order('fp_payment_date asc')
+            ->query()->fetchAll();
+    }
+
+    public function getTotalPaymentHistoryDataByDay()
+    {
+        return $this->select()->reset()
+            ->from($this->_name, ['fp_payment_date as period', 'sum(fp_payment) as payment'])
+            ->where('fp_status=?', 1)
+            ->group('fp_payment_date')
+            ->order('fp_payment_date asc')
+            ->query()->fetchAll();
+    }
 }
