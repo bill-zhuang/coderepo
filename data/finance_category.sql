@@ -23,6 +23,7 @@ CREATE TABLE `finance_category` (
   `fc_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `fc_name` varchar(255) NOT NULL DEFAULT '',
   `fc_parent_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `fc_weight` int(10) unsigned NOT NULL DEFAULT '0',
   `fc_status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `fc_create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `fc_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
