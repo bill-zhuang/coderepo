@@ -165,7 +165,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
         $data = [
             'fp_payment' => $payment,
             'fp_payment_date' => $payment_date,
-            'fp_id' => $category_id,
+            'fc_id' => $category_id,
             'fp_detail' => $intro,
             'fp_status' => Bootstrap::VALID_STATUS,
             'fp_create_time' => $add_time,
@@ -187,7 +187,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
         $data = [
             'fp_payment' => $payment,
             'fp_payment_date' => $payment_date,
-            'fp_id' => $category_id,
+            'fc_id' => $category_id,
             'fp_detail' => $intro,
             'fp_update_time' => date('Y-m-d H:i:s')
         ];
