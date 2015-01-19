@@ -1,6 +1,6 @@
 function isUnsignedInt(num)
 {
-    if (trim(num) === 0 || trim(num) === '0') {
+    if (num === 0 || num === '0') {
         return true;
     }
 
@@ -14,7 +14,7 @@ function isPositiveInt(num)
 
 function isUnsignedFloat(num)
 {
-    if (trim(num) === 0 || trim(num) === '0') {
+    if (num === 0 || num === '0') {
         return true;
     }
 
