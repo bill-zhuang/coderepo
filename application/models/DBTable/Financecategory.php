@@ -43,6 +43,7 @@ class Application_Model_DbTable_Financecategory extends Application_Model_DBTabl
         $parent_data = $this->select()->reset()
             ->from($this->_name, ['fc_id', 'fc_name'])
             ->where('fc_parent_id=?', 0)->where('fc_status=?', 1)
+            ->order('fc_weight desc')
             ->query()->fetchAll();
         $data = [];
         foreach ($parent_data as $parent_value)

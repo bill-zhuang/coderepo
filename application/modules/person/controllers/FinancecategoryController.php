@@ -164,6 +164,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
 
         $name = trim($_POST['add_financecategory_name']);
         $parent_id = intval($_POST['add_financecategory_parent_id']);
+        $weight = intval($_POST['add_financecategory_weight']);
         $add_time = date('Y-m-d H:i:s');
 
         if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0))
@@ -171,6 +172,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
             $data = [
                 'fc_name' => $name,
                 'fc_parent_id' => $parent_id,
+                'fc_weight' => $weight,
                 'fc_status' => Bootstrap::VALID_STATUS,
                 'fc_create_time' => $add_time,
                 'fc_update_time' => $add_time
@@ -188,12 +190,14 @@ class person_FinancecategoryController extends Zend_Controller_Action
         $fc_id = intval($_POST['modify_financecategory_fc_id']);
         $name = trim($_POST['modify_financecategory_name']);
         $parent_id = intval($_POST['modify_financecategory_parent_id']);
+        $weight = intval($_POST['modify_financecategory_weight']);
 
         if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fc_id))
         {
             $data = [
                 'fc_name' => $name,
                 'fc_parent_id' => $parent_id,
+                'fc_weight' => $weight,
                 'fc_update_time' => date('Y-m-d H:i:s')
             ];
             $where = $this->_adapter_finance_category->getAdapter()->quoteInto('fc_id=?', $fc_id);

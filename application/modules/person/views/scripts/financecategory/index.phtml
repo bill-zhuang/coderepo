@@ -43,6 +43,7 @@
                                 <td>序号</td>
                                 <td>分类名</td>
                                 <td>父级分类名</td>
+                                <td>权重</td>
                                 <td>更新时间</td>
                                 <td>操作</td>
                             </tr>
@@ -52,6 +53,7 @@
                                     <td><?php echo ($this->start + $i + 1); ?></td>
                                     <td><?php echo $this->data[$i]['fc_name']; ?></td>
                                     <td><?php echo $this->data[$i]['fc_parent_id'] == 0 ? '无' : $this->parents[$this->data[$i]['fc_parent_id']]; ?></td>
+                                    <td><?php echo $this->data[$i]['fc_weight']; ?></td>
                                     <td><?php echo $this->data[$i]['fc_update_time']; ?></td>
                                     <td>
                                         <a href="#" id="<?php echo 'modify_' . $this->data[$i]['fc_id']; ?>">修改</a>
@@ -106,6 +108,10 @@
                                     <?php } ?>
                                 </select>
                             </div><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">权重：</span>
+                                <input type="text" name="add_financecategory_weight" id="add_financecategory_weight" class="form-control"/>
+                            </div><br />
                         </div>
 
                         <div class="modal-footer">
@@ -137,6 +143,10 @@
                                         <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                                     <?php } ?>
                                 </select>
+                            </div><br />
+                            <div class="input-group">
+                                <span class="input-group-addon">权重：</span>
+                                <input type="text" name="modify_financecategory_weight" id="modify_financecategory_weight" class="form-control"/>
                             </div><br />
                             <input type="hidden" id="modify_financecategory_fc_id" name="modify_financecategory_fc_id"/>
                         </div>
@@ -210,6 +220,7 @@
             var success_function = function(result){
                 $('#modify_financecategory_name').val(result.fc_name);
                 $('#modify_financecategory_parent_id').val(result.fc_parent_id);
+                $('#modify_financecategory_weight').val(result.fc_weight);
                 $('#modify_financecategory_fc_id').val(result.fc_id);
                 $('#btn_submit_modify').attr('disabled', false);
                 $('#modifyFinancecategoryModal').modal('show');
@@ -250,9 +261,13 @@
         {
             var error_num = 0;
             var name = $.trim($('#' + type + '_financecategory_name').val());
+            var weight = $.trim($('#' + type + '_financecategory_weight').val());
             if(name == '') {
                 error_num = error_num + 1;
                 alert(MESSAGE_NAME_ERROR);
+            } else if (!isUnsignedInt(weight)) {
+                error_num = error_num + 1;
+                alert(MESSAGE_WEIGHT_FORMAT_ERROR);
             }
 
             return error_num;
