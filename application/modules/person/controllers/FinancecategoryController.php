@@ -114,7 +114,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
                     'fc_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_finance_category->getAdapter()
-                    ->quoteInto('status=1 and (fc_id=? or fc_parent_id=?)', $fc_id);
+                    ->quoteInto('fc_status=1 and (fc_id=? or fc_parent_id=?)', $fc_id);
                 $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
                 $this->_adapter_finance_category->getAdapter()->commit();
             }
