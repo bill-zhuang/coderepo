@@ -69,7 +69,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
     public function addfinancepaymentAction()
     {
         $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
-        if (isset($_POST['add_financepayment_name']))
+        if (isset($_POST['add_financepayment_payment']))
         {
             try 
             {
@@ -123,7 +123,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
                     'fp_status' => Bootstrap::INVALID_STATUS,
                     'fp_update_time' => date('Y-m-d H:i:s')
                 ];
-                $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('status=1 and fp_id=?', $fp_id);
+                $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_status=1 and fp_id=?', $fp_id);
                 $affected_rows = $this->_adapter_finance_payment->update($update_data, $where);
                 $this->_adapter_finance_payment->getAdapter()->commit();
             }
