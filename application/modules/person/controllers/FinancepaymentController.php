@@ -147,10 +147,6 @@ class person_FinancepaymentController extends Zend_Controller_Action
             if ($fp_id > Bootstrap::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_finance_payment->getFinancepaymentByID($fp_id);
-                if (isset($data['fc_id']))
-                {
-                    $data['fc_parent_id'] = $this->_adapter_finance_category->getFinanceParentCategory($data['fc_id']);
-                }
             }
         }
 

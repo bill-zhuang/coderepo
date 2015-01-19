@@ -112,17 +112,14 @@
                                        name="add_financepayment_payment"
                                        id="add_financepayment_payment"
                                        class="form-control"
-                                       value='0'
                                 />
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">分类：</span>
-                                <select id="add_financepayment_fc_parent_id" class="form-control">
+                                <select name="add_financepayment_fc_id" id="add_financepayment_fc_id" class="form-control">
                                     <?php foreach($this->parent_categories as $key => $value){ ?>
                                         <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                                     <?php } ?>
-                                </select>
-                                <select name="add_financepayment_fc_id" id="add_financepayment_fc_id" class="form-control">
                                 </select>
                             </div><br />
                             <div class="input-group">
@@ -162,17 +159,14 @@
                                        name="modify_financepayment_payment"
                                        id="modify_financepayment_payment"
                                        class="form-control"
-                                       value='0'
                                 />
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">分类：</span>
-                                <select id="modify_financepayment_fc_parent_id" class="form-control">
+                                <select name="modify_financepayment_fc_id" id="modify_financepayment_fc_id" class="form-control">
                                     <?php foreach($this->parent_categories as $key => $value){ ?>
                                         <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                                     <?php } ?>
-                                </select>
-                                <select name="modify_financepayment_fc_id" id="modify_financepayment_fc_id" class="form-control">
                                 </select>
                             </div><br />
                             <div class="input-group">
@@ -225,39 +219,8 @@
             window.addFinancepaymentForm.reset();
             $('#add_financepayment_payment_date').val(getCurrentDate());
             $('#btn_submit_add').attr('disabled', false);
-            var parent_id = $('#add_financepayment_fc_parent_id').val();
-            var select_id = 'add_financepayment_fc_id';
-            var addition_function = function(){
-                $('#addFinancepaymentModal').modal('show');
-            };
-            getFinanceSubcategory(parent_id, select_id, addition_function);
+            $('#addFinancepaymentModal').modal('show');
         });
-
-        $('#add_financepayment_fc_parent_id').on('change', function(){
-            var parent_id = this.value;
-            var select_id = 'add_financepayment_fc_id';
-            getFinanceSubcategory(parent_id, select_id);
-        });
-
-        function getFinanceSubcategory(parent_id, select_id, addition_function)
-        {
-            var post_url = '/person/financecategory/getfinancesubcategory';
-            var post_data = {
-                'parent_id': parent_id
-            };
-            var method = 'post';
-            var success_function = function(result){
-                var content = '';
-                for(var fc_id in result) {
-                    content += '<option value="' + fc_id + '">' + result[fc_id] + '</option>';
-                }
-                $('#' + select_id).empty().append(content);
-                if (typeof addition_function != 'undefined') {
-                    addition_function();
-                }
-            };
-            callAjaxWithFunction(post_url, post_data, success_function, method);
-        }
 
         $('#addFinancepaymentForm').on('submit', (function(event){
             event.preventDefault();
@@ -283,23 +246,15 @@
             };
             var method = 'post';
             var success_function = function(result){
-                var select_id = 'modify_financepayment_fc_id';
-                getFinanceSubcategory(result.fc_parent_id, select_id);
                 $('#modify_financepayment_payment_date').val(result.fp_payment_date);
                 $('#modify_financepayment_payment').val(result.fp_payment);
-                $('#modify_financepayment_fc_parent_id').val(result.fc_parent_id);
+                $('#modify_financepayment_fc_id').val(result.fc_id);
                 $('#modify_financepayment_intro').val(result.fp_detail);
                 $('#modify_financepayment_fp_id').val(result.fp_id);
                 $('#btn_submit_modify').attr('disabled', false);
                 $('#modifyFinancepaymentModal').modal('show');
             };
             callAjaxWithFunction(post_url, post_data, success_function, method);
-        });
-
-        $('#modify_financepayment_fc_parent_id').on('change', function(){
-            var parent_id = this.value;
-            var select_id = 'modify_financepayment_fc_id';
-            getFinanceSubcategory(parent_id, select_id);
         });
 
         $('#modifyFinancepaymentForm').on('submit', (function(event){
