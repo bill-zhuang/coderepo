@@ -112,6 +112,7 @@
                                        name="add_financepayment_payment"
                                        id="add_financepayment_payment"
                                        class="form-control"
+                                       placeholder="多个金额用英文逗号隔开"
                                 />
                             </div><br />
                             <div class="input-group">
@@ -290,13 +291,13 @@
         {
             var error_num = 0;
             var payment_date = $.trim($('#' + type + '_financepayment_payment_date').val());
-            var payment = $('#' + type + '_financepayment_payment').val();
+            var payment = $.trim($('#' + type + '_financepayment_payment').val());
             if(payment_date == '') {
                 error_num = error_num + 1;
                 alert(MESSAGE_DATE_ERROR);
-            } else if(!isUnsignedFloat(payment)) {
+            } else if(payment === '') {
                 error_num = error_num + 1;
-                alert(MESSAGE_MONEY_FORMAT_ERROR);
+                alert(MESSAGE_MONEY_FORMAT_EMPTY_ERROR);
             }
 
             return error_num;

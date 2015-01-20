@@ -156,14 +156,15 @@ class person_FinancepaymentController extends Zend_Controller_Action
     
     private function _addFinancepayment()
     {
-        $payment = floatval($_POST['add_financepayment_payment']);
+        $affected_rows = 0;
+
+        $payments = array_filter(explode(',', $_POST['add_financepayment_payment']));
         $payment_date = trim($_POST['add_financepayment_payment_date']);
         $category_id = intval($_POST['add_financepayment_fc_id']);
         $intro = trim($_POST['add_financepayment_intro']);
         $add_time = date('Y-m-d H:i:s');
 
         $data = [
-            'fp_payment' => $payment,
             'fp_payment_date' => $payment_date,
             'fc_id' => $category_id,
             'fp_detail' => $intro,
@@ -171,7 +172,11 @@ class person_FinancepaymentController extends Zend_Controller_Action
             'fp_create_time' => $add_time,
             'fp_update_time' => $add_time
         ];
-        $affected_rows = $this->_adapter_finance_payment->insert($data);
+        foreach ($payments as $payment)
+        {
+            $data['fp_payment'] = $payment;
+            $affected_rows += $this->_adapter_finance_payment->insert($data);
+        }
 
         return $affected_rows;
     }
