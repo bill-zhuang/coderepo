@@ -58,9 +58,11 @@
             var chart_data = <?php echo $this->chart_data; ?>;
             var data_period = chart_data['period'];
             var data_payment = chart_data['payment'];
+            var line_canvas_id = 'payment_history_line_chart';
+            var bar_canvas_id = 'payment_history_bar_chart';
             if (data_period.length != 0) {
-                initLineChart(data_period, data_payment);
-                initBarChart(data_period, data_payment);
+                initLineChart(data_period, data_payment, line_canvas_id);
+                initBarChart(data_period, data_payment, bar_canvas_id);
             }
             //all payment history data by day
             initLineChartAll();
@@ -94,7 +96,7 @@
             }
         }
 
-        function initLineChart(data_period, data_payment)
+        function initLineChart(data_period, data_payment, line_canvas_id)
         {
             var line_data = {
                 labels : data_period,
@@ -113,11 +115,11 @@
             var line_option = {
                 responsive: true
             };
-            var chart_line_canvas = document.getElementById("payment_history_line_chart").getContext("2d");
+            var chart_line_canvas = document.getElementById(line_canvas_id).getContext("2d");
             var chart_line = new Chart(chart_line_canvas).Line(line_data, line_option);
         }
 
-        function initBarChart(data_period, data_payment)
+        function initBarChart(data_period, data_payment, bar_canvas_id)
         {
             var bar_data = {
                 labels : data_period,
@@ -136,7 +138,7 @@
             var bar_option = {
                 responsive: true
             };
-            var chart_bar_canvas = document.getElementById("payment_history_bar_chart").getContext("2d");
+            var chart_bar_canvas = document.getElementById(bar_canvas_id).getContext("2d");
             var chart_bar = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
         }
 
