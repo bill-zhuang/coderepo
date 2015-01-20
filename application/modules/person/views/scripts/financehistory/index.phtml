@@ -96,10 +96,10 @@
             }
         }
 
-        function initLineChart(data_period, data_payment, line_canvas_id)
+        function initLineChart(data_x_labels, data_y_axis, line_canvas_id)
         {
             var line_data = {
-                labels : data_period,
+                labels : data_x_labels,
                 datasets: [
                     {
                         fillColor: "rgba(151,187,205,0.2)",
@@ -108,7 +108,7 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: data_payment
+                        data: data_y_axis
                     }
                 ]
             };
@@ -119,10 +119,10 @@
             var chart_line = new Chart(chart_line_canvas).Line(line_data, line_option);
         }
 
-        function initBarChart(data_period, data_payment, bar_canvas_id)
+        function initBarChart(data_x_labels, data_y_axis, bar_canvas_id)
         {
             var bar_data = {
-                labels : data_period,
+                labels : data_x_labels,
                 datasets: [
                     {
                         fillColor: "rgba(151,187,205,0.2)",
@@ -131,7 +131,7 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: data_payment
+                        data: data_y_axis
                     }
                 ]
             };
