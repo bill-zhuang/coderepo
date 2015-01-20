@@ -174,8 +174,12 @@ class person_FinancepaymentController extends Zend_Controller_Action
         ];
         foreach ($payments as $payment)
         {
-            $data['fp_payment'] = $payment;
-            $affected_rows += $this->_adapter_finance_payment->insert($data);
+            $payment = floatval($payment);
+            if ($payment > 0)
+            {
+                $data['fp_payment'] = $payment;
+                $affected_rows += $this->_adapter_finance_payment->insert($data);
+            }
         }
 
         return $affected_rows;
