@@ -33,19 +33,21 @@ class person_FinancehistoryController extends Zend_Controller_Action
             $chart_data['payment'][] = $month_value['payment'];
         }
 
-        $all_chart_data = $this->_getAllPaymentHistoryDataByDay();
+        //choice last 60 days data.
+        $start_date = date('Y-m-d', strtotime('- 60 day'));
+        $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date);
 
         $this->view->chart_data = json_encode($chart_data);
         $this->view->all_chart_data = json_encode($all_chart_data);
     }
 
-    private function _getAllPaymentHistoryDataByDay()
+    private function _getAllPaymentHistoryDataByDay($start_date)
     {
         $all_chart_data = [
             'period' => [],
             'payment' => [],
         ];
-        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay();
+        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date);
         foreach ($all_data as $all_value)
         {
             $all_chart_data['period'][] = $all_value['period'];
