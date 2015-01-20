@@ -57,4 +57,13 @@ class Application_Model_DbTable_Financepayment extends Application_Model_DBTable
             ->order('fp_payment_date asc')
             ->query()->fetchAll();
     }
+
+    public function getTotalPaymentHistoryDataByCategory($start_date)
+    {
+        return $this->select()->reset()
+            ->from($this->_name, ['fc_id', 'sum(fp_payment) as payment'])
+            ->where('fp_status=?', 1)->where('fp_payment_date>=?', $start_date)
+            ->group('fc_id')
+            ->query()->fetchAll();
+    }
 }
