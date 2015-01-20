@@ -42,7 +42,7 @@ class person_FinancehistoryController extends Zend_Controller_Action
         $sort_chart_data = [];
         if (count($all_chart_data['period']) != $fetch_days)
         {
-            for($i = 0; $i < $fetch_days; $i++)
+            for($i = 1; $i <= $fetch_days; $i++)
             {
                 $period_date = date('Y-m-d', strtotime($start_date . ' + ' . $i . ' day'));
                 $sort_chart_data['period'][] = $period_date;
