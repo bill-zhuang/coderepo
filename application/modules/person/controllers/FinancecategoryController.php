@@ -40,7 +40,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
                 'value' => '%' . $keyword . '%'
             ];
         }
-        $order_by = 'fc_update_time desc';
+        $order_by = 'fc_weight desc';
         $total = $this->_adapter_finance_category->getFinancecategoryCount($conditions);
         $data = $this->_adapter_finance_category->getFinancecategoryData($conditions, $page_length, $start, $order_by);
 

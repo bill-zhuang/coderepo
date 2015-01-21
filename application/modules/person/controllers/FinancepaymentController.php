@@ -45,7 +45,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
                 'value' => $payment_date
             ];
         }
-        $order_by = 'fp_update_time desc';
+        $order_by = 'fp_payment_date desc';
         $total = $this->_adapter_finance_payment->getFinancepaymentCount($conditions);
         $data = $this->_adapter_finance_payment->getFinancepaymentData($conditions, $page_length, $start, $order_by);
         foreach ($data as $key => $value)
