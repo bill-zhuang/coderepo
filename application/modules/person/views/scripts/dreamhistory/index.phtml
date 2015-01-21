@@ -204,7 +204,7 @@
             var post_data = {
                 dh_id: dh_id
             };
-            var method = 'post';
+            var method = 'get';
             var success_function = function(history_data){
                 $('#modify_dreamhistory_date').val(history_data.dh_happen_date).attr('disabled', true);
                 $('#modify_dreamhistory_count').val(history_data.dh_count);

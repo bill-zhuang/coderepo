@@ -66,9 +66,9 @@ class person_DreamhistoryController extends Zend_Controller_Action
     public function getdreamhistoryAction()
     {
         $data = [];
-        if (isset($_POST['dh_id']))
+        if (isset($_GET['dh_id']))
         {
-            $dh_id = intval($_POST['dh_id']);
+            $dh_id = intval($_GET['dh_id']);
             if ($dh_id > 0)
             {
                 $data = $this->_adapter_dream_history->getDreamHistoryDayByID($dh_id);

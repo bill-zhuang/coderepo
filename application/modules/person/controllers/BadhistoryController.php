@@ -66,9 +66,9 @@ class person_BadhistoryController extends Zend_Controller_Action
     public function getbadhistoryAction()
     {
         $data = [];
-        if (isset($_POST['bh_id']))
+        if (isset($_GET['bh_id']))
         {
-            $bh_id = intval($_POST['bh_id']);
+            $bh_id = intval($_GET['bh_id']);
             if ($bh_id > 0)
             {
                 $data = $this->_adapter_bad_history->getBadHistoryDayByID($bh_id);

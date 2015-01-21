@@ -132,9 +132,9 @@ class person_FinancecategoryController extends Zend_Controller_Action
     public function getfinancecategoryAction()
     {
         $data = [];
-        if (isset($_POST['fc_id']))
+        if (isset($_GET['fc_id']))
         {
-            $fc_id = intval($_POST['fc_id']);
+            $fc_id = intval($_GET['fc_id']);
             if ($fc_id > Bootstrap::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_finance_category->getFinancecategoryByID($fc_id);
@@ -148,9 +148,9 @@ class person_FinancecategoryController extends Zend_Controller_Action
     public function getfinancesubcategoryAction()
     {
         $data = [];
-        if (isset($_POST['parent_id']))
+        if (isset($_GET['parent_id']))
         {
-            $parent_id = intval($_POST['parent_id']);
+            $parent_id = intval($_GET['parent_id']);
             $data = $this->_adapter_finance_category->getFinanceSubcategory($parent_id);
         }
 

@@ -141,9 +141,9 @@ class person_FinancepaymentController extends Zend_Controller_Action
     public function getfinancepaymentAction()
     {
         $data = [];
-        if (isset($_POST['fp_id']))
+        if (isset($_GET['fp_id']))
         {
-            $fp_id = intval($_POST['fp_id']);
+            $fp_id = intval($_GET['fp_id']);
             if ($fp_id > Bootstrap::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_finance_payment->getFinancepaymentByID($fp_id);
