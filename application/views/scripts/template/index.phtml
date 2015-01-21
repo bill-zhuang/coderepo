@@ -225,7 +225,7 @@
             var post_data = {
                 '{primary_key}' : {primary_key}
             };
-            var method = 'post';
+            var method = 'get';
             var success_function = function(result){
                 $('#modify_{type_name_low_case}_name').val(result.{table_prefix}_name);
                 $('#modify_{type_name_low_case}_weight').val(result.{table_prefix}_weight);

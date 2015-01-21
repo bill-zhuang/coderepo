@@ -130,9 +130,9 @@ class {module_name}_TemplateController extends Zend_Controller_Action
     public function get{action_object_name}Action()
     {
         $data = [];
-        if (isset($_POST['{primary_key}']))
+        if (isset($_GET['{primary_key}']))
         {
-            ${primary_key} = intval($_POST['{primary_key}']);
+            ${primary_key} = intval($_GET['{primary_key}']);
             if (${primary_key} > Bootstrap::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_{main}->get{action_object_name_first_big_letter}ByID(${primary_key});
