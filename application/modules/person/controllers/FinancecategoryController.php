@@ -3,7 +3,7 @@
 class person_FinancecategoryController extends Zend_Controller_Action
 {
     /**
-     * @var Application_Model_DBTable_financecategory
+     * @var Application_Model_DBTable_Financecategory
      */
     private $_adapter_finance_category;
 
@@ -11,7 +11,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->_helper->layout()->setLayout('layout');
-        $this->_adapter_finance_category = new Application_Model_DBTable_financecategory();
+        $this->_adapter_finance_category = new Application_Model_DBTable_Financecategory();
         $this->view->assign(
             [
                 'parents' => $this->_adapter_finance_category->getAllParentCategory(),

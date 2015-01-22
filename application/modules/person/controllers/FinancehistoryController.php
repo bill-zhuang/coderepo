@@ -3,11 +3,11 @@
 class person_FinancehistoryController extends Zend_Controller_Action
 {
     /**
-     * @var Application_Model_DBTable_financecategory
+     * @var Application_Model_DBTable_Financecategory
      */
     private $_adapter_finance_category;
     /**
-     * @var Application_Model_DBTable_financepayment
+     * @var Application_Model_DBTable_Financepayment
      */
     private $_adapter_finance_payment;
     private $_categories;
@@ -16,8 +16,8 @@ class person_FinancehistoryController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->_helper->layout()->setLayout('layout');
-        $this->_adapter_finance_category = new Application_Model_DBTable_financecategory();
-        $this->_adapter_finance_payment = new Application_Model_DBTable_financepayment();
+        $this->_adapter_finance_category = new Application_Model_DBTable_Financecategory();
+        $this->_adapter_finance_payment = new Application_Model_DBTable_Financepayment();
         $this->_categories = $this->_adapter_finance_category->getAllParentCategory();
     }
 
