@@ -52,7 +52,7 @@ class AutomationController extends Zend_Controller_Action
             $new_file_name[0] = strtoupper($new_file_name[0]);
 
             $template_file_path = APPLICATION_PATH . '/models/Tabletemplate.php';
-            $new_file_path = APPLICATION_PATH . '/models/DbTable/' . $new_file_name . '.php';
+            $new_file_path = APPLICATION_PATH . '/models/DBTable/' . $new_file_name . '.php';
 
             if (!file_exists($new_file_path))
             {
@@ -141,6 +141,7 @@ class AutomationController extends Zend_Controller_Action
                 {
                     $adapter_name = str_replace('bill_', '', $table_name);
                     $require_name = str_replace('_', '', $adapter_name);
+                    $require_name[0] = strtoupper($require_name[0]);
                     $table_name = $require_name;
                     //$require_content = 'require_once APPLICATION_PATH' . ' . \'/models/DBTable/' . $require_name . '.php\';';
                     $adapter_content = "\t" . 'private $_adapter_' . $adapter_name . ';';
