@@ -22,6 +22,10 @@ textarea css
     height : 150px;
 }
 
+table td {
+    vertical-align:middle !important;
+}
+
 /*
 table css
 */
