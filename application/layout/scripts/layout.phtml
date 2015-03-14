@@ -95,6 +95,13 @@
         $(document).ready(function(){
             var li_content = '';
             var cookie_href = $.cookie('nav-top');
+            if (typeof cookie_href !== 'undefined') {
+                if (window.location.href.indexOf(cookie_href) == -1) {
+                    //go to cookie url
+                    window.location.href = cookie_href;
+                }
+            }
+
             if (typeof cookie_href == 'undefined') {
                 li_content = $('ul.nav.navbar-nav li').find('.active');
             } else {
