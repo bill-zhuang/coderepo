@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_DbTable_Backenduser extends Application_Model_DBTableFactory
+class Application_Model_DBTable_Backenduser extends Application_Model_DBTableFactory
 {
     public function __construct()
     {
