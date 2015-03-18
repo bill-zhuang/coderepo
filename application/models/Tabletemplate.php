@@ -1,6 +1,6 @@
 <?php
 
-class Application_Model_DbTable_{class_name} extends Application_Model_DBTableFactory
+class Application_Model_DBTable_{class_name} extends Application_Model_DBTableFactory
 {
     public function __construct()
     {
