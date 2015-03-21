@@ -36,7 +36,7 @@ class person_FinancehistoryController extends Zend_Controller_Action
         }
 
         //choose last 60 days data.
-        $fetch_days = 60;
+        $fetch_days = 30;
         $start_date = date('Y-m-d', strtotime('- ' . $fetch_days . ' day'));
         $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date);
         $sort_chart_data = [];
