@@ -128,7 +128,7 @@
             }
         });
 
-        $('ul.nav.navbar-nav li ul li a').on('click', function(){
+        $('ul.nav.nav-sidebar li ul li a').on('click', function(){
             var href = $(this).attr('href');
             $.cookie('nav-top', href, {expires : 1, path : '/'});
         });
