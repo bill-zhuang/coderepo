@@ -5,8 +5,7 @@
         <title>Bill Coderepo</title>
 
         <!-- Bootstrap core CSS -->
-<!--        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>-->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="/css/layout.css" rel="stylesheet"/>
     </head>
 
@@ -16,7 +15,12 @@
                 <a class="navbar-brand" href="#">Bill</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+
+            </div>
+        </div>
+        <div class="row bill-layout-width">
+            <div class="col-sm-3 col-md-3 col-lg-2 well bill-sidebar gclass_div_scroll" id="main">
+                <ul class="nav nav-sidebar">
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-user"></span>Person center
@@ -53,7 +57,6 @@
                         <ul class="dropdown-menu">
                             <li><a href="/googlemap">Google Map</a></li>
                             <li><a href="/googlemap/multiplelocation">Multiple Markes</a></li>
-                            <li><a href="#">Baidu Map</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -65,7 +68,6 @@
                             <li><a href="/person/dreamhistorychart/index">Dream History Chart</a></li>
                             <li><a href="/person/badhistory/index">Bad History</a></li>
                             <li><a href="/person/badhistorychart/index">Bad History Chart</a></li>
-                            <li class="nav-divider"></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -77,15 +79,8 @@
                             <li><a href="/person/financecategory/index">Finance Category</a></li>
                             <li><a href="/person/financepayment/index">Finance Payment</a></li>
                             <li><a href="/person/financehistory/index">Finance History</a></li>
-                            <li class="nav-divider"></li>
                         </ul>
                     </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row bill-layout-width">
-            <div class="col-sm-3 col-md-3 col-lg-2 well bill-sidebar" id="main">
-                <ul class="nav nav-sidebar">
                 </ul>
             </div>
             <!-- below is for show action view phtml file. -->
@@ -111,35 +106,25 @@
         <script src="/snow/three.min.js"></script>
         <script>
         $(document).ready(function(){
-            var li_content = '';
-            var cookie_href = $.cookie('nav-top');
-            /*if (typeof cookie_href !== 'undefined') {
-                if (window.location.href.indexOf(cookie_href) == -1) {
-                    //go to cookie url
-                    window.location.href = cookie_href;
-                }
-            }*/
-
+            var cookie_href =  $.cookie('nav-top');
             if (typeof cookie_href == 'undefined') {
-                li_content = $('ul.nav.navbar-nav li').find('.active');
+
             } else {
-                $('ul.nav.navbar-nav li ul li').children('a').each(function(){
+                $('ul.nav.nav-sidebar li ul li').children('a').each(function(){
                     if (cookie_href == $(this).attr('href')) {
-                        $(this).parent().parent().parent().addClass('active') //set current class active
-                            .siblings().removeClass('active'); //remove brother class active
-                        //get active ul li
-                        li_content = $(this).parent().siblings().andSelf();
+                        $(this).css('color', 'red').css('text-decoration', 'underline');
+                        $(this).parent().parent().parent().siblings().children('ul').addClass('dropdown-menu');
+                        $(this).parent().parent().removeClass('dropdown-menu').show();
                     }
                 });
             }
-            //console.log(li_content);
-            if (li_content != '') {
-                li_content.appendTo('#main > ul, ul.nav.navbar-nav li.dropdown.active ul.dropdown-menu');
-                $('#main > ul li').children('a').each(function(){
-                    if (cookie_href == $(this).attr('href')) {
-                        $(this).css('color', 'red').css('text-decoration', 'underline');
-                    }
-                });
+        });
+
+        $('#main > ul.nav.nav-sidebar li a').on('click', function(){
+            if ($(this).siblings('ul').hasClass('dropdown-menu')) {
+                $(this).siblings('ul').removeClass('dropdown-menu').slideDown(300).css('display', 'block');
+            } else {
+                $(this).siblings('ul').slideUp(300).addClass('dropdown-menu').css('display', 'none');
             }
         });
 

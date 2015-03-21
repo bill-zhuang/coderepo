@@ -2,8 +2,12 @@
  * layout css
  */
 
-ul li.dropdown:hover .dropdown-menu {
+/*ul li.dropdown:hover .dropdown-menu {
     display: block;
+}*/
+
+li {
+    line-height: 27px;
 }
 
 .bill-mark-zone {
@@ -49,5 +53,9 @@ body {
 
 /* unset bs3 setting */
 .modal-open {
+    overflow: auto;
+}
+
+.gclass_div_scroll {
     overflow: auto;
 }
