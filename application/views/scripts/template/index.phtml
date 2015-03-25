@@ -188,9 +188,8 @@
 
         $('#btn_search').on('click', function(){
             var keyword = $.trim($('#keyword').val());
-            var current_page = <?php echo $this->current_page; ?>;
             var page_length = <?php echo $this->page_length; ?>;
-            search(current_page, page_length, keyword);
+            search(1, page_length, keyword);
         });
 
         $('#btn_add').on('click', function(){
