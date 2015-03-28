@@ -2,14 +2,6 @@
  * layout css
  */
 
-/*ul li.dropdown:hover .dropdown-menu {
-    display: block;
-}*/
-
-li {
-    line-height: 27px;
-}
-
 .bill-mark-zone {
     border: 1px solid red;
 }
@@ -51,11 +43,15 @@ body {
     height: 100%;
 }
 
+li {
+    line-height: 27px;
+}
+
 /* unset bs3 setting */
 .modal-open {
     overflow: auto;
 }
 
-.gclass_div_scroll {
+.bill_div_scroll {
     overflow: auto;
 }
