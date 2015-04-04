@@ -64,6 +64,7 @@ class Application_Model_DBTable_Financepayment extends Application_Model_DBTable
             ->from($this->_name, ['fc_id', 'sum(fp_payment) as payment'])
             ->where('fp_status=?', 1)->where('fp_payment_date>=?', $start_date)
             ->group('fc_id')
+            ->order('payment desc')
             ->query()->fetchAll();
     }
 }
