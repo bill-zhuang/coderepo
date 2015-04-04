@@ -23,6 +23,19 @@
                         </div>
                     </div>
 
+                    <span class="bill-margin-left bill_font_bold_green">All category payment history data in last 30 days</span>
+                    <span id="month_spent"></span>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="bill-chart-canvas">
+                            <canvas id="month_category_payment_history_line_chart"></canvas>
+                        </div>
+                        <div class="bill-chart-canvas bill-margin-left">
+                            <canvas id="month_category_payment_history_bar_chart"></canvas>
+                        </div>
+                    </div>
+
+                    <br/>
+
                     <span class="bill-margin-left bill_font_bold_green">All payment history data by month</span>
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <div class="bill-chart-canvas">
@@ -35,7 +48,8 @@
 
                     <br/>
 
-                    <span class="bill-margin-left bill_font_bold_green">All category payment history data in latest year</span>
+                    <span class="bill-margin-left bill_font_bold_green">All category payment history data in last one year</span>
+                    <span id="year_spent"></span>
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <div class="bill-chart-canvas">
                             <canvas id="category_payment_history_line_chart"></canvas>
@@ -64,7 +78,9 @@
             //all payment history data by day
             initLineChartAll();
             //payment by category last year
-            initCategoryChart();
+            initYearCategoryChart();
+            //payment by category last 30 days
+            initMonthCategoryChart();
         });
 
         function initMonthChart()
@@ -80,13 +96,28 @@
             }
         }
 
-        function initCategoryChart()
+        function initYearCategoryChart()
         {
-            var category_chart_data = <?php echo $this->category_chart_data; ?>;
+            var category_chart_data = <?php echo $this->year_category_chart_data; ?>;
             var data_category = category_chart_data['category'];
             var data_payment = category_chart_data['payment'];
+            $('#year_spent').text('(' + <?php echo $this->year_spent; ?> + ')');
             var line_canvas_id = 'category_payment_history_line_chart';
             var bar_canvas_id = 'category_payment_history_bar_chart';
+            if (data_category.length != 0) {
+                initLineChart(data_category, data_payment, line_canvas_id);
+                initBarChart(data_category, data_payment, bar_canvas_id);
+            }
+        }
+
+        function initMonthCategoryChart()
+        {
+            var category_chart_data = <?php echo $this->month_category_chart_data; ?>;
+            var data_category = category_chart_data['category'];
+            var data_payment = category_chart_data['payment'];
+            $('#month_spent').text('(' + <?php echo $this->month_spent; ?> + ')');
+            var line_canvas_id = 'month_category_payment_history_line_chart';
+            var bar_canvas_id = 'month_category_payment_history_bar_chart';
             if (data_category.length != 0) {
                 initLineChart(data_category, data_payment, line_canvas_id);
                 initBarChart(data_category, data_payment, bar_canvas_id);

@@ -60,11 +60,18 @@ class person_FinancehistoryController extends Zend_Controller_Action
         }
         //choose last one year data.
         $start_date = date('Y-m-d', strtotime('- 1 year'));
-        $category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);//print_r($category_data);exit;
+        $year_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);//print_r($category_data);exit;
+        $start_date = date('Y-m-d', strtotime('- 30 day'));
+        $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
 
-        $this->view->chart_data = json_encode($chart_data);
-        $this->view->all_chart_data = json_encode($all_chart_data);
-        $this->view->category_chart_data = json_encode($category_data);
+        $this->view->assign([
+            'chart_data' => json_encode($chart_data),
+            'all_chart_data' => json_encode($all_chart_data),
+            'year_category_chart_data' => json_encode($year_category_data),
+            'month_category_chart_data' => json_encode($month_category_data),
+            'year_spent' => array_sum($year_category_data['payment']),
+            'month_spent' => array_sum($month_category_data['payment']),
+        ]);
     }
 
     private function _getAllPaymentHistoryDataByDay($start_date)
