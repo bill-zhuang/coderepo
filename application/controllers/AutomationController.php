@@ -19,8 +19,8 @@ class AutomationController extends Zend_Controller_Action
         $this->_helper->layout()->disableLayout();
         $this->module_name = 'person';//modules name here
         $this->used_tables = ['finance_category'];//table name here
-        $this->controller_name = 'financecategory';//controller name here
-        $this->action_name = 'Financecategory';//first letter big, remove prefix of gc_;
+        $this->controller_name = 'financecategory';//controller name here, all lowercase
+        $this->action_name = 'FinanceCategory';//each word first letter big, remove prefix of bill_;
         $this->view->title = '消费分类管理';
         $this->view_name = strtolower($this->controller_name);
         $this->primary_key = 'fc_id';
@@ -45,11 +45,10 @@ class AutomationController extends Zend_Controller_Action
             $split_names = explode('_', $table_name);
             foreach ($split_names as $key => $name)
             {
-                $new_file_name .= $name;
+                $new_file_name .= ucfirst($name);
                 $pkid .= $name[0];
             }
             $pkid .= '_id';
-            $new_file_name[0] = strtoupper($new_file_name[0]);
 
             $template_file_path = APPLICATION_PATH . '/models/Tabletemplate.php';
             $new_file_path = APPLICATION_PATH . '/models/DBTable/' . $new_file_name . '.php';
@@ -117,6 +116,7 @@ class AutomationController extends Zend_Controller_Action
                 $replace_array['search'] = ['TemplateController',
                     '{module_name}',
                     '{action_object_name}',
+                    '{view_object_name}',
                     '{action_object_name_first_big_letter}',
                     '{main}',
                     '{primary_key}',
@@ -125,6 +125,7 @@ class AutomationController extends Zend_Controller_Action
                 $replace_array['replace'] = [$controller_name . 'Controller',
                     $module_name,
                     strtolower($action_name), //action object name here
+                    strtolower(substr(preg_replace('/([A-Z])/', '_\1', $action_name), 1)), //view object name here
                     $action_name, //first letter big
                     $table_array[0], //main select, first table array value
                     $this->primary_key, //table key
@@ -140,8 +141,7 @@ class AutomationController extends Zend_Controller_Action
                 foreach ($table_array as $table_name)
                 {
                     $adapter_name = str_replace('bill_', '', $table_name);
-                    $require_name = str_replace('_', '', $adapter_name);
-                    $require_name[0] = strtoupper($require_name[0]);
+                    $require_name = implode('', array_map('ucfirst', explode('_', $adapter_name)));
                     $table_name = $require_name;
                     //$require_content = 'require_once APPLICATION_PATH' . ' . \'/models/DBTable/' . $require_name . '.php\';';
                     $adapter_content = "\t" . 'private $_adapter_' . $adapter_name . ';';
@@ -204,6 +204,7 @@ class AutomationController extends Zend_Controller_Action
                     '{controller_name}',
                     '{type_name}',
                     '{type_name_low_case}',
+                    '{action_object_name}',
                     '{primary_key}',
                     '{page_title}',
                     '{all_batch_id}', //option
@@ -215,7 +216,8 @@ class AutomationController extends Zend_Controller_Action
                     $module_name,
                     strtolower($controller_name),
                     $this->action_name, //first letter big
-                    strtolower($this->action_name), //all lower case
+                    strtolower(substr(preg_replace('/([A-Z])/', '_\1', $this->action_name), 1)), //all lower case
+                    strtolower($this->action_name),
                     $this->primary_key, //table key
                     $this->view->title,
                     $this->all_batch_id,

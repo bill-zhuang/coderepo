@@ -58,7 +58,7 @@ class {module_name}_TemplateController extends Zend_Controller_Action
     public function add{action_object_name}Action()
     {
         $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
-        if (isset($_POST['add_{action_object_name}_name']))
+        if (isset($_POST['{view_object_name}_name']))
         {
             try 
             {
@@ -80,7 +80,7 @@ class {module_name}_TemplateController extends Zend_Controller_Action
     public function modify{action_object_name}Action()
     {
         $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
-        if (isset($_POST['modify_{action_object_name}_{primary_key}']))
+        if (isset($_POST['{view_object_name}_{primary_key}']))
         {
             try
             {
@@ -145,9 +145,9 @@ class {module_name}_TemplateController extends Zend_Controller_Action
     
     private function _add{action_object_name_first_big_letter}()
     {
-        $name = trim($_POST['add_{action_object_name}_name']);
-        $intro = $this->_processImagesInContent($_POST['add_{action_object_name}_intro']);
-        $weight = intval($_POST['add_{action_object_name}_weight']);
+        $name = trim($_POST['{view_object_name}_name']);
+        $intro = $this->_processImagesInContent($_POST['{view_object_name}_intro']);
+        $weight = intval($_POST['{view_object_name}_weight']);
         $add_time = date('Y-m-d H:i:s');
 
         $data = [
@@ -161,7 +161,7 @@ class {module_name}_TemplateController extends Zend_Controller_Action
         $affected_rows = $this->_adapter_{main}->insert($data);
         if ($affected_rows > Bootstrap::INIT_AFFECTED_ROWS)
         {
-            $affected_rows += $this->_update{action_object_name_first_big_letter}Image($affected_rows, 'add_{action_object_name}_image');
+            $affected_rows += $this->_update{action_object_name_first_big_letter}Image($affected_rows, '{view_object_name}_image');
         }
 
         return $affected_rows;
@@ -169,10 +169,10 @@ class {module_name}_TemplateController extends Zend_Controller_Action
     
     private function _update{action_object_name_first_big_letter}()
     {
-        ${primary_key} = intval($_POST['modify_{action_object_name}_{primary_key}']);
-        $name = trim($_POST['modify_{action_object_name}_name']);
-        $intro = $this->_processImagesInContent($_POST['modify_{action_object_name}_intro']);
-        $weight = intval($_POST['modify_{action_object_name}_weight']);
+        ${primary_key} = intval($_POST['{view_object_name}_{primary_key}']);
+        $name = trim($_POST['{view_object_name}_name']);
+        $intro = $this->_processImagesInContent($_POST['{view_object_name}_intro']);
+        $weight = intval($_POST['{view_object_name}_weight']);
 
         $data = [
             '{table_prefix}_name' => $name,
@@ -184,7 +184,7 @@ class {module_name}_TemplateController extends Zend_Controller_Action
         $affected_rows = $this->_adapter_{main}->update($data, $where);
         if ($affected_rows > Bootstrap::INIT_AFFECTED_ROWS)
         {
-            $affected_rows += $this->_update{action_object_name_first_big_letter}Image(${primary_key}, 'modify_{action_object_name}_image');
+            $affected_rows += $this->_update{action_object_name_first_big_letter}Image(${primary_key}, '{view_object_name}_image');
         }
 
         return $affected_rows;

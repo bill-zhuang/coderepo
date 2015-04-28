@@ -96,66 +96,33 @@
         </div>
 
         <!-- modal -->
-        <div id="add{type_name}Modal" class="modal fade">
+        <div id="modal{type_name}" class="modal fade" >
             <div class="modal-dialog bill_modal_lg" >
                 <div class="modal-content">
                     <div class="modal-header">
-                        <span>新增</span>
+                        <span></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-
-                    <form id="add{type_name}Form" action="#" method="post" enctype="multipart/form-data" class="form-inline">
-                        <div class="modal-body">
-                            <div class="input-group">
-                                <span class="input-group-addon">名称：</span>
-                                <input type="text" name="add_{type_name_low_case}_name" id="add_{type_name_low_case}_name" class="form-control"/>
-                            </div><br />
-                            图片：
-                            <input type="file" name="add_{type_name_low_case}_image" id="add_{type_name_low_case}_image" accept="image/*"/><br /><br />
-                            <div class="input-group">
-                                <span class="input-group-addon">权重：</span>
-                                <input type="text" name="add_{type_name_low_case}_weight" id="add_{type_name_low_case}_weight" class="form-control" value='0'/>
-                            </div><br />
-                            简介：
-                            <textarea class="ckeditor" id="ck_add_{type_name_low_case}_intro"></textarea>
-                            <input type="hidden" id="add_{type_name_low_case}_intro" name="add_{type_name_low_case}_intro"/>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" id="btn_submit_add">提交</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div id="modify{type_name}Modal" class="modal fade" >
-            <div class="modal-dialog bill_modal_lg" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span>修改</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <form id="modify{type_name}Form" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+                    <form id="form{type_name}" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body" >
                             <div class="input-group">
                                 <span class="input-group-addon">名称：</span>
-                                <input type="text" name="modify_{type_name_low_case}_name" id="modify_{type_name_low_case}_name" class="form-control"/>
+                                <input type="text" name="{type_name_low_case}_name" id="{type_name_low_case}_name" class="form-control"/>
                             </div><br />
                             图片：
-                            <input type="file" name="modify_{type_name_low_case}_image" id="modify_{type_name_low_case}_image" accept="image/*"/><br /><br />
+                            <input type="file" name="{type_name_low_case}_image" id="{type_name_low_case}_image" accept="image/*"/><br /><br />
                             <div class="input-group">
                                 <span class="input-group-addon">权重：</span>
-                                <input type="text" name="modify_{type_name_low_case}_weight" id="modify_{type_name_low_case}_weight" class="form-control" value='0'/>
+                                <input type="text" name="{type_name_low_case}_weight" id="{type_name_low_case}_weight" class="form-control" value='0'/>
                             </div><br />
                             简介：
-                            <textarea class="ckeditor" id="ck_modify_{type_name_low_case}_intro"></textarea>
-                            <input type="hidden" id="modify_{type_name_low_case}_intro" name="modify_{type_name_low_case}_intro"/>
-                            <input type="hidden" id="modify_{type_name_low_case}_{primary_key}" name="modify_{type_name_low_case}_{primary_key}"/>
+                            <textarea class="ckeditor" id="ck_{type_name_low_case}_intro"></textarea>
+                            <input type="hidden" id="{type_name_low_case}_intro" name="{type_name_low_case}_intro"/>
+                            <input type="hidden" id="{type_name_low_case}_{primary_key}" name="{type_name_low_case}_{primary_key}"/>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" id="btn_submit_modify">提交</button>
+                            <button type="submit" class="btn btn-success" id="btn_submit_{type_name_low_case}">提交</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                         </div>
                     </form>
@@ -188,30 +155,31 @@
 
         $('#btn_search').on('click', function(){
             var keyword = $.trim($('#keyword').val());
-            var page_length = <?php echo $this->page_length; ?>;
+            var page_length = '<?php echo $this->page_length; ?>';
             search(1, page_length, keyword);
         });
 
         $('#btn_add').on('click', function(){
-            window.add{type_name}Form.reset();
-            CKEDITOR.instances.ck_add_{type_name_low_case}_intro.setData('');
-            $('#btn_submit_add').attr('disabled', false);
-            $('#add{type_name}Modal').modal('show');
+            window.form{type_name}.reset();
+            CKEDITOR.instances.ck_{type_name_low_case}_intro.setData('');
+            $('#btn_submit_{type_name_low_case}').attr('disabled', false);
+            $('#modal{type_name}').modal('show');
         });
 
-        $('#add{type_name}Form').on('submit', (function(event){
+        $('#form{type_name}').on('submit', (function(event){
             event.preventDefault();
 
-            var error_num = validInput('add');
+            var pkid = $('#{type_name_low_case}_{primary_key}').val();
+            var type = (pkid == '') ? 'add' : 'modify';
+            var error_num = validInput(type);
             if(error_num == 0) {
-                $('#btn_submit_add').attr('disabled', true);
-                var content = $.trim(CKEDITOR.instances.ck_add_{type_name_low_case}_intro.getData());
-                $('#add_{type_name_low_case}_intro').val(content);
-                $('#btn_add_{type_name_low_case}').attr('disabled', true);
-                var post_url = '/{module_name}/{controller_name}/add{type_name_low_case}';
+                $('#btn_submit_{type_name_low_case}').attr('disabled', true);
+                var content = $.trim(CKEDITOR.instances.ck_{type_name_low_case}_intro.getData());
+                $('#{type_name_low_case}_intro').val(content);
+                var post_url = '/{module_name}/{controller_name}/' + type +'{action_object_name}';
                 var post_data = new FormData(this);
-                var msg_success = MESSAGE_ADD_SUCCESS;
-                var msg_error = MESSAGE_ADD_ERROR;
+                var msg_success = (type == 'add') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+                var msg_error = (type == 'add') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
                 var method = 'post';
                 callAjaxWithForm(post_url, post_data, msg_success, msg_error, method);
             }
@@ -219,43 +187,26 @@
 
         $('a[id^=modify_]').on('click', function(){
             var {primary_key} = $(this).attr('id').substr('modify_'.length);
-            var post_url = '/{module_name}/{controller_name}/get{type_name_low_case}';
+            var post_url = '/{module_name}/{controller_name}/get{action_object_name}';
             var post_data = {
                 '{primary_key}' : {primary_key}
             };
             var method = 'get';
             var success_function = function(result){
-                $('#modify_{type_name_low_case}_name').val(result.{table_prefix}_name);
-                $('#modify_{type_name_low_case}_weight').val(result.{table_prefix}_weight);
-                CKEDITOR.instances.ck_modify_{type_name_low_case}_intro.setData(result.{table_prefix}_intro);
-                $('#modify_{type_name_low_case}_{primary_key}').val(result.{primary_key});
-                $('#btn_submit_modify').attr('disabled', false);
-                $('#modify{type_name}Modal').modal('show');
+                $('#{type_name_low_case}_name').val(result.{table_prefix}_name);
+                $('#{type_name_low_case}_weight').val(result.{table_prefix}_weight);
+                CKEDITOR.instances.ck_{type_name_low_case}_intro.setData(result.{table_prefix}_intro);
+                $('#{type_name_low_case}_{primary_key}').val(result.{primary_key});
+                $('#btn_submit_{type_name_low_case}').attr('disabled', false);
+                $('#{type_name}Modal').modal('show');
             };
             callAjaxWithFunction(post_url, post_data, success_function, method);
         });
 
-        $('#modify{type_name}Form').on('submit', (function(event){
-            event.preventDefault();
-
-            var error_num = validInput('modify');
-            if(error_num == 0) {
-                $('#btn_submit_modify').attr('disabled', true);
-                var content = $.trim(CKEDITOR.instances.ck_modify_{type_name_low_case}_intro.getData());
-                $('#modify_{type_name_low_case}_intro').val(content);
-                var post_url = '/{module_name}/{controller_name}/modify{type_name_low_case}';
-                var post_data = new FormData(this);
-                var msg_success = MESSAGE_MODIFY_SUCCESS;
-                var msg_error = MESSAGE_MODIFY_ERROR;
-                var method = 'post';
-                callAjaxWithForm(post_url, post_data, msg_success, msg_error, method);
-            }
-        }));
-
         $('a[id^=delete_]').on('click', function(){
             if (confirm(MESSAGE_DELETE_CONFIRM)) {
                 var {primary_key} = $(this).attr('id').substr('delete_'.length);
-                var url = '/{module_name}/{controller_name}/delete{type_name_low_case}';
+                var url = '/{module_name}/{controller_name}/delete{action_object_name}';
                 var data = {
                     '{primary_key}' : {primary_key}
                 };
@@ -269,15 +220,10 @@
         function validInput(type)
         {
             var error_num = 0;
-            var name = $.trim($('#' + type + '_{type_name_low_case}_name').val());
-            var weight = $('#' + type + '_{type_name_low_case}_weight').val();
-            var image = $('#' + type + '_{type_name_low_case}_image').val();
-            var content = '';
-            if (type == 'add') {
-                content = $.trim(CKEDITOR.instances.ck_add_{type_name_low_case}_intro.getData());
-            } else if (type == 'modify') {
-                content = $.trim(CKEDITOR.instances.ck_modify_{type_name_low_case}_intro.getData());
-            }
+            var name = $.trim($('#{type_name_low_case}_name').val());
+            var weight = $('#{type_name_low_case}_weight').val();
+            var image = $('#{type_name_low_case}_image').val();
+            var content = $.trim(CKEDITOR.instances.ck_{type_name_low_case}_intro.getData());
             if(name == '') {
                 error_num = error_num + 1;
                 alert(MESSAGE_NAME_ERROR);
