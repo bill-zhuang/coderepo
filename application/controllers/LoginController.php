@@ -27,7 +27,7 @@ class LoginController extends Zend_Controller_Action
     {
         $user_name = addslashes($_POST['username']);
         $user_password = addslashes($_POST['password']);
-        $database = new Application_Model_DbTable_Backenduser();
+        $database = new Application_Model_DBTable_BackendUser();
         $this->_auth->logIn($user_name, $user_password, 'backend_user', $database->getAdapter());
 
         if (Application_Model_Auth::isValid() != null)

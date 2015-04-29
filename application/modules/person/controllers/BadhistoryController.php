@@ -3,7 +3,7 @@
 class person_BadhistoryController extends Zend_Controller_Action
 {
     /**
-     * @var Application_Model_DBTable_Badhistory
+     * @var Application_Model_DBTable_BadHistory
      */
     private $_adapter_bad_history;
 
@@ -11,7 +11,7 @@ class person_BadhistoryController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->_helper->layout()->setLayout('layout');
-        $this->_adapter_bad_history = new Application_Model_DBTable_Badhistory();
+        $this->_adapter_bad_history = new Application_Model_DBTable_BadHistory();
     }
 
     public function indexAction()

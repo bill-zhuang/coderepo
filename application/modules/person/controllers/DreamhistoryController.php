@@ -3,7 +3,7 @@
 class person_DreamhistoryController extends Zend_Controller_Action
 {
     /**
-     * @var Application_Model_DBTable_Dreamhistory
+     * @var Application_Model_DBTable_DreamHistory
      */
     private $_adapter_dream_history;
 
@@ -11,7 +11,7 @@ class person_DreamhistoryController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->_helper->layout()->setLayout('layout');
-        $this->_adapter_dream_history = new Application_Model_DBTable_Dreamhistory();
+        $this->_adapter_dream_history = new Application_Model_DBTable_DreamHistory();
     }
 
     public function indexAction()

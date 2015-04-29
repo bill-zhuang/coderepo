@@ -7,7 +7,7 @@ class MainController extends Zend_Controller_Action
      */
     private $_auth;
     /**
-     * @var Application_Model_DbTable_Backenduser
+     * @var Application_Model_DBTable_BackendUser
      */
 	private $_adapter_backend_user;
     
@@ -16,7 +16,7 @@ class MainController extends Zend_Controller_Action
         $this->_helper->layout->setLayout('layout');
         /* Initialize action controller here */
         $this->_auth = new Application_Model_Auth();
-        $this->_adapter_backend_user = new Application_Model_DbTable_Backenduser();
+        $this->_adapter_backend_user = new Application_Model_DBTable_BackendUser();
     }
     public function indexAction()
     {

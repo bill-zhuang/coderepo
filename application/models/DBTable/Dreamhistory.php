@@ -6,7 +6,7 @@
  * Time: 下午5:41
  */
 
-class Application_Model_DBTable_Dreamhistory extends Application_Model_DBTableFactory
+class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFactory
 {
     public function __construct()
     {

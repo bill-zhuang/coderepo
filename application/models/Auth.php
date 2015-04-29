@@ -18,7 +18,7 @@ class Application_Model_Auth
         }
         if ($database_adapter == null)
         {
-            $database = new Application_Model_DbTable_Backenduser();
+            $database = new Application_Model_DBTable_BackendUser();
             $database_adapter = $database->getAdapter();
         }
         $this->setauth($table_name, 'bu_name', 'bu_password', $database_adapter);
