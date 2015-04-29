@@ -46,13 +46,12 @@ class person_FinancepaymentController extends Zend_Controller_Action
             ];
         }
         $order_by = 'fp_payment_date desc';
-        $total = $this->_adapter_finance_payment->getFinancepaymentCount($conditions);
-        $data = $this->_adapter_finance_payment->getFinancepaymentData($conditions, $page_length, $start, $order_by);
+        $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
+        $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $page_length, $start, $order_by);
         foreach ($data as $key => $value)
         {
             $data[$key]['category'] = $this->_adapter_finance_category->getFinaceCategoryName($value['fc_id']);
         }
-
 
         $view_data = [
             'data' => $data,
@@ -69,12 +68,12 @@ class person_FinancepaymentController extends Zend_Controller_Action
     public function addfinancepaymentAction()
     {
         $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
-        if (isset($_POST['add_financepayment_payment']))
+        if (isset($_POST['finance_payment_payment']))
         {
             try 
             {
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
-                $affected_rows = $this->_addFinancepayment();
+                $affected_rows = $this->_addFinancePayment();
                 $this->_adapter_finance_payment->getAdapter()->commit();
             }
             catch (Exception $e)
@@ -91,12 +90,12 @@ class person_FinancepaymentController extends Zend_Controller_Action
     public function modifyfinancepaymentAction()
     {
         $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
-        if (isset($_POST['modify_financepayment_fp_id']))
+        if (isset($_POST['finance_payment_fp_id']))
         {
             try
             {
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
-                $affected_rows = $this->_updateFinancepayment();
+                $affected_rows = $this->_updateFinancePayment();
                 $this->_adapter_finance_payment->getAdapter()->commit();
             }
             catch (Exception $e)
@@ -146,7 +145,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
             $fp_id = intval($_GET['fp_id']);
             if ($fp_id > Bootstrap::INVALID_PRIMARY_ID)
             {
-                $data = $this->_adapter_finance_payment->getFinancepaymentByID($fp_id);
+                $data = $this->_adapter_finance_payment->getFinancePaymentByID($fp_id);
             }
         }
 
@@ -154,14 +153,14 @@ class person_FinancepaymentController extends Zend_Controller_Action
         exit;
     }
     
-    private function _addFinancepayment()
+    private function _addFinancePayment()
     {
         $affected_rows = 0;
 
-        $payments = array_filter(explode(',', $_POST['add_financepayment_payment']));
-        $payment_date = trim($_POST['add_financepayment_payment_date']);
-        $category_id = intval($_POST['add_financepayment_fc_id']);
-        $intro = trim($_POST['add_financepayment_intro']);
+        $payments = array_filter(explode(',', $_POST['finance_payment_payment']));
+        $payment_date = trim($_POST['finance_payment_payment_date']);
+        $category_id = intval($_POST['finance_payment_fc_id']);
+        $intro = trim($_POST['finance_payment_intro']);
         $add_time = date('Y-m-d H:i:s');
 
         $data = [
@@ -185,13 +184,13 @@ class person_FinancepaymentController extends Zend_Controller_Action
         return $affected_rows;
     }
     
-    private function _updateFinancepayment()
+    private function _updateFinancePayment()
     {
-        $fp_id = intval($_POST['modify_financepayment_fp_id']);
-        $payment = floatval($_POST['modify_financepayment_payment']);
-        $payment_date = trim($_POST['modify_financepayment_payment_date']);
-        $category_id = intval($_POST['modify_financepayment_fc_id']);
-        $intro = trim($_POST['modify_financepayment_intro']);
+        $fp_id = intval($_POST['finance_payment_fp_id']);
+        $payment = floatval($_POST['finance_payment_payment']);
+        $payment_date = trim($_POST['finance_payment_payment_date']);
+        $category_id = intval($_POST['finance_payment_fc_id']);
+        $intro = trim($_POST['finance_payment_intro']);
 
         $data = [
             'fp_payment' => $payment,

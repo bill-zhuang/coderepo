@@ -7,7 +7,7 @@ class Application_Model_DbTable_Financecategory extends Application_Model_DBTabl
         parent::__construct('finance_category');
     }
 
-    public function getFinancecategoryCount(array $conditions)
+    public function getFinanceCategoryCount(array $conditions)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
@@ -19,7 +19,7 @@ class Application_Model_DbTable_Financecategory extends Application_Model_DBTabl
         return $count[0]['total'];
     }
 
-    public function getFinancecategoryData(array $conditions, $count, $offset, $order_by)
+    public function getFinanceCategoryData(array $conditions, $count, $offset, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $key => $content)
@@ -31,7 +31,7 @@ class Application_Model_DbTable_Financecategory extends Application_Model_DBTabl
         return $data;
     }
 
-    public function getFinancecategoryByID($fc_id)
+    public function getFinanceCategoryByID($fc_id)
     {
         return $this->select()->reset()
             ->where('fc_id=?', $fc_id)

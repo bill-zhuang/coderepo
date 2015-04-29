@@ -53,7 +53,11 @@
                                 <tr>
                                     <td><?php echo ($this->start + $i + 1); ?></td>
                                     <td><?php echo $this->data[$i]['fc_name']; ?></td>
-                                    <td><?php echo $this->data[$i]['fc_parent_id'] == 0 ? '无' : $this->parents[$this->data[$i]['fc_parent_id']]; ?></td>
+                                    <td>
+                                        <?php echo $this->data[$i]['fc_parent_id'] == 0 ?
+                                            '无' : $this->parents[$this->data[$i]['fc_parent_id']];
+                                        ?>
+                                    </td>
                                     <td><?php echo $this->data[$i]['fc_weight']; ?></td>
                                     <td><?php echo $this->data[$i]['fc_update_time']; ?></td>
                                     <td>
@@ -65,7 +69,7 @@
 
                             <?php if (count($this->data) == 0) { ?>
                                 <tr>
-                                    <td colspan="5" class="bill_table_no_data">对不起,没有符合条件的数据</td>
+                                    <td colspan="6" class="bill_table_no_data">对不起,没有符合条件的数据</td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -86,59 +90,22 @@
         </div>
 
         <!-- modal -->
-        <div id="addFinancecategoryModal" class="modal fade">
+        <div id="FinanceCategoryModal" class="modal fade" >
             <div class="modal-dialog bill_modal_sm" >
                 <div class="modal-content">
                     <div class="modal-header">
-                        <span>新增</span>
+                        <span></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-
-                    <form id="addFinancecategoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
-                        <div class="modal-body">
-                            <div class="input-group">
-                                <span class="input-group-addon">分类名称：</span>
-                                <input type="text" name="add_financecategory_name" id="add_financecategory_name" class="form-control"/>
-                            </div><br />
-                            <div class="input-group">
-                                <span class="input-group-addon">父级分类：</span>
-                                <select name="add_financecategory_parent_id" id="add_financecategory_parent_id" class="form-control">
-                                    <option value="0">无</option>
-                                    <?php foreach ($this->parents as $key => $value){ ?>
-                                        <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </div><br />
-                            <div class="input-group">
-                                <span class="input-group-addon">权重：</span>
-                                <input type="text" name="add_financecategory_weight" id="add_financecategory_weight" class="form-control" value="0"/>
-                            </div><br />
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" id="btn_submit_add">提交</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div id="modifyFinancecategoryModal" class="modal fade" >
-            <div class="modal-dialog bill_modal_sm" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span>修改</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <form id="modifyFinancecategoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+                    <form id="FinanceCategoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body" >
                             <div class="input-group">
                                 <span class="input-group-addon">名称：</span>
-                                <input type="text" name="modify_financecategory_name" id="modify_financecategory_name" class="form-control"/>
+                                <input type="text" name="finance_category_name" id="finance_category_name" class="form-control"/>
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">父级分类：</span>
-                                <select name="modify_financecategory_parent_id" id="modify_financecategory_parent_id" class="form-control">
+                                <select name="finance_category_parent_id" id="finance_category_parent_id" class="form-control">
                                     <option value="0">无</option>
                                     <?php foreach ($this->parents as $key => $value){ ?>
                                         <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
@@ -147,13 +114,13 @@
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">权重：</span>
-                                <input type="text" name="modify_financecategory_weight" id="modify_financecategory_weight" class="form-control"/>
+                                <input type="text" name="finance_category_weight" id="finance_category_weight" value="0" class="form-control"/>
                             </div><br />
-                            <input type="hidden" id="modify_financecategory_fc_id" name="modify_financecategory_fc_id"/>
+                            <input type="hidden" id="finance_category_fc_id" name="finance_category_fc_id"/>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" id="btn_submit_modify">提交</button>
+                            <button type="submit" class="btn btn-success" id="btn_submit_finance_category">提交</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                         </div>
                     </form>
@@ -175,22 +142,23 @@
         });
 
         $('#btn_add').on('click', function(){
-            window.addFinancecategoryForm.reset();
-            $('#btn_submit_add').attr('disabled', false);
-            $('#addFinancecategoryModal').modal('show');
+            window.FinanceCategoryForm.reset();
+            $('#btn_submit_finance_category').attr('disabled', false);
+            $('#FinanceCategoryModal').modal('show');
         });
 
-        $('#addFinancecategoryForm').on('submit', (function(event){
+        $('#FinanceCategoryForm').on('submit', (function(event){
             event.preventDefault();
 
-            var error_num = validInput('add');
+            var fc_id = $('#finance_category_fc_id').val();
+            var type = (fc_id == '') ? 'add' : 'modify';
+            var error_num = validInput(type);
             if(error_num == 0) {
-                $('#btn_submit_add').attr('disabled', true);
-                $('#btn_add_financecategory').attr('disabled', true);
-                var post_url = '/person/financecategory/addfinancecategory';
+                $('#btn_submit_finance_category').attr('disabled', true);
+                var post_url = '/person/financecategory/' + type + 'financecategory';
                 var post_data = new FormData(this);
-                var msg_success = MESSAGE_ADD_SUCCESS;
-                var msg_error = MESSAGE_ADD_ERROR;
+                var msg_success = (fc_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+                var msg_error = (fc_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
                 var method = 'post';
                 callAjaxWithForm(post_url, post_data, msg_success, msg_error, method);
             }
@@ -204,30 +172,15 @@
             };
             var method = 'get';
             var success_function = function(result){
-                $('#modify_financecategory_name').val(result.fc_name);
-                $('#modify_financecategory_parent_id').val(result.fc_parent_id);
-                $('#modify_financecategory_weight').val(result.fc_weight);
-                $('#modify_financecategory_fc_id').val(result.fc_id);
-                $('#btn_submit_modify').attr('disabled', false);
-                $('#modifyFinancecategoryModal').modal('show');
+                $('#finance_category_name').val(result.fc_name);
+                $('#finance_category_parent_id').val(result.fc_parent_id);
+                $('#finance_category_weight').val(result.fc_weight);
+                $('#finance_category_fc_id').val(result.fc_id);
+                $('#btn_submit_finance_category').attr('disabled', false);
+                $('#FinanceCategoryModal').modal('show');
             };
             callAjaxWithFunction(post_url, post_data, success_function, method);
         });
-
-        $('#modifyFinancecategoryForm').on('submit', (function(event){
-            event.preventDefault();
-
-            var error_num = validInput('modify');
-            if(error_num == 0) {
-                $('#btn_submit_modify').attr('disabled', true);
-                var post_url = '/person/financecategory/modifyfinancecategory';
-                var post_data = new FormData(this);
-                var msg_success = MESSAGE_MODIFY_SUCCESS;
-                var msg_error = MESSAGE_MODIFY_ERROR;
-                var method = 'post';
-                callAjaxWithForm(post_url, post_data, msg_success, msg_error, method);
-            }
-        }));
 
         $('a[id^=delete_]').on('click', function(){
             if (confirm(MESSAGE_DELETE_CONFIRM)) {
@@ -246,8 +199,8 @@
         function validInput(type)
         {
             var error_num = 0;
-            var name = $.trim($('#' + type + '_financecategory_name').val());
-            var weight = $.trim($('#' + type + '_financecategory_weight').val());
+            var name = $.trim($('#finance_category_name').val());
+            var weight = $.trim($('#finance_category_weight').val());
             if(name == '') {
                 error_num = error_num + 1;
                 alert(MESSAGE_NAME_ERROR);

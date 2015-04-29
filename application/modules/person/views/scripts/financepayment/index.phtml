@@ -89,83 +89,34 @@
         </div>
 
         <!-- modal -->
-        <div id="addFinancepaymentModal" class="modal fade">
+        <div id="FinancePaymentModal" class="modal fade" >
             <div class="modal-dialog bill_modal_md" >
                 <div class="modal-content">
                     <div class="modal-header">
-                        <span>新增</span>
+                        <span></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
-
-                    <form id="addFinancepaymentForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
-                        <div class="modal-body">
-                            <div class="input-group">
-                                <span class="input-group-addon">日期：</span>
-                                <input type="text"
-                                       name="add_financepayment_payment_date"
-                                       id="add_financepayment_payment_date"
-                                       class="form-control form_date"
-                                />
-                            </div><br />
-                            <div class="input-group">
-                                <span class="input-group-addon">金额：</span>
-                                <input type="text"
-                                       name="add_financepayment_payment"
-                                       id="add_financepayment_payment"
-                                       class="form-control"
-                                       placeholder="多个金额用英文逗号隔开"
-                                />
-                            </div><br />
-                            <div class="input-group">
-                                <span class="input-group-addon">分类：</span>
-                                <select name="add_financepayment_fc_id" id="add_financepayment_fc_id" class="form-control">
-                                    <?php foreach($this->parent_categories as $key => $value){ ?>
-                                        <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </div><br />
-                            <div class="input-group">
-                                <span class="input-group-addon">备注：</span>
-                                <textarea id="add_financepayment_intro" name="add_financepayment_intro" class="bill_textarea_full"></textarea>
-                            </div><br />
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" id="btn_submit_add">提交</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div id="modifyFinancepaymentModal" class="modal fade" >
-            <div class="modal-dialog bill_modal_md" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span>修改</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <form id="modifyFinancepaymentForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+                    <form id="FinancePaymentForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
                         <div class="modal-body" >
                             <div class="input-group">
                                 <span class="input-group-addon">日期：</span>
                                 <input type="text"
-                                       name="modify_financepayment_payment_date"
-                                       id="modify_financepayment_payment_date"
+                                       name="finance_payment_payment_date"
+                                       id="finance_payment_payment_date"
                                        class="form-control form_date"
                                 />
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">金额：</span>
                                 <input type="text"
-                                       name="modify_financepayment_payment"
-                                       id="modify_financepayment_payment"
+                                       name="finance_payment_payment"
+                                       id="finance_payment_payment"
                                        class="form-control"
                                 />
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">分类：</span>
-                                <select name="modify_financepayment_fc_id" id="modify_financepayment_fc_id" class="form-control">
+                                <select name="finance_payment_fc_id" id="finance_payment_fc_id" class="form-control">
                                     <?php foreach($this->parent_categories as $key => $value){ ?>
                                         <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                                     <?php } ?>
@@ -173,13 +124,13 @@
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">备注：</span>
-                                <textarea id="modify_financepayment_intro" name="modify_financepayment_intro" class="bill_textarea_full"></textarea>
+                                <textarea id="finance_payment_intro" name="finance_payment_intro" class="bill_textarea_full"></textarea>
                             </div><br />
-                            <input type="hidden" id="modify_financepayment_fp_id" name="modify_financepayment_fp_id"/>
+                            <input type="hidden" id="finance_payment_fp_id" name="finance_payment_fp_id"/>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" id="btn_submit_modify">提交</button>
+                            <button type="submit" class="btn btn-success" id="btn_submit_finance_payment">提交</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                         </div>
                     </form>
@@ -204,23 +155,24 @@
         });
 
         $('#btn_add').on('click', function(){
-            window.addFinancepaymentForm.reset();
-            $('#add_financepayment_payment_date').val(getCurrentDate());
-            $('#btn_submit_add').attr('disabled', false);
-            $('#addFinancepaymentModal').modal('show');
+            window.FinancePaymentForm.reset();
+            $('#finance_payment_payment_date').val(getCurrentDate());
+            $('#btn_submit_finance_payment').attr('disabled', false);
+            $('#FinancePaymentModal').modal('show');
         });
 
-        $('#addFinancepaymentForm').on('submit', (function(event){
+        $('#FinancePaymentForm').on('submit', (function(event){
             event.preventDefault();
 
-            var error_num = validInput('add');
+            var fp_id = $('#finance_payment_fp_id').val();
+            var type = (fp_id == '') ? 'add' : 'modify';
+            var error_num = validInput(type);
             if(error_num == 0) {
-                $('#btn_submit_add').attr('disabled', true);
-                $('#btn_add_financepayment').attr('disabled', true);
-                var post_url = '/person/financepayment/addfinancepayment';
+                $('#btn_submit_finance_payment').attr('disabled', true);
+                var post_url = '/person/financepayment/' + type + 'financepayment';
                 var post_data = new FormData(this);
-                var msg_success = MESSAGE_ADD_SUCCESS;
-                var msg_error = MESSAGE_ADD_ERROR;
+                var msg_success = (fp_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+                var msg_error = (fp_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
                 var method = 'post';
                 callAjaxWithForm(post_url, post_data, msg_success, msg_error, method);
             }
@@ -234,31 +186,16 @@
             };
             var method = 'get';
             var success_function = function(result){
-                $('#modify_financepayment_payment_date').val(result.fp_payment_date);
-                $('#modify_financepayment_payment').val(result.fp_payment);
-                $('#modify_financepayment_fc_id').val(result.fc_id);
-                $('#modify_financepayment_intro').val(result.fp_detail);
-                $('#modify_financepayment_fp_id').val(result.fp_id);
-                $('#btn_submit_modify').attr('disabled', false);
-                $('#modifyFinancepaymentModal').modal('show');
+                $('#finance_payment_payment_date').val(result.fp_payment_date);
+                $('#finance_payment_payment').val(result.fp_payment);
+                $('#finance_payment_fc_id').val(result.fc_id);
+                $('#finance_payment_intro').val(result.fp_detail);
+                $('#finance_payment_fp_id').val(result.fp_id);
+                $('#btn_submit_finance_payment').attr('disabled', false);
+                $('#FinancePaymentModal').modal('show');
             };
             callAjaxWithFunction(post_url, post_data, success_function, method);
         });
-
-        $('#modifyFinancepaymentForm').on('submit', (function(event){
-            event.preventDefault();
-
-            var error_num = validInput('modify');
-            if(error_num == 0) {
-                $('#btn_submit_modify').attr('disabled', true);
-                var post_url = '/person/financepayment/modifyfinancepayment';
-                var post_data = new FormData(this);
-                var msg_success = MESSAGE_MODIFY_SUCCESS;
-                var msg_error = MESSAGE_MODIFY_ERROR;
-                var method = 'post';
-                callAjaxWithForm(post_url, post_data, msg_success, msg_error, method);
-            }
-        }));
 
         $('a[id^=delete_]').on('click', function(){
             if (confirm(MESSAGE_DELETE_CONFIRM)) {
@@ -277,8 +214,8 @@
         function validInput(type)
         {
             var error_num = 0;
-            var payment_date = $.trim($('#' + type + '_financepayment_payment_date').val());
-            var payment = $.trim($('#' + type + '_financepayment_payment').val());
+            var payment_date = $.trim($('#finance_payment_payment_date').val());
+            var payment = $.trim($('#finance_payment_payment').val());
             if(payment_date == '') {
                 error_num = error_num + 1;
                 alert(MESSAGE_DATE_ERROR);

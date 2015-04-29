@@ -7,7 +7,7 @@ class Application_Model_DBTable_Financepayment extends Application_Model_DBTable
         parent::__construct('finance_payment');
     }
 
-    public function getFinancepaymentCount(array $conditions)
+    public function getFinancePaymentCount(array $conditions)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
@@ -19,7 +19,7 @@ class Application_Model_DBTable_Financepayment extends Application_Model_DBTable
         return $count[0]['total'];
     }
 
-    public function getFinancepaymentData(array $conditions, $count, $offset, $order_by)
+    public function getFinancePaymentData(array $conditions, $count, $offset, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $key => $content)
@@ -31,7 +31,7 @@ class Application_Model_DBTable_Financepayment extends Application_Model_DBTable
         return $data;
     }
 
-    public function getFinancepaymentByID($fp_id)
+    public function getFinancePaymentByID($fp_id)
     {
         return $this->select()->reset()
             ->where('fp_id=?', $fp_id)

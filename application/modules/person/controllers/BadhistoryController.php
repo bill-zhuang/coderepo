@@ -41,11 +41,11 @@ class person_BadhistoryController extends Zend_Controller_Action
     public function addbadhistoryAction()
     {
         $affect_rows = 0;
-        if (isset($_POST['add_badhistory_date']))
+        if (isset($_POST['bad_history_date']))
         {
-            $occur_date = $_POST['add_badhistory_date'];
-            $occur_count = intval($_POST['add_badhistory_count']);
-            if (Bill_Util::validDate($occur_date) && $occur_count > 1)
+            $occur_date = $_POST['bad_history_date'];
+            $occur_count = intval($_POST['bad_history_count']);
+            if (Bill_Util::validDate($occur_date) && $occur_count > 0)
             {
                 $date = date('Y-m-d H:i:s');
                 $data = [
@@ -82,10 +82,10 @@ class person_BadhistoryController extends Zend_Controller_Action
     public function modifybadhistoryAction()
     {
         $affect_rows = 0;
-        if (isset($_POST['modify_badhistory_id']))
+        if (isset($_POST['bad_history_id']))
         {
-            $bh_id = intval($_POST['modify_badhistory_id']);
-            $bh_count = intval($_POST['modify_badhistory_count']);
+            $bh_id = intval($_POST['bad_history_id']);
+            $bh_count = intval($_POST['bad_history_count']);
             if ($bh_id > 0 && $bh_count > 0)
             {
                 $update_data = [

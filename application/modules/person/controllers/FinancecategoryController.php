@@ -41,8 +41,8 @@ class person_FinancecategoryController extends Zend_Controller_Action
             ];
         }
         $order_by = 'fc_weight desc';
-        $total = $this->_adapter_finance_category->getFinancecategoryCount($conditions);
-        $data = $this->_adapter_finance_category->getFinancecategoryData($conditions, $page_length, $start, $order_by);
+        $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);
+        $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $page_length, $start, $order_by);
 
         $view_data = [
             'data' => $data,
@@ -59,12 +59,12 @@ class person_FinancecategoryController extends Zend_Controller_Action
     public function addfinancecategoryAction()
     {
         $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
-        if (isset($_POST['add_financecategory_name']))
+        if (isset($_POST['finance_category_name']))
         {
             try 
             {
                 $this->_adapter_finance_category->getAdapter()->beginTransaction();
-                $affected_rows = $this->_addFinancecategory();
+                $affected_rows = $this->_addFinanceCategory();
                 $this->_adapter_finance_category->getAdapter()->commit();
             }
             catch (Exception $e)
@@ -81,12 +81,12 @@ class person_FinancecategoryController extends Zend_Controller_Action
     public function modifyfinancecategoryAction()
     {
         $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
-        if (isset($_POST['modify_financecategory_fc_id']))
+        if (isset($_POST['finance_category_fc_id']))
         {
             try
             {
                 $this->_adapter_finance_category->getAdapter()->beginTransaction();
-                $affected_rows = $this->_updateFinancecategory();
+                $affected_rows = $this->_updateFinanceCategory();
                 $this->_adapter_finance_category->getAdapter()->commit();
             }
             catch (Exception $e)
@@ -137,7 +137,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
             $fc_id = intval($_GET['fc_id']);
             if ($fc_id > Bootstrap::INVALID_PRIMARY_ID)
             {
-                $data = $this->_adapter_finance_category->getFinancecategoryByID($fc_id);
+                $data = $this->_adapter_finance_category->getFinanceCategoryByID($fc_id);
             }
         }
 
@@ -158,13 +158,13 @@ class person_FinancecategoryController extends Zend_Controller_Action
         exit;
     }
     
-    private function _addFinancecategory()
+    private function _addFinanceCategory()
     {
         $affected_rows = 0;
 
-        $name = trim($_POST['add_financecategory_name']);
-        $parent_id = intval($_POST['add_financecategory_parent_id']);
-        $weight = intval($_POST['add_financecategory_weight']);
+        $name = trim($_POST['finance_category_name']);
+        $parent_id = intval($_POST['finance_category_parent_id']);
+        $weight = intval($_POST['finance_category_weight']);
         $add_time = date('Y-m-d H:i:s');
 
         if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0))
@@ -183,14 +183,14 @@ class person_FinancecategoryController extends Zend_Controller_Action
         return $affected_rows;
     }
     
-    private function _updateFinancecategory()
+    private function _updateFinanceCategory()
     {
         $affected_rows = 0;
 
-        $fc_id = intval($_POST['modify_financecategory_fc_id']);
-        $name = trim($_POST['modify_financecategory_name']);
-        $parent_id = intval($_POST['modify_financecategory_parent_id']);
-        $weight = intval($_POST['modify_financecategory_weight']);
+        $fc_id = intval($_POST['finance_category_fc_id']);
+        $name = trim($_POST['finance_category_name']);
+        $parent_id = intval($_POST['finance_category_parent_id']);
+        $weight = intval($_POST['finance_category_weight']);
 
         if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fc_id))
         {

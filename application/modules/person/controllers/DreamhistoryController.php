@@ -41,10 +41,10 @@ class person_DreamhistoryController extends Zend_Controller_Action
     public function adddreamhistoryAction()
     {
         $affect_rows = 0;
-        if (isset($_POST['add_dreamhistory_date']))
+        if (isset($_POST['dream_history_date']))
         {
-            $occur_date = $_POST['add_dreamhistory_date'];
-            $occur_count = intval($_POST['add_dreamhistory_count']);
+            $occur_date = $_POST['dream_history_date'];
+            $occur_count = intval($_POST['dream_history_count']);
             if (Bill_Util::validDate($occur_date) && $occur_count > 0)
             {
                 $date = date('Y-m-d H:i:s');
@@ -82,10 +82,10 @@ class person_DreamhistoryController extends Zend_Controller_Action
     public function modifydreamhistoryAction()
     {
         $affect_rows = 0;
-        if (isset($_POST['modify_dreamhistory_id']))
+        if (isset($_POST['dream_history_id']))
         {
-            $dh_id = intval($_POST['modify_dreamhistory_id']);
-            $dh_count = intval($_POST['modify_dreamhistory_count']);
+            $dh_id = intval($_POST['dream_history_id']);
+            $dh_count = intval($_POST['dream_history_count']);
             if ($dh_id > 0 && $dh_count > 0)
             {
                 $update_data = [
