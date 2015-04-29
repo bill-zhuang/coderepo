@@ -12,10 +12,10 @@
             <!-- panel body -->
             <div class="panel-body">
                 <div class="row">
-                    <form class="form-inline">
+                    <form action="/person/financecategory/index" method="get" id="formSearch" class="form-inline">
                         <div class="col-sm-10 col-md-10 col-lg-10">
-                            分类名: <input type="text" class="form-control" id="keyword"/>
-                            <button class="btn btn-primary" type="button" id="btn_search">
+                            分类名: <input type="text" class="form-control" id="keyword" name="keyword"/>
+                            <button class="btn btn-primary" type="submit" id="btn_search">
                                 <span class="glyphicon glyphicon-search"></span>
                                 <span>搜索</span>
                             </button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -33,6 +33,7 @@
                             </select>
                             &nbsp;<label>每页</label>
                         </div>
+                        <input type="hidden" id="current_page" name="current_page"/>
                     </form>
                 </div><hr>
 
@@ -170,20 +171,7 @@
         $(document).ready(function(){
             $('#keyword').val('<?php echo $this->keyword; ?>');
             $('#page_length').val(<?php echo $this->page_length; ?>);
-        });
-
-        $('#keyword').on('keydown', function(event){
-            if (event.keyCode == 13) {
-                //enter key
-                event.preventDefault();
-                $('#btn_search').click();
-            }
-        });
-
-        $('#btn_search').on('click', function(){
-            var keyword = $.trim($('#keyword').val());
-            var page_length = <?php echo $this->page_length; ?>;
-            search(1, page_length, keyword);
+            $('#current_page').val(<?php echo $this->current_page; ?>);
         });
 
         $('#btn_add').on('click', function(){
@@ -272,16 +260,6 @@
         }
 
         /*  --------------------------------------------------------------------------------------------------------  */
-        function search(current_page, page_length, keyword)
-        {
-            var params = {
-                'keyword': keyword || $.trim($('#keyword').val()),
-                'current_page': current_page || <?php echo $this->current_page; ?>,
-                'page_length': page_length || <?php echo $this->page_length; ?>
-            };
-            location.href = '/person/financecategory/index?' + $.param(params);
-        }
-
         $('#pagination').twbsPagination({
             totalPages: <?php echo $this->total_pages; ?>,
             startPage: <?php echo $this->current_page; ?>,
@@ -291,12 +269,15 @@
             next: '下一页',
             last: '尾页',
             onPageClick: function (event, page) {
-                search(page);
+                $('#current_page').val(page);
+                $('#formSearch')[0].submit();
             }
         });
 
         $('#page_length').on('change', function(){
-            search(1, this.value);
+            $('#current_page').val(1);
+            $('#page_length').val(this.value);
+            $('#formSearch')[0].submit();
         });
         </script>
     </body>
