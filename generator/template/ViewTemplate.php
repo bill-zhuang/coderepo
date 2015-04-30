@@ -181,7 +181,7 @@ $table_keys = array_keys($table_data);
         <script src="/js/common.js"></script>
         <script src="/js/alertInfo.js"></script>
 <?php echo str_repeat(' ', 4 * 2) . '<script>' . PHP_EOL; ?>
-        var js_data = '<?php echo '<?php echo json_encode($this->js_data); ?>' ?>';
+        var js_data = <?php echo '<?php echo json_encode($this->js_data); ?>'; ?>;
         $(document).ready(function(){
             $('#keyword').val(js_data.keyword);
             $('#page_length').val(js_data.page_length);
