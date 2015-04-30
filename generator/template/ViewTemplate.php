@@ -9,6 +9,7 @@
 /* @var $table_data array table fields and default value */
 /* @var $form_name_postfix string form postfix name*/
 /* @var $form_element_prefix string prefix of form element */
+/* @var $view_modal_size string modal size */
 /* @var $is_blacklist bool use blacklist or not */
 /* @var $is_ckeditor bool use ckeditor or not */
 
@@ -127,7 +128,7 @@ $table_keys = array_keys($table_data);
 <?php if ($primary_id !== ''){ ?>
         <!-- modal -->
         <div id="modal<?php echo $form_name_postfix; ?>" class="modal fade" >
-            <div class="modal-dialog bill_modal_lg" >
+            <div class="modal-dialog bill_modal_<?php echo $view_modal_size; ?>" >
                 <div class="modal-content">
                     <div class="modal-header">
                         <span>新增/修改</span>

@@ -14,6 +14,7 @@ class TemplateGenerator
     private $_model_names;
     private $_table_names;
     private $_table_prefix;
+    private $_view_modal_size;
     private $_is_blacklist;
     private $_is_ckeditor;
 
@@ -35,6 +36,7 @@ class TemplateGenerator
             'create time' => 'fc_create_time',
             'update time' => 'fc_update_time',
         ];
+        $this->_view_modal_size = 'md'; //optional: sm/md/lg, refer to small/middle/large
         $this->_is_blacklist = false;
         $this->_is_ckeditor = false;
         //tables
@@ -109,6 +111,7 @@ class TemplateGenerator
                 'table_data' => empty($this->_table_names) ? [] : $this->_getTableInsertArrayForController($this->_table_names[0]),
                 'form_element_prefix' => strtolower(implode('_', $camel_name)),
                 'form_name_postfix' => implode('', $camel_name),
+                'view_modal_size' => $this->_view_modal_size,
                 'is_blacklist' => $this->_is_blacklist,
                 'is_ckeditor' => $this->_is_ckeditor,
             ];
