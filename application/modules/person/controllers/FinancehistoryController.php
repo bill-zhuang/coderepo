@@ -61,7 +61,7 @@ class person_FinancehistoryController extends Zend_Controller_Action
         //choose last one year data.
         $start_date = date('Y-m-d', strtotime('- 1 year'));
         $year_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
-        $start_date = date('Y-m-d', strtotime('- 30 day'));
+        $start_date = date('Y-m-d', strtotime('- 29 day'));
         $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
 
         $this->view->assign([
