@@ -136,8 +136,8 @@ echo PHP_EOL;
                     //TODO set update data
                 ];
                 $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('status=1 and <?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
-                $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '_', $table_names[0]); ?>->update($update_data, $where);
-                $this->_adapter<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+                $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($update_data, $where);
+                $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
             }
             catch (Exception $e)
             {
