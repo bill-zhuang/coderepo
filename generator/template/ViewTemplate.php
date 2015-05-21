@@ -337,6 +337,11 @@ foreach ($table_data as $key => $default_value)
             $('#page_length').val(this.value);
             $('#formSearch')[0].submit();
         });
+
+        $('#btn_search').on('click', function(){
+            $('#current_page').val(1);
+            $('#formSearch')[0].submit();
+        });
 <?php } ?>
 <?php echo str_repeat(' ', 4 * 2) . '</script>' . PHP_EOL; ?>
     </body>
