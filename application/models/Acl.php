@@ -11,6 +11,11 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
         {
             return;
         }
+        if ($request_module == 'person' && $request_controller == 'console')
+        {
+            //console not auth
+            return;
+        }
 
         $current_role = Application_Model_Auth::isValid();
 
