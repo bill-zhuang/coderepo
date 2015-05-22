@@ -6,6 +6,7 @@ class person_ConsoleController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
         $this->_helper->layout()->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function indexAction()
@@ -14,6 +15,5 @@ class person_ConsoleController extends Zend_Controller_Action
         $opts = new Zend_Console_Getopt('i');
         $args = $opts->getRemainingArgs();
         echo 'console success';
-        exit;
     }
 }
