@@ -24,8 +24,8 @@
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me"/>
-                                        <span>记住我</span>
+                                        <input name="remember" id="remember" type="checkbox" value="Remember Me"/>
+                                        <span>记住帐号</span>
                                     </label>
                                 </div>
                                 <div class="form-group">
@@ -44,7 +44,16 @@
 
         <script src="/bootstrap/js/jquery-1.11.0.min.js" charset="UTF-8"></script>
         <script src="/bootstrap/js/bootstrap.min.js" charset="UTF-8"></script>
+        <script src="/bootstrap/js/jquery.cookie.js"></script>
         <script>
+        $(document).ready(function(){
+            var cookie_name =  $.cookie('name');
+            if (typeof cookie_name != 'undefined') {
+                $('#remember').prop('checked', true);
+                $('#username').val(cookie_name);
+            }
+        });
+
         $('#login').on('submit', function(event){
             event.preventDefault();
             loginCheck();
@@ -60,6 +69,9 @@
             } else if (password == '') {
                 alert('密码不能为空！');
             } else {
+                if($('#remember').prop('checked')) {
+                    $.cookie('name', name, {expires : 1, path : '/'});
+                }
                 $('#login').get(0).submit();
             }
         }
