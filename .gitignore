@@ -1,6 +1,11 @@
-.settings/*
-library/Zend
-tests/*
+.settings
+.project
 .buildpath
+
+library/Zend
+
+tests/*
+
 .zfproject.xml
+
 .idea
