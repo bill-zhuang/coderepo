@@ -4,8 +4,4 @@
 
 library/Zend
 
-tests/*
-
-.zfproject.xml
-
 .idea
