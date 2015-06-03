@@ -14,6 +14,7 @@ class Bill_Network
             //$script_url=$remote_house/script.php?parameters=...
             $socket_data = "GET $script_url HTTP/1.1\r\n";
             $socket_data .= "Host: $host\r\n";
+            $socket_data .= "Cookie: PHPSESSID=" . $_COOKIE['PHPSESSID'] . "\r\n";
             $socket_data .= "Connection: Close\r\n\r\n";
             fwrite($socket_con, $socket_data);
             /*while (!feof($socket_con))
