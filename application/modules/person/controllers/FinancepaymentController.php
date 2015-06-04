@@ -27,15 +27,15 @@ class person_FinancepaymentController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $current_page = intval($this->_getParam('current_page', Bootstrap::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bootstrap::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bootstrap::INIT_START_PAGE) * $page_length;
+        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
+        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
+        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
         $payment_date = trim($this->_getParam('payment_date', ''));
 
         $conditions = [
             'fp_status' => [
                 'compare_type' => '= ?',
-                'value' => Bootstrap::VALID_STATUS
+                'value' => Bill_Constant::VALID_STATUS
             ]
         ];
         if ('' != $payment_date)
@@ -57,7 +57,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
             'data' => $data,
             'current_page' => $current_page,
             'page_length' => $page_length,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bootstrap::INIT_TOTAL_PAGE,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
             'total' => $total,
             'start' => $start,
             'payment_date' => $payment_date
@@ -67,7 +67,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
 
     public function addfinancepaymentAction()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_payment_payment']))
         {
             try 
@@ -78,7 +78,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
             }
         }
@@ -89,7 +89,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
     
     public function modifyfinancepaymentAction()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_payment_fp_id']))
         {
             try
@@ -100,7 +100,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
             }
         }
@@ -111,7 +111,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
     
     public function deletefinancepaymentAction()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['fp_id']))
         {
             try
@@ -119,7 +119,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
                 $fp_id = intval($_POST['fp_id']);
                 $update_data = [
-                    'fp_status' => Bootstrap::INVALID_STATUS,
+                    'fp_status' => Bill_Constant::INVALID_STATUS,
                     'fp_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_status=1 and fp_id=?', $fp_id);
@@ -128,7 +128,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
             }
         }
@@ -143,7 +143,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
         if (isset($_GET['fp_id']))
         {
             $fp_id = intval($_GET['fp_id']);
-            if ($fp_id > Bootstrap::INVALID_PRIMARY_ID)
+            if ($fp_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_finance_payment->getFinancePaymentByID($fp_id);
             }
@@ -167,7 +167,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
             'fp_payment_date' => $payment_date,
             'fc_id' => $category_id,
             'fp_detail' => $intro,
-            'fp_status' => Bootstrap::VALID_STATUS,
+            'fp_status' => Bill_Constant::VALID_STATUS,
             'fp_create_time' => $add_time,
             'fp_update_time' => $add_time
         ];

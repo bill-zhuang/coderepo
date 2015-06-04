@@ -48,15 +48,15 @@ echo PHP_EOL;
     {
         // action body
 <?php if(!empty($model_names)){ ?>
-        $current_page = intval($this->_getParam('current_page', Bootstrap::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bootstrap::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bootstrap::INIT_START_PAGE) * $page_length;
+        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
+        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
+        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
         $keyword = trim($this->_getParam('keyword', ''));
 
         $conditions = [
             '<?php echo ($status_name === '') ? 'todo status' : $status_name; ?>' => [
                 'compare_type' => '= ?',
-                'value' => Bootstrap::VALID_STATUS
+                'value' => Bill_Constant::VALID_STATUS
             ]
         ];
         $order_by = '<?php echo $primary_id; ?> ASC'; //TODO reset order by
@@ -66,7 +66,7 @@ echo PHP_EOL;
         $js_data = [
             'current_page' => $current_page,
             'page_length' => $page_length,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bootstrap::INIT_TOTAL_PAGE,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
             'total' => $total,
             'start' => $start,
             'keyword' => $keyword,
@@ -81,7 +81,7 @@ echo PHP_EOL;
 <?php if(!empty($model_names)){ ?>
     public function add<?php echo $controller_name; ?>Action()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['<?php echo $form_element_prefix; ?>_name']))
         {
             try 
@@ -92,7 +92,7 @@ echo PHP_EOL;
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
             }
         }
@@ -103,7 +103,7 @@ echo PHP_EOL;
     
     public function modify<?php echo $controller_name; ?>Action()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>']))
         {
             try
@@ -114,7 +114,7 @@ echo PHP_EOL;
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
             }
         }
@@ -125,7 +125,7 @@ echo PHP_EOL;
     
     public function delete<?php echo $controller_name; ?>Action()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['<?php echo $primary_id; ?>']))
         {
             try
@@ -141,7 +141,7 @@ echo PHP_EOL;
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
             }
         }
@@ -156,7 +156,7 @@ echo PHP_EOL;
         if (isset($_GET['<?php echo $primary_id; ?>']))
         {
             $<?php echo $primary_id; ?> = intval($_GET['<?php echo $primary_id; ?>']);
-            if ($<?php echo $primary_id; ?> > Bootstrap::INVALID_PRIMARY_ID)
+            if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>ByID($<?php echo $primary_id; ?>);
             }
@@ -180,7 +180,7 @@ echo PHP_EOL;
         ];
         $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->insert($data);
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-        if ($affected_rows > Bootstrap::INIT_AFFECTED_ROWS)
+        if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
         {
             $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($affected_rows, '<?php echo $form_element_prefix; ?>_image');
         }
@@ -206,7 +206,7 @@ echo PHP_EOL;
         $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
         $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($data, $where);
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-        if ($affected_rows > Bootstrap::INIT_AFFECTED_ROWS)
+        if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
         {
             $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, '<?php echo $form_element_prefix; ?>_image');
         }
@@ -217,7 +217,7 @@ echo PHP_EOL;
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
     private function _update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, $file_id)
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         $image_url = $this->_upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, $file_id);
         if ($image_url != '')
         {

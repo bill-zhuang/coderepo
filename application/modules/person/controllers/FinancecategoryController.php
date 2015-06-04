@@ -22,15 +22,15 @@ class person_FinancecategoryController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $current_page = intval($this->_getParam('current_page', Bootstrap::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bootstrap::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bootstrap::INIT_START_PAGE) * $page_length;
+        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
+        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
+        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
         $keyword = trim($this->_getParam('keyword', ''));
 
         $conditions = [
             'fc_status' => [
                 'compare_type' => '= ?',
-                'value' => Bootstrap::VALID_STATUS
+                'value' => Bill_Constant::VALID_STATUS
             ]
         ];
         if ('' !== $keyword)
@@ -48,7 +48,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
             'data' => $data,
             'current_page' => $current_page,
             'page_length' => $page_length,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bootstrap::INIT_TOTAL_PAGE,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
             'total' => $total,
             'start' => $start,
             'keyword' => $keyword,
@@ -58,7 +58,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
 
     public function addfinancecategoryAction()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_category_name']))
         {
             try 
@@ -69,7 +69,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_category->getAdapter()->rollBack();
             }
         }
@@ -80,7 +80,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
     
     public function modifyfinancecategoryAction()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_category_fc_id']))
         {
             try
@@ -91,7 +91,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_category->getAdapter()->rollBack();
             }
         }
@@ -102,7 +102,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
     
     public function deletefinancecategoryAction()
     {
-        $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['fc_id']))
         {
             try
@@ -110,7 +110,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
                 $this->_adapter_finance_category->getAdapter()->beginTransaction();
                 $fc_id = intval($_POST['fc_id']);
                 $update_data = [
-                    'fc_status' => Bootstrap::INVALID_STATUS,
+                    'fc_status' => Bill_Constant::INVALID_STATUS,
                     'fc_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_finance_category->getAdapter()
@@ -120,7 +120,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
             }
             catch (Exception $e)
             {
-                $affected_rows = Bootstrap::INIT_AFFECTED_ROWS;
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_category->getAdapter()->rollBack();
             }
         }
@@ -135,7 +135,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
         if (isset($_GET['fc_id']))
         {
             $fc_id = intval($_GET['fc_id']);
-            if ($fc_id > Bootstrap::INVALID_PRIMARY_ID)
+            if ($fc_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_finance_category->getFinanceCategoryByID($fc_id);
             }
@@ -173,7 +173,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
                 'fc_name' => $name,
                 'fc_parent_id' => $parent_id,
                 'fc_weight' => $weight,
-                'fc_status' => Bootstrap::VALID_STATUS,
+                'fc_status' => Bill_Constant::VALID_STATUS,
                 'fc_create_time' => $add_time,
                 'fc_update_time' => $add_time
             ];
