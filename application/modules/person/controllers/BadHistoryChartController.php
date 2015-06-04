@@ -1,6 +1,6 @@
 <?php
 
-class person_BadhistorychartController extends Zend_Controller_Action
+class person_BadHistoryChartController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_BadHistory

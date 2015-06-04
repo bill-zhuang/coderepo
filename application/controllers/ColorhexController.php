@@ -1,6 +1,6 @@
 <?php
 
-class ColorhexController extends Zend_Controller_Action
+class ColorHexController extends Zend_Controller_Action
 {
 
     public function init()

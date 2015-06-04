@@ -1,6 +1,6 @@
 <?php
 
-class person_DreamhistoryController extends Zend_Controller_Action
+class person_DreamHistoryController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_DreamHistory
@@ -38,7 +38,7 @@ class person_DreamhistoryController extends Zend_Controller_Action
         $this->view->assign($view_data);
     }
 
-    public function adddreamhistoryAction()
+    public function addDreamHistoryAction()
     {
         $affect_rows = 0;
         if (isset($_POST['dream_history_date']))
@@ -63,7 +63,7 @@ class person_DreamhistoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function getdreamhistoryAction()
+    public function getDreamHistoryAction()
     {
         $data = [];
         if (isset($_GET['dh_id']))
@@ -79,7 +79,7 @@ class person_DreamhistoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function modifydreamhistoryAction()
+    public function modifyDreamHistoryAction()
     {
         $affect_rows = 0;
         if (isset($_POST['dream_history_id']))
@@ -101,7 +101,7 @@ class person_DreamhistoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function deletedreamhistoryAction()
+    public function deleteDreamHistoryAction()
     {
         $affect_rows = 0;
         if (isset($_POST['dh_id']))

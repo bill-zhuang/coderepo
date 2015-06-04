@@ -128,7 +128,7 @@
                 var click_info = chart_line.getPointsAtEvent(event);
                 //console.log(click_info);
                 if (click_info.label != '') {
-                    var post_url = '/person/dreamhistorychart/getdreamhistorymonthdetail';
+                    var post_url = '/person/dream-history-chart/get-dream-history-month-detail';
                     var post_data = {
                         select_date: click_info[0]['label']
                     };

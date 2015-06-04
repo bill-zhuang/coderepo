@@ -28,7 +28,7 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
         return parent::delete($where);
     }
 
-    public function getBackenduserCount(array $conditions)
+    public function getBackendUserCount(array $conditions)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
@@ -40,7 +40,7 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
         return $count[0]['total'];
     }
 
-    public function getBackenduserData(array $conditions, $count, $offset, $order_by)
+    public function getBackendUserData(array $conditions, $count, $offset, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $key => $content)
@@ -52,7 +52,7 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
         return $data;
     }
 
-    public function getBackenduserByID($bu_id)
+    public function getBackendUserByID($bu_id)
     {
         return $this->select()->reset()
             ->where('bu_id=?', $bu_id)

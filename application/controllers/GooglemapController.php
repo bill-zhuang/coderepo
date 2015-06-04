@@ -1,6 +1,6 @@
 <?php
 
-class GooglemapController extends Zend_Controller_Action
+class GoogleMapController extends Zend_Controller_Action
 {
 
     public function init()
@@ -15,7 +15,7 @@ class GooglemapController extends Zend_Controller_Action
         
     }
     
-    public function marklocationAction()
+    public function markLocationAction()
     {
         $lng_lat = array();
         if($_GET && $_GET['location'])
@@ -27,7 +27,7 @@ class GooglemapController extends Zend_Controller_Action
         exit;
     }
 
-    public function multiplelocationAction()
+    public function multipleLocationAction()
     {
         $lng_diff = 121.43 - 121.06;
         $lat_diff = 31.21 - 30.55;

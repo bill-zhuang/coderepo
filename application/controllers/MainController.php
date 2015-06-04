@@ -23,7 +23,7 @@ class MainController extends Zend_Controller_Action
         
     }
     
-    public function modifypasswordAction()
+    public function modifyPasswordAction()
     {
         if ($_POST)
         {

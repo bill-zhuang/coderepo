@@ -13,7 +13,7 @@
             <!-- panel body -->
             <div class="panel-body">
                 <div class="row">
-                    <form action="/person/financepayment/index" method="get" id="formSearch" class="form-inline">
+                    <form action="/person/finance-payment/index" method="get" id="formSearch" class="form-inline">
                         <div class="col-sm-10 col-md-10 col-lg-10">
                             日期: <input type="text" class="form-control form_date" id="payment_date" name="payment_date"/>
                             <button class="btn btn-primary" type="submit" id="btn_search">
@@ -169,7 +169,7 @@
             var error_num = validInput(type);
             if(error_num == 0) {
                 $('#btn_submit_finance_payment').attr('disabled', true);
-                var post_url = '/person/financepayment/' + type + 'financepayment';
+                var post_url = '/person/finance-payment/' + type + '-finance-payment';
                 var post_data = new FormData(this);
                 var msg_success = (fp_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
                 var msg_error = (fp_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
@@ -180,7 +180,7 @@
 
         $('a[id^=modify_]').on('click', function(){
             var fp_id = $(this).attr('id').substr('modify_'.length);
-            var post_url = '/person/financepayment/getfinancepayment';
+            var post_url = '/person/finance-payment/get-finance-payment';
             var post_data = {
                 'fp_id' : fp_id
             };
@@ -200,7 +200,7 @@
         $('a[id^=delete_]').on('click', function(){
             if (confirm(MESSAGE_DELETE_CONFIRM)) {
                 var fp_id = $(this).attr('id').substr('delete_'.length);
-                var url = '/person/financepayment/deletefinancepayment';
+                var url = '/person/finance-payment/delete-finance-payment';
                 var data = {
                     'fp_id' : fp_id
                 };

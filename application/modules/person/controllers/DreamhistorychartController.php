@@ -1,6 +1,6 @@
 <?php
 
-class person_DreamhistorychartController extends Zend_Controller_Action
+class person_DreamHistoryChartController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_DreamHistory
@@ -34,7 +34,7 @@ class person_DreamhistorychartController extends Zend_Controller_Action
         $this->view->all_chart_data = json_encode($all_chart_data);
     }
 
-    public function getdreamhistorymonthdetailAction()
+    public function getDreamHistoryMonthDetailAction()
     {
         $chart_data = [
             'period' => [],

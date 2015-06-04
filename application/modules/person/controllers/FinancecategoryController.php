@@ -1,6 +1,6 @@
 <?php
 
-class person_FinancecategoryController extends Zend_Controller_Action
+class person_FinanceCategoryController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_FinanceCategory
@@ -56,7 +56,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
         $this->view->assign($view_data);
     }
 
-    public function addfinancecategoryAction()
+    public function addFinanceCategoryAction()
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_category_name']))
@@ -78,7 +78,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
         exit;
     }
     
-    public function modifyfinancecategoryAction()
+    public function modifyFinanceCategoryAction()
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_category_fc_id']))
@@ -100,7 +100,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
         exit;
     }
     
-    public function deletefinancecategoryAction()
+    public function deleteFinanceCategoryAction()
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['fc_id']))
@@ -129,7 +129,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
         exit;
     }
     
-    public function getfinancecategoryAction()
+    public function getFinanceCategoryAction()
     {
         $data = [];
         if (isset($_GET['fc_id']))
@@ -145,7 +145,7 @@ class person_FinancecategoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function getfinancesubcategoryAction()
+    public function getFinanceSubcategoryAction()
     {
         $data = [];
         if (isset($_GET['parent_id']))

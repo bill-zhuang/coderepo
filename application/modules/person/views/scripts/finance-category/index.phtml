@@ -12,7 +12,7 @@
             <!-- panel body -->
             <div class="panel-body">
                 <div class="row">
-                    <form action="/person/financecategory/index" method="get" id="formSearch" class="form-inline">
+                    <form action="/person/finance-category/index" method="get" id="formSearch" class="form-inline">
                         <div class="col-sm-10 col-md-10 col-lg-10">
                             分类名: <input type="text" class="form-control" id="keyword" name="keyword"/>
                             <button class="btn btn-primary" type="submit" id="btn_search">
@@ -155,7 +155,7 @@
             var error_num = validInput(type);
             if(error_num == 0) {
                 $('#btn_submit_finance_category').attr('disabled', true);
-                var post_url = '/person/financecategory/' + type + 'financecategory';
+                var post_url = '/person/finance-category/' + type + '-finance-category';
                 var post_data = new FormData(this);
                 var msg_success = (fc_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
                 var msg_error = (fc_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
@@ -166,7 +166,7 @@
 
         $('a[id^=modify_]').on('click', function(){
             var fc_id = $(this).attr('id').substr('modify_'.length);
-            var post_url = '/person/financecategory/getfinancecategory';
+            var post_url = '/person/finance-category/get-finance-category';
             var post_data = {
                 'fc_id' : fc_id
             };
@@ -185,7 +185,7 @@
         $('a[id^=delete_]').on('click', function(){
             if (confirm(MESSAGE_DELETE_CONFIRM)) {
                 var fc_id = $(this).attr('id').substr('delete_'.length);
-                var url = '/person/financecategory/deletefinancecategory';
+                var url = '/person/finance-category/delete-finance-category';
                 var data = {
                     'fc_id' : fc_id
                 };

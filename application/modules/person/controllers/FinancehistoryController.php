@@ -1,6 +1,6 @@
 <?php
 
-class person_FinancehistoryController extends Zend_Controller_Action
+class person_FinanceHistoryController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_FinanceCategory

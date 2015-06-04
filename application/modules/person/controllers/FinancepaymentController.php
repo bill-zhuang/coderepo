@@ -1,6 +1,6 @@
 <?php
 
-class person_FinancepaymentController extends Zend_Controller_Action
+class person_FinancePaymentController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_FinanceCategory
@@ -65,7 +65,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
         $this->view->assign($view_data);
     }
 
-    public function addfinancepaymentAction()
+    public function addFinancePaymentAction()
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_payment_payment']))
@@ -87,7 +87,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
         exit;
     }
     
-    public function modifyfinancepaymentAction()
+    public function modifyFinancePaymentAction()
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['finance_payment_fp_id']))
@@ -109,7 +109,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
         exit;
     }
     
-    public function deletefinancepaymentAction()
+    public function deleteFinancePaymentAction()
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['fp_id']))
@@ -137,7 +137,7 @@ class person_FinancepaymentController extends Zend_Controller_Action
         exit;
     }
     
-    public function getfinancepaymentAction()
+    public function getFinancePaymentAction()
     {
         $data = [];
         if (isset($_GET['fp_id']))

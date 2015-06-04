@@ -1,6 +1,6 @@
 <?php
 
-class person_BadhistoryController extends Zend_Controller_Action
+class person_BadHistoryController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_BadHistory
@@ -38,7 +38,7 @@ class person_BadhistoryController extends Zend_Controller_Action
         $this->view->assign($view_data);
     }
 
-    public function addbadhistoryAction()
+    public function addBadHistoryAction()
     {
         $affect_rows = 0;
         if (isset($_POST['bad_history_date']))
@@ -63,7 +63,7 @@ class person_BadhistoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function getbadhistoryAction()
+    public function getBadHistoryAction()
     {
         $data = [];
         if (isset($_GET['bh_id']))
@@ -79,7 +79,7 @@ class person_BadhistoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function modifybadhistoryAction()
+    public function modifyBadHistoryAction()
     {
         $affect_rows = 0;
         if (isset($_POST['bad_history_id']))
@@ -101,7 +101,7 @@ class person_BadhistoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function deletebadhistoryAction()
+    public function deleteBadHistoryAction()
     {
         $affect_rows = 0;
         if (isset($_POST['bh_id']))
