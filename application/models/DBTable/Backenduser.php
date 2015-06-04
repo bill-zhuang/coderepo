@@ -78,4 +78,13 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
 
         return $count[0]['total'] == 0 ? false : true;
     }
+
+    public function getUserName($buid)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'bu_name')
+            ->where('bu_id=?', $buid)
+            ->query()->fetch();
+        return isset($data['bu_name']) ? $data['bu_name'] : '';
+    }
 }
