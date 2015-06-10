@@ -69,6 +69,9 @@ class Bill_Mail
             );
         }
 
+        //todo set mail from alpha or product
+        $env = 'product';
+        $title = '(' . Application_Model_Auth::getIdentity()->name . '-' . $env . ')' . $title;
         $mail->setSubject($title);
         $mail->send($transport);
 
