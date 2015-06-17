@@ -156,14 +156,15 @@
             $('#current_page').val(<?php echo $this->current_page; ?>);
         });
 
+        var g_selectpicker = $('#finance_payment_fc_id').selectpicker();
+
         $('#btn_add').on('click', function(){
             window.FinancePaymentForm.reset();
             $('#finance_payment_payment_date').val(getCurrentDate());
+            g_selectpicker.selectpicker('val', $("#finance_payment_fc_id option:first").val());
             $('#btn_submit_finance_payment').attr('disabled', false);
             $('#FinancePaymentModal').modal('show');
         });
-
-        var g_selectpicker = $('#finance_payment_fc_id').selectpicker();
 
         $('#FinancePaymentForm').on('submit', (function(event){
             event.preventDefault();
