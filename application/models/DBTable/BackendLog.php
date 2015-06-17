@@ -60,7 +60,8 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
 
         if ($sql != '')
         {
-            $user_id = Application_Model_Auth::getIdentity()->bu_id;
+            $user_id = isset(Application_Model_Auth::getIdentity()->bu_id) ?
+                Application_Model_Auth::getIdentity()->bu_id : 0;
             $date_time = date('Y-m-d H:i:s');
             $insert_data = [
                 'content' => $sql,
