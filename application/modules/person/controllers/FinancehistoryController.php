@@ -95,8 +95,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         $all_chart_data = [
             'category' => [],
             'payment' => [],
-        ];
-        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByCategory($start_date);
+        ];try{
+        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByCategory($start_date);}catch (Exception $e){echo $e->getMessage();exit;}
         foreach ($all_data as $all_value)
         {
             $all_chart_data['category'][] = $this->_categories[$all_value['fc_id']];
