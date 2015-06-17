@@ -2,12 +2,17 @@
 
 class Application_Model_DBTable_FinancePayment extends Application_Model_DBTableFactory
 {
+    private $_join_table;
+    private $_join_condition;
     private $_adapter_backend_log;
 
     public function __construct()
     {
         parent::__construct('finance_payment');
         $this->_adapter_backend_log = new Application_Model_DBTable_BackendLog();
+
+        $this->_join_table = 'finance_payment_map';
+        $this->_join_condition = 'finance_payment.fp_id=finance_payment_map.fp_id';
     }
 
     public function insert(array $data)
@@ -83,11 +88,14 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
     public function getTotalPaymentHistoryDataByCategory($start_date)
     {
         return $this->select()->reset()
-            ->from($this->_name, ['fc_id', 'sum(fp_payment) as payment'])
-            ->where('fp_status=?', 1)
-            ->where('fp_payment_date>=?', $start_date)
-            ->group('fc_id')
-            ->order('payment desc')
+            ->setIntegrityCheck(false)
+            ->from($this->_name, ['sum(fp_payment) as payment'])
+            ->joinInner($this->_join_table, $this->_join_condition, 'fc_id')
+            ->where($this->_name . '.fp_status=?', 1)
+            ->where($this->_name . '.fp_payment_date>=?', $start_date)
+            ->where($this->_join_table . '.status=?', 1)
+            ->group($this->_join_table . '.fc_id')
+            ->order($this->_name . '.fp_payment desc')
             ->query()->fetchAll();
     }
 
