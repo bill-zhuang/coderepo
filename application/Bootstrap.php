@@ -23,7 +23,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     )
                 );
             }
-            if (isset($opts->transfer))
+            if (isset($opts->transferPaymentCategory))
             {
                 $route = new Zend_Controller_Router_Route_Hostname(
                     '',
