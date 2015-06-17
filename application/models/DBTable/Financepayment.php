@@ -90,4 +90,12 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             ->order('payment desc')
             ->query()->fetchAll();
     }
+
+    public function getAllPaymentDataForTransfer()
+    {
+        return $this->select()->reset()
+            ->from($this->_name, ['fp_id', 'fc_id'])
+            ->where('fp_status=?', 1)
+            ->query()->fetchAll();
+    }
 }

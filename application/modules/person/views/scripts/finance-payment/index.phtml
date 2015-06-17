@@ -2,6 +2,7 @@
 <html>
     <head>
         <link href="/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
+        <link href="/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
         <link href="/css/common.css" rel="stylesheet" />
     </head>
     <body>
@@ -116,7 +117,7 @@
                             </div><br />
                             <div class="input-group">
                                 <span class="input-group-addon">分类：</span>
-                                <select name="finance_payment_fc_id" id="finance_payment_fc_id" class="form-control">
+                                <select name="finance_payment_fc_id[]" id="finance_payment_fc_id" class="form-control" multiple="multiple">
                                     <?php foreach($this->parent_categories as $key => $value){ ?>
                                         <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
                                     <?php } ?>
@@ -144,6 +145,7 @@
         <script src="/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
         <script src="/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
         <script src="/js/datetimepicker.js"></script>
+        <script src="/bootstrap-select/bootstrap-select.min.js"></script>
         <script src="/js/util.js"></script>
         <script src="/js/common.js"></script>
         <script src="/js/alertInfo.js"></script>
@@ -160,6 +162,8 @@
             $('#btn_submit_finance_payment').attr('disabled', false);
             $('#FinancePaymentModal').modal('show');
         });
+
+        var g_selectpicker = $('#finance_payment_fc_id').selectpicker();
 
         $('#FinancePaymentForm').on('submit', (function(event){
             event.preventDefault();
@@ -188,7 +192,7 @@
             var success_function = function(result){
                 $('#finance_payment_payment_date').val(result.fp_payment_date);
                 $('#finance_payment_payment').val(result.fp_payment);
-                $('#finance_payment_fc_id').val(result.fc_id);
+                g_selectpicker.selectpicker('val', result.fc_ids);
                 $('#finance_payment_intro').val(result.fp_detail);
                 $('#finance_payment_fp_id').val(result.fp_id);
                 $('#btn_submit_finance_payment').attr('disabled', false);

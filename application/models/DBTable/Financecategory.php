@@ -84,13 +84,29 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
         return $data[0]['total'] == 0 ? false : true;
     }
 
-    public function getFinaceCategoryName($fc_id)
+    public function getFinanceCategoryName($fc_id)
     {
         $data = $this->select()->reset()
             ->from($this->_name, 'fc_name')
             ->where('fc_id=?', $fc_id)
             ->query()->fetch();
         return isset($data['fc_name']) ? $data['fc_name'] : '';
+    }
+
+    public function getFinanceCategoryNames(array $fc_ids)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'fc_name')
+            ->where('fc_id in(?)', $fc_ids)
+            ->where('fc_status=?', 1)
+            ->query()->fetchAll();
+        $names = [];
+        foreach ($data as $value)
+        {
+            $names[] = $value['fc_name'];
+        }
+
+        return $names;
     }
 
     public function getFinanceSubcategory($parent_id)

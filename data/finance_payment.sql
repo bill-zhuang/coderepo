@@ -23,7 +23,6 @@ CREATE TABLE `finance_payment` (
   `fp_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `fp_payment` float(9,1) unsigned NOT NULL,
   `fp_payment_date` date NOT NULL,
-  `fc_id` int(10) unsigned NOT NULL COMMENT 'finance category primary key',
   `fp_detail` varchar(255) NOT NULL DEFAULT '',
   `fp_status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `fp_create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
