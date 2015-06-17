@@ -29,10 +29,10 @@ class person_ConsoleController extends Zend_Controller_Action
                 'fp_id' => $payment_value['fp_id'],
                 'fc_id' => $payment_value['fc_id'],
                 'status' => Bill_Constant::VALID_STATUS,
-                'create_time' => date('Y-m-d H:i:s'),
-                'update_time' => date('Y-m-d H:i:s')
-            ];try{
-            $adapter_payment_map->insert($map_data);}catch (Exception $e){echo $e->getMessage();exit;}
+                'create_time' => $payment_value['fp_create_time'],
+                'update_time' => $payment_value['fp_update_time']
+            ];
+            $adapter_payment_map->insert($map_data);
         }
     }
 }

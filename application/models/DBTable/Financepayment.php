@@ -94,7 +94,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
     public function getAllPaymentDataForTransfer()
     {
         return $this->select()->reset()
-            ->from($this->_name, ['fp_id', 'fc_id'])
+            ->from($this->_name, ['fp_id', 'fc_id', 'fp_create_time', 'fp_update_time'])
             ->where('fp_status=?', 1)
             ->query()->fetchAll();
     }
