@@ -95,7 +95,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             ->where($this->_name . '.fp_payment_date>=?', $start_date)
             ->where($this->_join_table . '.status=?', 1)
             ->group($this->_join_table . '.fc_id')
-            ->order($this->_name . '.fp_payment desc')
+            ->order('payment desc')
             ->query()->fetchAll();
     }
 
