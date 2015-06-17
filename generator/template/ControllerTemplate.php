@@ -78,6 +78,7 @@ echo PHP_EOL;
         $this->view->assign($view_data);
 <?php } ?>
     }
+
 <?php if(!empty($model_names)){ ?>
     public function add<?php echo $controller_name; ?>Action()
     {
