@@ -106,4 +106,14 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             ->where('fp_status=?', 1)
             ->query()->fetchAll();
     }
+
+    public function getSumPaymentByDate($start_date)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'sum(fp_payment) as total')
+            ->where('fp_payment_date>=?', $start_date)
+            ->where('fp_status=?', 1)
+            ->query()->fetchAll();
+        return floatval($data[0]['total']);
+    }
 }
