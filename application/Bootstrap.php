@@ -4,11 +4,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     protected function _initGetopt()
     {
-        if(is_null($_SERVER['HTTP_HOST']))
+        if(php_sapi_name() === 'cli' || defined('STDIN'))
         {
             $opts = new Zend_Console_Getopt(
                 array(
                     'index|i' => 'index',
+                    'transferPaymentCategory|t' => 'transfer payment category'
                 )
             );
             if(isset($opts->index))
@@ -22,6 +23,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     )
                 );
             }
+            if (isset($opts->transfer))
+            {
+                $route = new Zend_Controller_Router_Route_Hostname(
+                    '',
+                    array(
+                        'module' => 'person',
+                        'controller' => 'console',
+                        'action' => 'transfer-payment-category',
+                    )
+                );
+            }
 
             if(isset($route))
             {
@@ -30,5 +42,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             }
         }
     }
+
 }
 

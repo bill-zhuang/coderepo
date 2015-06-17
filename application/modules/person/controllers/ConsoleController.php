@@ -16,4 +16,23 @@ class person_ConsoleController extends Zend_Controller_Action
         $args = $opts->getRemainingArgs();
         echo 'console success';
     }
+
+    public function transferPaymentCategoryAction()
+    {
+        $adapter_payment = new Application_Model_DBTable_FinancePayment();
+        $adapter_payment_map = new Application_Model_DBTable_FinancePaymentMap();
+
+        $payment_data = $adapter_payment->getAllPaymentDataForTransfer();
+        foreach ($payment_data as $payment_value)
+        {
+            $map_data = [
+                'fp_id' => $payment_value['fp_id'],
+                'fc_id' => $payment_value['fc_id'],
+                'status' => Bill_Constant::VALID_STATUS,
+                'create_time' => date('Y-m-d H:i:s'),
+                'update_time' => date('Y-m-d H:i:s')
+            ];try{
+            $adapter_payment_map->insert($map_data);}catch (Exception $e){echo $e->getMessage();exit;}
+        }
+    }
 }
