@@ -56,7 +56,7 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
     public function getTotalDreamHistoryGroupData()
     {
         return $this->select()->reset()
-            ->from($this->_name, array('date_format(dh_happen_date, "%Y-%m") as period', 'count(dh_count) as number'))
+            ->from($this->_name, array('date_format(dh_happen_date, "%Y-%m") as period', 'sum(dh_count) as number'))
             ->where('dh_status=?', 1)
             ->group('date_format(dh_happen_date, "%Y%m")')
             ->query()->fetchAll();
