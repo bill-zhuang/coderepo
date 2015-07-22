@@ -45,7 +45,6 @@
                                 <td>Operator</td>
                                 <td>create time</td>
                                 <td>update time</td>
-                                <td>操作</td>
                             </tr>
                             <tbody>
                             <?php for($i = 0, $len = count($this->data); $i < $len; $i++){ ?>
@@ -55,15 +54,11 @@
                                     <td><?php echo $this->data[$i]['name']; ?></td>
                                     <td><?php echo $this->data[$i]['create_time']; ?></td>
                                     <td><?php echo $this->data[$i]['update_time']; ?></td>
-                                    <td>
-                                        <a href="#" id="<?php echo 'modify_' . $this->data[$i]['blid']; ?>">修改</a>
-                                        <a href="#" id="<?php echo 'delete_' . $this->data[$i]['blid']; ?>">删除</a>
-                                    </td>
                                 </tr>
                             <?php } ?>
                             <?php if (count($this->data) == 0) { ?>
                                 <tr>
-                                    <td colspan="6" class="bill_table_no_data">对不起,没有符合条件的数据</td>
+                                    <td colspan="5" class="bill_table_no_data">对不起,没有符合条件的数据</td>
                                 </tr>
                             <?php } ?>
                             </tbody>
