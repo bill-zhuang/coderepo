@@ -7,6 +7,8 @@
         <!-- Bootstrap core CSS -->
         <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="/css/layout.css" rel="stylesheet"/>
+        <!-- jquery -->
+        <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
     </head>
 
     <body>
@@ -14,8 +16,11 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Bill</a>
             </div>
-            <div class="navbar-collapse collapse">
-
+            <div class="navbar-collapse collapse navbar-right">
+                <a href="/login/logout" class="navbar-brand" style="color: steelblue;">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    注销&nbsp;&nbsp;&nbsp;
+                </a>
             </div>
         </div>
         <div class="row bill-layout-width">
@@ -96,7 +101,6 @@
         </div>
 
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
         <script src="/bootstrap/js/jquery.cookie.js"></script>
         <script src="/snow/snow.js"></script>
