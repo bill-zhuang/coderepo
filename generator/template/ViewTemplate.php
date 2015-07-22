@@ -15,13 +15,8 @@
 
 $table_keys = array_keys($table_data);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-    <head>
         <link href="/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
         <link href="/css/common.css" rel="stylesheet" />
-    </head>
-    <body>
         <div class="panel panel-warning">
             <!-- panel heading -->
             <div class="panel-heading">
@@ -344,5 +339,3 @@ foreach ($table_data as $key => $default_value)
         });
 <?php } ?>
 <?php echo str_repeat(' ', 4 * 2) . '</script>' . PHP_EOL; ?>
-    </body>
-</html>
