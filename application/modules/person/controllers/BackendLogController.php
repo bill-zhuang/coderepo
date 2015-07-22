@@ -22,6 +22,16 @@ class person_BackendLogController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+    }
+
+    public function ajaxIndexAction()
+    {
+        echo json_encode($this->_index());
+        exit;
+    }
+
+    private function _index()
+    {
         $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
         $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
         $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
@@ -48,18 +58,12 @@ class person_BackendLogController extends Zend_Controller_Action
             $data[$key]['name'] = $this->_adapter_backend_user->getUserName($value['buid']);
         }
 
-        $js_data = [
-            'current_page' => $current_page,
-            'page_length' => $page_length,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
-            'keyword' => $keyword,
-        ];
-        $view_data = [
+        $json_data = [
             'data' => $data,
-            'js_data' => $js_data,
+            'current_page' => $current_page,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
+            'start' => $start,
         ];
-        $this->view->assign($view_data);
+        return $json_data;
     }
 }
