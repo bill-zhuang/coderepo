@@ -1,79 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="/css/login.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4"></div>
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">请登录</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form role="form" action="/login/login" method="post" id="login">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="帐号" name="username" id="username" autofocus/>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="密码" name="password" id="password" value=""/>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" id="remember" type="checkbox" value="Remember Me"/>
-                                        <span>记住帐号</span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-lg btn-success btn-block" type="submit">登录</button><br/>
-                                    <button class="btn btn-lg btn-danger btn-block" type="reset" >重置</button>
-                                </div>
-                            </form>
-                        </div>
-                        <!--<div class="panel-footer">
-                        </div>-->
-                    </div>
+<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/css/login.css" rel="stylesheet" />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4"></div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">请登录</h3>
                 </div>
-                <div class="col-sm-4 col-md-4 col-lg-4"></div>
+                <div class="panel-body">
+                    <form role="form" action="/login/login" method="post" id="login">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="帐号" name="username" id="username" autofocus/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="密码" name="password" id="password" value=""/>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input name="remember" id="remember" type="checkbox" value="Remember Me"/>
+                                <span>记住帐号</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-success btn-block" type="submit">登录</button><br/>
+                            <button class="btn btn-lg btn-danger btn-block" type="reset" >重置</button>
+                        </div>
+                    </form>
+                </div>
+                <!--<div class="panel-footer">
+                </div>-->
             </div>
         </div>
-        <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-        <script src="/bootstrap/js/bootstrap.min.js" charset="UTF-8"></script>
-        <script src="/bootstrap/js/jquery.cookie.js"></script>
-        <script>
-        $(document).ready(function(){
-            var cookie_name =  $.cookie('name');
-            if (typeof cookie_name != 'undefined') {
-                $('#remember').prop('checked', true);
-                $('#username').val(cookie_name);
-            }
-        });
+        <div class="col-sm-4 col-md-4 col-lg-4"></div>
+    </div>
+</div>
+<script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js" charset="UTF-8"></script>
+<script src="/bootstrap/js/jquery.cookie.js"></script>
+<script>
+$(document).ready(function(){
+    var cookie_name =  $.cookie('name');
+    if (typeof cookie_name != 'undefined') {
+        $('#remember').prop('checked', true);
+        $('#username').val(cookie_name);
+    }
+});
 
-        $('#login').on('submit', function(event){
-            event.preventDefault();
-            loginCheck();
-        });
+$('#login').on('submit', function(event){
+    event.preventDefault();
+    loginCheck();
+});
 
-        function loginCheck()
-        {
-            var name = $.trim($('#username').val());
-            var password = $.trim($('#password').val());
+function loginCheck()
+{
+    var name = $.trim($('#username').val());
+    var password = $.trim($('#password').val());
 
-            if (name == '') {
-                alert('用户名不能为空！');
-            } else if (password == '') {
-                alert('密码不能为空！');
-            } else {
-                if($('#remember').prop('checked')) {
-                    $.cookie('name', name, {expires : 1, path : '/'});
-                }
-                $('#login').get(0).submit();
-            }
+    if (name == '') {
+        alert('用户名不能为空！');
+    } else if (password == '') {
+        alert('密码不能为空！');
+    } else {
+        if($('#remember').prop('checked')) {
+            $.cookie('name', name, {expires : 1, path : '/'});
         }
-        </script>
-    </body>
-</html>
+        $('#login').get(0).submit();
+    }
+}
+</script>

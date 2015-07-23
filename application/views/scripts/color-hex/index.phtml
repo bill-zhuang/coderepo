@@ -1,48 +1,40 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link href="/colorhex/farbtasticcolorpicker/farbtastic.css" rel="stylesheet"/>
-        <link href="/colorhex/minicolors/minicolor.css" rel="stylesheet"/>
-        <link href="/css/common.css" rel="stylesheet"/>
-    </head>
-    <body>
-        <div class="panel panel-warning">
-            <!-- panel heading -->
-            <div class="panel-heading">
-                <h2>Color Hex</h2>
-            </div>
-            <!-- panel body -->
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <div class="bill-chart-canvas">
-                            <span>Farbtastic color:</span>
-                            <input type="text" id="farbtastic_color" class="form-control"/>
-                            <div id="farbtastic_colorpicker"></div>
-                        </div>
-                        <div class="bill-chart-canvas bill-margin-left">
-                            <span>mini color:</span><br/>
-                            <input type="text" id="mini_color" />
-                        </div>
-                    </div>
+<link href="/colorhex/farbtasticcolorpicker/farbtastic.css" rel="stylesheet"/>
+<link href="/colorhex/minicolors/minicolor.css" rel="stylesheet"/>
+<link href="/css/common.css" rel="stylesheet"/>
+<div class="panel panel-warning">
+    <!-- panel heading -->
+    <div class="panel-heading">
+        <h2>Color Hex</h2>
+    </div>
+    <!-- panel body -->
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="bill-chart-canvas">
+                    <span>Farbtastic color:</span>
+                    <input type="text" id="farbtastic_color" class="form-control"/>
+                    <div id="farbtastic_colorpicker"></div>
+                </div>
+                <div class="bill-chart-canvas bill-margin-left">
+                    <span>mini color:</span><br/>
+                    <input type="text" id="mini_color" />
                 </div>
             </div>
-            <!-- panel footer -->
-            <!--<div class="panel-footer">
-            </div>-->
         </div>
+    </div>
+    <!-- panel footer -->
+    <!--<div class="panel-footer">
+    </div>-->
+</div>
 
-        <!-- ------------------------------------------javascript--------------------------------------------------- -->
-        <script src="/colorhex/farbtasticcolorpicker/farbtastic.js"></script>
-        <script src="/colorhex/minicolors/minicolor.min.js"></script>
-        <script>
-            $('#farbtastic_color').val('#123456');
-            $('#farbtastic_colorpicker').farbtastic('#farbtastic_color');
-            //or $.farbtastic('#farbtastic_colorpicker', '#farbtastic_color');
-            //
-            $.minicolors.defaults.control = 'wheel';
-            $('#mini_color').minicolors('create');
-        </script>
-    </body>
-</html>
+<!-- ------------------------------------------javascript--------------------------------------------------- -->
+<script src="/colorhex/farbtasticcolorpicker/farbtastic.js"></script>
+<script src="/colorhex/minicolors/minicolor.min.js"></script>
+<script>
+    $('#farbtastic_color').val('#123456');
+    $('#farbtastic_colorpicker').farbtastic('#farbtastic_color');
+    //or $.farbtastic('#farbtastic_colorpicker', '#farbtastic_color');
+    //
+    $.minicolors.defaults.control = 'wheel';
+    $('#mini_color').minicolors('create');
+</script>

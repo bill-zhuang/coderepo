@@ -1,108 +1,100 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link href="/css/common.css" rel="stylesheet"/>
-    </head>
-    <body>
-        <div class="panel panel-warning">
-            <!-- panel heading -->
-            <div class="panel-heading">
-                <h2>Variety</h2>
-            </div>
-            <!-- panel body -->
-            <div class="panel-body">
-                <div class="row">
-                    <form class="form-inline">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                            Baidu Music download link:&nbsp;&nbsp;
-                            <input type="text" id="baidu_music_url" class="form-control" style="width: 500px;"
-                                   placeholder="like:http://music.baidu.com/song/1262598/download?title=&pst=naga&fr="/>&nbsp;&nbsp;
-                            <button class="btn btn-success" type="button" id="btn_generate_download_link">
-                                Generate real download link
-                            </button><br><br>
-                            Real download link:(right click and save as.../other will failed!)&nbsp;&nbsp;
-                            <a href="#" id="generated_baidu_music_url"></a>
-                            <hr>
-                            Generate url with underline:&nbsp;&nbsp;
-                            <input type="text" id="url" class="form-control" style="width: 800px;"/>&nbsp;&nbsp;
-                            <button class="btn btn-success" type="button" id="btn_generate_url">Generate</button><br/>
-                            <a href="#" id="generated_url" target="_blank"></a>
-                            <hr>
-                            <a href='#exampleModal' data-toggle="modal">Bootstrap Modal Example</a>
-                        </div>
-                    </form>
+<link href="/css/common.css" rel="stylesheet"/>
+<div class="panel panel-warning">
+    <!-- panel heading -->
+    <div class="panel-heading">
+        <h2>Variety</h2>
+    </div>
+    <!-- panel body -->
+    <div class="panel-body">
+        <div class="row">
+            <form class="form-inline">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    Baidu Music download link:&nbsp;&nbsp;
+                    <input type="text" id="baidu_music_url" class="form-control" style="width: 500px;"
+                           placeholder="like:http://music.baidu.com/song/1262598/download?title=&pst=naga&fr="/>&nbsp;&nbsp;
+                    <button class="btn btn-success" type="button" id="btn_generate_download_link">
+                        Generate real download link
+                    </button><br><br>
+                    Real download link:(right click and save as.../other will failed!)&nbsp;&nbsp;
+                    <a href="#" id="generated_baidu_music_url"></a>
+                    <hr>
+                    Generate url with underline:&nbsp;&nbsp;
+                    <input type="text" id="url" class="form-control" style="width: 800px;"/>&nbsp;&nbsp;
+                    <button class="btn btn-success" type="button" id="btn_generate_url">Generate</button><br/>
+                    <a href="#" id="generated_url" target="_blank"></a>
+                    <hr>
+                    <a href='#exampleModal' data-toggle="modal">Bootstrap Modal Example</a>
                 </div>
-            </div>
-            <!-- panel footer -->
-            <!--<div class="panel-footer">
-            </div>-->
+            </form>
         </div>
-        <!-- Bootstrap Modal -->
-        <div id="exampleModal" class="modal fade" >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
+    </div>
+    <!-- panel footer -->
+    <!--<div class="panel-footer">
+    </div>-->
+</div>
+<!-- Bootstrap Modal -->
+<div id="exampleModal" class="modal fade" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
 
-                    <div class="modal-body">
-                        Example: <input type="text"/>
-                    </div>
+            <div class="modal-body">
+                Example: <input type="text"/>
+            </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- ------------------------------------------javascript--------------------------------------------------- -->
-        <script src="/js/util.js"></script>
-        <script>
-        $('#baidu_music_url').on('keydown', function(event){
-            if (event.keyCode == 13) {
-                $('#btn_generate_download_link').click();
-            }
-        });
+<!-- ------------------------------------------javascript--------------------------------------------------- -->
+<script src="/js/util.js"></script>
+<script>
+$('#baidu_music_url').on('keydown', function(event){
+    if (event.keyCode == 13) {
+        $('#btn_generate_download_link').click();
+    }
+});
 
-        $('#btn_generate_download_link').on('click', function(){
-            var music_url = $.trim($('#baidu_music_url').val());
-            if(music_url != '') {
-                var get_url = '/index/downloadbaidumusic';
-                var get_data = {
-                    'downlink' : music_url
-                };
-                var method = 'get';
-                var success_function = function(music_result){
-                    //console.log(music_result);
-                    if(music_result == '') {
-                        alert('generate download link failed!');
-                    } else {
-                        $('#generated_baidu_music_url').attr('href', music_result).text(music_result);
-                    }
-                };
-                callAjaxWithFunction(get_url, get_data, success_function, method);
+$('#btn_generate_download_link').on('click', function(){
+    var music_url = $.trim($('#baidu_music_url').val());
+    if(music_url != '') {
+        var get_url = '/index/downloadbaidumusic';
+        var get_data = {
+            'downlink' : music_url
+        };
+        var method = 'get';
+        var success_function = function(music_result){
+            //console.log(music_result);
+            if(music_result == '') {
+                alert('generate download link failed!');
             } else {
-                alert('music url is empty!');
+                $('#generated_baidu_music_url').attr('href', music_result).text(music_result);
             }
-        });
+        };
+        callAjaxWithFunction(get_url, get_data, success_function, method);
+    } else {
+        alert('music url is empty!');
+    }
+});
 
-        $('#url').on('keydown', function(event){
-            if (event.keyCode == 13) {
-                $('#btn_generate_url').click();
-            }
-        });
+$('#url').on('keydown', function(event){
+    if (event.keyCode == 13) {
+        $('#btn_generate_url').click();
+    }
+});
 
-        $('#btn_generate_url').on('click', function(){
-            var url = $('#url').val();
-            if(url != '') {
-                url = (url.indexOf('http://') == 0 || url.indexOf('https://') == 0) ? url : ('http://' + url);
-                $('#generated_url').attr('href', url).text(url);
-            } else {
-                alert('url is empty!');
-            }
-        });
-        </script>
-    </body>
-</html>
+$('#btn_generate_url').on('click', function(){
+    var url = $('#url').val();
+    if(url != '') {
+        url = (url.indexOf('http://') == 0 || url.indexOf('https://') == 0) ? url : ('http://' + url);
+        $('#generated_url').attr('href', url).text(url);
+    } else {
+        alert('url is empty!');
+    }
+});
+</script>
