@@ -29,6 +29,14 @@ function ajaxIndex() {
         for (var i = 0, len = result.data.length; i < len; i++) {
             $('#tbl tbody').append(
                 $('<tr>')
+<?php if($all_batch_id !== ''){ ?>
+                    .append(
+                        $('<td>').append(
+                               $('<input>', {type: 'checkbox', name: '<?php echo $primary_id; ?>', value: result.data[i]['<?php echo $primary_id; ?>']})
+                                   .click(function(){closeBatch(this, '<?php echo $batch_id; ?>')})
+                        )
+                    )
+<?php } ?>
                     .append($('<td>').text(result.start + i + 1))
 <?php foreach($table_row_data as $value){ ?>
                     .append($('<td>').text(result.data[i]['<?php echo $value; ?>']))
@@ -223,9 +231,5 @@ foreach ($table_data as $key => $default_value)
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#<?php echo $all_batch_id; ?>').on('click', function(){
     batchMute(this, '<?php echo $batch_id; ?>');
-});
-
-$('input[name="<?php echo $batch_id; ?>"]').on('click', function(){
-    closeBatch(this, '<?php echo $all_batch_id; ?>');
 });
 <?php } ?>
