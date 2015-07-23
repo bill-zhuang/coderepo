@@ -104,7 +104,7 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
             $set_sql .= $column_name . '=\'' . addslashes($column_value) . '\',';
         }
         $set_sql = substr($set_sql, 0, -1);
-        $sql .= $set_sql . ' where ' . $where . ';';
+        $sql .= $set_sql . ' where ' . $this->_processWhere($where) . ';';
 
         return $sql;
     }
@@ -114,5 +114,42 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
         $sql = 'delete from' . $table . ' where ' . $where . ';';
 
         return $sql;
+    }
+
+    /*
+     * get from zend db abstract _whereExpr method
+     * */
+    private function _processWhere($where)
+    {
+        if (empty($where))
+        {
+            return $where;
+        }
+        if (!is_array($where))
+        {
+            $where = array($where);
+        }
+        foreach ($where as $cond => &$term)
+        {
+            // is $cond an int? (i.e. Not a condition)
+            if (is_int($cond))
+            {
+                // $term is the full condition
+                if ($term instanceof Zend_Db_Expr)
+                {
+                    $term = $term->__toString();
+                }
+            }
+            else
+            {
+                // $cond is the condition with placeholder,
+                // and $term is quoted into the condition
+                $term = str_replace('?', $this->getAdapter()->quote($term, null), $cond);
+            }
+            $term = '(' . $term . ')';
+        }
+
+        $where = implode(' AND ', $where);
+        return $where;
     }
 }
