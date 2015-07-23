@@ -98,7 +98,7 @@ jQuery(function ($) {
     };
 
     //particleImage.src = 'http://img1.cache.netease.com/game/blizzard/images/snowflake.png';
-    particleImage.src = '/img/snowflake.png';
+    particleImage.src = '/assets/snow/img/snowflake.png';
 
     function init() {
 
