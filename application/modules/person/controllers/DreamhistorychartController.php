@@ -17,21 +17,12 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $chart_data = [
-            'period' => [],
-            'number' => [],
-        ];
-        $month_data = $this->_adapter_dream_history->getTotalDreamHistoryGroupData();
-        foreach ($month_data as $month_value)
-        {
-            $chart_data['period'][] = $month_value['period'];
-            $chart_data['number'][] = $month_value['number'];
-        }
+    }
 
-        $all_chart_data = $this->_getAllDreamHistoryDataByDay();
-
-        $this->view->chart_data = json_encode($chart_data);
-        $this->view->all_chart_data = json_encode($all_chart_data);
+    public function ajaxIndexAction()
+    {
+        echo json_encode($this->_index());
+        exit;
     }
 
     public function getDreamHistoryMonthDetailAction()
@@ -53,6 +44,27 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
 
         echo json_encode($chart_data);
         exit;
+    }
+
+    private function _index()
+    {
+        $chart_data = [
+            'period' => [],
+            'number' => [],
+        ];
+        $month_data = $this->_adapter_dream_history->getTotalDreamHistoryGroupData();
+        foreach ($month_data as $month_value)
+        {
+            $chart_data['period'][] = $month_value['period'];
+            $chart_data['number'][] = $month_value['number'];
+        }
+
+        $all_chart_data = $this->_getAllDreamHistoryDataByDay();
+
+        return [
+            'chart_data' => $chart_data,
+            'all_chart_data' => $all_chart_data,
+        ];
     }
 
     private function _getAllDreamHistoryDataByDay()
