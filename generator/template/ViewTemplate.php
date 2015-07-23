@@ -12,10 +12,13 @@
 /* @var $view_modal_size string modal size */
 /* @var $is_blacklist bool use blacklist or not */
 /* @var $is_ckeditor bool use ckeditor or not */
+/* @var $is_datetime_picker bool use datetimepicker or not */
 
 $table_keys = array_keys($table_data);
 ?>
+<?php if($is_datetime_picker){ ?>
         <link href="/assets/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
+<?php } ?>
         <link href="/css/common.css" rel="stylesheet" />
         <div class="panel panel-warning">
             <!-- panel heading -->
@@ -170,9 +173,11 @@ $table_keys = array_keys($table_data);
 <?php if ($is_ckeditor){ ?>
         <script src="/assets/ckeditor/ckeditor.js"></script>
 <?php } ?>
+<?php if($is_datetime_picker){ ?>
         <script src="/assets/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
         <script src="/assets/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
         <script src="/js/public/datetimepicker.js"></script>
+<?php } ?>
         <script src="/js/public/util.js"></script>
         <script src="/js/public/common.js"></script>
         <script src="/js/public/alertInfo.js"></script>

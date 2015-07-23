@@ -17,6 +17,7 @@ class TemplateGenerator
     private $_view_modal_size;
     private $_is_blacklist;
     private $_is_ckeditor;
+    private $_is_datetime_picker;
 
     private $_cache_table_info;
 
@@ -39,6 +40,7 @@ class TemplateGenerator
         $this->_view_modal_size = 'md'; //optional: sm/md/lg, refer to small/middle/large
         $this->_is_blacklist = false;
         $this->_is_ckeditor = false;
+        $this->_is_datetime_picker = false;
         //tables
         $this->_table_names = [
             'finance_category',
@@ -114,6 +116,7 @@ class TemplateGenerator
                 'view_modal_size' => $this->_view_modal_size,
                 'is_blacklist' => $this->_is_blacklist,
                 'is_ckeditor' => $this->_is_ckeditor,
+                'is_datetime_picker' => $this->_is_datetime_picker,
             ];
             $create_result = $this->_renderFile($template_path, $dest_path, $params);
             if ($create_result !== false)
