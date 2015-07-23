@@ -17,25 +17,12 @@ class person_DreamHistoryController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $keyword = trim($this->_getParam('keyword', ''));
-        $current_page = intval($this->_getParam('current_page', 1));
-        $page_length = intval($this->_getParam('page_length', 25));
-        $order_by = 'dh_create_time desc';
-        $start = intval(($current_page - 1) * $page_length);
+    }
 
-        $data = $this->_adapter_dream_history->getDreamHistoryData($page_length, $start, $order_by);
-        $total = $this->_adapter_dream_history->getTotalDreamHistoryNumber();
-
-        $view_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'page_length' => $page_length,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : 1,
-            'total' => $total,
-            'start' => $start,
-            'keyword' => $keyword
-        ];
-        $this->view->assign($view_data);
+    public function ajaxIndexAction()
+    {
+        echo json_encode($this->_index());
+        exit;
     }
 
     public function addDreamHistoryAction()
@@ -142,6 +129,26 @@ class person_DreamHistoryController extends Zend_Controller_Action
             $this->_adapter_dream_history->insert($data);
         }
         exit;
+    }
+
+    private function _index()
+    {
+        $keyword = trim($this->_getParam('keyword', ''));
+        $current_page = intval($this->_getParam('current_page', 1));
+        $page_length = intval($this->_getParam('page_length', 25));
+        $order_by = 'dh_create_time desc';
+        $start = intval(($current_page - 1) * $page_length);
+
+        $data = $this->_adapter_dream_history->getDreamHistoryData($page_length, $start, $order_by);
+        $total = $this->_adapter_dream_history->getTotalDreamHistoryNumber();
+
+        $json_data = [
+            'data' => $data,
+            'current_page' => $current_page,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : 1,
+            'start' => $start,
+        ];
+        return $json_data;
     }
 
 }
