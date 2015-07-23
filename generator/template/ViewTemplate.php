@@ -29,7 +29,7 @@ $table_keys = array_keys($table_data);
             <div class="panel-body">
                 <div class="row">
 <?php if ($primary_id !== ''){ ?>
-                    <form action="/<?php echo $module_name; ?>/<?php echo strtolower($controller_name); ?>/index" method="get" id="formSearch" class="form-inline">
+                    <form action="<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/index" method="get" id="formSearch" class="form-inline">
                         <div class="col-sm-10 col-md-10 col-lg-10">
                             关键字: <input type="text" class="form-control" id="keyword" name="keyword"/>
                             <button class="btn btn-primary" type="submit" id="btn_search">
@@ -210,7 +210,7 @@ $table_keys = array_keys($table_data);
                 var content = $.trim(CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.getData());
                 $('#<?php echo $form_element_prefix; ?>_intro').val(content);
 <?php } ?>
-                var post_url = '/<?php echo $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type +'-<?php echo strtolower($controller_name); ?>';
+                var post_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type +'-<?php echo strtolower($controller_name); ?>';
                 var post_data = new FormData(this);
                 var msg_success = (<?php echo $primary_id; ?> == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
                 var msg_error = (<?php echo $primary_id; ?> == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
@@ -221,7 +221,7 @@ $table_keys = array_keys($table_data);
 
         $('a[id^=modify_]').on('click', function(){
             var <?php echo $primary_id; ?> = $(this).attr('id').substr('modify_'.length);
-            var post_url = '/<?php echo $module_name; ?>/<?php echo strtolower($controller_name); ?>/get-<?php echo strtolower($controller_name); ?>';
+            var post_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/get-<?php echo strtolower($controller_name); ?>';
             var post_data = {
                 '<?php echo $primary_id; ?>' : <?php echo $primary_id; ?>
             };
@@ -244,7 +244,7 @@ $table_keys = array_keys($table_data);
         $('a[id^=delete_]').on('click', function(){
             if (confirm(MESSAGE_DELETE_CONFIRM)) {
                 var <?php echo $primary_id; ?> = $(this).attr('id').substr('delete_'.length);
-                var url = '/<?php echo $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
+                var url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
                 var data = {
                     '<?php echo $primary_id; ?>' : <?php echo $primary_id; ?>
                 };

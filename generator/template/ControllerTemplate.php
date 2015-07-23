@@ -22,7 +22,7 @@ foreach ($table_keys as $table_key)
 echo "<?php\n";
 ?>
 
-class <?php echo $module_name . '_'; ?><?php echo $controller_name; ?>Controller extends Zend_Controller_Action
+class <?php echo $module_name == '' ? '' : $module_name . '_'; ?><?php echo $controller_name; ?>Controller extends Zend_Controller_Action
 {
 <?php foreach ($table_names as $key => $table_name)
 {
