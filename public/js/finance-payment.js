@@ -2,8 +2,7 @@ $(document).ready(function(){
     ajaxIndex();
 });
 
-function ajaxIndex()
-{
+function ajaxIndex() {
     var get_url = '/person/finance-payment/ajax-index';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
@@ -59,12 +58,12 @@ function initPagination(total_pages, current_page) {
     });
 }
 
-$('#page_length').on('change', function(){
+$('#page_length').on('change', function() {
     $('#current_page').val(1);
     ajaxIndex();
 });
 
-$('#btn_search').on('click', function(event){
+$('#btn_search').on('click', function(event) {
     event.preventDefault();
     $('#current_page').val(1);
     ajaxIndex();
@@ -72,7 +71,7 @@ $('#btn_search').on('click', function(event){
 /*  --------------------------------------------------------------------------------------------------------  */
 var g_selectpicker = $('#finance_payment_fc_id').selectpicker();
 
-$('#btn_add').on('click', function(){
+$('#btn_add').on('click', function() {
     window.FinancePaymentForm.reset();
     $('#finance_payment_payment_date').val(getCurrentDate());
     g_selectpicker.selectpicker('val', $("#finance_payment_fc_id option:first").val());
@@ -80,7 +79,7 @@ $('#btn_add').on('click', function(){
     $('#FinancePaymentModal').modal('show');
 });
 
-$('#FinancePaymentForm').on('submit', (function(event){
+$('#FinancePaymentForm').on('submit', (function(event) {
     event.preventDefault();
 
     var fp_id = $('#finance_payment_fp_id').val();
@@ -106,8 +105,7 @@ $('#FinancePaymentForm').on('submit', (function(event){
     }
 }));
 
-function modifyBadHistory(modify_id)
-{
+function modifyBadHistory(modify_id) {
     var fp_id = modify_id.substr('modify_'.length);
     var post_url = '/person/finance-payment/get-finance-payment';
     var post_data = {
@@ -126,8 +124,7 @@ function modifyBadHistory(modify_id)
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
 
-function deleteBadHistory(delete_id)
-{
+function deleteBadHistory(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
         var fp_id = delete_id.substr('delete_'.length);
         var post_url = '/person/finance-payment/delete-finance-payment';
@@ -147,8 +144,7 @@ function deleteBadHistory(delete_id)
     }
 }
 
-function validInput(type)
-{
+function validInput(type) {
     var error_num = 0;
     var payment_date = $.trim($('#finance_payment_payment_date').val());
     var payment = $.trim($('#finance_payment_payment').val());

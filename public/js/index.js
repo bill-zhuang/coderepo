@@ -1,10 +1,10 @@
-$('#baidu_music_url').on('keydown', function(event){
+$('#baidu_music_url').on('keydown', function(event) {
     if (event.keyCode == 13) {
         $('#btn_generate_download_link').click();
     }
 });
 
-$('#btn_generate_download_link').on('click', function(){
+$('#btn_generate_download_link').on('click', function() {
     var music_url = $.trim($('#baidu_music_url').val());
     if(music_url != '') {
         var get_url = '/index/downloadbaidumusic';
@@ -26,13 +26,13 @@ $('#btn_generate_download_link').on('click', function(){
     }
 });
 
-$('#url').on('keydown', function(event){
+$('#url').on('keydown', function(event) {
     if (event.keyCode == 13) {
         $('#btn_generate_url').click();
     }
 });
 
-$('#btn_generate_url').on('click', function(){
+$('#btn_generate_url').on('click', function() {
     var url = $('#url').val();
     if(url != '') {
         url = (url.indexOf('http://') == 0 || url.indexOf('https://') == 0) ? url : ('http://' + url);

@@ -1,10 +1,9 @@
-$(document).ready(function(){
+$(document).ready(function() {
     //all bad history data by day
     initLineChartAll();
 });
 
-function initLineChartAll()
-{
+function initLineChartAll() {
     var get_url = '/person/bad-history-chart/ajax-index';
     var get_data = {
 

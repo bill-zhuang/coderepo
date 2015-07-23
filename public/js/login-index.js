@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
     var cookie_name =  $.cookie('name');
     if (typeof cookie_name != 'undefined') {
         $('#remember').prop('checked', true);
@@ -6,13 +6,12 @@ $(document).ready(function(){
     }
 });
 
-$('#login').on('submit', function(event){
+$('#login').on('submit', function(event) {
     event.preventDefault();
     loginCheck();
 });
 
-function loginCheck()
-{
+function loginCheck() {
     var name = $.trim($('#username').val());
     var password = $.trim($('#password').val());
 

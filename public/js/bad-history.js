@@ -1,9 +1,8 @@
-$(document).ready(function(){
+$(document).ready(function() {
     ajaxIndex();
 });
 
-function ajaxIndex()
-{
+function ajaxIndex() {
     var get_url = '/person/bad-history/ajax-index';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
@@ -58,18 +57,18 @@ function initPagination(total_pages, current_page) {
     });
 }
 
-$('#page_length').on('change', function(){
+$('#page_length').on('change', function() {
     $('#current_page').val(1);
     ajaxIndex();
 });
 
-$('#btn_search').on('click', function(event){
+$('#btn_search').on('click', function(event) {
     event.preventDefault();
     $('#current_page').val(1);
     ajaxIndex();
 });
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function(){
+$('#btn_add').on('click', function() {
     window.BadHistoryForm.reset();
     $('#bad_history_date').val(getCurrentDate());
     $('#bad_history_count').val(1);
@@ -77,7 +76,7 @@ $('#btn_add').on('click', function(){
     $('#BadHistoryModal').modal('show');
 });
 
-$('#BadHistoryForm').on('submit', (function(event){
+$('#BadHistoryForm').on('submit', (function(event) {
     event.preventDefault();
 
     var bh_id = $('#bad_history_id').val();
@@ -100,8 +99,7 @@ $('#BadHistoryForm').on('submit', (function(event){
     callAjaxWithFormAndFunction(post_url, post_data, success_function, method);
 }));
 
-function modifyBadHistory(modify_id)
-{
+function modifyBadHistory(modify_id) {
     var bh_id = modify_id.substr('delete_'.length);
     var post_url = '/person/bad-history/get-bad-history';
     var post_data = {
@@ -118,8 +116,7 @@ function modifyBadHistory(modify_id)
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
 
-function deleteBadHistory(delete_id)
-{
+function deleteBadHistory(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
         var bh_id = delete_id.substr('delete_'.length);
         var post_url = '/person/bad-history/delete-bad-history';

@@ -1,9 +1,8 @@
-$(document).ready(function(){
+$(document).ready(function() {
     ajaxIndex();
 });
 
-function ajaxIndex()
-{
+function ajaxIndex() {
     var get_url = '/person/finance-category/ajax-index';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
@@ -59,25 +58,25 @@ function initPagination(total_pages, current_page) {
     });
 }
 
-$('#page_length').on('change', function(){
+$('#page_length').on('change', function() {
     $('#current_page').val(1);
     ajaxIndex();
 });
 
-$('#btn_search').on('click', function(event){
+$('#btn_search').on('click', function(event) {
     event.preventDefault();
     $('#current_page').val(1);
     ajaxIndex();
 });
 
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function(){
+$('#btn_add').on('click', function() {
     window.FinanceCategoryForm.reset();
     $('#btn_submit_finance_category').attr('disabled', false);
     $('#FinanceCategoryModal').modal('show');
 });
 
-$('#FinanceCategoryForm').on('submit', (function(event){
+$('#FinanceCategoryForm').on('submit', (function(event) {
     event.preventDefault();
 
     var fc_id = $('#finance_category_fc_id').val();
@@ -103,8 +102,7 @@ $('#FinanceCategoryForm').on('submit', (function(event){
     }
 }));
 
-function modifyFinanceCategory(modify_id)
-{
+function modifyFinanceCategory(modify_id) {
     var fc_id = modify_id.substr('modify_'.length);
     var post_url = '/person/finance-category/get-finance-category';
     var post_data = {
@@ -122,8 +120,7 @@ function modifyFinanceCategory(modify_id)
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
 
-function deleteFinanceCategory(delete_id)
-{
+function deleteFinanceCategory(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
         var fc_id = delete_id.substr('delete_'.length);
         var post_url = '/person/finance-category/delete-finance-category';
@@ -143,8 +140,7 @@ function deleteFinanceCategory(delete_id)
     }
 }
 
-function validInput(type)
-{
+function validInput(type) {
     var error_num = 0;
     var name = $.trim($('#finance_category_name').val());
     var weight = $.trim($('#finance_category_weight').val());

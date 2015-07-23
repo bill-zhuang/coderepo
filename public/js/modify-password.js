@@ -1,13 +1,12 @@
-$(document).ready(function(){
+$(document).ready(function() {
     $('#old_password').val('');
 });
-$('#modifypasswordform').on('submit', function(event){
+$('#modifypasswordform').on('submit', function(event) {
     event.preventDefault();
     modifyPassword();
 });
 
-function modifyPassword()
-{
+function modifyPassword() {
     var old_password = $.trim($('#old_password').val());
     var new_password = $.trim($('#new_password').val());
     var new_password_repeat = $.trim($('#new_password_repeat').val());

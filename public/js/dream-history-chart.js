@@ -1,10 +1,9 @@
-$(document).ready(function(){
+$(document).ready(function() {
     //all bad history data by day
     initChart();
 });
 
-function initChart()
-{
+function initChart() {
     var get_url = '/person/dream-history-chart/ajax-index';
     var get_data = {
 
@@ -26,8 +25,7 @@ function initChart()
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
 
-function initLineChart(data_period, data_number)
-{
+function initLineChart(data_period, data_number) {
     var line_data = {
         labels : data_period,
         datasets: [
@@ -69,8 +67,7 @@ function initLineChart(data_period, data_number)
      });*/
 }
 
-function initBarChart(data_period, data_number)
-{
+function initBarChart(data_period, data_number) {
     var bar_data = {
         labels : data_period,
         datasets: [
@@ -93,8 +90,7 @@ function initBarChart(data_period, data_number)
     var chart_bar = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
 }
 
-function initPieChart(data_period, data_number)
-{
+function initPieChart(data_period, data_number) {
     var pie_data = [];
     var i = 0;
     var len = data_period.length;
@@ -118,8 +114,7 @@ function initPieChart(data_period, data_number)
     var chart_pie = new Chart(chart_pie_canvas).Pie(pie_data, pie_option);
 }
 
-function initDoughnut(data_period, data_number)
-{
+function initDoughnut(data_period, data_number) {
     var doughnut_data = [];
     var i = 0;
     var len = data_period.length;
@@ -143,8 +138,7 @@ function initDoughnut(data_period, data_number)
     var chart_doughnut = new Chart(chart_doughnut_canvas).Doughnut(doughnut_data, doughnut_option);
 }
 
-function initLineChartAll(chart_data)
-{
+function initLineChartAll(chart_data) {
     //console.log(chart_data);
     var data_period = chart_data['period'];
     var data_number = chart_data['interval'];

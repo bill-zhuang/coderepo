@@ -1,9 +1,8 @@
-$(document).ready(function(){
+$(document).ready(function() {
     ajaxIndex();
 });
 
-function ajaxIndex()
-{
+function ajaxIndex() {
     var get_url = '/person/dream-history/ajax-index';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
@@ -58,18 +57,18 @@ function initPagination(total_pages, current_page) {
     });
 }
 
-$('#page_length').on('change', function(){
+$('#page_length').on('change', function() {
     $('#current_page').val(1);
     ajaxIndex();
 });
 
-$('#btn_search').on('click', function(event){
+$('#btn_search').on('click', function(event) {
     event.preventDefault();
     $('#current_page').val(1);
     ajaxIndex();
 });
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function(){
+$('#btn_add').on('click', function() {
     window.DreamHistoryForm.reset();
     $('#dream_history_date').val(getCurrentDate());
     $('#dream_history_count').val(1);
@@ -77,7 +76,7 @@ $('#btn_add').on('click', function(){
     $('#DreamHistoryModal').modal('show');
 });
 
-$('#DreamHistoryForm').on('submit', (function(event){
+$('#DreamHistoryForm').on('submit', (function(event) {
     event.preventDefault();
 
     var dh_id = $('#dream_history_id').val();
@@ -100,8 +99,7 @@ $('#DreamHistoryForm').on('submit', (function(event){
     callAjaxWithFormAndFunction(post_url, post_data, success_function, method);
 }));
 
-function modifyDreamHistory(modify_id)
-{
+function modifyDreamHistory(modify_id) {
     var dh_id = modify_id.substr('delete_'.length);
     var post_url = '/person/dream-history/get-dream-history';
     var post_data = {
@@ -118,8 +116,7 @@ function modifyDreamHistory(modify_id)
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
 
-function deleteDreamHistory(delete_id)
-{
+function deleteDreamHistory(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
         var dh_id = delete_id.substr('delete_'.length);
         var post_url = '/person/dream-history/delete-dream-history';
