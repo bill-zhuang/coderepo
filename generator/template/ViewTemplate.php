@@ -172,10 +172,10 @@ $table_keys = array_keys($table_data);
 <?php } ?>
         <script src="/assets/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
         <script src="/assets/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-        <script src="/js/datetimepicker.js"></script>
-        <script src="/js/util.js"></script>
-        <script src="/js/common.js"></script>
-        <script src="/js/alertInfo.js"></script>
+        <script src="/js/public/datetimepicker.js"></script>
+        <script src="/js/public/util.js"></script>
+        <script src="/js/public/common.js"></script>
+        <script src="/js/public/alertInfo.js"></script>
 <?php echo str_repeat(' ', 4 * 2) . '<script>' . PHP_EOL; ?>
         var js_data = <?php echo '<?php echo json_encode($this->js_data); ?>'; ?>;
         $(document).ready(function(){
