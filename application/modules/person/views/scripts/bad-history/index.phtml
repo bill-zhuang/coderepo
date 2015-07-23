@@ -1,213 +1,103 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-    <head>
-        <link href="/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
-        <link href="/css/common.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div class="panel panel-warning">
-            <!-- panel heading -->
-            <div class="panel-heading">
-                <h2>Bad history</h2>
+<link href="/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
+<link href="/css/common.css" rel="stylesheet" />
+<div class="panel panel-warning">
+    <!-- panel heading -->
+    <div class="panel-heading">
+        <h2>Bad history</h2>
+    </div>
+    <!-- panel body -->
+    <div class="panel-body">
+        <div class="row">
+            <form action="/person/bad-history/index" method="get" id="formSearch" class="form-inline">
+            <div class="col-sm-10 col-md-10 col-lg-10">
+                Keyword: <input type="text" class="form-control" id="keyword" name="keyword"/>
+                <button class="btn btn-primary" type="submit" id="btn_search">
+                    <span class="glyphicon glyphicon-search"></span>
+                    <span>搜索</span>
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-success" type="button" id="btn_add">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>新增</span>
+                </button>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <!-- panel body -->
-            <div class="panel-body">
-                <div class="row">
-                    <form action="/person/bad-history/index" method="get" id="formSearch" class="form-inline">
-                    <div class="col-sm-10 col-md-10 col-lg-10">
-                        Keyword: <input type="text" class="form-control" id="keyword" name="keyword"/>
-                        <button class="btn btn-primary" type="submit" id="btn_search">
-                            <span class="glyphicon glyphicon-search"></span>
-                            <span>搜索</span>
-                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-success" type="button" id="btn_add">
-                            <span class="glyphicon glyphicon-plus"></span>
-                            <span>新增</span>
-                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                    </div>
-                    <div class="col-sm-2 col-md-2 col-lg-2 text-right">
-                        <select name="page_length" id="page_length" class="form-control">
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="75">75</option>
-                            <option value="100">100</option>
-                        </select>
-                        &nbsp;<label>每页</label>
-                    </div>
-                        <input type="hidden" id="current_page" name="current_page"/>
-                    </form>
-                </div><hr>
-
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                        <table class="table table-striped table-bordered bill_table text-center">
-                            <tr>
-                                <td>序号</td>
-                                <td>日期</td>
-                                <td>次数</td>
-                                <td>创建时间</td>
-                                <td>更新时间</td>
-                                <td>操作</td>
-                            </tr>
-                            <tbody>
-                                <?php for($i = 0, $len = count($this->data); $i < $len; $i++){ ?>
-                                    <tr>
-                                        <td><?php echo ($this->start + $i + 1); ?></td>
-                                        <td><?php echo $this->data[$i]['bh_happen_date']; ?></td>
-                                        <td><?php echo $this->data[$i]['bh_count']; ?></td>
-                                        <td><?php echo $this->data[$i]['bh_create_time']; ?></td>
-                                        <td><?php echo $this->data[$i]['bh_update_time']; ?></td>
-                                        <td>
-                                            <a href="#" id="<?php echo 'modify_' . $this->data[$i]['bh_id']; ?>">修改</a>
-                                            <a href="#" id="<?php echo 'delete_' . $this->data[$i]['bh_id']; ?>">删除</a>
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-
-                                <?php if (count($this->data) == 0) { ?>
-                                    <tr>
-                                        <td colspan="6" class="bill_table_no_data">对不起,没有符合条件的数据</td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+                <select name="page_length" id="page_length" class="form-control">
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="75">75</option>
+                    <option value="100">100</option>
+                </select>
+                &nbsp;<label>每页</label>
             </div>
-            <!-- panel footer -->
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-6 text-left">
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6 text-right">
-                        <ul id="pagination" class="pagination-md"></ul>
-                    </div>
-                </div>
+                <input type="hidden" id="current_page" name="current_page"/>
+            </form>
+        </div><hr>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <table id="tbl" class="table table-striped table-bordered bill_table text-center">
+                    <thead>
+                        <tr>
+                            <td>序号</td>
+                            <td>日期</td>
+                            <td>次数</td>
+                            <td>创建时间</td>
+                            <td>更新时间</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <!-- modal -->
-        <div id="BadHistoryModal" class="modal fade">
-            <div class="modal-dialog bill_modal_sm" >
-                <div class="modal-content">
-                    <div class="modal-header"><span>Dream history</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-
-                    <form id="BadHistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
-                        <div class="modal-body">
-                            <div class="input-group">
-                                <span class="input-group-addon">日期：</span>
-                                <input type="text" name="bad_history_date" id="bad_history_date" class="form-control form_date"/>
-                            </div><br />
-                            <div class="input-group">
-                                <span class="input-group-addon">次数：</span>
-                                <input type="text" name="bad_history_count" id="bad_history_count" class="form-control"/>
-                            </div><br />
-                            <input type="hidden" name="bad_history_id" id="bad_history_id"/>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" id="btn_submit_bad_history">提交</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                        </div>
-                    </form>
-                </div>
+    </div>
+    <!-- panel footer -->
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6 text-left">
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 text-right">
+                <ul id="pagination" class="pagination-md"></ul>
             </div>
         </div>
+    </div>
+</div>
+<!-- modal -->
+<div id="BadHistoryModal" class="modal fade">
+    <div class="modal-dialog bill_modal_sm" >
+        <div class="modal-content">
+            <div class="modal-header"><span>Dream history</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
 
-        <!-- ------------------------------------------javascript--------------------------------------------------- -->
-        <script src="/pagination/jquery.twbsPagination.min.js"></script>
-        <script src="/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-        <script src="/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-        <script src="/js/datetimepicker.js"></script>
-        <script src="/js/util.js"></script>
-        <script src="/js/alertInfo.js"></script>
-        <script>
-        $(document).ready(function(){
-            $('#keyword').val('<?php echo $this->keyword; ?>');
-            $('#page_length').val(<?php echo $this->page_length; ?>);
-            $('#current_page').val(<?php echo $this->current_page; ?>);
-        });
+            <form id="BadHistoryForm" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+                <div class="modal-body">
+                    <div class="input-group">
+                        <span class="input-group-addon">日期：</span>
+                        <input type="text" name="bad_history_date" id="bad_history_date" class="form-control form_date"/>
+                    </div><br />
+                    <div class="input-group">
+                        <span class="input-group-addon">次数：</span>
+                        <input type="text" name="bad_history_count" id="bad_history_count" class="form-control"/>
+                    </div><br />
+                    <input type="hidden" name="bad_history_id" id="bad_history_id"/>
+                </div>
 
-        $('#btn_add').on('click', function(){
-            window.BadHistoryForm.reset();
-            $('#bad_history_date').val(getCurrentDate());
-            $('#bad_history_count').val(1);
-            $('#btn_submit_bad_history').attr('disabled', false);
-            $('#BadHistoryModal').modal('show');
-        });
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btn_submit_bad_history">提交</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-        $('#BadHistoryForm').on('submit', (function(event){
-            event.preventDefault();
-
-            var bh_id = $('#bad_history_id').val();
-            var type = (bh_id == '') ? 'add' : 'modify';
-            $('#btn_submit_bad_history').attr('disabled', true);
-            var post_url = '/person/bad-history/' + type + '-bad-history';
-            var post_data = new FormData(this);
-            var msg_success = (bh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-            var msg_error = (bh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
-            callAjaxWithForm(post_url, post_data, msg_success, msg_error);
-        }));
-
-        $('a[id^=modify_]').on('click', function(){
-            //console.log($(this).attr('id'));
-            var bh_id = $(this).attr('id').substr('delete_'.length);
-            var post_url = '/person/bad-history/get-bad-history';
-            var post_data = {
-                bh_id: bh_id
-            };
-            var method = 'get';
-            var success_function = function(history_data){
-                $('#bad_history_date').val(history_data.bh_happen_date).attr('disabled', true);
-                $('#bad_history_count').val(history_data.bh_count);
-                $('#bad_history_id').val(history_data.bh_id);
-                $('#btn_submit_bad_history').attr('disabled', false);
-                $('#BadHistoryModal').modal('show');
-            };
-            callAjaxWithFunction(post_url, post_data, success_function, method);
-        });
-
-        $('a[id^=delete_]').on('click', function(){
-            //console.log($(this).attr('id'));
-            if (confirm(MESSAGE_DELETE_CONFIRM)) {
-                var bh_id = $(this).attr('id').substr('delete_'.length);
-                var post_url = '/person/bad-history/delete-bad-history';
-                var post_data = {
-                    bh_id: bh_id
-                };
-                var method = 'post';
-                var msg_success = MESSAGE_DELETE_SUCCESS;
-                var msg_error = MESSAGE_DELETE_ERROR;
-                callAjaxWithAlert(post_url, post_data, msg_success, msg_error, method);
-            }
-        });
-
-        /*  --------------------------------------------------------------------------------------------------------  */
-        $('#pagination').twbsPagination({
-            totalPages: <?php echo $this->total_pages; ?>,
-            startPage: <?php echo $this->current_page; ?>,
-            visiblePages: 7,
-            first: '首页',
-            prev: '上一页',
-            next: '下一页',
-            last: '尾页',
-            onPageClick: function (event, page) {
-                $('#current_page').val(page);
-                $('#formSearch')[0].submit();
-            }
-        });
-
-        $('#page_length').on('change', function(){
-            $('#current_page').val(1);
-            $('#page_length').val(this.value);
-            $('#formSearch')[0].submit();
-        });
-
-        $('#btn_search').on('click', function(){
-            $('#current_page').val(1);
-            $('#formSearch')[0].submit();
-        });
-        </script>
-    </body>
-</html>
+<!-- ------------------------------------------javascript--------------------------------------------------- -->
+<script src="/pagination/jquery.twbsPagination.min.js"></script>
+<script src="/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script src="/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script src="/js/datetimepicker.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/alertInfo.js"></script>
+<script src="/js/bad-history.js"></script>
