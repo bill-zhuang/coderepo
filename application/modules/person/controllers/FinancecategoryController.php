@@ -22,38 +22,13 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
-        $keyword = trim($this->_getParam('keyword', ''));
 
-        $conditions = [
-            'fc_status' => [
-                'compare_type' => '= ?',
-                'value' => Bill_Constant::VALID_STATUS
-            ]
-        ];
-        if ('' !== $keyword)
-        {
-            $conditions['fc_name'] = [
-                'compare_type' => 'like ?',
-                'value' => '%' . $keyword . '%'
-            ];
-        }
-        $order_by = 'fc_weight desc';
-        $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);
-        $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $page_length, $start, $order_by);
+    }
 
-        $view_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'page_length' => $page_length,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
-            'keyword' => $keyword,
-        ];
-        $this->view->assign($view_data);
+    public function ajaxIndexAction()
+    {
+        echo json_encode($this->_index());
+        exit;
     }
 
     public function addFinanceCategoryAction()
@@ -156,6 +131,43 @@ class person_FinanceCategoryController extends Zend_Controller_Action
 
         echo json_encode($data);
         exit;
+    }
+
+    private function _index()
+    {
+        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
+        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
+        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
+        $keyword = trim($this->_getParam('keyword', ''));
+
+        $conditions = [
+            'fc_status' => [
+                'compare_type' => '= ?',
+                'value' => Bill_Constant::VALID_STATUS
+            ]
+        ];
+        if ('' !== $keyword)
+        {
+            $conditions['fc_name'] = [
+                'compare_type' => 'like ?',
+                'value' => '%' . $keyword . '%'
+            ];
+        }
+        $order_by = 'fc_weight desc';
+        $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);
+        $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $page_length, $start, $order_by);
+        foreach ($data as &$value)
+        {
+            $value['parent'] = $value['fc_parent_id'] == 0 ? '无' : $this->parents[$value['fc_parent_id']];
+        }
+
+        $json_data = [
+            'data' => $data,
+            'current_page' => $current_page,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
+            'start' => $start,
+        ];
+        return $json_data;
     }
     
     private function _addFinanceCategory()
