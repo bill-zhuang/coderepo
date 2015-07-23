@@ -42,6 +42,7 @@ function ajaxIndex()
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 function initPagination(total_pages, current_page) {
+    $('#div_pagination').empty().append('<ul id="pagination" class="pagination-md"></ul>');
     $('#pagination').twbsPagination({
         totalPages: total_pages,
         startPage: current_page,
