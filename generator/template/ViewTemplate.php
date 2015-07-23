@@ -15,7 +15,7 @@
 
 $table_keys = array_keys($table_data);
 ?>
-        <link href="/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
+        <link href="/assets/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
         <link href="/css/common.css" rel="stylesheet" />
         <div class="panel panel-warning">
             <!-- panel heading -->
@@ -67,18 +67,20 @@ $table_keys = array_keys($table_data);
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <table class="table table-striped table-bordered bill_table text-center">
-                            <tr><?php if($all_batch_id !== ''){ echo PHP_EOL; ?>
-                                <td><input type="checkbox" id="<?php echo $all_batch_id; ?>" name="<?php echo $all_batch_id; ?>"/></td>
-                                <?php } ?>
-                                <?php
-                                echo PHP_EOL . str_repeat(' ', 4 * 8) . '<td>序号</td>' . PHP_EOL;
-                                foreach ($table_row_data as $key => $value)
-                                {
-                                    echo str_repeat(' ', 4 * 8) . '<td>' . $key . '</td>' . PHP_EOL;
-                                }
-                                ?>
-                                <td>操作</td>
-                            </tr>
+                            <thead>
+                                <tr><?php if($all_batch_id !== ''){ echo PHP_EOL; ?>
+                                    <td><input type="checkbox" id="<?php echo $all_batch_id; ?>" name="<?php echo $all_batch_id; ?>"/></td>
+                                    <?php } ?>
+                                    <?php
+                                    echo PHP_EOL . str_repeat(' ', 4 * 8) . '<td>序号</td>' . PHP_EOL;
+                                    foreach ($table_row_data as $key => $value)
+                                    {
+                                        echo str_repeat(' ', 4 * 8) . '<td>' . $key . '</td>' . PHP_EOL;
+                                    }
+                                    ?>
+                                    <td>操作</td>
+                                </tr>
+                            </thead>
                             <tbody>
                             <?php echo '<?php for($i = 0, $len = count($this->data); $i < $len; $i++){ ?>' . PHP_EOL; ?>
                                 <tr><?php if($batch_id !== ''){ echo PHP_EOL; ?>
@@ -164,13 +166,12 @@ $table_keys = array_keys($table_data);
         </div>
 <?php } ?>
         <!-- ------------------------------------------javascript--------------------------------------------------- -->
-        <script src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-        <script src="/pagination/jquery.twbsPagination.min.js"></script>
+        <script src="/assets/pagination/jquery.twbsPagination.min.js"></script>
 <?php if ($is_ckeditor){ ?>
-        <script src="/ckeditor/ckeditor.js"></script>
+        <script src="/assets/ckeditor/ckeditor.js"></script>
 <?php } ?>
-        <script src="/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-        <script src="/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+        <script src="/assets/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+        <script src="/assets/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
         <script src="/js/datetimepicker.js"></script>
         <script src="/js/util.js"></script>
         <script src="/js/common.js"></script>
