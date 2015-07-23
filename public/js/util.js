@@ -119,6 +119,21 @@ function callAjaxWithForm(url, data, msg_success, msg_error, method)
     });
 }
 
+function callAjaxWithFormAndFunction(url, data, success_function, method)
+{
+    $.ajax({
+        url: url,
+        type: method || 'post',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: success_function,
+
+        error: getAjaxErrorFunction()
+    });
+}
+
 function callAjaxWithFunction(url, data, success_function, method)
 {
     $.ajax({
