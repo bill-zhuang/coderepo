@@ -24,6 +24,16 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+    }
+
+    public function ajaxIndexAction()
+    {
+        echo json_encode($this->_index());
+        exit;
+    }
+
+    private function _index()
+    {
         $chart_data = [
             'period' => [],
             'payment' => [],
@@ -66,14 +76,15 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
         $month_sum = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
 
-        $this->view->assign([
-            'chart_data' => json_encode($chart_data),
-            'all_chart_data' => json_encode($all_chart_data),
-            'year_category_chart_data' => json_encode($year_category_data),
-            'month_category_chart_data' => json_encode($month_category_data),
+        $json_data = [
+            'month_chart_data' => $chart_data,
+            'all_chart_data' => $all_chart_data,
+            'year_category_chart_data' => $year_category_data,
+            'month_category_chart_data' => $month_category_data,
             'year_spent' => $year_sum,
             'month_spent' => $month_sum,
-        ]);
+        ];
+        return $json_data;
     }
 
     private function _getAllPaymentHistoryDataByDay($start_date)
