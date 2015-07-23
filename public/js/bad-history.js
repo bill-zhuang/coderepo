@@ -67,7 +67,7 @@ $('#btn_search').on('click', function(event){
     $('#current_page').val(1);
     ajaxIndex();
 });
-
+/*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function(){
     window.BadHistoryForm.reset();
     $('#bad_history_date').val(getCurrentDate());
@@ -75,7 +75,7 @@ $('#btn_add').on('click', function(){
     $('#btn_submit_bad_history').attr('disabled', false);
     $('#BadHistoryModal').modal('show');
 });
-/*  --------------------------------------------------------------------------------------------------------  */
+
 $('#BadHistoryForm').on('submit', (function(event){
     event.preventDefault();
 
