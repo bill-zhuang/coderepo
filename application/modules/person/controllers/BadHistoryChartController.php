@@ -17,6 +17,16 @@ class person_BadHistoryChartController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+    }
+
+    public function ajaxIndexAction()
+    {
+        echo json_encode($this->_index());
+        exit;
+    }
+
+    private function _index()
+    {
         $all_chart_data = [
             'period' => [],
             'number' => [],
@@ -40,6 +50,6 @@ class person_BadHistoryChartController extends Zend_Controller_Action
                 intval((strtotime($current_date) - strtotime($all_data[$total - 1]['period'])) / 86400);
         }
 
-        $this->view->all_chart_data = json_encode($all_chart_data);
+        return $all_chart_data;
     }
 }
