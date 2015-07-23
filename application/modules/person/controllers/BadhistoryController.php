@@ -146,6 +146,7 @@ class person_BadHistoryController extends Zend_Controller_Action
             'data' => $data,
             'current_page' => $current_page,
             'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : 1,
+            'total' => $total,
             'start' => $start,
         ];
         return $json_data;

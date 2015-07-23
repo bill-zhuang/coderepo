@@ -164,6 +164,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             'data' => $data,
             'current_page' => $current_page,
             'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
+            'total' => $total,
             'start' => $start,
         ];
         return $json_data;
