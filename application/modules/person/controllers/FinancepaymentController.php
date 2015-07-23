@@ -32,51 +32,12 @@ class person_FinancePaymentController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
-        $payment_date = trim($this->_getParam('payment_date', ''));
+    }
 
-        $conditions = [
-            'fp_status' => [
-                'compare_type' => '= ?',
-                'value' => Bill_Constant::VALID_STATUS
-            ]
-        ];
-        if ('' != $payment_date)
-        {
-            $conditions['fp_payment_date'] = [
-                'compare_type' => '= ?',
-                'value' => $payment_date
-            ];
-        }
-        $order_by = 'fp_payment_date desc';
-        $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
-        $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $page_length, $start, $order_by);
-        foreach ($data as $key => $value)
-        {
-            $fc_ids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($value['fp_id']);
-            if (!empty($fc_ids))
-            {
-                $data[$key]['category'] =
-                    implode(',', $this->_adapter_finance_category->getFinanceCategoryNames($fc_ids));
-            }
-            else
-            {
-                $data[$key]['category'] = '';
-            }
-        }
-
-        $view_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'page_length' => $page_length,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
-            'payment_date' => $payment_date
-        ];
-        $this->view->assign($view_data);
+    public function ajaxIndexAction()
+    {
+        echo json_encode($this->_index());
+        exit;
     }
 
     public function addFinancePaymentAction()
@@ -173,6 +134,53 @@ class person_FinancePaymentController extends Zend_Controller_Action
 
         echo json_encode($data);
         exit;
+    }
+
+    private function _index()
+    {
+        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
+        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
+        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
+        $payment_date = trim($this->_getParam('payment_date', ''));
+
+        $conditions = [
+            'fp_status' => [
+                'compare_type' => '= ?',
+                'value' => Bill_Constant::VALID_STATUS
+            ]
+        ];
+        if ('' != $payment_date)
+        {
+            $conditions['fp_payment_date'] = [
+                'compare_type' => '= ?',
+                'value' => $payment_date
+            ];
+        }
+        $order_by = 'fp_payment_date desc';
+        $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
+        $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $page_length, $start, $order_by);
+        foreach ($data as $key => $value)
+        {
+            $fc_ids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($value['fp_id']);
+            if (!empty($fc_ids))
+            {
+                $data[$key]['category'] =
+                    implode(',', $this->_adapter_finance_category->getFinanceCategoryNames($fc_ids));
+            }
+            else
+            {
+                $data[$key]['category'] = '';
+            }
+        }
+
+        $json_data = [
+            'data' => $data,
+            'current_page' => $current_page,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
+            'total' => $total,
+            'start' => $start,
+        ];
+        return $json_data;
     }
     
     private function _addFinancePayment()
