@@ -7,6 +7,8 @@
 /* @var $primary_id string table primary key */
 /* @var $table_data array table fields and default value */
 /* @var $form_element_prefix string prefix of form element */
+/* @var $tab_types array tab types for select */
+/* @var $default_tab_value mixed default selected tab value */
 
 $table_keys = array_keys($table_data);
 $status_name = '';
@@ -150,6 +152,9 @@ echo PHP_EOL;
         $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
         $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
         $keyword = trim($this->_getParam('keyword', ''));
+<?php if(!empty($tab_types)){ ?>
+        $tab_type = intval($this->_getParam('tab_type', 1));
+<?php } ?>
 
         $conditions = [
             '<?php echo ($status_name === '') ? 'todo status' : $status_name; ?>' => [

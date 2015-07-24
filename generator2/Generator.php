@@ -16,6 +16,8 @@ class TemplateGenerator
     private $_is_blacklist;
     private $_is_ckeditor;
     private $_is_datetime_picker;
+    private $_tab_types;
+    private $_default_tab_value;
 
     private $_cache_table_info;
 
@@ -39,6 +41,17 @@ class TemplateGenerator
         $this->_is_blacklist = false;
         $this->_is_ckeditor = false;
         $this->_is_datetime_picker = false;
+        /*
+         * //tab 标签 key => value,如果没有tab，请置空数组
+         * 1 => 'First',
+         * 2 => 'Second',
+         * */
+        $this->_tab_types = [
+        ];
+        /*
+         * 默认tab标签选中项，为变量 $this->_tab_types key 值
+         * */
+        $this->_default_tab_value = '';
         //tables
         $this->_table_names = [
             'finance_category',
@@ -116,6 +129,8 @@ class TemplateGenerator
                 'is_blacklist' => $this->_is_blacklist,
                 'is_ckeditor' => $this->_is_ckeditor,
                 'is_datetime_picker' => $this->_is_datetime_picker,
+                'tab_types' => $this->_tab_types,
+                'default_tab_value' => $this->_default_tab_value,
             ];
             $create_result = $this->_renderFile($template_path, $dest_path, $params);
             if ($create_result !== false)
@@ -153,6 +168,8 @@ class TemplateGenerator
                 'view_modal_size' => $this->_view_modal_size,
                 'is_blacklist' => $this->_is_blacklist,
                 'is_ckeditor' => $this->_is_ckeditor,
+                'tab_types' => $this->_tab_types,
+                'default_tab_value' => $this->_default_tab_value,
             ];
             $create_result = $this->_renderFile($template_path, $dest_path, $params);
             if ($create_result !== false)
@@ -217,6 +234,8 @@ class TemplateGenerator
             'primary_id' => $this->_primary_id,
             'table_data' => empty($this->_table_names) ? [] : $this->_getTableInsertArrayForController($this->_table_names[0]),
             'form_element_prefix' => strtolower(implode('_', $this->_splitControllerName())),
+            'tab_types' => $this->_tab_types,
+            'default_tab_value' => $this->_default_tab_value,
         ];
         $template_path = __DIR__ . '/template/ControllerTemplate.php';
         $dest_path = $controller_folder_path . '/' . $this->_controller_name . 'Controller.php';

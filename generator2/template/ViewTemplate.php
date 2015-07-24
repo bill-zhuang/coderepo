@@ -13,6 +13,8 @@
 /* @var $is_blacklist bool use blacklist or not */
 /* @var $is_ckeditor bool use ckeditor or not */
 /* @var $is_datetime_picker bool use datetimepicker or not */
+/* @var $tab_types array tab types for select */
+/* @var $default_tab_value mixed default selected tab value */
 
 $table_keys = array_keys($table_data);
 ?>
@@ -63,12 +65,26 @@ $table_keys = array_keys($table_data);
                     &nbsp;<label>每页</label>
                 </div>
                 <input type="hidden" id="current_page" name="current_page"/>
+<?php if(!empty($tab_types)){ ?>
+                <input type="hidden" id="tab_type" name="tab_type"/>
+<?php } ?>
             </form>
 <?php } ?>
         </div><hr>
 <?php if($primary_id !== ''){ ?>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
+<?php if(!empty($tab_types)){ ?>
+                <nav class="navbar nav-tabs" role="navigation">
+                    <div>
+                        <ul class="nav nav-tabs" id="ul_tab_type">
+<?php foreach ($tab_types as $key => $value) { ?>
+                            <li id="li_tab_type_<?php echo '' . $key; ?>" <?php echo ($key == $default_tab_value) ? 'class="active"' : ''; ?>><a href="#"><?php echo $value; ?></a></li><?php echo PHP_EOL; ?>
+<?php } ?>
+                        </ul>
+                    </div>
+                </nav>
+<?php } ?>
                 <table id="tbl" class="table table-striped table-bordered bill_table text-center">
                     <thead>
                         <tr>

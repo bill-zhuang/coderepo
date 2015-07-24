@@ -12,6 +12,8 @@
 /* @var $view_modal_size string modal size */
 /* @var $is_blacklist bool use blacklist or not */
 /* @var $is_ckeditor bool use ckeditor or not */
+/* @var $tab_types array tab types for select */
+/* @var $default_tab_value mixed default selected tab value */
 
 $table_keys = array_keys($table_data);
 ?>
@@ -64,6 +66,18 @@ function ajaxIndex() {
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
+<?php } ?>
+<?php if(!empty($tab_types)){ ?>
+
+$('#ul_tab_type li').on('click', function(){
+    var tab_value = parseInt($(this).attr('id').substr('li_tab_type_'.length));
+    tab_value = isNaN(tab_value) ? <?php echo ($default_tab_value == '') ? 0 : $default_tab_value; ?> : tab_value;
+    $('#tab_type').val(tab_value);
+    $('#ul_tab_type li').removeClass('active');
+    $('#li_tab_type_' + tab_type).addClass('active');
+    $('#current_page').val(1);
+    ajaxIndex();
+});
 <?php } ?>
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function(){
