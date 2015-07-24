@@ -158,4 +158,7 @@ foreach ($table_row_data as $key => $value)
 <script src="/js/public/util.js"></script>
 <script src="/js/public/common.js"></script>
 <script src="/js/public/alertInfo.js"></script>
+<?php if ($primary_id !== ''){ ?>
+<script src="/js/public/pagination.js"></script>
+<?php } ?>
 <script src="/js/<?php echo strtolower($controller_name); ?>.js"></script>
