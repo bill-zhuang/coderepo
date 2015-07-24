@@ -38,20 +38,20 @@ class Application_Model_DBTable_<?php echo $model_name; ?> extends Application_M
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
-        return $count[0]['total'];
+        return intval($count[0]['total']);
     }
 
     public function get<?php echo $model_name; ?>Data(array $conditions, $count, $offset, $order_by)
     {
         $select = $this->select()->reset();
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $data = $select
             ->limit($count, $offset)

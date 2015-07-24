@@ -157,10 +157,7 @@ echo PHP_EOL;
 <?php } ?>
 
         $conditions = [
-            '<?php echo ($status_name === '') ? 'todo status' : $status_name; ?>' => [
-                'compare_type' => '= ?',
-                'value' => Bill_Constant::VALID_STATUS
-            ]
+            '<?php echo ($status_name === '') ? 'todo status' : $status_name; ?> =?' => Bill_Constant::VALID_STATUS
         ];
         $order_by = '<?php echo $primary_id; ?> ASC'; //TODO reset order by
         $total = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>Count($conditions);
