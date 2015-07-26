@@ -27,3 +27,19 @@ function initChart() {
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
+
+$('#btn_search').on('click', function(event) {
+    event.preventDefault();
+    ajaxDreamHistoryPeriod();
+});
+
+function ajaxDreamHistoryPeriod() {
+    var get_url = '/person/dream-history-chart/ajax-dream-history-period';
+    var get_data = $.param($('#formSearch').serializeArray());
+    var method = 'get';
+    var success_function = function(result){
+        //todo remove old canvas
+        initLineChart('dream_history_line_chart_all', result['period'], result['interval']);
+    };
+    callAjaxWithFunction(get_url, get_data, success_function, method);
+}

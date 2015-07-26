@@ -70,11 +70,21 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
             ->query()->fetchAll();
     }
 
-    public function getTotalDreamHistoryDataByDay()
+    public function getTotalDreamHistoryDataByDay($start_date, $end_date)
     {
-        return $this->select()->reset()
+        $select = $this->select()->reset()
             ->from($this->_name, array('dh_happen_date as period', 'dh_count as number'))
-            ->where('dh_status=?', 1)
+            ->where('dh_status=?', 1);
+        if ($start_date !== '')
+        {
+            $select->where('dh_happen_date>=?', $start_date);
+        }
+        if ($end_date !== '')
+        {
+            $select->where('dh_happen_date<=?', $end_date);
+        }
+
+        return $select
             ->query()->fetchAll();
     }
 

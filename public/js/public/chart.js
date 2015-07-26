@@ -1,5 +1,5 @@
 function initLineChart(line_id, data_labels, data_values, line_option) {
-    if (data_values.length != 0) {
+    if (typeof data_values != 'undefined' && data_values.length != 0) {
         var line_data = {
             labels : data_labels,
             datasets: [
@@ -21,11 +21,13 @@ function initLineChart(line_id, data_labels, data_values, line_option) {
         }
         var chart_line_canvas = document.getElementById(line_id).getContext("2d");
         var chart_line = new Chart(chart_line_canvas).Line(line_data, line_option);
+    } else {
+        alert('No data.');
     }
 }
 
 function initBarChart(doughnut_id, data_labels, data_values) {
-    if (data_values.length > 0) {
+    if (typeof data_values != 'undefined' && data_values.length > 0) {
         var bar_data = {
             labels : data_labels,
             datasets: [
@@ -46,11 +48,13 @@ function initBarChart(doughnut_id, data_labels, data_values) {
         //$('#' + doughnut_id).get(0).getContent('2d');
         var chart_bar_canvas = document.getElementById(doughnut_id).getContext("2d");
         var chart_bar = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
+    } else {
+        alert('No data.');
     }
 }
 
 function initPieChart(pie_id, data_labels, data_values) {
-    if (data_values.length > 0) {
+    if (typeof data_values != 'undefined' && data_values.length > 0) {
         var pie_data = [];
         var hex_color = '';
         for(var i = 0, len = data_labels.length; i < len; i++) {
@@ -70,11 +74,13 @@ function initPieChart(pie_id, data_labels, data_values) {
         //$('#' + pie_id).get(0).getContent('2d');
         var chart_pie_canvas = document.getElementById(pie_id).getContext("2d");
         var chart_pie = new Chart(chart_pie_canvas).Pie(pie_data, pie_option);
+    } else {
+        alert('No data.');
     }
 }
 
 function initDoughnut(doughnut_id, data_labels, data_values) {
-    if (data_values.length > 0) {
+    if (typeof data_values != 'undefined' && data_values.length > 0) {
         var doughnut_data = [];
         var hex_color = '';
         for(var i = 0, len = data_labels.length; i < len; i++) {
@@ -94,5 +100,7 @@ function initDoughnut(doughnut_id, data_labels, data_values) {
         //$('#' + doughnut_id).get(0).getContent('2d');
         var chart_doughnut_canvas = document.getElementById(doughnut_id).getContext("2d");
         var chart_doughnut = new Chart(chart_doughnut_canvas).Doughnut(doughnut_data, doughnut_option);
+    } else {
+        alert('No data.');
     }
 }
