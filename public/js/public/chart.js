@@ -19,8 +19,12 @@ function initLineChart(line_id, data_labels, data_values, line_option) {
                 responsive: true
             };
         }
+
+        if (typeof window.line_chart  != 'undefined') {
+            line_chart.destroy();
+        }
         var chart_line_canvas = document.getElementById(line_id).getContext("2d");
-        var chart_line = new Chart(chart_line_canvas).Line(line_data, line_option);
+        window.line_chart = new Chart(chart_line_canvas).Line(line_data, line_option);
     } else {
         alert('No data.');
     }
@@ -45,9 +49,13 @@ function initBarChart(doughnut_id, data_labels, data_values) {
         var bar_option = {
             responsive: true
         };
+
+        if (typeof window.bar_chart != 'undefined') {
+            bar_chart.destroy();
+        }
         //$('#' + doughnut_id).get(0).getContent('2d');
         var chart_bar_canvas = document.getElementById(doughnut_id).getContext("2d");
-        var chart_bar = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
+        window.bar_chart = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
     } else {
         alert('No data.');
     }
@@ -71,9 +79,13 @@ function initPieChart(pie_id, data_labels, data_values) {
         var pie_option = {
             responsive: true
         };
+
+        if (typeof window.pie_chart != 'undefined') {
+            pie_chart.destroy();
+        }
         //$('#' + pie_id).get(0).getContent('2d');
         var chart_pie_canvas = document.getElementById(pie_id).getContext("2d");
-        var chart_pie = new Chart(chart_pie_canvas).Pie(pie_data, pie_option);
+        window.pie_chart = new Chart(chart_pie_canvas).Pie(pie_data, pie_option);
     } else {
         alert('No data.');
     }
@@ -97,9 +109,13 @@ function initDoughnut(doughnut_id, data_labels, data_values) {
         var doughnut_option = {
             responsive: true
         };
+
+        if (typeof window.doughnut_chart != 'undefined') {
+            doughnut_chart.destroy();
+        }
         //$('#' + doughnut_id).get(0).getContent('2d');
         var chart_doughnut_canvas = document.getElementById(doughnut_id).getContext("2d");
-        var chart_doughnut = new Chart(chart_doughnut_canvas).Doughnut(doughnut_data, doughnut_option);
+        window.doughnut_chart = new Chart(chart_doughnut_canvas).Doughnut(doughnut_data, doughnut_option);
     } else {
         alert('No data.');
     }
