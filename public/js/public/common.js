@@ -29,6 +29,10 @@ function closeBatch(obj, parent_id)
 {
     if (!obj.checked) {
         $('#' + parent_id).prop('checked', false);
+    } else {
+        if ($('input[name="' + obj.name + '"]:checked').size() == $('input[name="' + obj.name + '"]').size()) {
+            $('#' + parent_id).prop('checked', true);
+        }
     }
 }
 
