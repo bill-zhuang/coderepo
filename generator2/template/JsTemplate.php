@@ -85,6 +85,7 @@ $('#btn_add').on('click', function(){
 <?php if ($is_ckeditor){ ?>
     CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.setData('');
 <?php } ?>
+    $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>').val('');
     $('#btn_submit_<?php echo $form_element_prefix; ?>').attr('disabled', false);
     $('#modal<?php echo $form_name_postfix; ?>').modal('show');
 });

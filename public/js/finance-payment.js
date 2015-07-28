@@ -47,6 +47,7 @@ $('#btn_add').on('click', function() {
     window.FinancePaymentForm.reset();
     $('#finance_payment_payment_date').val(getCurrentDate());
     g_selectpicker.selectpicker('val', $("#finance_payment_fc_id option:first").val());
+    $('#finance_payment_fp_id').val('');
     $('#btn_submit_finance_payment').attr('disabled', false);
     $('#FinancePaymentModal').modal('show');
 });

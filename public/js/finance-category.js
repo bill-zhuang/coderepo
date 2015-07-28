@@ -43,6 +43,7 @@ function ajaxIndex() {
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function() {
     window.FinanceCategoryForm.reset();
+    $('#finance_category_fc_id').val('');
     $('#btn_submit_finance_category').attr('disabled', false);
     $('#FinanceCategoryModal').modal('show');
 });

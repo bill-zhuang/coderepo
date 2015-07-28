@@ -44,6 +44,7 @@ $('#btn_add').on('click', function() {
     window.BadHistoryForm.reset();
     $('#bad_history_date').val(getCurrentDate());
     $('#bad_history_count').val(1);
+    $('#bad_history_id').val('');
     $('#btn_submit_bad_history').attr('disabled', false);
     $('#BadHistoryModal').modal('show');
 });

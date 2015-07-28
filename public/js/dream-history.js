@@ -44,6 +44,7 @@ $('#btn_add').on('click', function() {
     window.DreamHistoryForm.reset();
     $('#dream_history_date').val(getCurrentDate());
     $('#dream_history_count').val(1);
+    $('#dream_history_id').val('');
     $('#btn_submit_dream_history').attr('disabled', false);
     $('#DreamHistoryModal').modal('show');
 });
