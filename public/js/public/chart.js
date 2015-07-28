@@ -20,17 +20,18 @@ function initLineChart(line_id, data_labels, data_values, line_option) {
             };
         }
 
-        if (typeof window.line_chart  != 'undefined') {
-            line_chart.destroy();
+        var w_chart = 'chart' + line_id;
+        if (typeof window[w_chart]  != 'undefined') {
+            window[w_chart].destroy();
         }
         var chart_line_canvas = document.getElementById(line_id).getContext("2d");
-        window.line_chart = new Chart(chart_line_canvas).Line(line_data, line_option);
+        window[w_chart] = new Chart(chart_line_canvas).Line(line_data, line_option);
     } else {
         alert('No data.');
     }
 }
 
-function initBarChart(doughnut_id, data_labels, data_values) {
+function initBarChart(bar_id, data_labels, data_values) {
     if (typeof data_values != 'undefined' && data_values.length > 0) {
         var bar_data = {
             labels : data_labels,
@@ -50,12 +51,13 @@ function initBarChart(doughnut_id, data_labels, data_values) {
             responsive: true
         };
 
-        if (typeof window.bar_chart != 'undefined') {
-            bar_chart.destroy();
+        var w_chart = 'chart' + bar_id;
+        if (typeof window[w_chart]  != 'undefined') {
+            window[w_chart].destroy();
         }
         //$('#' + doughnut_id).get(0).getContent('2d');
-        var chart_bar_canvas = document.getElementById(doughnut_id).getContext("2d");
-        window.bar_chart = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
+        var chart_bar_canvas = document.getElementById(bar_id).getContext("2d");
+        window[w_chart] = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
     } else {
         alert('No data.');
     }
@@ -80,12 +82,13 @@ function initPieChart(pie_id, data_labels, data_values) {
             responsive: true
         };
 
-        if (typeof window.pie_chart != 'undefined') {
-            pie_chart.destroy();
+        var w_chart = 'chart' + pie_id;
+        if (typeof window[w_chart]  != 'undefined') {
+            window[w_chart].destroy();
         }
         //$('#' + pie_id).get(0).getContent('2d');
         var chart_pie_canvas = document.getElementById(pie_id).getContext("2d");
-        window.pie_chart = new Chart(chart_pie_canvas).Pie(pie_data, pie_option);
+        window[w_chart] = new Chart(chart_pie_canvas).Pie(pie_data, pie_option);
     } else {
         alert('No data.');
     }
@@ -110,12 +113,13 @@ function initDoughnut(doughnut_id, data_labels, data_values) {
             responsive: true
         };
 
-        if (typeof window.doughnut_chart != 'undefined') {
-            doughnut_chart.destroy();
+        var w_chart = 'chart' + doughnut_id;
+        if (typeof window[w_chart]  != 'undefined') {
+            window[w_chart].destroy();
         }
         //$('#' + doughnut_id).get(0).getContent('2d');
         var chart_doughnut_canvas = document.getElementById(doughnut_id).getContext("2d");
-        window.doughnut_chart = new Chart(chart_doughnut_canvas).Doughnut(doughnut_data, doughnut_option);
+        window[w_chart] = new Chart(chart_doughnut_canvas).Doughnut(doughnut_data, doughnut_option);
     } else {
         alert('No data.');
     }
