@@ -70,6 +70,8 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
         $all_chart_data = $this->_getAllDreamHistoryDataByDay($start_date, $end_date);
 
         return [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
             'chart_data' => $chart_data,
             'all_chart_data' => $all_chart_data,
         ];
@@ -95,7 +97,7 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
 
     private function _getSearchParams()
     {
-        $start_date = trim($this->getParam('start_date', ''));
+        $start_date = trim($this->getParam('start_date', date('Y-m-d', strtotime('-1 year'))));
         $end_date = trim($this->getParam('end_date', ''));
 
         return [

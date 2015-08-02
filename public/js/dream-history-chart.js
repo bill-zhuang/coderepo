@@ -20,6 +20,12 @@ function initChart() {
             scaleStepWidth: 1, // y axis
             scaleStartValue: 0 // y axis start value
         };
+        if (result.start_date != '') {
+            $('#start_date').val(result.start_date);
+        }
+        if (result.end_date != '') {
+            $('#start_date').val(result.end_date);
+        }
         initLineChart('dream_history_line_chart', data_period, data_number, line_option);
         initBarChart('dream_history_bar_chart', data_period, data_number);
 
@@ -38,7 +44,6 @@ function ajaxDreamHistoryPeriod() {
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
     var success_function = function(result){
-        //todo remove old canvas
         initLineChart('dream_history_line_chart_all', result['period'], result['interval']);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
