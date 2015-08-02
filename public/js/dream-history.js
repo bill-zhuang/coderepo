@@ -80,7 +80,7 @@ function modifyDreamHistory(modify_id) {
     };
     var method = 'get';
     var success_function = function(history_data){
-        $('#dream_history_date').val(history_data.dh_happen_date).attr('disabled', true);
+        $('#dream_history_date').val(history_data.dh_happen_date);
         $('#dream_history_count').val(history_data.dh_count);
         $('#dream_history_id').val(history_data.dh_id);
         $('#btn_submit_dream_history').attr('disabled', false);

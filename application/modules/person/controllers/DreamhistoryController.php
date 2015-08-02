@@ -73,9 +73,11 @@ class person_DreamHistoryController extends Zend_Controller_Action
         {
             $dh_id = intval($_POST['dream_history_id']);
             $dh_count = intval($_POST['dream_history_count']);
+            $dh_date = $_POST['dream_history_date'];
             if ($dh_id > 0 && $dh_count > 0)
             {
                 $update_data = [
+                    'dh_happen_date' => $dh_date,
                     'dh_count' => $dh_count,
                     'dh_update_time' => date('Y-m-d H:i:s')
                 ];
