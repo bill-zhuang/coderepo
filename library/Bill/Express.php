@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 14-12-24
- * Time: 下午5:21
- */
 
 class Bill_Express
 {

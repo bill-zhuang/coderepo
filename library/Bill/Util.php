@@ -1,22 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 14-12-9
- * Time: 上午11:33
- */
 
 class Bill_Util
 {
     public static function encodeChineseCharacterInUrl($url)
     {
-        return preg_replace_callback(
-            Bill_Regex::CHINESE_CHARACTER,
-            function($matches) {
+        return preg_replace_callback(Bill_Regex::CHINESE_CHARACTER, function ($matches)
+            {
                 return urlencode($matches[0]);
-            },
-            trim($url)
-        );
+            }, trim($url));
     }
 
     public static function extractImageBase64Content($content)

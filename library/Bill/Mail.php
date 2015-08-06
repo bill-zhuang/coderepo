@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 15-1-4
- * Time: 下午1:31
- */
 
 class Bill_Mail
 {
@@ -23,34 +17,29 @@ class Bill_Mail
             return true;
         }
 
-        $config = [
-            'auth'=>'login',
-            'username'=> $this->_username,
-            'password'=> $this->_password,
-            //'ssl' => 'ssl',
-            'port' => $this->_port
-        ];
+        $config = ['auth' => 'login', 'username' => $this->_username, 'password' => $this->_password, //'ssl' => 'ssl',
+            'port' => $this->_port];
         $transport = new Zend_Mail_Transport_Smtp($this->_host, $config);
 
         $mail = new Zend_Mail($charset);
         $mail->setBodyText($body);
         $mail->setFrom($this->_username, 'Admin');
 
-        if(is_array($receiver))
+        if (is_array($receiver))
         {
-            if(count($receiver) == 0)
+            if (count($receiver) == 0)
             {
                 return false;
             }
 
-            for($i = 0, $len = count($receiver); $i < $len; $i++)
+            for ($i = 0, $len = count($receiver); $i < $len; $i++)
             {
                 $mail->addTo($receiver[$i]);
             }
         }
         else
         {
-            if($receiver == null)
+            if ($receiver == null)
             {
                 $receiver = $this->_receiver;
             }
@@ -58,15 +47,9 @@ class Bill_Mail
             $mail->addTo($receiver);
         }
 
-        if($attachment != null)
+        if ($attachment != null)
         {
-            $mail->createAttachment(
-                file_get_contents($attachment),
-                Zend_Mime::TYPE_OCTETSTREAM,
-                Zend_Mime::DISPOSITION_ATTACHMENT,
-                Zend_Mime::ENCODING_BASE64,
-                $attachment
-            );
+            $mail->createAttachment(file_get_contents($attachment), Zend_Mime::TYPE_OCTETSTREAM, Zend_Mime::DISPOSITION_ATTACHMENT, Zend_Mime::ENCODING_BASE64, $attachment);
         }
 
         //todo set mail from alpha or product
