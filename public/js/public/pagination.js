@@ -15,12 +15,12 @@ function initPagination(total_pages, current_page) {
     });
 }
 
-$('#page_length').on('change', function() {
+$('#page_length').on('change', function () {
     $('#current_page').val(1);
     ajaxIndex();
 });
 
-$('#btn_search').on('click', function(event) {
+$('#btn_search').on('click', function (event) {
     event.preventDefault();
     $('#current_page').val(1);
     ajaxIndex();

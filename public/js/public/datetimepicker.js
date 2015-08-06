@@ -1,6 +1,6 @@
 $('.form_date').datetimepicker({
     format: 'yyyy-mm-dd',
-    todayBtn:  'linked',
+    todayBtn: 'linked',
     todayHighlight: 1,
     language: 'zh-CN',
     autoclose: 1,
@@ -9,7 +9,7 @@ $('.form_date').datetimepicker({
 
 $('.form_datetime').datetimepicker({
     format: 'yyyy-mm-dd hh:ii:ss',
-    todayBtn:  'linked',
+    todayBtn: 'linked',
     todayHighlight: 1,
     language: 'zh-CN',
     autoclose: 1

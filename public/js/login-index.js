@@ -1,12 +1,12 @@
-$(document).ready(function() {
-    var cookie_name =  $.cookie('name');
+$(document).ready(function () {
+    var cookie_name = $.cookie('name');
     if (typeof cookie_name != 'undefined') {
         $('#remember').prop('checked', true);
         $('#username').val(cookie_name);
     }
 });
 
-$('#login').on('submit', function(event) {
+$('#login').on('submit', function (event) {
     event.preventDefault();
     loginCheck();
 });
@@ -20,8 +20,8 @@ function loginCheck() {
     } else if (password == '') {
         alert('密码不能为空！');
     } else {
-        if($('#remember').prop('checked')) {
-            $.cookie('name', name, {expires : 1, path : '/'});
+        if ($('#remember').prop('checked')) {
+            $.cookie('name', name, {expires: 1, path: '/'});
         }
         $('#login').get(0).submit();
     }

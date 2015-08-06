@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     ajaxIndex();
 });
 
@@ -6,7 +6,7 @@ function ajaxIndex() {
     var get_url = '/person/dream-history/ajax-index';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
-    var success_function = function(result){
+    var success_function = function (result) {
         $('#tbl tbody').empty();
         for (var i = 0, len = result.data.length; i < len; i++) {
             $('#tbl tbody').append(
@@ -17,12 +17,16 @@ function ajaxIndex() {
                     .append($('<td>').text(result.data[i]['dh_create_time']))
                     .append($('<td>').text(result.data[i]['dh_update_time']))
                     .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data[i]['dh_id'], text: '修改'})
-                            .click(function(){modifyDreamHistory(this.id);})
+                        .append($('<a>', {href: '#', id: 'modify_' + result.data[i]['dh_id'], text: '修改'})
+                            .click(function () {
+                                modifyDreamHistory(this.id);
+                            })
                         )
                         .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data[i]['dh_id'], text: '删除'})
-                            .click(function(){deleteDreamHistory(this.id);})
+                        .append($('<a>', {href: '#', id: 'delete_' + result.data[i]['dh_id'], text: '删除'})
+                            .click(function () {
+                                deleteDreamHistory(this.id);
+                            })
                         )
                     )
             );
@@ -40,7 +44,7 @@ function ajaxIndex() {
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function() {
+$('#btn_add').on('click', function () {
     window.DreamHistoryForm.reset();
     $('#dream_history_date').val(getCurrentDate());
     $('#dream_history_count').val(1);
@@ -49,7 +53,7 @@ $('#btn_add').on('click', function() {
     $('#DreamHistoryModal').modal('show');
 });
 
-$('#DreamHistoryForm').on('submit', (function(event) {
+$('#DreamHistoryForm').on('submit', (function (event) {
     event.preventDefault();
 
     var dh_id = $('#dream_history_id').val();
@@ -60,7 +64,7 @@ $('#DreamHistoryForm').on('submit', (function(event) {
     var msg_success = (dh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
     var msg_error = (dh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
     var method = 'post';
-    var success_function = function(result){
+    var success_function = function (result) {
         $('#DreamHistoryModal').modal('hide');
         if (parseInt(result) != 0) {
             alert(msg_success);
@@ -79,7 +83,7 @@ function modifyDreamHistory(modify_id) {
         dh_id: dh_id
     };
     var method = 'get';
-    var success_function = function(history_data){
+    var success_function = function (history_data) {
         $('#dream_history_date').val(history_data.dh_happen_date);
         $('#dream_history_count').val(history_data.dh_count);
         $('#dream_history_id').val(history_data.dh_id);
@@ -97,7 +101,7 @@ function deleteDreamHistory(delete_id) {
             dh_id: dh_id
         };
         var method = 'post';
-        var success_function = function(result){
+        var success_function = function (result) {
             if (parseInt(result) > 0) {
                 alert(MESSAGE_DELETE_SUCCESS);
             } else {

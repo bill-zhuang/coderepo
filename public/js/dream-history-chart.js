@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     //all bad history data by day
     initChart();
 });
@@ -9,7 +9,7 @@ function initChart() {
 
     };
     var method = 'get';
-    var success_function = function(result){
+    var success_function = function (result) {
         var chart_data = result.chart_data;
         var data_period = chart_data['period'];
         var data_number = chart_data['number'];
@@ -34,7 +34,7 @@ function initChart() {
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
 
-$('#btn_search').on('click', function(event) {
+$('#btn_search').on('click', function (event) {
     event.preventDefault();
     ajaxDreamHistoryPeriod();
 });
@@ -43,7 +43,7 @@ function ajaxDreamHistoryPeriod() {
     var get_url = '/person/dream-history-chart/ajax-dream-history-period';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
-    var success_function = function(result){
+    var success_function = function (result) {
         initLineChart('dream_history_line_chart_all', result['period'], result['interval']);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);

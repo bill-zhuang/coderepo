@@ -1,5 +1,4 @@
-﻿
-//You can calculate directions (using a variety of methods of transportation) by using the DirectionsService object.
+﻿//You can calculate directions (using a variety of methods of transportation) by using the DirectionsService object.
 var directionsService = new google.maps.DirectionsService();
 
 //Define a variable with all map points.
@@ -27,13 +26,13 @@ function InitializeMap() {
     var myOptions = {
         zoom: zoom_option,
         zoomControl: true,
-        center: new google.maps.LatLng(31.230416,121.473701),
+        center: new google.maps.LatLng(31.230416, 121.473701),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
     //Define the map.
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    
+
     //Set the map for directionsRenderer
     _directionsRenderer.setMap(map);
 
@@ -44,7 +43,7 @@ function InitializeMap() {
     });
 
     //Add the doubel click event to map.
-    google.maps.event.addListener(map, "dblclick", function(event) {
+    google.maps.event.addListener(map, "dblclick", function (event) {
         var _currentPoints = event.latLng;
         _mapPoints.push(_currentPoints);
         LegPoints.push('');//console.log(LegPoints);
@@ -52,7 +51,7 @@ function InitializeMap() {
     });
 
     //Add the directions changed event to map.
-    google.maps.event.addListener(_directionsRenderer, 'directions_changed', function() {
+    google.maps.event.addListener(_directionsRenderer, 'directions_changed', function () {
         var myroute = _directionsRenderer.directions.routes[0];//console.log(myroute.legs);
         CreateRoute(myroute);
         //zoom_option = map.getZoom();
@@ -179,13 +178,13 @@ function drawRoute(originAddress, destinationAddress, _waypoints) {
     }
 
     //This will take the request and draw the route and return response and status as output
-    directionsService.route(_request, function(_response, _status) {
+    directionsService.route(_request, function (_response, _status) {
         if (_status == google.maps.DirectionsStatus.OK) {
             _directionsRenderer.setDirections(_response);//console.log(_directionsRenderer.directions.routes[0]);
-            
+
             /*var myroute = _directionsRenderer.directions.routes[0];//console.log(myroute);
-            CreateRoute(myroute);
-            zoom_option = map.getZoom();*/
+             CreateRoute(myroute);
+             zoom_option = map.getZoom();*/
         }
     });
 }

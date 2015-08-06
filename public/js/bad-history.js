@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     ajaxIndex();
 });
 
@@ -6,7 +6,7 @@ function ajaxIndex() {
     var get_url = '/person/bad-history/ajax-index';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
-    var success_function = function(result){
+    var success_function = function (result) {
         $('#tbl tbody').empty();
         for (var i = 0, len = result.data.length; i < len; i++) {
             $('#tbl tbody').append(
@@ -17,12 +17,16 @@ function ajaxIndex() {
                     .append($('<td>').text(result.data[i]['bh_create_time']))
                     .append($('<td>').text(result.data[i]['bh_update_time']))
                     .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data[i]['bh_id'], text: '修改'})
-                            .click(function(){modifyBadHistory(this.id);})
+                        .append($('<a>', {href: '#', id: 'modify_' + result.data[i]['bh_id'], text: '修改'})
+                            .click(function () {
+                                modifyBadHistory(this.id);
+                            })
                         )
                         .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data[i]['bh_id'], text: '删除'})
-                            .click(function(){deleteBadHistory(this.id);})
+                        .append($('<a>', {href: '#', id: 'delete_' + result.data[i]['bh_id'], text: '删除'})
+                            .click(function () {
+                                deleteBadHistory(this.id);
+                            })
                         )
                     )
             );
@@ -40,7 +44,7 @@ function ajaxIndex() {
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function() {
+$('#btn_add').on('click', function () {
     window.BadHistoryForm.reset();
     $('#bad_history_date').val(getCurrentDate());
     $('#bad_history_count').val(1);
@@ -49,7 +53,7 @@ $('#btn_add').on('click', function() {
     $('#BadHistoryModal').modal('show');
 });
 
-$('#BadHistoryForm').on('submit', (function(event) {
+$('#BadHistoryForm').on('submit', (function (event) {
     event.preventDefault();
 
     var bh_id = $('#bad_history_id').val();
@@ -60,7 +64,7 @@ $('#BadHistoryForm').on('submit', (function(event) {
     var msg_success = (bh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
     var msg_error = (bh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
     var method = 'post';
-    var success_function = function(result){
+    var success_function = function (result) {
         $('#BadHistoryModal').modal('hide');
         if (parseInt(result) != 0) {
             alert(msg_success);
@@ -79,7 +83,7 @@ function modifyBadHistory(modify_id) {
         bh_id: bh_id
     };
     var method = 'get';
-    var success_function = function(history_data){
+    var success_function = function (history_data) {
         $('#bad_history_date').val(history_data.bh_happen_date).attr('disabled', true);
         $('#bad_history_count').val(history_data.bh_count);
         $('#bad_history_id').val(history_data.bh_id);
@@ -97,7 +101,7 @@ function deleteBadHistory(delete_id) {
             bh_id: bh_id
         };
         var method = 'post';
-        var success_function = function(result){
+        var success_function = function (result) {
             if (parseInt(result) > 0) {
                 alert(MESSAGE_DELETE_SUCCESS);
             } else {

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     ajaxIndex();
 });
 
@@ -6,7 +6,7 @@ function ajaxIndex() {
     var get_url = '/person/backend-log/ajax-index';
     var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
-    var success_function = function(result){
+    var success_function = function (result) {
         $('#tbl tbody').empty();
         for (var i = 0, len = result.data.length; i < len; i++) {
             $('#tbl tbody').append(

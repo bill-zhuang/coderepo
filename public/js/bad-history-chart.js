@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     //all bad history data by day
     initChart();
 });
@@ -9,7 +9,7 @@ function initChart() {
 
     };
     var method = 'get';
-    var success_function = function(result){
+    var success_function = function (result) {
         var data_period = result.period;
         var data_number = result.interval;
         if (data_period.length != 0) {

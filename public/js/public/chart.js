@@ -1,7 +1,7 @@
 function initLineChart(line_id, data_labels, data_values, line_option) {
     if (typeof data_values != 'undefined' && data_values.length != 0) {
         var line_data = {
-            labels : data_labels,
+            labels: data_labels,
             datasets: [
                 {
                     fillColor: "rgba(151,187,205,0.2)",
@@ -21,7 +21,7 @@ function initLineChart(line_id, data_labels, data_values, line_option) {
         }
 
         var w_chart = 'chart' + line_id;
-        if (typeof window[w_chart]  != 'undefined') {
+        if (typeof window[w_chart] != 'undefined') {
             window[w_chart].destroy();
         }
         var chart_line_canvas = document.getElementById(line_id).getContext("2d");
@@ -34,7 +34,7 @@ function initLineChart(line_id, data_labels, data_values, line_option) {
 function initBarChart(bar_id, data_labels, data_values) {
     if (typeof data_values != 'undefined' && data_values.length > 0) {
         var bar_data = {
-            labels : data_labels,
+            labels: data_labels,
             datasets: [
                 {
                     fillColor: "rgba(151,187,205,0.2)",
@@ -52,7 +52,7 @@ function initBarChart(bar_id, data_labels, data_values) {
         };
 
         var w_chart = 'chart' + bar_id;
-        if (typeof window[w_chart]  != 'undefined') {
+        if (typeof window[w_chart] != 'undefined') {
             window[w_chart].destroy();
         }
         //$('#' + doughnut_id).get(0).getContent('2d');
@@ -67,7 +67,7 @@ function initPieChart(pie_id, data_labels, data_values) {
     if (typeof data_values != 'undefined' && data_values.length > 0) {
         var pie_data = [];
         var hex_color = '';
-        for(var i = 0, len = data_labels.length; i < len; i++) {
+        for (var i = 0, len = data_labels.length; i < len; i++) {
             hex_color = getRandomColorHex();
             pie_data.push(
                 {
@@ -83,7 +83,7 @@ function initPieChart(pie_id, data_labels, data_values) {
         };
 
         var w_chart = 'chart' + pie_id;
-        if (typeof window[w_chart]  != 'undefined') {
+        if (typeof window[w_chart] != 'undefined') {
             window[w_chart].destroy();
         }
         //$('#' + pie_id).get(0).getContent('2d');
@@ -98,7 +98,7 @@ function initDoughnut(doughnut_id, data_labels, data_values) {
     if (typeof data_values != 'undefined' && data_values.length > 0) {
         var doughnut_data = [];
         var hex_color = '';
-        for(var i = 0, len = data_labels.length; i < len; i++) {
+        for (var i = 0, len = data_labels.length; i < len; i++) {
             hex_color = getRandomColorHex();
             doughnut_data.push(
                 {
@@ -114,7 +114,7 @@ function initDoughnut(doughnut_id, data_labels, data_values) {
         };
 
         var w_chart = 'chart' + doughnut_id;
-        if (typeof window[w_chart]  != 'undefined') {
+        if (typeof window[w_chart] != 'undefined') {
             window[w_chart].destroy();
         }
         //$('#' + doughnut_id).get(0).getContent('2d');

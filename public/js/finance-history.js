@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     initChart();
 });
 
@@ -8,7 +8,7 @@ function initChart() {
 
     };
     var method = 'get';
-    var success_function = function(result){
+    var success_function = function (result) {
         //payment history data by month
         initMonthChart(result.month_chart_data);
         //all payment history data by day

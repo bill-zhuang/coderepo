@@ -1,5 +1,4 @@
-function isUnsignedInt(num)
-{
+function isUnsignedInt(num) {
     if (num === 0 || num === '0') {
         return true;
     }
@@ -7,13 +6,11 @@ function isUnsignedInt(num)
     return /^\s*[1-9][0-9]*\s*$/.test(num);
 }
 
-function isPositiveInt(num)
-{
+function isPositiveInt(num) {
     return /^\s*[1-9][0-9]*\s*$/.test(num);
 }
 
-function isUnsignedFloat(num)
-{
+function isUnsignedFloat(num) {
     if (num === 0 || num === '0') {
         return true;
     }
@@ -21,28 +18,23 @@ function isUnsignedFloat(num)
     return /^\s*[0-9]+(\.[0-9]+)*\s*$/.test(num);
 }
 
-function isPositiveFloat(num)
-{
+function isPositiveFloat(num) {
     return /^\s*[0-9]+(\.[0-9]+)*\s*$/.test(num);
 }
 
-function isFloat(num)
-{
+function isFloat(num) {
     return /^\s*-?[0-9]+(\.[0-9]+)*\s*$/.test(num);
 }
 
-function isCellPhone(phone)
-{
+function isCellPhone(phone) {
     return /^\s*1[0-9]{10}\s*$/.test(phone);
 }
 
-function isImgExtension(img_name)
-{
+function isImgExtension(img_name) {
     return /\.(jpg|png|gif|jpeg|bmp)$/.test(img_name);
 }
 
-function getCurrentTime()
-{
+function getCurrentTime() {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth() + 1;
@@ -54,8 +46,7 @@ function getCurrentTime()
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
-function getCurrentDate()
-{
+function getCurrentDate() {
     var d = new Date();
     var year = d.getFullYear();
     var month = d.getMonth() + 1;
@@ -71,19 +62,17 @@ function getCurrentDate()
     return year + '-' + month + '-' + day;
 }
 
-function getRandomColorHex()
-{
+function getRandomColorHex() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
-    for (var i = 0; i < 6; i++ ) {
+    for (var i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
 }
 
-function callAjaxWithAlert(url, data, msg_success, msg_error, method, is_reload)
-{
-    var success_function = function(flag) {
+function callAjaxWithAlert(url, data, msg_success, msg_error, method, is_reload) {
+    var success_function = function (flag) {
         if (parseInt(flag) != 0) {
             alert(msg_success);
         } else {
@@ -97,8 +86,7 @@ function callAjaxWithAlert(url, data, msg_success, msg_error, method, is_reload)
     callAjaxWithFunction(url, data, success_function, method);
 }
 
-function callAjaxWithForm(url, data, msg_success, msg_error, method)
-{
+function callAjaxWithForm(url, data, msg_success, msg_error, method) {
     $.ajax({
         url: url,
         type: method || 'post',
@@ -106,7 +94,7 @@ function callAjaxWithForm(url, data, msg_success, msg_error, method)
         cache: false,
         contentType: false,
         processData: false,
-        success: function(flag) {
+        success: function (flag) {
             if (parseInt(flag) != 0) {
                 alert(msg_success);
             } else {
@@ -119,8 +107,7 @@ function callAjaxWithForm(url, data, msg_success, msg_error, method)
     });
 }
 
-function callAjaxWithFormAndFunction(url, data, success_function, method)
-{
+function callAjaxWithFormAndFunction(url, data, success_function, method) {
     $.ajax({
         url: url,
         type: method || 'post',
@@ -134,8 +121,7 @@ function callAjaxWithFormAndFunction(url, data, success_function, method)
     });
 }
 
-function callAjaxWithFunction(url, data, success_function, method)
-{
+function callAjaxWithFunction(url, data, success_function, method) {
     $.ajax({
         url: url,
         type: method || 'post',
@@ -147,12 +133,11 @@ function callAjaxWithFunction(url, data, success_function, method)
     });
 }
 
-function getAjaxErrorFunction()
-{
-    return function(XMLHttpRequest, textStatus, errorThrown) {
+function getAjaxErrorFunction() {
+    return function (XMLHttpRequest, textStatus, errorThrown) {
         console.log("XMLHttpRequest.status=" + XMLHttpRequest.status +
-                "\nXMLHttpRequest.readyState=" + XMLHttpRequest.readyState +
-                "\ntextStatus=" + textStatus);
+            "\nXMLHttpRequest.readyState=" + XMLHttpRequest.readyState +
+            "\ntextStatus=" + textStatus);
         var contentType = XMLHttpRequest.getResponseHeader("Content-Type");
         if (XMLHttpRequest.status === 200 && contentType.toLowerCase().indexOf("text/html") >= 0) {
             // assume that our login has expired - reload our current page
