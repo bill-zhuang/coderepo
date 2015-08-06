@@ -15,15 +15,15 @@ function isUnsignedFloat(num) {
         return true;
     }
 
-    return /^\s*[0-9]+(\.[0-9]+)*\s*$/.test(num);
+    return /^\s*[0-9]+(\.[0-9]+)?\s*$/.test(num);
 }
 
 function isPositiveFloat(num) {
-    return /^\s*[0-9]+(\.[0-9]+)*\s*$/.test(num);
+    return /^\s*[0-9]+(\.[0-9]+)?\s*$/.test(num);
 }
 
 function isFloat(num) {
-    return /^\s*-?[0-9]+(\.[0-9]+)*\s*$/.test(num);
+    return /^\s*-?[0-9]+(\.[0-9]+)?\s*$/.test(num);
 }
 
 function isCellPhone(phone) {
