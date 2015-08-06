@@ -1,110 +1,111 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="zh-cn">
-    <head>
-        <meta charset="utf-8">
-        <title>Bill Coderepo</title>
+<head>
+    <meta charset="utf-8">
+    <title>Bill Coderepo</title>
 
-        <!-- Bootstrap core CSS -->
-        <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-        <link href="/css/layout.css" rel="stylesheet"/>
-        <!-- jquery -->
-        <script src="/assets/jquery/jquery-1.11.0.min.js"></script>
-    </head>
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/layout.css" rel="stylesheet"/>
+    <!-- jquery -->
+    <script src="/assets/jquery/jquery-1.11.0.min.js"></script>
+</head>
 
-    <body>
-        <div class="navbar navbar-default navbar-fixed-top">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Bill</a>
-            </div>
-            <div class="navbar-collapse collapse navbar-right">
-                <a href="/login/logout" class="navbar-brand" style="color: steelblue;">
-                    <span class="glyphicon glyphicon-log-out"></span>
-                    注销&nbsp;&nbsp;&nbsp;
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">Bill</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-right">
+        <a href="/login/logout" class="navbar-brand" style="color: steelblue;">
+            <span class="glyphicon glyphicon-log-out"></span>
+            注销&nbsp;&nbsp;&nbsp;
+        </a>
+    </div>
+</div>
+<div class="row bill-layout-width">
+    <div class="col-sm-3 col-md-3 col-lg-2 well bill-sidebar bill_div_scroll" id="main">
+        <ul class="nav nav-sidebar">
+            <li class="dropdown active">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-user"></span> Person center<b class="caret"></b>
                 </a>
-            </div>
-        </div>
-        <div class="row bill-layout-width">
-            <div class="col-sm-3 col-md-3 col-lg-2 well bill-sidebar bill_div_scroll" id="main">
-                <ul class="nav nav-sidebar">
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-user"></span> Person center<b class="caret"></b>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="/main/modify-password">
+                            <span class="glyphicon glyphicon-wrench"></span>Modify Password
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="/main/modify-password">
-                                    <span class="glyphicon glyphicon-wrench"></span>Modify Password
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/login/logout">
-                                    <span class="glyphicon glyphicon-log-out"></span>Logout
-                                </a>
-                            </li>
-                        </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-leaf"></span> Variety<b class="caret"></b>
+                    <li>
+                        <a href="/login/logout">
+                            <span class="glyphicon glyphicon-log-out"></span>Logout
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/index/index">Other</a></li>
-                            <li><a href="/color-hex/index">Color Hex</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-map-marker"></span> Map<b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/google-map">Google Map</a></li>
-                            <li><a href="/google-map/multiple-location">Multiple Markes</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-stats"></span> History<b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/person/dream-history/index">Dream History</a></li>
-                            <li><a href="/person/dream-history-chart/index">Dream History Chart</a></li>
-                            <li><a href="/person/bad-history/index">Bad History</a></li>
-                            <li><a href="/person/bad-history-chart/index">Bad History Chart</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-usd"></span>
-                            Finance<b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/person/finance-category/index">Finance Category</a></li>
-                            <li><a href="/person/finance-payment/index">Finance Payment</a></li>
-                            <li><a href="/person/finance-history/index">Finance History</a></li>
-                        </ul>
                     </li>
                 </ul>
-            </div>
-            <!-- below is for show action view phtml file. -->
-            <div class="col-sm-9 col-md-9 col-lg-10 bill-content">
-                <?php echo $this->layout()->content;?>
-            </div>
-        </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-leaf"></span> Variety<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/index/index">Other</a></li>
+                    <li><a href="/color-hex/index">Color Hex</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-map-marker"></span> Map<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/google-map">Google Map</a></li>
+                    <li><a href="/google-map/multiple-location">Multiple Markes</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-stats"></span> History<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/person/dream-history/index">Dream History</a></li>
+                    <li><a href="/person/dream-history-chart/index">Dream History Chart</a></li>
+                    <li><a href="/person/bad-history/index">Bad History</a></li>
+                    <li><a href="/person/bad-history-chart/index">Bad History Chart</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-usd"></span>
+                    Finance<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/person/finance-category/index">Finance Category</a></li>
+                    <li><a href="/person/finance-payment/index">Finance Payment</a></li>
+                    <li><a href="/person/finance-history/index">Finance History</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- below is for show action view phtml file. -->
+    <div class="col-sm-9 col-md-9 col-lg-10 bill-content">
+        <?php echo $this->layout()->content; ?>
+    </div>
+</div>
 
-        <div class="footer bill-footer">
-            <div class="container text-center">
-                <p class="text-muted">
-                    <a href="mailto:zstu_bill@yahoo.com">Send mail</a>.
-                    Released under <a href="http://apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache 2.0</a>
-                </p>
-            </div>
-        </div>
+<div class="footer bill-footer">
+    <div class="container text-center">
+        <p class="text-muted">
+            <a href="mailto:zstu_bill@yahoo.com">Send mail</a>.
+            Released under <a href="http://apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache 2.0</a>
+        </p>
+    </div>
+</div>
 
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/assets/jquery.cookie/jquery.cookie.js"></script>
-        <script src="/assets/snow/snow.js"></script>
-        <script src="/assets/snow/three.min.js"></script>
-        <script src="/js/layout.js"></script>
-    </body>
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/jquery.cookie/jquery.cookie.js"></script>
+<script src="/assets/snow/snow.js"></script>
+<script src="/assets/snow/three.min.js"></script>
+<script src="/js/layout.js"></script>
+</body>
 </html>
