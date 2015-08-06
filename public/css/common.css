@@ -11,33 +11,33 @@
 input file css
 */
 input[type="file"] {
-    display : inline-block;
+    display: inline-block;
 }
 
 /*
 textarea css
 */
 .bill_textarea_full {
-    width : 100%;
-    height : 150px;
+    width: 100%;
+    height: 150px;
 }
 
 table td {
-    vertical-align:middle !important;
+    vertical-align: middle !important;
 }
 
 /*
 table css
 */
 .bill_table {
-    float : left;
-    width : 100%;
+    float: left;
+    width: 100%;
     /*table-layout:fixed;*/
-    word-break:break-all;
+    word-break: break-all;
 }
 
 .bill_table_no_data {
-    text-align : center;
+    text-align: center;
     color: #ff0000;
     font-weight: bold;
 }
@@ -62,9 +62,9 @@ google map canvas css
 .bill-google-map-canvas {
     width: 600px;
     height: 600px;
-    margin-top:10px;
-    border:1px solid gray;
-    float:left;
+    margin-top: 10px;
+    border: 1px solid gray;
+    float: left;
 }
 
 .bill-margin-left {
@@ -81,19 +81,19 @@ google map canvas css
 bootstrap modal css
 */
 .bill_modal_lg {
-    width : 900px;
-    height : 500px;
-    margin-top : 50px;
+    width: 900px;
+    height: 500px;
+    margin-top: 50px;
 }
 
 .bill_modal_md {
-    width : 500px;
-    height : 500px;
-    margin-top : 50px;
+    width: 500px;
+    height: 500px;
+    margin-top: 50px;
 }
 
 .bill_modal_sm {
-    width : 300px;
-    height : 500px;
-    margin-top : 50px;
+    width: 300px;
+    height: 500px;
+    margin-top: 50px;
 }
