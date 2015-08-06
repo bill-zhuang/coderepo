@@ -24,10 +24,10 @@ class Bill_Download
     /**
      * Download file through file_get_contents.
      * @param string $url
-     * @param string $filename
-     * @param string $dir
+     * @param string $fileName
+     * @param string/null $dir
      */
-    public function filegetcontentDownload($url, $fileName, $dir = null)
+    public function fileGetContentDownload($url, $fileName, $dir = null)
     {
         $fullPath = ($dir == null) ? $fileName : $dir . $fileName;
 
@@ -36,11 +36,10 @@ class Bill_Download
     }
 
     /**
-     * Downoad file through wget.
+     * Download file through wget.
      * @param string $url
-     * @param string $filename
-     * @param string $dir
-     * @return unknown
+     * @param string $fileName
+     * @param string/null $dir
      */
     public function wgetDownload($url, $fileName, $dir = null)
     {
