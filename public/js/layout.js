@@ -15,6 +15,7 @@ $(document).ready(function () {
 
 $('#main > ul.nav.nav-sidebar li a').on('click', function () {
     if ($(this).siblings('ul').hasClass('dropdown-menu')) {
+        //$(this).parent().siblings('li').find('ul').slideUp(300).addClass('dropdown-menu').css('display', 'none');
         $(this).siblings('ul').removeClass('dropdown-menu').slideDown(300).css('display', 'block');
     } else {
         $(this).siblings('ul').slideUp(300).addClass('dropdown-menu').css('display', 'none');
