@@ -132,4 +132,13 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
             ->query()->fetch();
         return isset($data['fc_parent_id']) ? $data['fc_parent_id'] : 0;
     }
+
+    public function getParentCategoryName($fc_id)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'fc_name')
+            ->where('fc_id=?', $fc_id)
+            ->query()->fetch();
+        return isset($data['fc_name']) ? $data['fc_name'] : '';
+    }
 }

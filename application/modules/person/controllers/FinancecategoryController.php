@@ -12,11 +12,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->_helper->layout()->setLayout('layout');
         $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
-        $this->view->assign(
-            [
-                'parents' => $this->_adapter_finance_category->getAllParentCategory(),
-            ]
-        );
     }
 
     public function indexAction()
@@ -132,6 +127,12 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         exit;
     }
 
+    public function getFinanceMainCategoryAction()
+    {
+        echo json_encode($this->_adapter_finance_category->getAllParentCategory());
+        exit;
+    }
+
     private function _index()
     {
         $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
@@ -157,7 +158,8 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $page_length, $start, $order_by);
         foreach ($data as &$value)
         {
-            $value['parent'] = $value['fc_parent_id'] == 0 ? '无' : $this->parents[$value['fc_parent_id']];
+            $value['parent'] = $value['fc_parent_id'] == 0 ?
+                '无' : $this->_adapter_finance_category->getParentCategoryName($value['fc_parent_id']);
         }
 
         $json_data = [
