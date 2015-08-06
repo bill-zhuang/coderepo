@@ -49,3 +49,6 @@ function getCheckboxIDs(div_id) {
     return selected;
 }
 /*  ----------------------------------------------------------------------------------------------------------------------  */
+function getUploadImageCount(img_id) {
+    return $('#' + img_id)[0]['files'].length;
+}
