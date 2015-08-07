@@ -22,11 +22,6 @@ class person_FinancePaymentController extends Zend_Controller_Action
         $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
         $this->_adapter_finance_payment = new Application_Model_DBTable_FinancePayment();
         $this->_adapter_finance_payment_map = new Application_Model_DBTable_FinancePaymentMap();
-        $this->view->assign(
-            [
-                'parent_categories' => $this->_adapter_finance_category->getAllParentCategory(),
-            ]
-        );
     }
 
     public function indexAction()
