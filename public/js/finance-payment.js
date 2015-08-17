@@ -21,13 +21,13 @@ function ajaxIndex() {
                     .append($('<td>')
                         .append($('<a>', {href: '#', id: 'modify_' + result.data[i]['fp_id'], text: '修改'})
                             .click(function () {
-                                modifyBadHistory(this.id);
+                                modifyFinancePayment(this.id);
                             })
                         )
                         .append('  ')
                         .append($('<a>', {href: '#', id: 'delete_' + result.data[i]['fp_id'], text: '删除'})
                             .click(function () {
-                                deleteBadHistory(this.id);
+                                deleteFinancePayment(this.id);
                             })
                         )
                     )
@@ -100,7 +100,7 @@ $('#FinancePaymentForm').on('submit', (function (event) {
     }
 }));
 
-function modifyBadHistory(modify_id) {
+function modifyFinancePayment(modify_id) {
     var fp_id = modify_id.substr('modify_'.length);
     var post_url = '/person/finance-payment/get-finance-payment';
     var post_data = {
@@ -119,7 +119,7 @@ function modifyBadHistory(modify_id) {
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
 
-function deleteBadHistory(delete_id) {
+function deleteFinancePayment(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
         var fp_id = delete_id.substr('delete_'.length);
         var post_url = '/person/finance-payment/delete-finance-payment';
