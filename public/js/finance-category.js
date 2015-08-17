@@ -42,17 +42,16 @@ function ajaxIndex() {
         initPagination(result.total_pages, result.current_page);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
+    //load main category
+    loadMainCategory('finance_category_parent_id');
 }
 
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
-    var func = function() {
-        window.FinanceCategoryForm.reset();
-        $('#finance_category_fc_id').val('');
-        $('#btn_submit_finance_category').attr('disabled', false);
-        $('#FinanceCategoryModal').modal('show');
-    }
-    loadMainCategory('finance_category_parent_id', func);
+    window.FinanceCategoryForm.reset();
+    $('#finance_category_fc_id').val('');
+    $('#btn_submit_finance_category').attr('disabled', false);
+    $('#FinanceCategoryModal').modal('show');
 });
 
 $('#FinanceCategoryForm').on('submit', (function (event) {
