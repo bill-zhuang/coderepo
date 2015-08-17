@@ -46,26 +46,13 @@ function ajaxIndex() {
 
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
-    var get_url = '/person/finance-category/get-finance-main-category';
-    var get_data = {
-
-    };
-    var method = 'get';
-    var success_function = function (result) {
-        $('#finance_category_parent_id').empty().append('<option value="0">无</option>');
-        for (var fc_id in result) {
-            $('#finance_category_parent_id').append($('<option>', {
-                value: fc_id,
-                text: result[fc_id]
-            }));
-        }
-
+    var func = function() {
         window.FinanceCategoryForm.reset();
         $('#finance_category_fc_id').val('');
         $('#btn_submit_finance_category').attr('disabled', false);
         $('#FinanceCategoryModal').modal('show');
-    };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    }
+    loadMainCategory('finance_category_parent_id', func);
 });
 
 $('#FinanceCategoryForm').on('submit', (function (event) {

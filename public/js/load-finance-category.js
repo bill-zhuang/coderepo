@@ -1,4 +1,4 @@
-function loadMainCategory(selectID) {
+function loadMainCategory(selectID, extraFunc) {
     var get_url = '/person/finance-category/get-finance-main-category';
     var get_data = {
 
@@ -11,6 +11,9 @@ function loadMainCategory(selectID) {
                 value: fc_id,
                 text: result[fc_id]
             }));
+        }
+        if (typeof extraFunc != 'undefined') {
+            extraFunc();
         }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
