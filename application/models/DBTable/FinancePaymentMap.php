@@ -76,4 +76,22 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
 
         return $fc_ids;
     }
+
+    public function getFpidByFcid($fcid, $order_by, $count, $offset)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'fp_id')
+            ->where('fc_id=?', $fcid)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->order($order_by)
+            ->limit($count, $offset)
+            ->query()->fetchAll();
+        $fpids = [];
+        foreach ($data as $value)
+        {
+            $fpids[] = $value['fp_id'];
+        }
+
+        return $fpids;
+    }
 }
