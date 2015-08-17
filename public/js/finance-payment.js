@@ -44,6 +44,8 @@ function ajaxIndex() {
         initPagination(result.total_pages, result.current_page);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
+    //load main category
+    loadMainCategory('finance_payment_fc_id');
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 var g_selectpicker = $('#finance_payment_fc_id').selectpicker();
