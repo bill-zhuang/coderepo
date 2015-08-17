@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    loadMainCategory('category_parent_id');
     ajaxIndex();
 });
 

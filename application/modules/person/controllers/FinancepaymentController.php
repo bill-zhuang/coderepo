@@ -137,6 +137,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
         $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
         $payment_date = trim($this->_getParam('payment_date', ''));
+        $finance_category_id = intval($this->_getParam('category_parent_id', 0));
 
         $conditions = [
             'fp_status' => [
@@ -150,6 +151,25 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 'compare_type' => '= ?',
                 'value' => $payment_date
             ];
+        }
+        if (0 !== $finance_category_id)
+        {
+            $adapter_payment_map = new Application_Model_DBTable_FinancePaymentMap();
+            $fpids = $adapter_payment_map->getFpidByFcid($finance_category_id, 'create_time desc', $page_length, $start);
+            if (!empty($fpids))
+            {
+                $conditions['fp_id'] = [
+                    'compare_type' => 'in (?)',
+                    'value' => $fpids
+                ];
+            }
+            else
+            {
+                $conditions['1'] = [
+                    'compare_type' => '= ?',
+                    'value' => 0
+                ];
+            }
         }
         $order_by = 'fp_payment_date desc';
         $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
