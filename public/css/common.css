@@ -97,3 +97,8 @@ bootstrap modal css
     height: 500px;
     margin-top: 50px;
 }
+
+.div_text_vertical_align {
+    display:table-cell;
+    vertical-align:middle;
+}
