@@ -59,13 +59,22 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
             ->query()->fetch();
     }
 
-    public function getAllParentCategory()
+    public function getAllParentCategory($is_key_value_format = false)
     {
         $parent_data = $this->select()->reset()
             ->from($this->_name, ['fc_id', 'fc_name'])
             ->where('fc_parent_id=?', 0)->where('fc_status=?', 1)
             ->order('fc_weight desc')
             ->query()->fetchAll();
+        if ($is_key_value_format)
+        {
+            $data = [];
+            foreach ($parent_data as $parent_value)
+            {
+                $data[$parent_value['fc_id']] = $parent_value['fc_name'];
+            }
+            return $data;
+        }
         return $parent_data;
     }
 
