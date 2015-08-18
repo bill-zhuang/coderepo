@@ -18,7 +18,7 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         $this->_helper->layout()->setLayout('layout');
         $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
         $this->_adapter_finance_payment = new Application_Model_DBTable_FinancePayment();
-        $this->_categories = $this->_adapter_finance_category->getAllParentCategory();
+        $this->_categories = $this->_adapter_finance_category->getAllParentCategory(true);
     }
 
     public function indexAction()
