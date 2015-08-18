@@ -45,35 +45,19 @@ function ajaxIndex() {
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
     //load main category
-    loadMainCategory('finance_payment_fc_id');
+    loadMainCategory('finance_payment_fc_id', false);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 var g_selectpicker = $('#finance_payment_fc_id').selectpicker();
 
 $('#btn_add').on('click', function () {
-    var get_url = '/person/finance-category/get-finance-main-category';
-    var get_data = {
-
-    };
-    var method = 'get';
-    var success_function = function (result) {
-        $('#finance_payment_fc_id').empty();
-        for (var fc_id in result) {
-            $('#finance_payment_fc_id').append($('<option>', {
-                value: fc_id,
-                text: result[fc_id]
-            }));
-        }
-
-        window.FinancePaymentForm.reset();
-        $('#finance_payment_payment_date').val(getCurrentDate());
-        g_selectpicker.selectpicker('refresh');
-        g_selectpicker.selectpicker('val', $("#finance_payment_fc_id option:first").val());
-        $('#finance_payment_fp_id').val('');
-        $('#btn_submit_finance_payment').attr('disabled', false);
-        $('#FinancePaymentModal').modal('show');
-    };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    window.FinancePaymentForm.reset();
+    $('#finance_payment_payment_date').val(getCurrentDate());
+    g_selectpicker.selectpicker('refresh');
+    g_selectpicker.selectpicker('val', $("#finance_payment_fc_id option:first").val());
+    $('#finance_payment_fp_id').val('');
+    $('#btn_submit_finance_payment').attr('disabled', false);
+    $('#FinancePaymentModal').modal('show');
 });
 
 $('#FinancePaymentForm').on('submit', (function (event) {
