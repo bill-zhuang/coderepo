@@ -304,15 +304,15 @@ class TemplateGenerator
                 case 'smallint':
                 case 'integer':
                 case 'bigint':
-                    $field_value = 'intval($_POST(\'' . $element_name .  '\'))';
+                    $field_value = 'intval($_POST[\'' . $element_name .  '\'])';
                     break;
                 case 'boolean':
-                    $field_value = 'intval($_POST(\'' . $element_name .  '\'))';
+                    $field_value = 'intval($_POST[\'' . $element_name .  '\'])';
                     break;
                 case 'float':
                 case 'decimal':
                 case 'money':
-                    $field_value = 'floatval($_POST(\'' . $element_name .  '\'))';
+                    $field_value = 'floatval($_POST[\'' . $element_name .  '\'])';
                     break;
                 case 'date':
                     $field_value = 'date(\'Y-m-d\')';
@@ -325,7 +325,7 @@ class TemplateGenerator
                     $field_value = 'date(\'Y-m-d H:i:s\')';
                     break;
                 default: // strings
-                    $field_value = 'trim($_POST(\'' . $element_name .  '\'))';;
+                    $field_value = 'trim($_POST[\'' . $element_name .  '\'])';;
                     break;
             }
             $table_data[$definition['Field']] = $field_value; //fc_weight => 1
