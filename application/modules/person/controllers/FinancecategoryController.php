@@ -32,14 +32,11 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         {
             try 
             {
-                $this->_adapter_finance_category->getAdapter()->beginTransaction();
                 $affected_rows = $this->_addFinanceCategory();
-                $this->_adapter_finance_category->getAdapter()->commit();
             }
             catch (Exception $e)
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-                $this->_adapter_finance_category->getAdapter()->rollBack();
                 Bill_Util::sendMail('Error From addFinanceCategory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
@@ -55,14 +52,11 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         {
             try
             {
-                $this->_adapter_finance_category->getAdapter()->beginTransaction();
                 $affected_rows = $this->_updateFinanceCategory();
-                $this->_adapter_finance_category->getAdapter()->commit();
             }
             catch (Exception $e)
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-                $this->_adapter_finance_category->getAdapter()->rollBack();
                 Bill_Util::sendMail('Error From modifyFinanceCategory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
@@ -78,7 +72,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         {
             try
             {
-                $this->_adapter_finance_category->getAdapter()->beginTransaction();
                 $fc_id = intval($_POST['fc_id']);
                 $update_data = [
                     'fc_status' => Bill_Constant::INVALID_STATUS,
@@ -87,12 +80,10 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                 $where = $this->_adapter_finance_category->getAdapter()
                     ->quoteInto('fc_status=1 and (fc_id=? or fc_parent_id=?)', $fc_id);
                 $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
-                $this->_adapter_finance_category->getAdapter()->commit();
             }
             catch (Exception $e)
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-                $this->_adapter_finance_category->getAdapter()->rollBack();
                 Bill_Util::sendMail('Error From deleteFinanceCategory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
