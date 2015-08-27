@@ -59,4 +59,40 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
             ->where('grhid=?', $grhid)
             ->query()->fetch();
     }
+
+    public function getTotalGrainRecycleHistoryGroupDataByYearMonth($select_date)
+    {
+        return $this->select()->reset()
+            ->from($this->_name, array('happen_date as period', 'count as number'))
+            ->where('status=?', 1)
+            ->where('date_format(happen_date, "%Y-%m")=?', $select_date)
+            ->query()->fetchAll();
+    }
+
+    public function getTotalGrainRecycleHistoryGroupData()
+    {
+        return $this->select()->reset()
+            ->from($this->_name, array('date_format(happen_date, "%Y-%m") as period', 'sum(count) as number'))
+            ->where('status=?', 1)
+            ->group('date_format(happen_date, "%Y%m")')
+            ->query()->fetchAll();
+    }
+
+    public function getTotalGrainRecycleHistoryDataByDay($start_date, $end_date)
+    {
+        $select = $this->select()->reset()
+            ->from($this->_name, array('happen_date as period', 'count as number'))
+            ->where('status=?', 1);
+        if ($start_date !== '')
+        {
+            $select->where('happen_date>=?', $start_date);
+        }
+        if ($end_date !== '')
+        {
+            $select->where('happen_date<=?', $end_date);
+        }
+
+        return $select
+            ->query()->fetchAll();
+    }
 }
