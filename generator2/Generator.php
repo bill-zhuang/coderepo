@@ -201,14 +201,17 @@ class TemplateGenerator
             $template_path = __DIR__ . '/template/ModelTemplate.php';
             $dest_path = $model_folder_path . '/' . $model_name . '.php';
 
-            $create_result = $this->_renderFile($template_path, $dest_path, $params);
-            if ($create_result !== false)
+            if (!file_exists($dest_path))
             {
-                echo 'Create Model File ' . $model_name . '.php Successfully' . PHP_EOL;
-            }
-            else
-            {
-                echo 'Create Model File ' . $model_name . '.php Failed' . PHP_EOL;
+                $create_result = $this->_renderFile($template_path, $dest_path, $params);
+                if ($create_result !== false)
+                {
+                    echo 'Create Model File ' . $model_name . '.php Successfully' . PHP_EOL;
+                }
+                else
+                {
+                    echo 'Create Model File ' . $model_name . '.php Failed' . PHP_EOL;
+                }
             }
         }
     }
