@@ -19,10 +19,24 @@ function initChart() {
         if (result.end_date != '') {
             $('#start_date').val(result.end_date);
         }
-        initLineChart('grain_recycle_history_line_chart', data_period, data_number);
+        var line_option = {
+            responsive: true,
+            scaleOverride: true,
+            scaleSteps: 10, //y axis length = steps * step_width
+            scaleStepWidth: 5, // y axis
+            scaleStartValue: 0 // y axis start value
+        };
+        initLineChart('grain_recycle_history_line_chart', data_period, data_number, line_option);
         initBarChart('grain_recycle_history_bar_chart', data_period, data_number);
 
-        initLineChart('grain_recycle_history_line_chart_all', result.all_chart_data['period'], result.all_chart_data['interval']);
+        line_option = {
+            responsive: true,
+            scaleOverride: true,
+            scaleSteps: 5, //y axis length = steps * step_width
+            scaleStepWidth: 1, // y axis
+            scaleStartValue: 0 // y axis start value
+        };
+        initLineChart('grain_recycle_history_line_chart_all', result.all_chart_data['period'], result.all_chart_data['interval'], line_option);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
