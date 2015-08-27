@@ -43,4 +43,9 @@ class Bill_Util
         $d = DateTime::createFromFormat('Y-m-d', $date);
         return $d && $d->format('Y-m-d') == $date;
     }
+
+    public static function sendMail($title, $content)
+    {
+        //todo
+    }
 } 
