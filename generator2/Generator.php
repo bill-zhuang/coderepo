@@ -76,7 +76,7 @@ class TemplateGenerator
     public function generate()
     {
         $this->_generateModuleDirectory();
-        //$this->_generateModelFile();
+        $this->_generateModelFile();
         $this->_generateControllerFile();
         $this->_generateViewFile();
         $this->_generateJsFile();
