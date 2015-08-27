@@ -40,6 +40,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_category->getAdapter()->rollBack();
+                Bill_Util::sendMail('Error From addFinanceCategory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
         
@@ -62,6 +63,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_category->getAdapter()->rollBack();
+                Bill_Util::sendMail('Error From modifyFinanceCategory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
         
@@ -91,6 +93,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_category->getAdapter()->rollBack();
+                Bill_Util::sendMail('Error From deleteFinanceCategory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
         

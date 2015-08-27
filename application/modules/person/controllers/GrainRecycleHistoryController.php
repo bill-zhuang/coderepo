@@ -40,6 +40,7 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_grain_recycle_history->getAdapter()->rollBack();
+                Bill_Util::sendMail('Error From addGrainRecycleHistory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
 
@@ -62,6 +63,7 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_grain_recycle_history->getAdapter()->rollBack();
+                Bill_Util::sendMail('Error From modifyGrainRecycleHistory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
 
@@ -93,6 +95,7 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_grain_recycle_history->getAdapter()->rollBack();
+                Bill_Util::sendMail('Error From deleteGrainRecycleHistory', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
             }
         }
 
