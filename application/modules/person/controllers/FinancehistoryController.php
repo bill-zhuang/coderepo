@@ -26,25 +26,58 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         // action body
     }
 
-    public function ajaxIndexAction()
+    public function ajaxFinanceHistoryPeriodAction()
     {
-        echo json_encode($this->_index());
+        $period_data = $this->_getFinanceHistoryPeriodData();
+
+        echo json_encode($period_data);
         exit;
     }
 
-    private function _index()
+    public function ajaxFinanceHistoryMonthAction()
     {
-        $chart_data = [
-            'period' => [],
-            'payment' => [],
-        ];
-        $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData();
-        foreach ($month_data as $month_value)
-        {
-            $chart_data['period'][] = $month_value['period'];
-            $chart_data['payment'][] = $month_value['payment'];
-        }
+        $month_data = $this->_getFinanceHistoryMonthData();
 
+        echo json_encode($month_data);
+        exit;
+    }
+
+    public function ajaxFinanceHistoryMonthCategoryAction()
+    {
+        $month_category_data = $this->_getFinanceHistoryMonthCategoryData();
+
+        echo json_encode($month_category_data);
+        exit;
+    }
+
+    public function ajaxFinanceHistoryYearCategoryAction()
+    {
+        $year_category_data = $this->_getFinanceHistoryYearCategoryData();
+
+        echo json_encode($year_category_data);
+        exit;
+    }
+
+    public function ajaxFinanceHistoryMonthSpentAction()
+    {
+        $start_date = date('Y-m-d', strtotime('- 29 day'));
+        $month_spent = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
+
+        echo $month_spent;
+        exit;
+    }
+
+    public function ajaxFinanceHistoryYearSpentAction()
+    {
+        $start_date = date('Y-m-d', strtotime('- 1 year'));
+        $year_spent = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
+
+        echo $year_spent;
+        exit;
+    }
+
+    private function _getFinanceHistoryPeriodData()
+    {
         //choose last 30 days data.
         $fetch_days = 30;
         $start_date = date('Y-m-d', strtotime('- ' . $fetch_days . ' day'));
@@ -68,23 +101,40 @@ class person_FinanceHistoryController extends Zend_Controller_Action
             }
             $all_chart_data = $sort_chart_data;
         }
-        //choose last one year data.
-        $start_date = date('Y-m-d', strtotime('- 1 year'));
-        $year_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
-        $year_sum = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
+
+        return $all_chart_data;
+    }
+
+    private function _getFinanceHistoryMonthData()
+    {
+        $data = [
+            'period' => [],
+            'payment' => [],
+        ];
+        $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData();
+        foreach ($month_data as $month_value)
+        {
+            $data['period'][] = $month_value['period'];
+            $data['payment'][] = $month_value['payment'];
+        }
+
+        return $data;
+    }
+
+    private function _getFinanceHistoryMonthCategoryData()
+    {
         $start_date = date('Y-m-d', strtotime('- 29 day'));
         $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
-        $month_sum = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
 
-        $json_data = [
-            'month_chart_data' => $chart_data,
-            'all_chart_data' => $all_chart_data,
-            'year_category_chart_data' => $year_category_data,
-            'month_category_chart_data' => $month_category_data,
-            'year_spent' => $year_sum,
-            'month_spent' => $month_sum,
-        ];
-        return $json_data;
+        return $month_category_data;
+    }
+
+    private function _getFinanceHistoryYearCategoryData()
+    {
+        $start_date = date('Y-m-d', strtotime('- 1 year'));
+        $year_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
+
+        return $year_category_data;
     }
 
     private function _getAllPaymentHistoryDataByDay($start_date)
