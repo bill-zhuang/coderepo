@@ -9,9 +9,7 @@ $(document).ready(function () {
 
 function initPeriodChart() {
     var get_url = '/person/finance-history/ajax-finance-history-period';
-    var get_data = {
-
-    };
+    var get_data = $.param($('#formSearch').serializeArray());
     var method = 'get';
     var success_function = function (result) {
         initLineChart('payment_history_line_chart_all', result['period'], result['payment']);
@@ -93,3 +91,8 @@ function initYearSpent() {
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
+
+$('#btn_search').on('click', function (event) {
+    event.preventDefault();
+    initPeriodChart();
+});

@@ -28,7 +28,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     public function ajaxFinanceHistoryPeriodAction()
     {
-        $period_data = $this->_getFinanceHistoryPeriodData();
+        list($start_date, $end_date) = $this->_getSearchParams();
+        $period_data = $this->_getFinanceHistoryPeriodData($start_date, $end_date);
 
         echo json_encode($period_data);
         exit;
@@ -76,16 +77,14 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         exit;
     }
 
-    private function _getFinanceHistoryPeriodData()
+    private function _getFinanceHistoryPeriodData($start_date, $end_date)
     {
-        //choose last 30 days data.
-        $fetch_days = 30;
-        $start_date = date('Y-m-d', strtotime('- ' . $fetch_days . ' day'));
-        $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date);
+        $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
+        $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date, $end_date);
         $sort_chart_data = [];
-        if (count($all_chart_data['period']) != $fetch_days)
+        if (count($all_chart_data['period']) != $day_interval)
         {
-            for($i = 1; $i <= $fetch_days; $i++)
+            for($i = 1; $i <= $day_interval; $i++)
             {
                 $period_date = date('Y-m-d', strtotime($start_date . ' + ' . $i . ' day'));
                 $sort_chart_data['period'][] = $period_date;
@@ -137,13 +136,13 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         return $year_category_data;
     }
 
-    private function _getAllPaymentHistoryDataByDay($start_date)
+    private function _getAllPaymentHistoryDataByDay($start_date, $end_date)
     {
         $all_chart_data = [
             'period' => [],
             'payment' => [],
         ];
-        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date);
+        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date, $end_date);
         foreach ($all_data as $all_value)
         {
             $all_chart_data['period'][] = $all_value['period'];
@@ -169,4 +168,14 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         return $all_chart_data;
     }
 
+    private function _getSearchParams()
+    {
+        $start_date = trim($this->getParam('start_date', date('Y-m-d', strtotime('-30 day'))));
+        $end_date = trim($this->getParam('end_date', date('Y-m-d H:i:s')));
+
+        return [
+            $start_date,
+            $end_date,
+        ];
+    }
 }
