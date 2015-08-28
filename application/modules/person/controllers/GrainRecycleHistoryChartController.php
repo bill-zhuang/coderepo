@@ -19,16 +19,20 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         // action body
     }
 
-    public function ajaxIndexAction()
-    {
-        echo json_encode($this->_index());
-        exit;
-    }
-
     public function ajaxGrainRecycleHistoryPeriodAction()
     {
         list($start_date, $end_date) = $this->_getSearchParams();
-        echo json_encode($this->_getAllGrainRecycleHistoryDataByDay($start_date, $end_date));
+        $data = $this->_getAllGrainRecycleHistoryDataByDay($start_date, $end_date);
+
+        echo json_encode($data);
+        exit;
+    }
+
+    public function ajaxGrainRecycleHistoryMonthAction()
+    {
+        $data = $this->_getAllDreamHistoryDataByMonth();
+
+        echo json_encode($data);
         exit;
     }
 
@@ -53,30 +57,6 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         exit;
     }
 
-    private function _index()
-    {
-        $chart_data = [
-            'period' => [],
-            'number' => [],
-        ];
-        $month_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupData();
-        foreach ($month_data as $month_value)
-        {
-            $chart_data['period'][] = $month_value['period'];
-            $chart_data['number'][] = $month_value['number'];
-        }
-
-        list($start_date, $end_date) = $this->_getSearchParams();
-        $all_chart_data = $this->_getAllGrainRecycleHistoryDataByDay($start_date, $end_date);
-
-        return [
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'chart_data' => $chart_data,
-            'all_chart_data' => $all_chart_data,
-        ];
-    }
-
     private function _getAllGrainRecycleHistoryDataByDay($start_date, $end_date)
     {
         $all_chart_data = [
@@ -93,6 +73,22 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         }
 
         return $all_chart_data;
+    }
+
+    private function _getAllDreamHistoryDataByMonth()
+    {
+        $data = [
+            'period' => [],
+            'number' => [],
+        ];
+        $month_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupData();
+        foreach ($month_data as $month_value)
+        {
+            $data['period'][] = $month_value['period'];
+            $data['number'][] = $month_value['number'];
+        }
+
+        return $data;
     }
 
     private function _getSearchParams()
