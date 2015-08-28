@@ -111,10 +111,31 @@ class person_FinanceHistoryController extends Zend_Controller_Action
             'payment' => [],
         ];
         $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData();
-        foreach ($month_data as $month_value)
+        foreach ($month_data as $key => $month_value)
         {
-            $data['period'][] = $month_value['period'];
-            $data['payment'][] = $month_value['payment'];
+            if ($key > 0)
+            {
+                $previous_month = date('Y-m', strtotime($month_value['period'] . ' - 1 month'));
+                while (1)
+                {
+                    if ($previous_month != end($data['period']))
+                    {
+                        $data['period'][] = date('Y-m', strtotime(end($data['period']) . ' + 1 month'));
+                        $data['payment'][] = 0;
+                    }
+                    else
+                    {
+                        $data['period'][] = $month_value['period'];
+                        $data['payment'][] = $month_value['payment'];
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                $data['period'][] = $month_value['period'];
+                $data['payment'][] = $month_value['payment'];
+            }
         }
 
         return $data;
