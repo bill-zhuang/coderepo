@@ -14,6 +14,11 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
         $this->_adapter_dream_history = new Application_Model_DBTable_DreamHistory();
     }
 
+    public function indexAction()
+    {
+        //action body
+    }
+
     public function ajaxDreamHistoryPeriodAction()
     {
         list($start_date, $end_date) = $this->_getSearchParams();
