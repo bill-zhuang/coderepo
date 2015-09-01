@@ -61,7 +61,7 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     public function ajaxFinanceHistoryMonthSpentAction()
     {
-        $start_date = date('Y-m-d', strtotime('- 29 day'));
+        $start_date = date('Y-m-d', strtotime('-1 month'));
         $month_spent = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
 
         echo $month_spent;
@@ -143,7 +143,7 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     private function _getFinanceHistoryMonthCategoryData()
     {
-        $start_date = date('Y-m-d', strtotime('- 29 day'));
+        $start_date = date('Y-m-d', strtotime('-1 month'));
         $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
 
         return $month_category_data;
@@ -191,7 +191,7 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     private function _getSearchParams()
     {
-        $start_date = trim($this->getParam('start_date', date('Y-m-d', strtotime('-30 day'))));
+        $start_date = trim($this->getParam('start_date', date('Y-m-d', strtotime('-1 month'))));
         $end_date = trim($this->getParam('end_date', date('Y-m-d H:i:s')));
 
         return [
