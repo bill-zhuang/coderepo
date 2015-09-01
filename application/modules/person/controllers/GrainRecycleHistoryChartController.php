@@ -63,13 +63,32 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             'period' => [],
             'number' => [],
         ];
+        $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
         $all_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryDataByDay($start_date, $end_date);
-        foreach ($all_data as $key => $all_value)
+        foreach ($all_data as $all_value)
         {
             $all_chart_data['period'][] = $all_value['period'];
             $all_chart_data['number'][] = $all_value['number'];
-            $all_chart_data['interval'][] = ($key == 0) ? 0 :
-                intval((strtotime($all_value['period']) - strtotime($all_data[$key - 1]['period'])) / 86400);
+        }
+
+        if (count($all_chart_data['period']) != $day_interval)
+        {
+            $sort_chart_data = [];
+            for($i = 1; $i <= $day_interval; $i++)
+            {
+                $period_date = date('Y-m-d', strtotime($start_date . ' + ' . $i . ' day'));
+                $sort_chart_data['period'][] = $period_date;
+                if (!in_array($period_date, $all_chart_data['period']))
+                {
+                    $sort_chart_data['number'][] = 0;
+                }
+                else
+                {
+                    $period_key = array_search($period_date, $all_chart_data['period']);
+                    $sort_chart_data['number'][] = $all_chart_data['number'][$period_key];
+                }
+            }
+            $all_chart_data = $sort_chart_data;
         }
 
         return $all_chart_data;
@@ -93,8 +112,8 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
 
     private function _getSearchParams()
     {
-        $start_date = trim($this->getParam('start_date', date('Y-m-d', strtotime('-1 year'))));
-        $end_date = trim($this->getParam('end_date', ''));
+        $start_date = trim($this->getParam('start_date', date('Y-m-d', strtotime('-1 month'))));
+        $end_date = trim($this->getParam('end_date', date('Y-m-d H:i:s')));
 
         return [
             $start_date,

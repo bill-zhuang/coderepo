@@ -15,7 +15,7 @@ function initPeriodChart() {
             scaleStepWidth: 1, // y axis
             scaleStartValue: 0 // y axis start value
         };
-        initLineChart('grain_recycle_history_line_chart_all', result['period'], result['interval'], line_option);
+        initLineChart('grain_recycle_history_line_chart_all', result['period'], result['number'], line_option);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
