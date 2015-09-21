@@ -30,6 +30,7 @@ class Bill_Zip
         return false;
     }
 
+    //tarball/dll src: http://pecl.php.net/package/rar
     public function unrar($rarPath, $unrarPath)
     {
         if (function_exists('rar_open'))
