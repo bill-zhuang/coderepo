@@ -48,4 +48,12 @@ class Bill_Util
     {
         //todo
     }
+
+    public static function createDirectory($dir)
+    {
+        if (!file_exists($dir))
+        {
+            mkdir($dir, '0777', true);
+        }
+    }
 } 

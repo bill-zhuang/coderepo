@@ -18,10 +18,7 @@ class Bill_Zip
         {
             if ($this->_zipArchive->open($zipPath) === true)
             {
-                if (!file_exists($unzipPath))
-                {
-                    mkdir($unzipPath, '0777');
-                }
+                Bill_Util::createDirectory($unzipPath);
                 return $this->_zipArchive->extractTo($unzipPath);
             }
             else
@@ -39,6 +36,7 @@ class Bill_Zip
         {
             $rar_file = rar_open($rarPath);
             $list = rar_list($rar_file);
+            Bill_Util::createDirectory($unrarPath);
             foreach ($list as $file)
             {
                 $entry = rar_entry_get($rar_file, $file->getName());
