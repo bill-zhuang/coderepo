@@ -135,17 +135,11 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         $keyword = trim($this->_getParam('keyword', ''));
 
         $conditions = [
-            'fc_status' => [
-                'compare_type' => '= ?',
-                'value' => Bill_Constant::VALID_STATUS
-            ]
+            'fc_status =?' => Bill_Constant::VALID_STATUS
         ];
         if ('' !== $keyword)
         {
-            $conditions['fc_name'] = [
-                'compare_type' => 'like ?',
-                'value' => '%' . $keyword . '%'
-            ];
+            $conditions['fc_name like ?'] = '%' . $keyword . '%';
         }
         $order_by = 'fc_weight desc';
         $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);

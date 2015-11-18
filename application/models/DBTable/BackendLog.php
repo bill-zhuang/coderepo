@@ -11,9 +11,9 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
         return $count[0]['total'];
@@ -22,9 +22,9 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
     public function getBackendLogData(array $conditions, $count, $offset, $order_by)
     {
         $select = $this->select()->reset();
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $data = $select
             ->limit($count, $offset)

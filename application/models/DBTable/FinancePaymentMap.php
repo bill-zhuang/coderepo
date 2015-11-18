@@ -32,9 +32,9 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
         return $count[0]['total'];
@@ -43,9 +43,9 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
     public function getFinancePaymentMapData(array $conditions, $count, $offset, $order_by)
     {
         $select = $this->select()->reset();
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $data = $select
             ->limit($count, $offset)

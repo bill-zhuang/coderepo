@@ -38,17 +38,11 @@ class person_BackendLogController extends Zend_Controller_Action
         $keyword = trim($this->_getParam('keyword', ''));
 
         $conditions = [
-            'status' => [
-                'compare_type' => '= ?',
-                'value' => Bill_Constant::VALID_STATUS
-            ]
+            'status=?' => Bill_Constant::VALID_STATUS
         ];
         if ('' !== $keyword)
         {
-            $conditions['content'] = [
-                'compare_type' => 'like ?',
-                'value' => '%' . $keyword . '%'
-            ];
+            $conditions['content like ?'] = '%' . $keyword . '%';
         }
         $order_by = 'blid DESC';
         $total = $this->_adapter_backend_log->getBackendLogCount($conditions);

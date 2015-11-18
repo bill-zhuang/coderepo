@@ -143,17 +143,11 @@ class person_FinancePaymentController extends Zend_Controller_Action
         $finance_category_id = intval($this->_getParam('category_parent_id', 0));
 
         $conditions = [
-            'fp_status' => [
-                'compare_type' => '= ?',
-                'value' => Bill_Constant::VALID_STATUS
-            ]
+            'fp_status =?' => Bill_Constant::VALID_STATUS
         ];
         if ('' != $payment_date)
         {
-            $conditions['fp_payment_date'] = [
-                'compare_type' => '= ?',
-                'value' => $payment_date
-            ];
+            $conditions['fp_payment_date =?'] = $payment_date;
         }
         if (0 !== $finance_category_id)
         {
@@ -161,17 +155,11 @@ class person_FinancePaymentController extends Zend_Controller_Action
             $fpids = $adapter_payment_map->getFpidByFcid($finance_category_id, 'create_time desc', $page_length, $start);
             if (!empty($fpids))
             {
-                $conditions['fp_id'] = [
-                    'compare_type' => 'in (?)',
-                    'value' => $fpids
-                ];
+                $conditions['fp_id in (?)'] = $fpids;
             }
             else
             {
-                $conditions['1'] = [
-                    'compare_type' => '= ?',
-                    'value' => 0
-                ];
+                $conditions['1 =?'] = 0;
             }
         }
         $order_by = 'fp_payment_date desc';
