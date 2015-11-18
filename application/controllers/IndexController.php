@@ -25,8 +25,7 @@ class IndexController extends Zend_Controller_Action
     	    if($match_count)
     	    {
                 $real_download_link = 'http://music.baidu.com/data/music/file?link=&song_id=' . $match_id[1];
-    	        $bill_curl = new Bill_Curl($real_download_link);
-    	        $header_info = $bill_curl->getResponseHeaders();
+    	        $header_info = Bill_Curl::getResponseHeaders($real_download_link);
     	        if ($header_info['http_code'] == 302)
     	        {
                     $real_download_link = $header_info['redirect_url'] . '&song_id=' . $match_id[1];

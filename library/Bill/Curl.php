@@ -2,16 +2,9 @@
 
 class Bill_Curl
 {
-    private $_url;
-
-    public function __construct($url)
+    public static function getResponseHeaders($request_url)
     {
-        $this->_url = $url;
-    }
-
-    public function getResponseHeaders()
-    {
-        $ch = curl_init($this->_url);
+        $ch = curl_init($request_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, TRUE);
 
