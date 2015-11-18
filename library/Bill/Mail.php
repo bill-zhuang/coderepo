@@ -21,26 +21,10 @@ class Bill_Mail
         $mail->setBodyText($body);
         $mail->setFrom(self::$_username, self::$_username);
 
-        if (is_array($receiver))
+        $receivers = self::_initReceivers($receiver);
+        for ($i = 0, $len = count($receivers); $i < $len; $i++)
         {
-            if (count($receiver) == 0)
-            {
-                return false;
-            }
-
-            for ($i = 0, $len = count($receiver); $i < $len; $i++)
-            {
-                $mail->addTo($receiver[$i]);
-            }
-        }
-        else
-        {
-            if ($receiver == null)
-            {
-                $receiver = self::$_receiver;
-            }
-
-            $mail->addTo($receiver);
+            $mail->addTo($receiver[$i]);
         }
 
         if ($attachment != null)
@@ -54,8 +38,7 @@ class Bill_Mail
             );
         }
 
-        //todo set mail from alpha or product
-        $env = 'product';
+        $env = Bill_Util::isProductionEnv() ? 'product' : 'alpha';
         $title = '(' . Application_Model_Auth::getIdentity()->name . '-' . $env . ')' . $title;
         $mail->setSubject($title);
         $mail->send($transport);
@@ -72,5 +55,20 @@ class Bill_Mail
             //'ssl' => 'ssl',
             'port' => self::$_port,
         ];
+    }
+
+    private static function _initReceivers($receiver)
+    {
+        if (is_array($receiver) && count($receiver) == 0)
+        {
+            return [self::$_receiver];
+        }
+
+        if ($receiver == null)
+        {
+            return [self::$_receiver];
+        }
+
+        return $receiver;
     }
 } 
