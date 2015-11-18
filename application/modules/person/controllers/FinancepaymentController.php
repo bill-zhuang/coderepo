@@ -50,7 +50,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
-                Bill_Util::sendMail('Error From addFinancePayment', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
+                Bill_Util::handleException($e, 'Error From addFinancePayment');
             }
         }
         
@@ -73,7 +73,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
-                Bill_Util::sendMail('Error From modifyFinancePayment', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
+                Bill_Util::handleException($e, 'Error From modifyFinancePayment');
             }
         }
         
@@ -109,7 +109,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
-                Bill_Util::sendMail('Error From deleteFinancePayment', $e->getMessage() . Bill_Html::br() . $e->getTraceAsString());
+                Bill_Util::handleException($e, 'Error From deleteFinancePayment');
             }
         }
         

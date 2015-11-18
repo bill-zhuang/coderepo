@@ -73,6 +73,7 @@ echo PHP_EOL;
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
+                Bill_Util::handleException($e, 'Error From add<?php echo $controller_name; ?>');
             }
         }
         
@@ -95,6 +96,7 @@ echo PHP_EOL;
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
+                Bill_Util::handleException($e, 'Error From modify<?php echo $controller_name; ?>');
             }
         }
         
@@ -122,6 +124,7 @@ echo PHP_EOL;
             {
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
+                Bill_Util::handleException($e, 'Error From delete<?php echo $controller_name; ?>');
             }
         }
         

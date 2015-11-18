@@ -44,6 +44,20 @@ class Bill_Util
         return $d && $d->format('Y-m-d') == $date;
     }
 
+    public static function handleException($exception, $from)
+    {
+        $title = trim($from);
+        if ($exception instanceof Exception)
+        {
+            $content = $exception->getMessage() . Bill_Html::br() . $exception->getTraceAsString();
+        }
+        else
+        {
+            $content = trim($exception);
+        }
+        self::sendMail($title, $content);
+    }
+
     public static function sendMail($title, $content)
     {
         //todo
