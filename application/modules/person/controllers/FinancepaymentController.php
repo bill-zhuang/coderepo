@@ -203,7 +203,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
     
     private function _addFinancePayment()
     {
-        $affected_rows = 0;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
 
         $payments = array_filter(explode(',', $_POST['finance_payment_payment']));
         $payment_date = trim($_POST['finance_payment_payment_date']);

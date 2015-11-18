@@ -27,7 +27,7 @@ class person_BadHistoryController extends Zend_Controller_Action
 
     public function addBadHistoryAction()
     {
-        $affect_rows = 0;
+        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['bad_history_date']))
         {
             $occur_date = $_POST['bad_history_date'];
@@ -38,7 +38,7 @@ class person_BadHistoryController extends Zend_Controller_Action
                 $data = [
                     'bh_happen_date' => $occur_date,
                     'bh_count' => $occur_count,
-                    'bh_status' => 1,
+                    'bh_status' => Bill_Constant::VALID_STATUS,
                     'bh_create_time' => $date,
                     'bh_update_time' => $date
                 ];
@@ -56,7 +56,7 @@ class person_BadHistoryController extends Zend_Controller_Action
         if (isset($_GET['bh_id']))
         {
             $bh_id = intval($_GET['bh_id']);
-            if ($bh_id > 0)
+            if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_bad_history->getBadHistoryDayByID($bh_id);
             }
@@ -68,12 +68,12 @@ class person_BadHistoryController extends Zend_Controller_Action
 
     public function modifyBadHistoryAction()
     {
-        $affect_rows = 0;
+        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['bad_history_id']))
         {
             $bh_id = intval($_POST['bad_history_id']);
             $bh_count = intval($_POST['bad_history_count']);
-            if ($bh_id > 0 && $bh_count > 0)
+            if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID && $bh_count > 0)
             {
                 $update_data = [
                     'bh_count' => $bh_count,
@@ -90,14 +90,14 @@ class person_BadHistoryController extends Zend_Controller_Action
 
     public function deleteBadHistoryAction()
     {
-        $affect_rows = 0;
+        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['bh_id']))
         {
             $bh_id = intval($_POST['bh_id']);
-            if ($bh_id > 0)
+            if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $update_data = [
-                    'bh_status' => 0,
+                    'bh_status' => Bill_Constant::INVALID_STATUS,
                     'bh_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id);
@@ -115,7 +115,7 @@ class person_BadHistoryController extends Zend_Controller_Action
         $data = [
             'bh_happen_date' => '',
             'bh_count' => 1,
-            'bh_status' => 1,
+            'bh_status' => Bill_Constant::VALID_STATUS,
             'bh_create_time' => '',
             'bh_update_time' => ''
         ];
@@ -134,10 +134,10 @@ class person_BadHistoryController extends Zend_Controller_Action
     private function _index()
     {
         $keyword = trim($this->_getParam('keyword', ''));
-        $current_page = intval($this->_getParam('current_page', 1));
-        $page_length = intval($this->_getParam('page_length', 25));
+        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
+        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
         $order_by = 'bh_create_time desc';
-        $start = intval(($current_page - 1) * $page_length);
+        $start = intval(($current_page - Bill_Constant::INIT_START_PAGE) * $page_length);
 
         $data = $this->_adapter_bad_history->getBadHistoryData($page_length, $start, $order_by);
         $total = $this->_adapter_bad_history->getTotalBadHistoryNumber();
@@ -145,7 +145,7 @@ class person_BadHistoryController extends Zend_Controller_Action
         $json_data = [
             'data' => $data,
             'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : 1,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
             'total' => $total,
             'start' => $start,
         ];

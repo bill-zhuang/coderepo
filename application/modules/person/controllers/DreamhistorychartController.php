@@ -70,7 +70,7 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
             $all_chart_data['period'][] = $all_value['period'];
             $all_chart_data['number'][] = $all_value['number'];
             $all_chart_data['interval'][] = ($key == 0) ? 0 :
-                intval((strtotime($all_value['period']) - strtotime($all_data[$key - 1]['period'])) / 86400);
+                intval((strtotime($all_value['period']) - strtotime($all_data[$key - 1]['period'])) / Bill_Constant::DAY_SECONDS);
         }
 
         return $all_chart_data;

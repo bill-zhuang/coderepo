@@ -38,7 +38,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
                 $data = [
                     'dh_happen_date' => $occur_date,
                     'dh_count' => $occur_count,
-                    'dh_status' => 1,
+                    'dh_status' => Bill_Constant::VALID_STATUS,
                     'dh_create_time' => $date,
                     'dh_update_time' => $date
                 ];
@@ -56,7 +56,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
         if (isset($_GET['dh_id']))
         {
             $dh_id = intval($_GET['dh_id']);
-            if ($dh_id > 0)
+            if ($dh_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_dream_history->getDreamHistoryDayByID($dh_id);
             }
@@ -68,13 +68,13 @@ class person_DreamHistoryController extends Zend_Controller_Action
 
     public function modifyDreamHistoryAction()
     {
-        $affect_rows = 0;
+        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['dream_history_id']))
         {
             $dh_id = intval($_POST['dream_history_id']);
             $dh_count = intval($_POST['dream_history_count']);
             $dh_date = $_POST['dream_history_date'];
-            if ($dh_id > 0 && $dh_count > 0)
+            if ($dh_id > Bill_Constant::INVALID_PRIMARY_ID && $dh_count > 0)
             {
                 $update_data = [
                     'dh_happen_date' => $dh_date,
@@ -92,14 +92,14 @@ class person_DreamHistoryController extends Zend_Controller_Action
 
     public function deleteDreamHistoryAction()
     {
-        $affect_rows = 0;
+        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         if (isset($_POST['dh_id']))
         {
             $dh_id = intval($_POST['dh_id']);
-            if ($dh_id > 0)
+            if ($dh_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $update_data = [
-                    'dh_status' => 0,
+                    'dh_status' => Bill_Constant::INVALID_STATUS,
                     'dh_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_dream_history->getAdapter()->quoteInto('dh_id=?', $dh_id);
@@ -117,7 +117,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
         $data = [
             'dh_happen_date' => '',
             'dh_count' => 1,
-            'dh_status' => 1,
+            'dh_status' => Bill_Constant::VALID_STATUS,
             'dh_create_time' => '',
             'dh_update_time' => ''
         ];
@@ -136,10 +136,10 @@ class person_DreamHistoryController extends Zend_Controller_Action
     private function _index()
     {
         $keyword = trim($this->_getParam('keyword', ''));
-        $current_page = intval($this->_getParam('current_page', 1));
-        $page_length = intval($this->_getParam('page_length', 25));
+        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
+        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
         $order_by = 'dh_create_time desc';
-        $start = intval(($current_page - 1) * $page_length);
+        $start = intval(($current_page - Bill_Constant::INIT_START_PAGE) * $page_length);
 
         $data = $this->_adapter_dream_history->getDreamHistoryData($page_length, $start, $order_by);
         $total = $this->_adapter_dream_history->getTotalDreamHistoryNumber();
@@ -147,7 +147,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
         $json_data = [
             'data' => $data,
             'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : 1,
+            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
             'total' => $total,
             'start' => $start,
         ];
