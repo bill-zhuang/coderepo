@@ -64,6 +64,8 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
                 Application_Model_Auth::getIdentity()->bu_id : 0;
             $date_time = date('Y-m-d H:i:s');
             $insert_data = [
+                'type' => $type,
+                'table' => $table_name,
                 'content' => $sql,
                 'buid' => $user_id,
                 'status' => 1,
