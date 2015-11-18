@@ -40,6 +40,15 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
             ->query()->fetch();
     }
 
+    public function getAllBlidAndContent()
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, ['blid', 'content', 'update_time'])
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->query()->fetchAll();
+        return $data;
+    }
+
     public function writeLog($type, $table_name, $data, $where = '')
     {
         $sql = '';

@@ -35,4 +35,45 @@ class person_ConsoleController extends Zend_Controller_Action
             $adapter_payment_map->insert($map_data);
         }
     }
+
+    public function updateLogAction()
+    {
+        $regex = '/^(\w+)\s+(\w+)\s+([^\(]+)/';
+        $adapter_backend_log = new Application_Model_DBTable_BackendLog();
+        $log_data = $adapter_backend_log->getAllBlidAndContent();
+        foreach ($log_data as $log_value)
+        {
+            $match = preg_match($regex, $log_value['content'], $matches);
+            if ($match)
+            {
+                $type = '';
+                $table = '';
+                switch($matches[1])
+                {
+                    case 'insert':
+                    case 'delete':
+                        $type = $matches[1];
+                        $table = $matches[3];
+                        break;
+                    case 'update':
+                        $type = $matches[1];
+                        $table = $matches[2];
+                        break;
+                    default:
+                        break;
+                }
+
+                if ($type !== '' && $table !== '')
+                {
+                    $update_data = [
+                        'type' => $type,
+                        'table' => $table,
+                        'update_time' => $log_value['update_time'],
+                    ];
+                    $where = $adapter_backend_log->getAdapter()->quoteInto('blid=?', $log_value['blid']);
+                    $adapter_backend_log->update($update_data, $where);
+                }
+            }
+        }
+    }
 }
