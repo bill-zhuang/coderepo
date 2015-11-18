@@ -14,4 +14,7 @@ class Bill_Constant
     const INVALID_PRIMARY_ID = 0;
 
     const DAY_SECONDS = 86400;
+
+    const PRODUCTION_HOST = 'production.host';
+    const ALPHA_HOST = 'alpha.host';
 } 

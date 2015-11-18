@@ -44,6 +44,16 @@ class Bill_Util
         return $d && $d->format('Y-m-d') == $date;
     }
 
+    public static function isProductionEnv()
+    {
+        return ($_SERVER['HTTP_HOST'] == Bill_Constant::PRODUCTION_HOST) ? true : false;
+    }
+
+    public static function isAlphaEnv()
+    {
+        return ($_SERVER['HTTP_HOST'] == Bill_Constant::ALPHA_HOST) ? true : false;
+    }
+
     public static function handleException($exception, $from)
     {
         $title = trim($from);
