@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2015-05-29 16:30:57
+Date: 2015-11-18 13:53:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,6 +21,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `backend_log`;
 CREATE TABLE `backend_log` (
   `blid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(32) NOT NULL DEFAULT '' COMMENT 'type(insert, update, delete)',
+  `table` varchar(255) NOT NULL DEFAULT '' COMMENT 'table name',
   `content` text NOT NULL COMMENT 'SQL',
   `buid` int(11) NOT NULL COMMENT 'backend_user primary key',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 : valid 0 : invalid',
