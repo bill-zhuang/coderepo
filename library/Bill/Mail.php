@@ -2,28 +2,24 @@
 
 class Bill_Mail
 {
-    private $_username = 'your@mail.com';
-    private $_password = 'your_password';
-    private $_host = 'smtp.mail.com';
-    private $_port = 25;
-    private $_receiver = 'receive@mail.com';
-    private $_bill_server_host = 'production.host';
+    private static $_username = 'your@mail.com';
+    private static $_password = 'your_password';
+    private static $_host = 'smtp.mail.com';
+    private static $_port = 25;
+    private static $_receiver = 'receive@mail.com';
 
-    public function send($title, $body, $receiver = null, $attachment = null, $charset = 'utf-8')
+    public static function send($title, $body, $receiver = null, $attachment = null, $charset = 'utf-8')
     {
-        $server_host = $_SERVER['HTTP_HOST'];
-        if ($server_host != $this->_bill_server_host)
+        if (!Bill_Util::isProductionEnv() && !Bill_Util::isAlphaEnv())
         {
             return true;
         }
 
-        $config = ['auth' => 'login', 'username' => $this->_username, 'password' => $this->_password, //'ssl' => 'ssl',
-            'port' => $this->_port];
-        $transport = new Zend_Mail_Transport_Smtp($this->_host, $config);
+        $transport = new Zend_Mail_Transport_Smtp(self::$_host, self::_initConfig());
 
         $mail = new Zend_Mail($charset);
         $mail->setBodyText($body);
-        $mail->setFrom($this->_username, 'Admin');
+        $mail->setFrom(self::$_username, self::$_username);
 
         if (is_array($receiver))
         {
@@ -41,7 +37,7 @@ class Bill_Mail
         {
             if ($receiver == null)
             {
-                $receiver = $this->_receiver;
+                $receiver = self::$_receiver;
             }
 
             $mail->addTo($receiver);
@@ -49,7 +45,13 @@ class Bill_Mail
 
         if ($attachment != null)
         {
-            $mail->createAttachment(file_get_contents($attachment), Zend_Mime::TYPE_OCTETSTREAM, Zend_Mime::DISPOSITION_ATTACHMENT, Zend_Mime::ENCODING_BASE64, $attachment);
+            $mail->createAttachment(
+                file_get_contents($attachment),
+                Zend_Mime::TYPE_OCTETSTREAM,
+                Zend_Mime::DISPOSITION_ATTACHMENT,
+                Zend_Mime::ENCODING_BASE64,
+                $attachment
+            );
         }
 
         //todo set mail from alpha or product
@@ -59,5 +61,16 @@ class Bill_Mail
         $mail->send($transport);
 
         return true;
+    }
+
+    private static function _initConfig()
+    {
+        return [
+            'auth' => 'login',
+            'username' => self::$_username,
+            'password' => self::$_password,
+            //'ssl' => 'ssl',
+            'port' => self::$_port,
+        ];
     }
 } 

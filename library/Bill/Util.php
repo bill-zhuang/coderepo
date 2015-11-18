@@ -65,12 +65,7 @@ class Bill_Util
         {
             $content = trim($exception);
         }
-        self::sendMail($title, $content);
-    }
-
-    public static function sendMail($title, $content)
-    {
-        //todo
+        Bill_Mail::send($title, $content);
     }
 
     public static function createDirectory($dir)
