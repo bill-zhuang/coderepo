@@ -12,4 +12,6 @@ class Bill_Constant
     const INIT_AFFECTED_ROWS = 0;
 
     const INVALID_PRIMARY_ID = 0;
+
+    const DAY_SECONDS = 86400;
 } 
