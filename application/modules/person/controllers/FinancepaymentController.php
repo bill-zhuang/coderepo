@@ -101,7 +101,10 @@ class person_FinancePaymentController extends Zend_Controller_Action
                     'status' => Bill_Constant::INVALID_STATUS,
                     'update_time' => date('Y-m-d H:i:s')
                 ];
-                $where = $this->_adapter_finance_payment_map->getAdapter()->quoteInto('status=1 and fp_id=?', $fp_id);
+                $where = [
+                    $this->_adapter_finance_payment_map->getAdapter()->quoteInto('fp_id=?', $fp_id),
+                    $this->_adapter_finance_payment_map->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                ];
                 $affected_rows += $this->_adapter_finance_payment_map->update($update_data, $where);
                 $this->_adapter_finance_payment->getAdapter()->commit();
             }

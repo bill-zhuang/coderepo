@@ -100,7 +100,10 @@ class person_BadHistoryController extends Zend_Controller_Action
                     'bh_status' => Bill_Constant::INVALID_STATUS,
                     'bh_update_time' => date('Y-m-d H:i:s')
                 ];
-                $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id);
+                $where = [
+                    $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id),
+                    $this->_adapter_bad_history->getAdapter()->quoteInto('bh_status=?', Bill_Constant::VALID_STATUS),
+                ];
                 $affect_rows = $this->_adapter_bad_history->update($update_data, $where);
             }
         }

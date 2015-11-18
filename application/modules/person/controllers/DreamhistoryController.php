@@ -102,7 +102,10 @@ class person_DreamHistoryController extends Zend_Controller_Action
                     'dh_status' => Bill_Constant::INVALID_STATUS,
                     'dh_update_time' => date('Y-m-d H:i:s')
                 ];
-                $where = $this->_adapter_dream_history->getAdapter()->quoteInto('dh_id=?', $dh_id);
+                $where = [
+                    $this->_adapter_dream_history->getAdapter()->quoteInto('dh_id=?', $dh_id),
+                    $this->_adapter_dream_history->getAdapter()->quoteInto('dh_status=?', Bill_Constant::VALID_STATUS),
+                ];
                 $affect_rows = $this->_adapter_dream_history->update($update_data, $where);
             }
         }
