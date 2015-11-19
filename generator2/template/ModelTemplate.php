@@ -8,30 +8,9 @@ echo "<?php\n";
 
 class Application_Model_DBTable_<?php echo $model_name; ?> extends Application_Model_DBTableFactory
 {
-    private $_adapter_backend_log;
-
     public function __construct()
     {
         parent::__construct('<?php echo $table_name; ?>');
-        $this->_adapter_backend_log = new Application_Model_DBTable_BackendLog();
-    }
-
-    public function insert(array $data)
-    {
-        $this->_adapter_backend_log->writeLog('insert', $this->_name, $data);
-        return parent::insert($data);
-    }
-
-    public function update(array $data, $where)
-    {
-        $this->_adapter_backend_log->writeLog('update', $this->_name, $data, $where);
-        return parent::update($data, $where);
-    }
-
-    public function delete($where)
-    {
-        $this->_adapter_backend_log->writeLog('delete', $this->_name, [], $where);
-        return parent::delete($where);
     }
 
     public function get<?php echo $model_name; ?>Count(array $conditions)
