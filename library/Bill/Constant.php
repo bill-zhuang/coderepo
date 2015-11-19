@@ -17,4 +17,9 @@ class Bill_Constant
 
     const PRODUCTION_HOST = 'production.host';
     const ALPHA_HOST = 'alpha.host';
+
+    //user section
+    const DEFAULT_PASSWORD = '123456';
+    const DEFAULT_ROLE = 1;
+    const SALT_STRING_LENGTH = 64;
 } 

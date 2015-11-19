@@ -76,4 +76,39 @@ class person_ConsoleController extends Zend_Controller_Action
             }
         }
     }
+
+    public function createUserAction()
+    {
+        $opts = new Zend_Console_Getopt('c');
+        $args = $opts->getRemainingArgs();
+        $user_name = isset($args[0]) ? $args[0] : '';
+        if (preg_match('/^[\da-zA-Z]+[\da-zA-Z_]*$/', $user_name))
+        {
+            $adapter_backend_user = new Application_Model_DBTable_BackendUser();
+            if (!$adapter_backend_user->isUserNameExist($user_name, Bill_Constant::INVALID_PRIMARY_ID))
+            {
+                $security = new Bill_Security();
+                $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
+                $insert_data = [
+                    'bu_name' => $user_name,
+                    'bu_password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
+                    'bu_salt' => $salt,
+                    'bu_role' => Bill_Constant::DEFAULT_ROLE,
+                    'bu_status' => Bill_Constant::VALID_STATUS,
+                    'bu_create_time' => date('Y-m-d H:i:s'),
+                    'bu_update_time' => date('Y-m-d H:i:s'),
+                ];
+                $adapter_backend_user->insert($insert_data);
+                echo 'User create successfully.';
+            }
+            else
+            {
+                echo 'User name already exist, change another one.';
+            }
+        }
+        else
+        {
+            echo 'Account name only accept letter a-z & A-Z & _, and _ not allowed at first letter.';
+        }
+    }
 }

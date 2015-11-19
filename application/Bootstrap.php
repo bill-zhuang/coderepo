@@ -11,6 +11,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'index|i' => 'index',
                     'transferPaymentCategory|t' => 'transfer payment category',
                     'updateLog|u' => 'update log',
+                    'createUser|c' => 'create user',
                 )
             );
             if(isset($opts->index))
@@ -43,6 +44,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                         'module' => 'person',
                         'controller' => 'console',
                         'action' => 'update-log',
+                    )
+                );
+            }
+            if (isset($opts->createUser))
+            {
+                $route = new Zend_Controller_Router_Route_Hostname(
+                    '',
+                    array(
+                        'module' => 'person',
+                        'controller' => 'console',
+                        'action' => 'create-user',
                     )
                 );
             }
