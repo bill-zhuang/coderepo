@@ -32,9 +32,9 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
         return $count[0]['total'];
@@ -43,9 +43,9 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
     public function getBackendUserData(array $conditions, $count, $offset, $order_by)
     {
         $select = $this->select()->reset();
-        foreach ($conditions as $key => $content)
+        foreach ($conditions as $cond => $value)
         {
-            $select->where($key . ' ' . $content['compare_type'], $content['value']);
+            $select->where($cond, $value);
         }
         $data = $select->limit($count, $offset)->order($order_by)
             ->query()->fetchAll();
@@ -63,7 +63,7 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
     {
         return $this->select()->reset()
             ->where('bu_name=?', $user_name)
-            ->where('bu_status=?', 1)
+            ->where('bu_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetch();
     }
 
@@ -73,7 +73,7 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
             ->from($this->_name, 'count(*) as total')
             ->where('bu_name like ?', $name)
             ->where('bu_id!=?', $buid)
-            ->where('bu_status=?', 1)
+            ->where('bu_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
 
         return $count[0]['total'] == 0 ? false : true;

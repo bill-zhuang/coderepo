@@ -63,7 +63,8 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
     {
         $parent_data = $this->select()->reset()
             ->from($this->_name, ['fc_id', 'fc_name'])
-            ->where('fc_parent_id=?', 0)->where('fc_status=?', 1)
+            ->where('fc_parent_id=?', 0)
+            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
             ->order('fc_weight desc')
             ->query()->fetchAll();
         if ($is_key_value_format)
@@ -82,7 +83,9 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
     {
         $data = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('fc_name=?', $name)->where('fc_id!=?', $fc_id)->where('fc_status=?', 1)
+            ->where('fc_name=?', $name)
+            ->where('fc_id!=?', $fc_id)
+            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         return $data[0]['total'] == 0 ? false : true;
     }
@@ -101,7 +104,7 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
         $data = $this->select()->reset()
             ->from($this->_name, 'fc_name')
             ->where('fc_id in(?)', $fc_ids)
-            ->where('fc_status=?', 1)
+            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         $names = [];
         foreach ($data as $value)
@@ -116,7 +119,8 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
     {
         $subcategory_data = $this->select()->reset()
             ->from($this->_name, ['fc_id', 'fc_name'])
-            ->where('fc_parent_id=?', $parent_id)->where('fc_status=?', 1)
+            ->where('fc_parent_id=?', $parent_id)
+            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         $data = [];
         foreach ($subcategory_data as $subcategory_value)

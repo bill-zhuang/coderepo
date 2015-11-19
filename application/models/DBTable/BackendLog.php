@@ -70,14 +70,14 @@ class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFact
         if ($sql != '')
         {
             $user_id = isset(Application_Model_Auth::getIdentity()->bu_id) ?
-                Application_Model_Auth::getIdentity()->bu_id : 0;
+                Application_Model_Auth::getIdentity()->bu_id : Bill_Constant::INVALID_PRIMARY_ID;
             $date_time = date('Y-m-d H:i:s');
             $insert_data = [
                 'type' => $type,
                 'table' => $table_name,
                 'content' => $sql,
                 'buid' => $user_id,
-                'status' => 1,
+                'status' => Bill_Constant::VALID_STATUS,
                 'create_time' => $date_time,
                 'update_time' => $date_time
             ];

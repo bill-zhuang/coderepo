@@ -37,7 +37,7 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
     public function getDreamHistoryData($limit, $offset, $order_by)
     {
         return $this->select()->reset()
-            ->where('dh_status=?', 1)
+            ->where('dh_status=?', Bill_Constant::VALID_STATUS)
             ->limit($limit, $offset)
             ->order($order_by)
             ->query()->fetchAll();
@@ -47,7 +47,7 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('dh_status=?', 1)
+            ->where('dh_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
 
         return $count[0]['total'];
@@ -57,7 +57,7 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
     {
         return $this->select()->reset()
             ->from($this->_name, array('date_format(dh_happen_date, "%Y-%m") as period', 'sum(dh_count) as number'))
-            ->where('dh_status=?', 1)
+            ->where('dh_status=?', Bill_Constant::VALID_STATUS)
             ->group('date_format(dh_happen_date, "%Y%m")')
             ->query()->fetchAll();
     }
@@ -66,7 +66,8 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
     {
         return $this->select()->reset()
             ->from($this->_name, array('dh_happen_date as period', 'dh_count as number'))
-            ->where('dh_status=?', 1)->where('date_format(dh_happen_date, "%Y-%m")=?', $select_date)
+            ->where('dh_status=?', Bill_Constant::VALID_STATUS)
+            ->where('date_format(dh_happen_date, "%Y-%m")=?', $select_date)
             ->query()->fetchAll();
     }
 
@@ -74,7 +75,7 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
     {
         $select = $this->select()->reset()
             ->from($this->_name, array('dh_happen_date as period', 'dh_count as number'))
-            ->where('dh_status=?', 1);
+            ->where('dh_status=?', Bill_Constant::VALID_STATUS);
         if ($start_date !== '')
         {
             $select->where('dh_happen_date>=?', $start_date);

@@ -68,7 +68,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
     {
         return $this->select()->reset()
             ->from($this->_name, ['date_format(fp_payment_date, "%Y-%m") as period', 'sum(fp_payment) as payment'])
-            ->where('fp_status=?', 1)
+            ->where('fp_status=?', Bill_Constant::VALID_STATUS)
             ->group('date_format(fp_payment_date, "%Y%m")')
             ->order('fp_payment_date asc')
             ->query()->fetchAll();
@@ -78,7 +78,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
     {
         return $this->select()->reset()
             ->from($this->_name, ['fp_payment_date as period', 'sum(fp_payment) as payment'])
-            ->where('fp_status=?', 1)
+            ->where('fp_status=?', Bill_Constant::VALID_STATUS)
             ->where('fp_payment_date>=?', $start_date)
             ->where('fp_payment_date<=?', $end_date)
             ->group('fp_payment_date')
@@ -92,9 +92,9 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             ->setIntegrityCheck(false)
             ->from($this->_name, ['sum(fp_payment) as payment'])
             ->joinInner($this->_join_table, $this->_join_condition, 'fc_id')
-            ->where($this->_name . '.fp_status=?', 1)
+            ->where($this->_name . '.fp_status=?', Bill_Constant::VALID_STATUS)
             ->where($this->_name . '.fp_payment_date>=?', $start_date)
-            ->where($this->_join_table . '.status=?', 1)
+            ->where($this->_join_table . '.status=?', Bill_Constant::VALID_STATUS)
             ->group($this->_join_table . '.fc_id')
             ->order('payment desc')
             ->query()->fetchAll();
@@ -104,7 +104,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
     {
         return $this->select()->reset()
             ->from($this->_name, ['fp_id', 'fc_id', 'fp_create_time', 'fp_update_time'])
-            ->where('fp_status=?', 1)
+            ->where('fp_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
     }
 
@@ -113,7 +113,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
         $data = $this->select()->reset()
             ->from($this->_name, 'sum(fp_payment) as total')
             ->where('fp_payment_date>=?', $start_date)
-            ->where('fp_status=?', 1)
+            ->where('fp_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         return floatval($data[0]['total']);
     }

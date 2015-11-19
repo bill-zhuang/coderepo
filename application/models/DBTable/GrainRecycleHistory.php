@@ -82,7 +82,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
     {
         $select = $this->select()->reset()
             ->from($this->_name, array('happen_date as period', 'count as number'))
-            ->where('status=?', 1);
+            ->where('status=?', Bill_Constant::VALID_STATUS);
         if ($start_date !== '')
         {
             $select->where('happen_date>=?', $start_date);

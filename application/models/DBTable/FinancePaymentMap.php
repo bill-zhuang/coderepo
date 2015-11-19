@@ -66,7 +66,7 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
         $data = $this->select()->reset()
             ->from($this->_name, 'fc_id')
             ->where('fp_id=?', $fpid)
-            ->where('status=?', 1)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         $fc_ids = [];
         foreach ($data as $value)

@@ -37,7 +37,7 @@ class Application_Model_DBTable_BadHistory extends Application_Model_DBTableFact
     public function getBadHistoryData($limit, $offset, $order_by)
     {
         return $this->select()->reset()
-            ->where('bh_status=?', 1)
+            ->where('bh_status=?', Bill_Constant::VALID_STATUS)
             ->limit($limit, $offset)
             ->order($order_by)
             ->query()->fetchAll();
@@ -47,7 +47,7 @@ class Application_Model_DBTable_BadHistory extends Application_Model_DBTableFact
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('bh_status=?', 1)
+            ->where('bh_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
 
         return $count[0]['total'];
@@ -57,7 +57,7 @@ class Application_Model_DBTable_BadHistory extends Application_Model_DBTableFact
     {
         return $this->select()->reset()
             ->from($this->_name, array('bh_happen_date as period', 'bh_count as number'))
-            ->where('bh_status=?', 1)
+            ->where('bh_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
     }
 
