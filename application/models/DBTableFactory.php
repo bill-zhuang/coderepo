@@ -8,32 +8,36 @@
 
 class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
 {
+    private $_table_name;
+
     public function __construct($table_name, $section_name = 'localdb')
     {
+        $this->_table_name = $table_name;
         $config = [
-            'db' => self::_getDBAdapter($section_name),
+            'db' => Application_Model_DBAdapter::getDBAdapter($section_name),
             'name' => $table_name
         ];
         parent::__construct($config);
     }
 
-    /**
-     * @param string $section_name in db.ini file
-     * @return mixed|Zend_Db_Adapter_Abstract
-     */
-    private static function _getDBAdapter($section_name = 'localdb')
+    public function insert(array $data)
     {
-        if (!Zend_Registry::isRegistered($section_name))
-        {
-            $db_config_path = APPLICATION_PATH . '/configs/db.ini';
-            $db_config = new Zend_Config_Ini($db_config_path, $section_name);
-            $db_adapter = Zend_Db::factory($db_config->adapter, $db_config->database->toArray());
-            Zend_Registry::set($section_name, $db_adapter);
-            return $db_adapter;
-        }
-        else
-        {
-            return Zend_Registry::get($section_name);
-        }
+        $adapter_backend_log = new Application_Model_DBTable_BackendLog();
+        $adapter_backend_log->writeLog('insert', $this->_table_name, $data);
+        return parent::insert($data);
+    }
+
+    public function update(array $data, $where)
+    {
+        $adapter_backend_log = new Application_Model_DBTable_BackendLog();
+        $adapter_backend_log->writeLog('update', $this->_table_name, $data, $where);
+        return parent::update($data, $where);
+    }
+
+    public function delete($where)
+    {
+        $adapter_backend_log = new Application_Model_DBTable_BackendLog();
+        $adapter_backend_log->writeLog('delete', $this->_table_name, [], $where);
+        return parent::delete($where);
     }
 }
