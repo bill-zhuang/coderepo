@@ -1,10 +1,14 @@
 <?php
 
-class Application_Model_DBTable_BackendLog extends Application_Model_DBTableFactory
+class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
 {
-    public function __construct()
+    public function __construct($section_name = 'localdb')
     {
-        parent::__construct('backend_log');
+        $config = [
+            'db' => Application_Model_DBAdapter::getDBAdapter($section_name),
+            'name' => 'backend_log'
+        ];
+        parent::__construct($config);
     }
 
     public function getBackendLogCount(array $conditions)
