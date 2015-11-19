@@ -6,8 +6,13 @@ class Application_Model_Auth
 
     protected function setAuth($table_name, $column_name, $column_password, $database_adapter)
     {
-        $this->authAdapter = new Zend_Auth_Adapter_DbTable($database_adapter, $table_name, $column_name, $column_password,
-                'MD5(?) and bu_status=1');
+        $this->authAdapter = new Zend_Auth_Adapter_DbTable(
+            $database_adapter,
+            $table_name,
+            $column_name,
+            $column_password,
+            'MD5(CONCAT(?, bu_salt)) AND bu_status=1'
+        );
     }
 
     public function logIn($username, $password, $table_name = null, $database_adapter = null)
