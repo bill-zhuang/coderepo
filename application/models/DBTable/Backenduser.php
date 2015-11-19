@@ -71,7 +71,7 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('bu_name like ?', $name)
+            ->where('bu_name = ?', $name)
             ->where('bu_id!=?', $buid)
             ->where('bu_status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
