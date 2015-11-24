@@ -67,5 +67,34 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         }
     }
 
+    protected function _initError()
+    {
+        set_error_handler('errorHandler');
+        register_shutdown_function('shutdownFunction');
+    }
 }
 
+function errorHandler($error_number, $error_message, $filename, $line_number, $vars)
+{
+    if ($error_number == E_NOTICE || $error_number == E_WARNING || $error_number == E_STRICT)
+    {
+        return;
+    }
+    $title = 'Error from errorHandler';
+    $content = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
+        . 'Error number: ' . $error_number . "\n"
+        . 'Error message: ' . $error_message . "\n"
+        . 'Filename: ' . $filename . "\n"
+        . 'Line number: ' . $line_number . "\n"
+        . 'Vars: ' . $vars;
+    Bill_Mail::send($title, $content);
+}
+
+function shutDownFunction()
+{
+    $error = error_get_last();
+    if (!empty($error))
+    {
+        errorHandler($error['type'], $error['message'], $error['file'], $error['line'], '');
+    }
+}
