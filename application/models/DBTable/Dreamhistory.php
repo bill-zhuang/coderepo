@@ -32,11 +32,20 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
         return $count[0]['total'];
     }
 
-    public function getTotalDreamHistoryGroupData()
+    public function getTotalDreamHistoryGroupData($start_date, $end_date)
     {
-        return $this->select()->reset()
+        $select = $this->select()->reset()
             ->from($this->_name, array('date_format(dh_happen_date, "%Y-%m") as period', 'sum(dh_count) as number'))
-            ->where('dh_status=?', Bill_Constant::VALID_STATUS)
+            ->where('dh_status=?', Bill_Constant::VALID_STATUS);
+        if ($start_date !== '')
+        {
+            $select->where('dh_happen_date>=?', $start_date);
+        }
+        if ($end_date !== '')
+        {
+            $select->where('dh_happen_date<=?', $end_date);
+        }
+        return $select
             ->group('date_format(dh_happen_date, "%Y%m")')
             ->query()->fetchAll();
     }
