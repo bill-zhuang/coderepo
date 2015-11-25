@@ -18,16 +18,23 @@ class Application_Model_DBAdapter
         if (!Zend_Registry::isRegistered($section_name))
         {
             $db_config_path = APPLICATION_PATH . '/configs/db.ini';
-            $db_config = new Zend_Config_Ini($db_config_path, $section_name);
-            if (isset($db_config->adapter) && isset($db_config->database))
+            if (file_exists($db_config_path))
             {
-                $db_adapter = Zend_Db::factory($db_config->adapter, $db_config->database->toArray());
-                Zend_Registry::set($section_name, $db_adapter);
-                return $db_adapter;
+                $db_config = new Zend_Config_Ini($db_config_path, $section_name);
+                if (isset($db_config->adapter) && isset($db_config->database))
+                {
+                    $db_adapter = Zend_Db::factory($db_config->adapter, $db_config->database->toArray());
+                    Zend_Registry::set($section_name, $db_adapter);
+                    return $db_adapter;
+                }
+                else
+                {
+                    throw new Exception('Database config error!');
+                }
             }
             else
             {
-                throw new Exception('Database config error!');
+                throw new Exception('Database config file not exist!');
             }
         }
         else
