@@ -5,7 +5,7 @@ $(document).ready(function () {
 
 function initPeriodChart() {
     var get_url = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-period';
-    var get_data = $.param($('#formSearch').serializeArray());
+    var get_data = $.param($('#formSearchDay').serializeArray());
     var method = 'get';
     var success_function = function (result) {
         var line_option = {
@@ -22,7 +22,7 @@ function initPeriodChart() {
 
 function initMonthChart() {
     var get_url = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-month';
-    var get_data = $.param($('#formSearch').serializeArray());
+    var get_data = $.param($('#formSearchMonth').serializeArray());
     var method = 'get';
     var success_function = function (result) {
         var data_period = result['period'];
@@ -40,7 +40,12 @@ function initMonthChart() {
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
 
-$('#btn_search').on('click', function (event) {
+$('#btn_search_day').on('click', function (event) {
     event.preventDefault();
     initPeriodChart();
+});
+
+$('#btn_search_month').on('click', function (event) {
+    event.preventDefault();
+    initMonthChart();
 });
