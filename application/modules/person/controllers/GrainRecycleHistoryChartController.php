@@ -21,8 +21,8 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
 
     public function ajaxGrainRecycleHistoryPeriodAction()
     {
-        $start_date = trim($this->getParam('day_start_date', date('Y-m-d', strtotime('-1 year'))));
-        $end_date = trim($this->getParam('day_end_date', ''));
+        $start_date = trim($this->getParam('day_start_date', date('Y-m-d', strtotime('-1 month'))));
+        $end_date = trim($this->getParam('day_end_date', date('Y-m-d')));
         $data = $this->_getAllGrainRecycleHistoryDataByDay($start_date, $end_date);
 
         echo json_encode($data);
