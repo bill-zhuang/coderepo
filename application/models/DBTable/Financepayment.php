@@ -44,11 +44,20 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             ->query()->fetch();
     }
 
-    public function getTotalPaymentHistoryGroupData()
+    public function getTotalPaymentHistoryGroupData($start_date, $end_date)
     {
-        return $this->select()->reset()
+        $select = $this->select()->reset()
             ->from($this->_name, ['date_format(fp_payment_date, "%Y-%m") as period', 'sum(fp_payment) as payment'])
-            ->where('fp_status=?', Bill_Constant::VALID_STATUS)
+            ->where('fp_status=?', Bill_Constant::VALID_STATUS);
+        if ($start_date !== '')
+        {
+            $select->where('fp_payment_date>=?', $start_date);
+        }
+        if ($end_date !== '')
+        {
+            $select->where('fp_payment_date<=?', $end_date);
+        }
+        return $select
             ->group('date_format(fp_payment_date, "%Y%m")')
             ->order('fp_payment_date asc')
             ->query()->fetchAll();

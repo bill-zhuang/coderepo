@@ -28,7 +28,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     public function ajaxFinanceHistoryPeriodAction()
     {
-        list($start_date, $end_date) = $this->_getSearchParams();
+        $start_date = trim($this->getParam('day_start_date', date('Y-m-d', strtotime('-1 year'))));
+        $end_date = trim($this->getParam('day_end_date', ''));
         $period_data = $this->_getFinanceHistoryPeriodData($start_date, $end_date);
 
         echo json_encode($period_data);
@@ -37,7 +38,9 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     public function ajaxFinanceHistoryMonthAction()
     {
-        $month_data = $this->_getFinanceHistoryMonthData();
+        $start_date = trim($this->getParam('month_start_date', date('Y-m', strtotime('-1 year')) . '-01'));
+        $end_date = trim($this->getParam('month_end_date', ''));
+        $month_data = $this->_getFinanceHistoryMonthData($start_date, $end_date);
 
         echo json_encode($month_data);
         exit;
@@ -104,13 +107,13 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         return $all_chart_data;
     }
 
-    private function _getFinanceHistoryMonthData()
+    private function _getFinanceHistoryMonthData($start_date, $end_date)
     {
         $data = [
             'period' => [],
             'payment' => [],
         ];
-        $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData();
+        $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData($start_date, $end_date);
         foreach ($month_data as $key => $month_value)
         {
             if ($key > 0)
@@ -187,16 +190,5 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         }
 
         return $all_chart_data;
-    }
-
-    private function _getSearchParams()
-    {
-        $start_date = trim($this->getParam('start_date', date('Y-m-d', strtotime('-1 month'))));
-        $end_date = trim($this->getParam('end_date', date('Y-m-d H:i:s')));
-
-        return [
-            $start_date,
-            $end_date,
-        ];
     }
 }
