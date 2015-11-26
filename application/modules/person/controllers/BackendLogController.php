@@ -32,10 +32,9 @@ class person_BackendLogController extends Zend_Controller_Action
 
     private function _index()
     {
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
-        $keyword = trim($this->_getParam('keyword', ''));
+        $params = $this->_getParam('params', []);
+        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 
         $conditions = [
             'status=?' => Bill_Constant::VALID_STATUS
@@ -47,18 +46,23 @@ class person_BackendLogController extends Zend_Controller_Action
         $order_by = 'blid DESC';
         $total = $this->_adapter_backend_log->getBackendLogCount($conditions);
         $data = $this->_adapter_backend_log->getBackendLogData($conditions, $page_length, $start, $order_by);
-        foreach ($data as $key => $value)
+        foreach ($data as &$value)
         {
-            $data[$key]['name'] = $this->_adapter_backend_user->getUserName($value['buid']);
+            $value['name'] = $this->_adapter_backend_user->getUserName($value['buid']);
         }
 
-        $json_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
+        $json_array = [
+            'data' => [
+                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
+                'pageIndex' => $current_page,
+                'totalItems' => $total,
+                'startIndex' => $start + 1,
+                'itemsPerPage' => $page_length,
+                'currentItemCount' => count($data),
+                'items' => $data,
+            ],
         ];
-        return $json_data;
+
+        return $json_array;
     }
 }
