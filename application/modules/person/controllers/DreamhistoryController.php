@@ -138,21 +138,24 @@ class person_DreamHistoryController extends Zend_Controller_Action
 
     private function _index()
     {
-        $keyword = trim($this->_getParam('keyword', ''));
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
+        $params = $this->_getParam('params', []);
+        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
         $order_by = 'dh_create_time desc';
-        $start = intval(($current_page - Bill_Constant::INIT_START_PAGE) * $page_length);
 
         $data = $this->_adapter_dream_history->getDreamHistoryData($page_length, $start, $order_by);
         $total = $this->_adapter_dream_history->getTotalDreamHistoryNumber();
 
         $json_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
+            'data' => [
+                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
+                'pageIndex' => $current_page,
+                'totalItems' => $total,
+                'startIndex' => $start + 1,
+                'itemsPerPage' => $page_length,
+                'currentItemCount' => count($data),
+                'items' => $data,
+            ],
         ];
         return $json_data;
     }
