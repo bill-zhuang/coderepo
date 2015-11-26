@@ -19,7 +19,7 @@ class LoginController extends Zend_Controller_Action
         $role = Application_Model_Auth::isValid();
         if ($role != null)
         {
-            $this->_redirect('/main/index');
+            $this->redirect('/main/index');
         }
     }
     
@@ -32,7 +32,7 @@ class LoginController extends Zend_Controller_Action
 
         if (Application_Model_Auth::isValid() != null)
         {
-            $this->_redirect('/main/index');
+            $this->redirect('/main/index');
         }
         else
         {
@@ -48,7 +48,7 @@ class LoginController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         
         Application_Model_Auth::logOut();
-        $this->_redirect('/login/index');
+        $this->redirect('/login/index');
     }
 }
 
