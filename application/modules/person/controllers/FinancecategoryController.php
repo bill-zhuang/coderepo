@@ -125,16 +125,22 @@ class person_FinanceCategoryController extends Zend_Controller_Action
 
     public function getFinanceMainCategoryAction()
     {
-        echo json_encode($this->_adapter_finance_category->getAllParentCategory());
+        $data = $this->_adapter_finance_category->getAllParentCategory();
+        $json_data = [
+            'data' => [
+                'currentItemCount' => count($data),
+                'items' => $data,
+            ],
+        ];
+        echo json_encode($json_data);
         exit;
     }
 
     private function _index()
     {
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
-        $keyword = trim($this->_getParam('keyword', ''));
+        $params = $this->_getParam('params', []);
+        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 
         $conditions = [
             'fc_status =?' => Bill_Constant::VALID_STATUS
@@ -153,11 +159,15 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         }
 
         $json_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
+            'data' => [
+                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
+                'pageIndex' => $current_page,
+                'totalItems' => $total,
+                'startIndex' => $start + 1,
+                'itemsPerPage' => $page_length,
+                'currentItemCount' => count($data),
+                'items' => $data,
+            ],
         ];
         return $json_data;
     }
