@@ -75,4 +75,31 @@ class Bill_Util
             mkdir($dir, '0777', true);
         }
     }
+
+    public static function getJsonResponseErrorArray($error_code, $error_message)
+    {
+        return [
+            'code' => $error_code,
+            'message' => $error_message,
+        ];
+    }
+
+    public static function getPaginationParamsFromUrlParamsArray(array $params)
+    {
+        $current_page = (isset($params['current_page']) && intval($params['current_page']) > 0)
+            ? intval($params['current_page']) : Bill_Constant::INIT_START_PAGE;
+        $page_length = (isset($params['page_length']) && intval($params['page_length']) > 0)
+            ? intval($params['page_length']) : Bill_Constant::INIT_PAGE_LENGTH;
+        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
+        return [
+            $current_page,
+            $page_length,
+            $start
+        ];
+    }
+
+    public static function getTotalPages($totalItems, $itemsPerPage)
+    {
+        return ceil($totalItems / $itemsPerPage) ? ceil($totalItems / $itemsPerPage) : Bill_Constant::INIT_TOTAL_PAGE;
+    }
 } 
