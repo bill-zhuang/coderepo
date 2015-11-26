@@ -139,11 +139,10 @@ class person_FinancePaymentController extends Zend_Controller_Action
 
     private function _index()
     {
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
-        $payment_date = trim($this->_getParam('payment_date', ''));
-        $finance_category_id = intval($this->_getParam('category_parent_id', 0));
+        $params = $this->_getParam('params', []);
+        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        $payment_date = isset($params['payment_date']) ? trim($params['payment_date']) : '';
+        $finance_category_id = isset($params['category_parent_id']) ? intval($params['category_parent_id']) : 0;
 
         $conditions = [
             'fp_status =?' => Bill_Constant::VALID_STATUS
@@ -168,26 +167,30 @@ class person_FinancePaymentController extends Zend_Controller_Action
         $order_by = 'fp_payment_date desc';
         $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
         $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $page_length, $start, $order_by);
-        foreach ($data as $key => $value)
+        foreach ($data as &$value)
         {
             $fc_ids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($value['fp_id']);
             if (!empty($fc_ids))
             {
-                $data[$key]['category'] =
+                $value['category'] =
                     implode(',', $this->_adapter_finance_category->getFinanceCategoryNames($fc_ids));
             }
             else
             {
-                $data[$key]['category'] = '';
+                $value['category'] = '';
             }
         }
 
         $json_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
+            'data' => [
+                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
+                'pageIndex' => $current_page,
+                'totalItems' => $total,
+                'startIndex' => $start + 1,
+                'itemsPerPage' => $page_length,
+                'currentItemCount' => count($data),
+                'items' => $data,
+            ],
         ];
         return $json_data;
     }

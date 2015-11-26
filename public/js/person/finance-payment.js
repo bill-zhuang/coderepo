@@ -5,43 +5,49 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var get_url = '/person/finance-payment/ajax-index';
-    var get_data = $.param($('#formSearch').serializeArray());
+    var get_data = {
+        "params": getFormObjectData('formSearch')
+    };
     var method = 'get';
     var success_function = function (result) {
         $('#tbl tbody').empty();
-        for (var i = 0, len = result.data.length; i < len; i++) {
-            $('#tbl tbody').append(
-                $('<tr>')
-                    .append($('<td>').text(result.start + i + 1))
-                    .append($('<td>').text(result.data[i]['fp_payment_date']))
-                    .append($('<td>').text(result.data[i]['fp_payment']))
-                    .append($('<td>').text(result.data[i]['category']))
-                    .append($('<td>').text(result.data[i]['fp_detail']))
-                    .append($('<td>').text(result.data[i]['fp_update_time']))
-                    .append($('<td>')
-                        .append($('<a>', {href: '#', id: 'modify_' + result.data[i]['fp_id'], text: '修改'})
-                            .click(function () {
-                                modifyFinancePayment(this.id);
-                            })
+        if (typeof result.data != "undefined") {
+            for (var i = 0; i < result.data.currentItemCount; i++) {
+                $('#tbl tbody').append(
+                    $('<tr>')
+                        .append($('<td>').text(result.data.startIndex + i))
+                        .append($('<td>').text(result.data.items[i]['fp_payment_date']))
+                        .append($('<td>').text(result.data.items[i]['fp_payment']))
+                        .append($('<td>').text(result.data.items[i]['category']))
+                        .append($('<td>').text(result.data.items[i]['fp_detail']))
+                        .append($('<td>').text(result.data.items[i]['fp_update_time']))
+                        .append($('<td>')
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['fp_id'], text: '修改'})
+                                .click(function () {
+                                    modifyFinancePayment(this.id);
+                                })
+                            )
+                            .append('  ')
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['fp_id'], text: '删除'})
+                                .click(function () {
+                                    deleteFinancePayment(this.id);
+                                })
+                            )
                         )
-                        .append('  ')
-                        .append($('<a>', {href: '#', id: 'delete_' + result.data[i]['fp_id'], text: '删除'})
-                            .click(function () {
-                                deleteFinancePayment(this.id);
-                            })
-                        )
+                );
+            }
+            if (result.data.totalItems == 0) {
+                $('#tbl tbody').append($('<tr>')
+                    .append(
+                        $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 7)
                     )
-            );
+                );
+            }
+            //init pagination
+            initPagination(result.data.totalPages, result.data.pageIndex);
+        } else {
+            alert(result.error.message);
         }
-        if (result.total == 0) {
-            $('#tbl tbody').append($('<tr>')
-                .append(
-                    $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 7)
-                )
-            );
-        }
-        //init pagination
-        initPagination(result.total_pages, result.current_page);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
     //load main category
