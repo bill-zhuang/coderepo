@@ -4,42 +4,48 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var get_url = '/person/grain-recycle-history/ajax-index';
-    var get_data = $.param($('#formSearch').serializeArray());
+    var get_data = {
+        "params": getFormObjectData('formSearch')
+    };
     var method = 'get';
     var success_function = function (result) {
         $('#tbl tbody').empty();
-        for (var i = 0, len = result.data.length; i < len; i++) {
-            $('#tbl tbody').append(
-                $('<tr>')
-                    .append($('<td>').text(result.start + i + 1))
-                    .append($('<td>').text(result.data[i]['happen_date']))
-                    .append($('<td>').text(result.data[i]['count']))
-                    .append($('<td>').text(result.data[i]['create_time']))
-                    .append($('<td>').text(result.data[i]['update_time']))
-                    .append($('<td>')
-                        .append($('<a>', {href: '#', id: 'modify_' + result.data[i]['grhid'], text: '修改'})
-                            .click(function () {
-                                modifyGrainRecycleHistory(this.id);
-                            })
+        if (typeof result.data != "undefined") {
+            for (var i = 0; i < result.data.currentItemCount; i++) {
+                $('#tbl tbody').append(
+                    $('<tr>')
+                        .append($('<td>').text(result.data.startIndex + i))
+                        .append($('<td>').text(result.data.items[i]['happen_date']))
+                        .append($('<td>').text(result.data.items[i]['count']))
+                        .append($('<td>').text(result.data.items[i]['create_time']))
+                        .append($('<td>').text(result.data.items[i]['update_time']))
+                        .append($('<td>')
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['grhid'], text: '修改'})
+                                .click(function () {
+                                    modifyGrainRecycleHistory(this.id);
+                                })
+                            )
+                            .append('  ')
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['grhid'], text: '删除'})
+                                .click(function () {
+                                    deleteGrainRecycleHistory(this.id);
+                                })
+                            )
                         )
-                        .append('  ')
-                        .append($('<a>', {href: '#', id: 'delete_' + result.data[i]['grhid'], text: '删除'})
-                            .click(function () {
-                                deleteGrainRecycleHistory(this.id);
-                            })
-                        )
+                );
+            }
+            if (result.data.totalItems == 0) {
+                $('#tbl tbody').append($('<tr>')
+                    .append(
+                        $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 6)
                     )
-            );
+                );
+            }
+            //init pagination
+            initPagination(result.data.totalPages, result.data.pageIndex);
+        } else {
+            alert(result.error.message);
         }
-        if (result.total == 0) {
-            $('#tbl tbody').append($('<tr>')
-                .append(
-                    $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 6)
-                )
-            );
-        }
-        //init pagination
-        initPagination(result.total_pages, result.current_page);
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }

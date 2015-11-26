@@ -112,9 +112,8 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
 
     private function _index()
     {
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
+        $params = $this->_getParam('params', []);
+        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
 
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS
@@ -124,11 +123,15 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         $data = $this->_adapter_grain_recycle_history->getGrainRecycleHistoryData($conditions, $page_length, $start, $order_by);
 
         $json_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
+            'data' => [
+                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
+                'pageIndex' => $current_page,
+                'totalItems' => $total,
+                'startIndex' => $start + 1,
+                'itemsPerPage' => $page_length,
+                'currentItemCount' => count($data),
+                'items' => $data,
+            ],
         ];
         return $json_data;
     }
