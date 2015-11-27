@@ -16,13 +16,26 @@ class GoogleMapController extends Zend_Controller_Action
     
     public function markLocationAction()
     {
-        $lng_lat = array();
-        if($_GET && $_GET['location'])
+        $json_array = [];
+        $params = $this->_getParam('params', []);
+        if(isset($params['location']))
         {
-        	$lng_lat = Bill_GoogleMap::getLngLatByAddress($_GET['location']);
+            $coordinate_info = Bill_GoogleMap::getLngLatByAddress($params['location']);
+            if (!empty($coordinate_info))
+            {
+                $json_array['data'] = $coordinate_info;
+            }
+            else
+            {
+                $json_array['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Fetch Location coordinate failed.');
+            }
+        }
+        else
+        {
+            $json_array['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Param location not provided.');
         }
         
-        echo json_encode($lng_lat);
+        echo json_encode($json_array);
         exit;
     }
 
@@ -33,7 +46,12 @@ class GoogleMapController extends Zend_Controller_Action
 
     public function ajaxMultipleLocationAction()
     {
-        echo json_encode($this->_multipleLocation());
+        $json_array = [
+            'data' => [
+                'coordinates' => $this->_multipleLocation()
+            ],
+        ];
+        echo json_encode($json_array);
         exit;
     }
 

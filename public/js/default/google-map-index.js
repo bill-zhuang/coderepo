@@ -9,15 +9,16 @@ $('#btb_mark_location').on('click', function () {
     if (location != '') {
         var get_url = '/google-map/mark-location';
         var get_data = {
-            'location': location
+            "params": {
+                "location": location
+            }
         };
         var method = 'get';
-        var success_function = function (coordinate_result) {
-            console.log(coordinate_result);
-            if (coordinate_result == '') {
-                alert('error info');
+        var success_function = function (result) {
+            if (typeof result.data != "undefined") {
+                showPosition(result.data.Longitude, result.data.Latitude);
             } else {
-                showPosition(coordinate_result.Longitude, coordinate_result.Latitude);
+                alert(result.error.message);
             }
         };
         callAjaxWithFunction(get_url, get_data, success_function, method);
