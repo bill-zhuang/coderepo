@@ -21,21 +21,29 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
 
     public function ajaxGrainRecycleHistoryPeriodAction()
     {
-        $start_date = trim($this->getParam('day_start_date', date('Y-m-d', strtotime('-1 month'))));
-        $end_date = trim($this->getParam('day_end_date', date('Y-m-d')));
+        $params = $this->_getParam('params', []);
+        $start_date = isset($params['day_start_date']) ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
+        $end_date = isset($params['day_end_date']) ? trim($params['day_end_date']) : '';
         $data = $this->_getAllGrainRecycleHistoryDataByDay($start_date, $end_date);
+        $json_array = [
+            'data' => $data
+        ];
 
-        echo json_encode($data);
+        echo json_encode($json_array);
         exit;
     }
 
     public function ajaxGrainRecycleHistoryMonthAction()
     {
-        $start_date = trim($this->getParam('month_start_date', date('Y-m', strtotime('-1 year')) . '-01'));
-        $end_date = trim($this->getParam('month_end_date', ''));
+        $params = trim($this->_getParam('params', []));
+        $start_date = isset($params['month_start_date']) ? trim($params['month_start_date']) : date('Y-m', strtotime('-1 year')) . '-01';
+        $end_date = isset($params['month_end_date']) ? trim($params['month_end_date']) : '';
         $data = $this->_getAllDreamHistoryDataByMonth($start_date, $end_date);
+        $json_array = [
+            'data' => $data
+        ];
 
-        echo json_encode($data);
+        echo json_encode($json_array);
         exit;
     }
 
