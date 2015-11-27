@@ -25,4 +25,7 @@ class Bill_Constant
 
     //
     const ACTION_ERROR_INFO = 'Invalid request or parameters.';
+
+    //
+    const DEFAULT_WEIGHT = 0;
 } 
