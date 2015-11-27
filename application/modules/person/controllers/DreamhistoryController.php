@@ -43,10 +43,10 @@ class person_DreamHistoryController extends Zend_Controller_Action
                     'dh_create_time' => $date,
                     'dh_update_time' => $date
                 ];
-                $affect_rows = $this->_adapter_dream_history->insert($data);
+                $affected_rows = $this->_adapter_dream_history->insert($data);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affect_rows
+                        'affectedRows' => $affected_rows
                     ],
                 ];
             }
@@ -106,10 +106,10 @@ class person_DreamHistoryController extends Zend_Controller_Action
                     'dh_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_dream_history->getAdapter()->quoteInto('dh_id=?', $dh_id);
-                $affect_rows = $this->_adapter_dream_history->update($update_data, $where);
+                $affected_rows = $this->_adapter_dream_history->update($update_data, $where);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affect_rows,
+                        'affectedRows' => $affected_rows,
                     ]
                 ];
             }
@@ -143,10 +143,10 @@ class person_DreamHistoryController extends Zend_Controller_Action
                     $this->_adapter_dream_history->getAdapter()->quoteInto('dh_id=?', $dh_id),
                     $this->_adapter_dream_history->getAdapter()->quoteInto('dh_status=?', Bill_Constant::VALID_STATUS),
                 ];
-                $affect_rows = $this->_adapter_dream_history->update($update_data, $where);
+                $affected_rows = $this->_adapter_dream_history->update($update_data, $where);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affect_rows,
+                        'affectedRows' => $affected_rows,
                     ]
                 ];
             }

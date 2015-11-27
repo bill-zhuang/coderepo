@@ -43,10 +43,10 @@ class person_BadHistoryController extends Zend_Controller_Action
                     'bh_create_time' => $date,
                     'bh_update_time' => $date
                 ];
-                $affect_rows = $this->_adapter_bad_history->insert($data);
+                $affected_rows = $this->_adapter_bad_history->insert($data);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affect_rows
+                        'affectedRows' => $affected_rows
                     ],
                 ];
             }
@@ -104,10 +104,10 @@ class person_BadHistoryController extends Zend_Controller_Action
                     'bh_update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id);
-                $affect_rows = $this->_adapter_bad_history->update($update_data, $where);
+                $affected_rows = $this->_adapter_bad_history->update($update_data, $where);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affect_rows,
+                        'affectedRows' => $affected_rows,
                     ]
                 ];
             }
@@ -141,10 +141,10 @@ class person_BadHistoryController extends Zend_Controller_Action
                     $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id),
                     $this->_adapter_bad_history->getAdapter()->quoteInto('bh_status=?', Bill_Constant::VALID_STATUS),
                 ];
-                $affect_rows = $this->_adapter_bad_history->update($update_data, $where);
+                $affected_rows = $this->_adapter_bad_history->update($update_data, $where);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affect_rows,
+                        'affectedRows' => $affected_rows,
                     ]
                 ];
             }
