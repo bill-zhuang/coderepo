@@ -5,30 +5,40 @@ $(document).ready(function () {
 
 function initPeriodChart() {
     var get_url = '/person/dream-history-chart/ajax-dream-history-period';
-    var get_data = $.param($('#formSearchDay').serializeArray());
+    var get_data = {
+        "params": getFormObjectData('formSearchDay')
+    };
     var method = 'get';
     var success_function = function (result) {
-        initLineChart('dream_history_line_chart_all', result['period'], result['interval']);
+        if (typeof result.data != "undefined") {
+            initLineChart('dream_history_line_chart_all', result.data.period, result.data.interval);
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
 
 function initMonthChart() {
     var get_url = '/person/dream-history-chart/ajax-dream-history-month';
-    var get_data = $.param($('#formSearchMonth').serializeArray());
+    var get_data = {
+        "params": getFormObjectData('formSearchMonth')
+    };
     var method = 'get';
     var success_function = function (result) {
-        var data_period = result['period'];
-        var data_number = result['number'];
-        var line_option = {
-            responsive: true,
-            scaleOverride: true,
-            scaleSteps: 9, //y axis length = steps * step_width
-            scaleStepWidth: 1, // y axis
-            scaleStartValue: 0 // y axis start value
-        };
-        initLineChart('dream_history_line_chart', data_period, data_number, line_option);
-        initBarChart('dream_history_bar_chart', data_period, data_number);
+        if (typeof result.data != "undefined") {
+            var line_option = {
+                responsive: true,
+                scaleOverride: true,
+                scaleSteps: 9, //y axis length = steps * step_width
+                scaleStepWidth: 1, // y axis
+                scaleStartValue: 0 // y axis start value
+            };
+            initLineChart('dream_history_line_chart', result.data['period'], result.data['number'], line_option);
+            initBarChart('dream_history_bar_chart', result.data['period'], result.data['number']);
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
