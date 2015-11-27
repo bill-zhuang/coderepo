@@ -22,4 +22,7 @@ class Bill_Constant
     const DEFAULT_PASSWORD = '123456';
     const DEFAULT_ROLE = 1;
     const SALT_STRING_LENGTH = 64;
+
+    //
+    const ACTION_ERROR_INFO = 'Invalid request or parameters.';
 } 
