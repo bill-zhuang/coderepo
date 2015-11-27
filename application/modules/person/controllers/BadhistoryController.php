@@ -27,11 +27,12 @@ class person_BadHistoryController extends Zend_Controller_Action
 
     public function addBadHistoryAction()
     {
-        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['bad_history_date']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            $occur_date = $_POST['bad_history_date'];
-            $occur_count = intval($_POST['bad_history_count']);
+            $params = $this->getRequest()->getPost('params', []);
+            $occur_date = isset($params['bad_history_date']) ? $params['bad_history_date'] : '';
+            $occur_count = isset($params['bad_history_count']) ? intval($params['bad_history_count']) : 0;
             if (Bill_Util::validDate($occur_date) && $occur_count > 0)
             {
                 $date = date('Y-m-d H:i:s');
@@ -43,36 +44,59 @@ class person_BadHistoryController extends Zend_Controller_Action
                     'bh_update_time' => $date
                 ];
                 $affect_rows = $this->_adapter_bad_history->insert($data);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affect_rows
+                    ],
+                ];
             }
         }
-        
-        echo json_encode($affect_rows);
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function getBadHistoryAction()
     {
-        $data = [];
-        if (isset($_GET['bh_id']))
+        if ($this->getRequest()->isGet())
         {
-            $bh_id = intval($_GET['bh_id']);
-            if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID)
+            $params = $this->getRequest()->getQuery('params', []);
+            $bh_id = (isset($params['bh_id'])) ? intval($params['bh_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $history_data = $this->_adapter_bad_history->getBadHistoryDayByID($bh_id);
+            if (!empty($history_data))
             {
-                $data = $this->_adapter_bad_history->getBadHistoryDayByID($bh_id);
+                $json_array = [
+                    'data' => $history_data,
+                ];
             }
         }
 
-        echo json_encode($data);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function modifyBadHistoryAction()
     {
-        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['bad_history_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            $bh_id = intval($_POST['bad_history_id']);
-            $bh_count = intval($_POST['bad_history_count']);
+            $params = $this->getRequest()->getPost('params', []);
+            $bh_id = isset($params['bad_history_id']) ? intval($params['bad_history_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $bh_count = isset($params['bad_history_count']) ?  intval($params['bad_history_count']) : 0;
             if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID && $bh_count > 0)
             {
                 $update_data = [
@@ -81,19 +105,32 @@ class person_BadHistoryController extends Zend_Controller_Action
                 ];
                 $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id);
                 $affect_rows = $this->_adapter_bad_history->update($update_data, $where);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affect_rows,
+                    ]
+                ];
             }
         }
 
-        echo json_encode($affect_rows);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function deleteBadHistoryAction()
     {
-        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['bh_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            $bh_id = intval($_POST['bh_id']);
+            $params = $this->getRequest()->getPost('params', []);
+            $bh_id = isset($params['bh_id']) ? intval($params['bh_id']) : Bill_Constant::INVALID_PRIMARY_ID;
             if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $update_data = [
@@ -105,10 +142,22 @@ class person_BadHistoryController extends Zend_Controller_Action
                     $this->_adapter_bad_history->getAdapter()->quoteInto('bh_status=?', Bill_Constant::VALID_STATUS),
                 ];
                 $affect_rows = $this->_adapter_bad_history->update($update_data, $where);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affect_rows,
+                    ]
+                ];
             }
         }
 
-        echo json_encode($affect_rows);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 

@@ -52,7 +52,7 @@ function ajaxIndex() {
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
     window.BadHistoryForm.reset();
-    $('#bad_history_date').val(getCurrentDate());
+    $('#bad_history_date').val(getCurrentDate()).attr('disabled', false);
     $('#bad_history_count').val(1);
     $('#bad_history_id').val('');
     $('#btn_submit_bad_history').attr('disabled', false);
@@ -66,35 +66,48 @@ $('#BadHistoryForm').on('submit', (function (event) {
     var type = (bh_id == '') ? 'add' : 'modify';
     $('#btn_submit_bad_history').attr('disabled', true);
     var post_url = '/person/bad-history/' + type + '-bad-history';
-    var post_data = new FormData(this);
+    var post_data = {
+        "params": getFormObjectData('BadHistoryForm')
+    };
+    console.log(post_data);
     var msg_success = (bh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
     var msg_error = (bh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
     var method = 'post';
     var success_function = function (result) {
         $('#BadHistoryModal').modal('hide');
-        if (parseInt(result) != 0) {
-            alert(msg_success);
+        if (typeof result.data != 'undefined') {
+            if (parseInt(result.data.affectedRows) != 0) {
+                alert(msg_success);
+            } else {
+                alert(msg_error);
+            }
         } else {
-            alert(msg_error);
+            alert(result.error.message);
         }
         ajaxIndex();
     };
-    callAjaxWithFormAndFunction(post_url, post_data, success_function, method);
+    callAjaxWithFunction(post_url, post_data, success_function, method);
 }));
 
 function modifyBadHistory(modify_id) {
     var bh_id = modify_id.substr('delete_'.length);
     var post_url = '/person/bad-history/get-bad-history';
     var post_data = {
-        bh_id: bh_id
+        "params": {
+            "bh_id": bh_id
+        }
     };
     var method = 'get';
-    var success_function = function (history_data) {
-        $('#bad_history_date').val(history_data.bh_happen_date).attr('disabled', true);
-        $('#bad_history_count').val(history_data.bh_count);
-        $('#bad_history_id').val(history_data.bh_id);
-        $('#btn_submit_bad_history').attr('disabled', false);
-        $('#BadHistoryModal').modal('show');
+    var success_function = function (result) {
+        if (typeof result.data != 'undefined') {
+            $('#bad_history_date').val(result.data.bh_happen_date).attr('disabled', true);
+            $('#bad_history_count').val(result.data.bh_count);
+            $('#bad_history_id').val(result.data.bh_id);
+            $('#btn_submit_bad_history').attr('disabled', false);
+            $('#BadHistoryModal').modal('show');
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
@@ -104,14 +117,20 @@ function deleteBadHistory(delete_id) {
         var bh_id = delete_id.substr('delete_'.length);
         var post_url = '/person/bad-history/delete-bad-history';
         var post_data = {
-            bh_id: bh_id
+            "params": {
+                "bh_id": bh_id
+            }
         };
         var method = 'post';
         var success_function = function (result) {
-            if (parseInt(result) > 0) {
-                alert(MESSAGE_DELETE_SUCCESS);
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.affectedRows) != 0) {
+                    alert(MESSAGE_DELETE_SUCCESS);
+                } else {
+                    alert(MESSAGE_DELETE_ERROR);
+                }
             } else {
-                alert(MESSAGE_DELETE_ERROR);
+                alert(result.error.message);
             }
             ajaxIndex();
         };
