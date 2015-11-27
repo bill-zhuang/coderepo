@@ -9,15 +9,16 @@ $('#btn_generate_download_link').on('click', function () {
     if (music_url != '') {
         var get_url = '/index/get-baidu-music-link';
         var get_data = {
-            'download_link': music_url
+            "params": {
+                "downloadLink": music_url
+            }
         };
         var method = 'get';
-        var success_function = function (music_result) {
-            //console.log(music_result);
-            if (music_result == '') {
-                alert('generate download link failed!');
+        var success_function = function (result) {
+            if (typeof result.data != "undefined") {
+                $('#generated_baidu_music_url').attr('href', result.data.downloadUrl).text(result.data.downloadUrl);
             } else {
-                $('#generated_baidu_music_url').attr('href', music_result).text(music_result);
+                alert(result.error.message);
             }
         };
         callAjaxWithFunction(get_url, get_data, success_function, method);

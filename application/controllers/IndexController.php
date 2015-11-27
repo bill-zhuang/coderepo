@@ -17,23 +17,45 @@ class IndexController extends Zend_Controller_Action
 
     public function getBaiduMusicLinkAction()
     {
-        $real_download_link = '';
-        $download_link = trim($this->_getParam('download_link', ''));
-    	if($download_link !== '')
-    	{
-    	    $match_count = preg_match(Bill_Regex::BAIDU_MUSIC_DOWNLOAD_LINK, $download_link, $match_id);
-    	    if($match_count)
-    	    {
-                $real_download_link = 'http://music.baidu.com/data/music/file?link=&song_id=' . $match_id[1];
-    	        $header_info = Bill_Curl::getResponseHeaders($real_download_link);
-    	        if ($header_info['http_code'] == 302)
-    	        {
-                    $real_download_link = $header_info['redirect_url'] . '&song_id=' . $match_id[1];
-    	        }
-    	    }
-    	}
-    	
-	    echo json_encode($real_download_link);
+        $json_array = [];
+        $params = $this->_getParam('params', []);
+        if (isset($params['downloadLink']))
+        {
+            $download_link = trim($params['downloadLink']);
+            if($download_link !== '')
+            {
+                $match_count = preg_match(Bill_Regex::BAIDU_MUSIC_DOWNLOAD_LINK, $download_link, $match_id);
+                if($match_count)
+                {
+                    $real_download_link = 'http://music.baidu.com/data/music/file?link=&song_id=' . $match_id[1];
+                    $header_info = Bill_Curl::getResponseHeaders($real_download_link);
+                    if ($header_info['http_code'] == 302)
+                    {
+                        $json_array['data'] = [
+                            'downloadUrl' => $header_info['redirect_url'] . '&song_id=' . $match_id[1]
+                        ];
+                    }
+                    else
+                    {
+                        $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, 'Fail to get baidu download music url.');
+                    }
+                }
+                else
+                {
+                    $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, 'Request param downloadLink is invalid.');
+                }
+            }
+            else
+            {
+                $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, 'Request param downloadLink not empty.');
+            }
+        }
+        else
+        {
+            $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, 'Request param downloadLink not set.');
+        }
+
+	    echo json_encode($json_array);
 	    exit;
     }
 }
