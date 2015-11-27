@@ -21,7 +21,10 @@ class person_BadHistoryChartController extends Zend_Controller_Action
 
     public function ajaxIndexAction()
     {
-        echo json_encode($this->_index());
+        $json_array = [
+            'data' => $this->_index(),
+        ];
+        echo json_encode($json_array);
         exit;
     }
 
