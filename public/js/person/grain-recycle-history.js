@@ -52,7 +52,7 @@ function ajaxIndex() {
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
     window.formGrainRecycleHistory.reset();
-    $('#grain_recycle_history_happen_date').val(getCurrentDate());
+    $('#grain_recycle_history_happen_date').val(getCurrentDate()).attr('disabled', false);
     $('#grain_recycle_history_grhid').val('');
     $('#btn_submit_grain_recycle_history').attr('disabled', false);
     $('#modalGrainRecycleHistory').modal('show');
@@ -67,20 +67,26 @@ $('#formGrainRecycleHistory').on('submit', (function (event) {
     if (error_num == 0) {
         $('#btn_submit_grain_recycle_history').attr('disabled', true);
         var post_url = '/person/grain-recycle-history/' + type + '-grain-recycle-history';
-        var post_data = new FormData(this);
+        var post_data = {
+            "params": getFormObjectData('formGrainRecycleHistory')
+        };
         var msg_success = (grhid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
         var msg_error = (grhid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
         var success_function = function (result) {
             $('#modalGrainRecycleHistory').modal('hide');
-            if (parseInt(result) != 0) {
-                alert(msg_success);
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.affectedRows) != 0) {
+                    alert(msg_success);
+                } else {
+                    alert(msg_error);
+                }
             } else {
-                alert(msg_error);
+                alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFormAndFunction(post_url, post_data, success_function, method);
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 }));
 
@@ -88,15 +94,21 @@ function modifyGrainRecycleHistory(modify_id) {
     var grhid = modify_id.substr('modify_'.length);
     var get_url = '/person/grain-recycle-history/get-grain-recycle-history';
     var get_data = {
-        'grhid': grhid
+        "params": {
+            "grhid": grhid
+        }
     };
     var method = 'get';
     var success_function = function (result) {
-        $('#grain_recycle_history_grhid').val(result.grhid);
-        $('#grain_recycle_history_happen_date').val(result.happen_date);
-        $('#grain_recycle_history_count').val(result.count);
-        $('#btn_submit_grain_recycle_history').attr('disabled', false);
-        $('#modalGrainRecycleHistory').modal('show');
+        if (typeof result.data != 'undefined') {
+            $('#grain_recycle_history_grhid').val(result.data.grhid);
+            $('#grain_recycle_history_happen_date').val(result.data.happen_date);
+            $('#grain_recycle_history_count').val(result.data.count);
+            $('#btn_submit_grain_recycle_history').attr('disabled', false);
+            $('#modalGrainRecycleHistory').modal('show');
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
@@ -106,14 +118,20 @@ function deleteGrainRecycleHistory(delete_id) {
         var grhid = delete_id.substr('delete_'.length);
         var post_url = '/person/grain-recycle-history/delete-grain-recycle-history';
         var post_data = {
-            'grhid': grhid
+            "params": {
+                "grhid": grhid
+            }
         };
         var method = 'post';
         var success_function = function (result) {
-            if (parseInt(result) > 0) {
-                alert(MESSAGE_DELETE_SUCCESS);
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.affectedRows) != 0) {
+                    alert(MESSAGE_DELETE_SUCCESS);
+                } else {
+                    alert(MESSAGE_DELETE_ERROR);
+                }
             } else {
-                alert(MESSAGE_DELETE_ERROR);
+                alert(result.error.message);
             }
             ajaxIndex();
         };

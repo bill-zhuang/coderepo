@@ -27,52 +27,89 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
 
     public function addGrainRecycleHistoryAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['grain_recycle_history_happen_date']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            try
+            $params = $this->getRequest()->getPost('params', []);
+            $occur_date = isset($params['grain_recycle_history_happen_date']) ? trim($params['grain_recycle_history_happen_date']) : '';
+            $occur_count = isset($params['grain_recycle_history_count']) ? intval($params['grain_recycle_history_count']) : 0;
+            if (Bill_Util::validDate($occur_date) && $occur_count > 0)
             {
-                $affected_rows = $this->_addGrainRecycleHistory();
-            }
-            catch (Exception $e)
-            {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-                Bill_Util::handleException($e, 'Error From addGrainRecycleHistory');
+                $date = date('Y-m-d H:i:s');
+                $data = [
+                    'happen_date' => $occur_date,
+                    'count' => $occur_count,
+                    'status' => Bill_Constant::VALID_STATUS,
+                    'create_time' => $date,
+                    'update_time' => $date
+                ];
+                $affected_rows = $this->_adapter_grain_recycle_history->insert($data);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows
+                    ],
+                ];
             }
         }
 
-        echo json_encode($affected_rows);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function modifyGrainRecycleHistoryAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['grain_recycle_history_grhid']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            try
+            $params = $this->getRequest()->getPost('params', []);
+            $grhid = isset($params['grain_recycle_history_grhid'])
+                ? intval($params['grain_recycle_history_grhid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $occur_count = isset($params['grain_recycle_history_count']) ?  intval($params['grain_recycle_history_count']) : 0;
+            $occur_date = isset($params['grain_recycle_history_happen_date']) ? trim($params['grain_recycle_history_happen_date']) : '';
+            if ($grhid > Bill_Constant::INVALID_PRIMARY_ID && $occur_count > 0 && Bill_Util::validDate($occur_date))
             {
-                $affected_rows = $this->_updateGrainRecycleHistory();
-            }
-            catch (Exception $e)
-            {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-                Bill_Util::handleException($e, 'Error From modifyGrainRecycleHistory');
+                $update_data = [
+                    'happen_date' => $occur_date,
+                    'count' => $occur_count,
+                    'update_time' => date('Y-m-d H:i:s')
+                ];
+                $where = $this->_adapter_grain_recycle_history->getAdapter()->quoteInto('grhid=?', $grhid);
+                $affected_rows = $this->_adapter_grain_recycle_history->update($update_data, $where);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows,
+                    ]
+                ];
             }
         }
 
-        echo json_encode($affected_rows);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function deleteGrainRecycleHistoryAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['grhid']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            try
+            $params = $this->getRequest()->getPost('params', []);
+            $grhid = isset($params['grhid']) ? intval($params['grhid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            if ($grhid > Bill_Constant::INVALID_PRIMARY_ID)
             {
-                $grhid = intval($_POST['grhid']);
                 $update_data = [
                     'status' => Bill_Constant::INVALID_STATUS,
                     'update_time' => date('Y-m-d H:i:s'),
@@ -82,31 +119,48 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
                     $this->_adapter_grain_recycle_history->getAdapter()->quoteInto('grhid=?', $grhid),
                 ];
                 $affected_rows = $this->_adapter_grain_recycle_history->update($update_data, $where);
-            }
-            catch (Exception $e)
-            {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-                Bill_Util::handleException($e, 'Error From deleteGrainRecycleHistory');
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows,
+                    ]
+                ];
             }
         }
 
-        echo json_encode($affected_rows);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function getGrainRecycleHistoryAction()
     {
-        $data = [];
-        if (isset($_GET['grhid']))
+        if ($this->getRequest()->isGet())
         {
-            $grhid = intval($_GET['grhid']);
-            if ($grhid > Bill_Constant::INVALID_PRIMARY_ID)
+            $params = $this->getRequest()->getQuery('params', []);
+            $grhid = (isset($params['grhid'])) ? intval($params['grhid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $history_data = $this->_adapter_grain_recycle_history->getGrainRecycleHistoryByID($grhid);
+            if (!empty($history_data))
             {
-                $data = $this->_adapter_grain_recycle_history->getGrainRecycleHistoryByID($grhid);
+                $json_array = [
+                    'data' => $history_data,
+                ];
             }
         }
 
-        echo json_encode($data);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
@@ -134,44 +188,5 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
             ],
         ];
         return $json_data;
-    }
-
-    private function _addGrainRecycleHistory()
-    {
-        $data = [
-            'happen_date' => $this->_getHappenDate(),
-            'count' => intval($_POST['grain_recycle_history_count']),
-            'status' => Bill_Constant::VALID_STATUS,
-            'create_time' => date('Y-m-d H:i:s'),
-            'update_time' => date('Y-m-d H:i:s'),
-        ];
-        $affected_rows = $this->_adapter_grain_recycle_history->insert($data);
-
-        return $affected_rows;
-    }
-
-    private function _updateGrainRecycleHistory()
-    {
-        $grhid = intval($_POST['grain_recycle_history_grhid']);
-        $data = [
-            'happen_date' => $this->_getHappenDate(),
-            'count' => intval($_POST['grain_recycle_history_count']),
-            'update_time' => date('Y-m-d H:i:s'),
-        ];
-        $where = $this->_adapter_grain_recycle_history->getAdapter()->quoteInto('grhid=?', $grhid);
-        $affected_rows = $this->_adapter_grain_recycle_history->update($data, $where);
-
-        return $affected_rows;
-    }
-
-    private function _getHappenDate()
-    {
-        $happen_date = trim($_POST['grain_recycle_history_happen_date']);
-        if (!Bill_Util::validDate($happen_date))
-        {
-            $happen_date = date('Y-m-d H:i:s');
-        }
-
-        return $happen_date;
     }
 }
