@@ -52,7 +52,7 @@ function ajaxIndex() {
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
     window.DreamHistoryForm.reset();
-    $('#dream_history_date').val(getCurrentDate());
+    $('#dream_history_date').val(getCurrentDate()).attr('disabled', false);
     $('#dream_history_count').val(1);
     $('#dream_history_id').val('');
     $('#btn_submit_dream_history').attr('disabled', false);
@@ -66,35 +66,47 @@ $('#DreamHistoryForm').on('submit', (function (event) {
     var type = (dh_id == '') ? 'add' : 'modify';
     $('#btn_submit_dream_history').attr('disabled', true);
     var post_url = '/person/dream-history/' + type + '-dream-history';
-    var post_data = new FormData(this);
+    var post_data = {
+        "params": getFormObjectData('DreamHistoryForm')
+    };
     var msg_success = (dh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
     var msg_error = (dh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
     var method = 'post';
     var success_function = function (result) {
         $('#DreamHistoryModal').modal('hide');
-        if (parseInt(result) != 0) {
-            alert(msg_success);
+        if (typeof result.data != 'undefined') {
+            if (parseInt(result.data.affectedRows) != 0) {
+                alert(msg_success);
+            } else {
+                alert(msg_error);
+            }
         } else {
-            alert(msg_error);
+            alert(result.error.message);
         }
         ajaxIndex();
     };
-    callAjaxWithFormAndFunction(post_url, post_data, success_function, method);
+    callAjaxWithFunction(post_url, post_data, success_function, method);
 }));
 
 function modifyDreamHistory(modify_id) {
     var dh_id = modify_id.substr('delete_'.length);
     var post_url = '/person/dream-history/get-dream-history';
     var post_data = {
-        dh_id: dh_id
+        "params": {
+            "dh_id": dh_id
+        }
     };
     var method = 'get';
-    var success_function = function (history_data) {
-        $('#dream_history_date').val(history_data.dh_happen_date);
-        $('#dream_history_count').val(history_data.dh_count);
-        $('#dream_history_id').val(history_data.dh_id);
-        $('#btn_submit_dream_history').attr('disabled', false);
-        $('#DreamHistoryModal').modal('show');
+    var success_function = function (result) {
+        if (typeof result.data != 'undefined') {
+            $('#dream_history_date').val(result.data.dh_happen_date);
+            $('#dream_history_count').val(result.data.dh_count);
+            $('#dream_history_id').val(result.data.dh_id);
+            $('#btn_submit_dream_history').attr('disabled', false);
+            $('#DreamHistoryModal').modal('show');
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
@@ -104,14 +116,20 @@ function deleteDreamHistory(delete_id) {
         var dh_id = delete_id.substr('delete_'.length);
         var post_url = '/person/dream-history/delete-dream-history';
         var post_data = {
-            dh_id: dh_id
+            "params": {
+                "dh_id": dh_id
+            }
         };
         var method = 'post';
         var success_function = function (result) {
-            if (parseInt(result) > 0) {
-                alert(MESSAGE_DELETE_SUCCESS);
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.affectedRows) != 0) {
+                    alert(MESSAGE_DELETE_SUCCESS);
+                } else {
+                    alert(MESSAGE_DELETE_ERROR);
+                }
             } else {
-                alert(MESSAGE_DELETE_ERROR);
+                alert(result.error.message);
             }
             ajaxIndex();
         };

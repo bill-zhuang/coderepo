@@ -27,11 +27,12 @@ class person_DreamHistoryController extends Zend_Controller_Action
 
     public function addDreamHistoryAction()
     {
-        $affect_rows = 0;
-        if (isset($_POST['dream_history_date']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            $occur_date = $_POST['dream_history_date'];
-            $occur_count = intval($_POST['dream_history_count']);
+            $params = $this->getRequest()->getPost('params', []);
+            $occur_date = isset($params['dream_history_date']) ? $params['dream_history_date'] : '';
+            $occur_count = isset($params['dream_history_count']) ? intval($params['dream_history_count']) : 0;
             if (Bill_Util::validDate($occur_date) && $occur_count > 0)
             {
                 $date = date('Y-m-d H:i:s');
@@ -43,38 +44,61 @@ class person_DreamHistoryController extends Zend_Controller_Action
                     'dh_update_time' => $date
                 ];
                 $affect_rows = $this->_adapter_dream_history->insert($data);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affect_rows
+                    ],
+                ];
             }
         }
-        
-        echo json_encode($affect_rows);
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function getDreamHistoryAction()
     {
-        $data = [];
-        if (isset($_GET['dh_id']))
+        if ($this->getRequest()->isGet())
         {
-            $dh_id = intval($_GET['dh_id']);
-            if ($dh_id > Bill_Constant::INVALID_PRIMARY_ID)
+            $params = $this->getRequest()->getQuery('params', []);
+            $dh_id = (isset($params['dh_id'])) ? intval($params['dh_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $history_data = $this->_adapter_dream_history->getDreamHistoryDayByID($dh_id);
+            if (!empty($history_data))
             {
-                $data = $this->_adapter_dream_history->getDreamHistoryDayByID($dh_id);
+                $json_array = [
+                    'data' => $history_data,
+                ];
             }
         }
 
-        echo json_encode($data);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function modifyDreamHistoryAction()
     {
-        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['dream_history_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            $dh_id = intval($_POST['dream_history_id']);
-            $dh_count = intval($_POST['dream_history_count']);
-            $dh_date = $_POST['dream_history_date'];
-            if ($dh_id > Bill_Constant::INVALID_PRIMARY_ID && $dh_count > 0)
+            $params = $this->getRequest()->getPost('params', []);
+            $dh_id = isset($params['dream_history_id']) ? intval($params['dream_history_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $dh_count = isset($params['dream_history_count']) ?  intval($params['dream_history_count']) : 0;
+            $dh_date = isset($params['dream_history_date']) ? trim($params['dream_history_date']) : '';
+            if ($dh_id > Bill_Constant::INVALID_PRIMARY_ID && $dh_count > 0 && Bill_Util::validDate($dh_date))
             {
                 $update_data = [
                     'dh_happen_date' => $dh_date,
@@ -83,19 +107,32 @@ class person_DreamHistoryController extends Zend_Controller_Action
                 ];
                 $where = $this->_adapter_dream_history->getAdapter()->quoteInto('dh_id=?', $dh_id);
                 $affect_rows = $this->_adapter_dream_history->update($update_data, $where);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affect_rows,
+                    ]
+                ];
             }
         }
 
-        echo json_encode($affect_rows);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     public function deleteDreamHistoryAction()
     {
-        $affect_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['dh_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            $dh_id = intval($_POST['dh_id']);
+            $params = $this->getRequest()->getPost('params', []);
+            $dh_id = isset($params['dh_id']) ? intval($params['dh_id']) : Bill_Constant::INVALID_PRIMARY_ID;
             if ($dh_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $update_data = [
@@ -107,10 +144,22 @@ class person_DreamHistoryController extends Zend_Controller_Action
                     $this->_adapter_dream_history->getAdapter()->quoteInto('dh_status=?', Bill_Constant::VALID_STATUS),
                 ];
                 $affect_rows = $this->_adapter_dream_history->update($update_data, $where);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affect_rows,
+                    ]
+                ];
             }
         }
 
-        echo json_encode($affect_rows);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
