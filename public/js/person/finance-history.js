@@ -9,25 +9,37 @@ $(document).ready(function () {
 
 function initPeriodChart() {
     var get_url = '/person/finance-history/ajax-finance-history-period';
-    var get_data = $.param($('#formSearchDay').serializeArray());
+    var get_data = {
+        "params": getFormObjectData('formSearchDay')
+    };
     var method = 'get';
     var success_function = function (result) {
-        initLineChart('payment_history_line_chart_all', result['period'], result['payment']);
+        if (typeof result.data != "undefined") {
+            initLineChart('payment_history_line_chart_all', result.data['period'], result.data['payment']);
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
 
 function initMonthChart() {
     var get_url = '/person/finance-history/ajax-finance-history-month';
-    var get_data = $.param($('#formSearchMonth').serializeArray());
+    var get_data = {
+        "params": getFormObjectData('formSearchMonth')
+    };
     var method = 'get';
     var success_function = function (result) {
-        var data_period = result['period'];
-        var data_payment = result['payment'];
-        var line_canvas_id = 'payment_history_line_chart';
-        var bar_canvas_id = 'payment_history_bar_chart';
-        initLineChart(line_canvas_id, data_period, data_payment);
-        initBarChart(bar_canvas_id, data_period, data_payment);
+        if (typeof result.data != "undefined") {
+            var data_period = result.data['period'];
+            var data_payment = result.data['payment'];
+            var line_canvas_id = 'payment_history_line_chart';
+            var bar_canvas_id = 'payment_history_bar_chart';
+            initLineChart(line_canvas_id, data_period, data_payment);
+            initBarChart(bar_canvas_id, data_period, data_payment);
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
@@ -35,16 +47,20 @@ function initMonthChart() {
 function initMonthCategoryChart() {
     var get_url = '/person/finance-history/ajax-finance-history-month-category';
     var get_data = {
-
+        "params": {}
     };
     var method = 'get';
     var success_function = function (result) {
-        var data_category = result['category'];
-        var data_payment = result['payment'];
-        var line_canvas_id = 'month_category_payment_history_line_chart';
-        var bar_canvas_id = 'month_category_payment_history_bar_chart';
-        initLineChart(line_canvas_id, data_category, data_payment);
-        initBarChart(bar_canvas_id, data_category, data_payment);
+        if (typeof result.data != "undefined") {
+            var data_category = result.data['category'];
+            var data_payment = result.data['payment'];
+            var line_canvas_id = 'month_category_payment_history_line_chart';
+            var bar_canvas_id = 'month_category_payment_history_bar_chart';
+            initLineChart(line_canvas_id, data_category, data_payment);
+            initBarChart(bar_canvas_id, data_category, data_payment);
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
@@ -52,16 +68,20 @@ function initMonthCategoryChart() {
 function initYearCategoryChart() {
     var get_url = '/person/finance-history/ajax-finance-history-year-category';
     var get_data = {
-
+        "params": {}
     };
     var method = 'get';
     var success_function = function (result) {
-        var data_category = result['category'];
-        var data_payment = result['payment'];
-        var line_canvas_id = 'category_payment_history_line_chart';
-        var bar_canvas_id = 'category_payment_history_bar_chart';
-        initLineChart(line_canvas_id, data_category, data_payment);
-        initBarChart(bar_canvas_id, data_category, data_payment);
+        if (typeof result.data != "undefined") {
+            var data_category = result.data['category'];
+            var data_payment = result.data['payment'];
+            var line_canvas_id = 'category_payment_history_line_chart';
+            var bar_canvas_id = 'category_payment_history_bar_chart';
+            initLineChart(line_canvas_id, data_category, data_payment);
+            initBarChart(bar_canvas_id, data_category, data_payment);
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
@@ -69,11 +89,15 @@ function initYearCategoryChart() {
 function initMonthSpent() {
     var get_url = '/person/finance-history/ajax-finance-history-month-spent';
     var get_data = {
-
+        "params": {}
     };
     var method = 'get';
     var success_function = function (result) {
-        $('#month_spent').text('(' + result + ')');
+        if (typeof result.data != "undefined") {
+            $('#month_spent').text('(' + result.data.monthSpent + ')');
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
@@ -81,11 +105,15 @@ function initMonthSpent() {
 function initYearSpent() {
     var get_url = '/person/finance-history/ajax-finance-history-year-spent';
     var get_data = {
-
+        "params": {}
     };
     var method = 'get';
     var success_function = function (result) {
-        $('#year_spent').text('(' + result + ')');
+        if (typeof result.data != "undefined") {
+            $('#year_spent').text('(' + result.data.yearSpent + ')');
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }

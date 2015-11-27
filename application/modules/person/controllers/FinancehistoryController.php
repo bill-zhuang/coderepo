@@ -28,37 +28,51 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     public function ajaxFinanceHistoryPeriodAction()
     {
-        $start_date = trim($this->getParam('day_start_date', date('Y-m-d', strtotime('-1 month'))));
-        $end_date = trim($this->getParam('day_end_date',  date('Y-m-d H:i:s')));
+        $params = $this->_getParam('params', []);
+        $start_date = isset($params['day_start_date']) ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
+        $end_date = isset($params['day_end_date']) ? trim($params['day_end_date']) : '';
         $period_data = $this->_getFinanceHistoryPeriodData($start_date, $end_date);
+        $json_array = [
+            'data' => $period_data
+        ];
 
-        echo json_encode($period_data);
+        echo json_encode($json_array);
         exit;
     }
 
     public function ajaxFinanceHistoryMonthAction()
     {
-        $start_date = trim($this->getParam('month_start_date', date('Y-m', strtotime('-1 year')) . '-01'));
-        $end_date = trim($this->getParam('month_end_date', ''));
+        $params = $this->_getParam('params', []);
+        $start_date = isset($params['month_start_date']) ? trim($params['month_start_date']) : date('Y-m', strtotime('-1 year')) . '-01';
+        $end_date = isset($params['month_end_date']) ? trim($params['month_end_date']) : '';
         $month_data = $this->_getFinanceHistoryMonthData($start_date, $end_date);
+        $json_array = [
+            'data' => $month_data
+        ];
 
-        echo json_encode($month_data);
+        echo json_encode($json_array);
         exit;
     }
 
     public function ajaxFinanceHistoryMonthCategoryAction()
     {
         $month_category_data = $this->_getFinanceHistoryMonthCategoryData();
+        $json_array = [
+            'data' => $month_category_data,
+        ];
 
-        echo json_encode($month_category_data);
+        echo json_encode($json_array);
         exit;
     }
 
     public function ajaxFinanceHistoryYearCategoryAction()
     {
         $year_category_data = $this->_getFinanceHistoryYearCategoryData();
+        $json_array = [
+            'data' => $year_category_data,
+        ];
 
-        echo json_encode($year_category_data);
+        echo json_encode($json_array);
         exit;
     }
 
@@ -66,8 +80,13 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     {
         $start_date = date('Y-m-d', strtotime('-1 month'));
         $month_spent = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
+        $json_array = [
+            'data' => [
+                'monthSpent' => $month_spent,
+            ],
+        ];
 
-        echo $month_spent;
+        echo json_encode($json_array);
         exit;
     }
 
@@ -75,8 +94,13 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     {
         $start_date = date('Y-m-d', strtotime('- 1 year'));
         $year_spent = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
+        $json_array = [
+            'data' => [
+                'yearSpent' => $year_spent,
+            ],
+        ];
 
-        echo $year_spent;
+        echo json_encode($json_array);
         exit;
     }
 
