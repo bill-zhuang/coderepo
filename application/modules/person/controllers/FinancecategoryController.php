@@ -27,52 +27,110 @@ class person_FinanceCategoryController extends Zend_Controller_Action
 
     public function addFinanceCategoryAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['finance_category_name']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
-            try 
+            try
             {
-                $affected_rows = $this->_addFinanceCategory();
+                $params = $this->getRequest()->getPost('params', []);
+                $name = isset($params['finance_category_name']) ? trim($params['finance_category_name']) : '';
+                $parent_id = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
+                $weight = isset($params['finance_category_weight'])
+                    ? intval($params['finance_category_weight']) : Bill_Constant::DEFAULT_WEIGHT;
+                $add_time = date('Y-m-d H:i:s');
+
+                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0))
+                {
+                    $data = [
+                        'fc_name' => $name,
+                        'fc_parent_id' => $parent_id,
+                        'fc_weight' => $weight,
+                        'fc_status' => Bill_Constant::VALID_STATUS,
+                        'fc_create_time' => $add_time,
+                        'fc_update_time' => $add_time
+                    ];
+                    $affected_rows = $this->_adapter_finance_category->insert($data);
+                    $json_array = [
+                        'data' => [
+                            'affectedRows' => $affected_rows
+                        ],
+                    ];
+                }
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 Bill_Util::handleException($e, 'Error From addFinanceCategory');
             }
         }
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
         
-        echo json_encode($affected_rows);
+        echo json_encode($json_array);
         exit;
     }
     
     public function modifyFinanceCategoryAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['finance_category_fc_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
             try
             {
-                $affected_rows = $this->_updateFinanceCategory();
+                $params = $this->getRequest()->getPost('params', []);
+                $fc_id = isset($params['finance_category_fc_id']) ? intval($params['finance_category_fc_id']) : 0;
+                $name = isset($params['finance_category_name']) ? trim($params['finance_category_name']) : '';
+                $parent_id = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
+                $weight = isset($params['finance_category_weight'])
+                    ? intval($params['finance_category_weight']) : Bill_Constant::DEFAULT_WEIGHT;
+
+                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fc_id))
+                {
+                    $data = [
+                        'fc_name' => $name,
+                        'fc_parent_id' => $parent_id,
+                        'fc_weight' => $weight,
+                        'fc_update_time' => date('Y-m-d H:i:s')
+                    ];
+                    $where = $this->_adapter_finance_category->getAdapter()->quoteInto('fc_id=?', $fc_id);
+                    $affected_rows = $this->_adapter_finance_category->update($data, $where);
+                    $json_array = [
+                        'data' => [
+                            'affectedRows' => $affected_rows
+                        ],
+                    ];
+                }
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 Bill_Util::handleException($e, 'Error From modifyFinanceCategory');
             }
         }
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
         
-        echo json_encode($affected_rows);
+        echo json_encode($json_array);
         exit;
     }
     
     public function deleteFinanceCategoryAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['fc_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
             try
             {
-                $fc_id = intval($_POST['fc_id']);
+                $params = $this->getRequest()->getPost('params', []);
+                $fc_id = isset($params['fc_id']) ? intval($params['fc_id']) : Bill_Constant::INVALID_PRIMARY_ID;
                 $update_data = [
                     'fc_status' => Bill_Constant::INVALID_STATUS,
                     'fc_update_time' => date('Y-m-d H:i:s')
@@ -82,31 +140,52 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                     $this->_adapter_finance_category->getAdapter()->quoteInto('fc_status=?', Bill_Constant::VALID_STATUS),
                 ];
                 $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows,
+                    ]
+                ];
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 Bill_Util::handleException($e, 'Error From deleteFinanceCategory');
             }
         }
-        
-        echo json_encode($affected_rows);
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
     
     public function getFinanceCategoryAction()
     {
-        $data = [];
-        if (isset($_GET['fc_id']))
+        if ($this->getRequest()->isGet())
         {
-            $fc_id = intval($_GET['fc_id']);
-            if ($fc_id > Bill_Constant::INVALID_PRIMARY_ID)
+            $params = $this->getRequest()->getQuery('params', []);
+            $fc_id = (isset($params['fc_id'])) ? intval($params['fc_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $data = $this->_adapter_finance_category->getFinanceCategoryByID($fc_id);
+            if (!empty($data))
             {
-                $data = $this->_adapter_finance_category->getFinanceCategoryByID($fc_id);
+                $json_array = [
+                    'data' => $data,
+                ];
             }
         }
 
-        echo json_encode($data);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
@@ -171,54 +250,4 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         ];
         return $json_data;
     }
-    
-    private function _addFinanceCategory()
-    {
-        $affected_rows = 0;
-
-        $name = trim($_POST['finance_category_name']);
-        $parent_id = intval($_POST['finance_category_parent_id']);
-        $weight = intval($_POST['finance_category_weight']);
-        $add_time = date('Y-m-d H:i:s');
-
-        if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0))
-        {
-            $data = [
-                'fc_name' => $name,
-                'fc_parent_id' => $parent_id,
-                'fc_weight' => $weight,
-                'fc_status' => Bill_Constant::VALID_STATUS,
-                'fc_create_time' => $add_time,
-                'fc_update_time' => $add_time
-            ];
-            $affected_rows = $this->_adapter_finance_category->insert($data);
-        }
-
-        return $affected_rows;
-    }
-    
-    private function _updateFinanceCategory()
-    {
-        $affected_rows = 0;
-
-        $fc_id = intval($_POST['finance_category_fc_id']);
-        $name = trim($_POST['finance_category_name']);
-        $parent_id = intval($_POST['finance_category_parent_id']);
-        $weight = intval($_POST['finance_category_weight']);
-
-        if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fc_id))
-        {
-            $data = [
-                'fc_name' => $name,
-                'fc_parent_id' => $parent_id,
-                'fc_weight' => $weight,
-                'fc_update_time' => date('Y-m-d H:i:s')
-            ];
-            $where = $this->_adapter_finance_category->getAdapter()->quoteInto('fc_id=?', $fc_id);
-            $affected_rows = $this->_adapter_finance_category->update($data, $where);
-        }
-
-        return $affected_rows;
-    }
-
 }
