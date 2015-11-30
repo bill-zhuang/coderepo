@@ -5,7 +5,7 @@ $(document).ready(function () {
 function ajaxIndex() {
     var get_url = '/person/bad-history/ajax-index';
     var get_data = {
-        "params": getFormObjectData('formSearch')
+        "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
     var success_function = function (result) {

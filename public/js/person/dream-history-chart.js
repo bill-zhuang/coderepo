@@ -6,7 +6,7 @@ $(document).ready(function () {
 function initPeriodChart() {
     var get_url = '/person/dream-history-chart/ajax-dream-history-period';
     var get_data = {
-        "params": getFormObjectData('formSearchDay')
+        "params": $('#formSearchDay').serializeObject()
     };
     var method = 'get';
     var success_function = function (result) {
@@ -22,7 +22,7 @@ function initPeriodChart() {
 function initMonthChart() {
     var get_url = '/person/dream-history-chart/ajax-dream-history-month';
     var get_data = {
-        "params": getFormObjectData('formSearchMonth')
+        "params": $('#formSearchMonth').serializeObject()
     };
     var method = 'get';
     var success_function = function (result) {

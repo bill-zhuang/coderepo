@@ -6,7 +6,7 @@ $(document).ready(function () {
 function initPeriodChart() {
     var get_url = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-period';
     var get_data = {
-        "params": getFormObjectData('formSearchDay')
+        "params": $('#formSearchDay').serializeObject()
     };
     var method = 'get';
     var success_function = function (result) {
@@ -29,7 +29,7 @@ function initPeriodChart() {
 function initMonthChart() {
     var get_url = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-month';
     var get_data = {
-        "params": getFormObjectData('formSearchMonth')
+        "params": $('#formSearchMonth').serializeObject()
     };
     var method = 'get';
     var success_function = function (result) {
