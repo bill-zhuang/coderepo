@@ -22,7 +22,8 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
     public function ajaxDreamHistoryPeriodAction()
     {
         $params = $this->_getParam('params', []);
-        $start_date = isset($params['day_start_date']) ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 year'));
+        $start_date = isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date'])
+            ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 year'));
         $end_date = isset($params['day_end_date']) ? trim($params['day_end_date']) : '';
         $data = $this->_getAllDreamHistoryDataByDay($start_date, $end_date);
         $json_array = [
