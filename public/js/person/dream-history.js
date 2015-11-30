@@ -67,7 +67,7 @@ $('#DreamHistoryForm').on('submit', (function (event) {
     $('#btn_submit_dream_history').attr('disabled', true);
     var post_url = '/person/dream-history/' + type + '-dream-history';
     var post_data = {
-        "params": getFormObjectData('DreamHistoryForm')
+        "params": $('#DreamHistoryForm').serializeObject()
     };
     var msg_success = (dh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
     var msg_error = (dh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;

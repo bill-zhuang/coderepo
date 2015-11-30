@@ -70,7 +70,7 @@ $('#FinanceCategoryForm').on('submit', (function (event) {
         $('#btn_submit_finance_category').attr('disabled', true);
         var post_url = '/person/finance-category/' + type + '-finance-category';
         var post_data = {
-            "params": getFormObjectData('FinanceCategoryForm')
+            "params": $('#FinanceCategoryForm').serializeObject()
         };
         var msg_success = (fc_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
         var msg_error = (fc_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;

@@ -68,7 +68,7 @@ $('#formGrainRecycleHistory').on('submit', (function (event) {
         $('#btn_submit_grain_recycle_history').attr('disabled', true);
         var post_url = '/person/grain-recycle-history/' + type + '-grain-recycle-history';
         var post_data = {
-            "params": getFormObjectData('formGrainRecycleHistory')
+            "params": $('#formGrainRecycleHistory').serializeObject()
         };
         var msg_success = (grhid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
         var msg_error = (grhid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;

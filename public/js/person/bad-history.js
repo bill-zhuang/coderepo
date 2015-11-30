@@ -67,7 +67,7 @@ $('#BadHistoryForm').on('submit', (function (event) {
     $('#btn_submit_bad_history').attr('disabled', true);
     var post_url = '/person/bad-history/' + type + '-bad-history';
     var post_data = {
-        "params": getFormObjectData('BadHistoryForm')
+        "params": $('#BadHistoryForm').serializeObject()
     };
     console.log(post_data);
     var msg_success = (bh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
