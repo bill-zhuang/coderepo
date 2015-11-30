@@ -29,8 +29,10 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     public function ajaxFinanceHistoryPeriodAction()
     {
         $params = $this->_getParam('params', []);
-        $start_date = isset($params['day_start_date']) ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
-        $end_date = isset($params['day_end_date']) ? trim($params['day_end_date']) : '';
+        $start_date = (isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date']))
+            ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
+        $end_date = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
+            ? trim($params['day_end_date']) : date('Y-m-d');
         $period_data = $this->_getFinanceHistoryPeriodData($start_date, $end_date);
         $json_array = [
             'data' => $period_data
