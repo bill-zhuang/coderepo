@@ -72,11 +72,15 @@ function getRandomColorHex() {
 }
 
 function callAjaxWithAlert(url, data, msg_success, msg_error, method, is_reload) {
-    var success_function = function (flag) {
-        if (parseInt(flag) != 0) {
-            alert(msg_success);
+    var success_function = function (result) {
+        if (typeof result.data != 'undefined') {
+            if (parseInt(result.data.flag) != 0) {
+                alert(msg_success);
+            } else {
+                alert(msg_error);
+            }
         } else {
-            alert(msg_error);
+            alert(result.error.message);
         }
         if (typeof is_reload == 'undefined' || is_reload == true) {
             window.location.reload();
@@ -94,11 +98,16 @@ function callAjaxWithForm(url, data, msg_success, msg_error, method) {
         cache: false,
         contentType: false,
         processData: false,
-        success: function (flag) {
-            if (parseInt(flag) != 0) {
-                alert(msg_success);
+        success: function (result) {
+            result = JSON.parse(result);
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.flag) != 0) {
+                    alert(msg_success);
+                } else {
+                    alert(msg_error);
+                }
             } else {
-                alert(msg_error);
+                alert(result.error.message);
             }
             window.location.reload();
         },
