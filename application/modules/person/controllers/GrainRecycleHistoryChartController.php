@@ -23,7 +23,7 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
     {
         $params = $this->_getParam('params', []);
         $start_date = isset($params['day_start_date']) ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
-        $end_date = isset($params['day_end_date']) ? trim($params['day_end_date']) : '';
+        $end_date = isset($params['day_end_date']) ? trim($params['day_end_date']) : date('Y-m-d');
         $data = $this->_getAllGrainRecycleHistoryDataByDay($start_date, $end_date);
         $json_array = [
             'data' => $data
