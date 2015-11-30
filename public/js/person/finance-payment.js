@@ -75,20 +75,26 @@ $('#FinancePaymentForm').on('submit', (function (event) {
     if (error_num == 0) {
         $('#btn_submit_finance_payment').attr('disabled', true);
         var post_url = '/person/finance-payment/' + type + '-finance-payment';
-        var post_data = new FormData(this);
+        var post_data = {
+            "params": $('#FinancePaymentForm').serializeObject()
+        };
         var msg_success = (fp_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
         var msg_error = (fp_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
         var success_function = function (result) {
             $('#FinancePaymentModal').modal('hide');
-            if (parseInt(result) != 0) {
-                alert(msg_success);
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.affectedRows) != 0) {
+                    alert(msg_success);
+                } else {
+                    alert(msg_error);
+                }
             } else {
-                alert(msg_error);
+                alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFormAndFunction(post_url, post_data, success_function, method);
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 }));
 
@@ -96,17 +102,23 @@ function modifyFinancePayment(modify_id) {
     var fp_id = modify_id.substr('modify_'.length);
     var post_url = '/person/finance-payment/get-finance-payment';
     var post_data = {
-        'fp_id': fp_id
+        "params": {
+            "fp_id": fp_id
+        }
     };
     var method = 'get';
     var success_function = function (result) {
-        $('#finance_payment_payment_date').val(result.fp_payment_date);
-        $('#finance_payment_payment').val(result.fp_payment);
-        g_selectpicker.selectpicker('val', result.fc_ids);
-        $('#finance_payment_intro').val(result.fp_detail);
-        $('#finance_payment_fp_id').val(result.fp_id);
-        $('#btn_submit_finance_payment').attr('disabled', false);
-        $('#FinancePaymentModal').modal('show');
+        if (typeof result.data != 'undefined') {
+            $('#finance_payment_payment_date').val(result.data.fp_payment_date);
+            $('#finance_payment_payment').val(result.data.fp_payment);
+            g_selectpicker.selectpicker('val', result.data.fc_ids);
+            $('#finance_payment_intro').val(result.data.fp_detail);
+            $('#finance_payment_fp_id').val(result.data.fp_id);
+            $('#btn_submit_finance_payment').attr('disabled', false);
+            $('#FinancePaymentModal').modal('show');
+        } else {
+            alert(result.error.message);
+        }
     };
     callAjaxWithFunction(post_url, post_data, success_function, method);
 }
@@ -116,14 +128,20 @@ function deleteFinancePayment(delete_id) {
         var fp_id = delete_id.substr('delete_'.length);
         var post_url = '/person/finance-payment/delete-finance-payment';
         var post_data = {
-            'fp_id': fp_id
+            "params": {
+                "fp_id": fp_id
+            }
         };
         var method = 'post';
         var success_function = function (result) {
-            if (parseInt(result) > 0) {
-                alert(MESSAGE_DELETE_SUCCESS);
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.affectedRows) != 0) {
+                    alert(MESSAGE_DELETE_SUCCESS);
+                } else {
+                    alert(MESSAGE_DELETE_ERROR);
+                }
             } else {
-                alert(MESSAGE_DELETE_ERROR);
+                alert(result.error.message);
             }
             ajaxIndex();
         };

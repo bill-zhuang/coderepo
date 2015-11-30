@@ -37,103 +37,205 @@ class person_FinancePaymentController extends Zend_Controller_Action
 
     public function addFinancePaymentAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['finance_payment_payment']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
             try 
             {
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
+                $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
-                $affected_rows = $this->_addFinancePayment();
+                $payments = isset($params['finance_payment_payment']) ? array_filter(explode(',', $params['finance_payment_payment'])) : [];
+                $payment_date = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
+                $category_ids = isset($params['finance_payment_fc_id']) ? $params['finance_payment_fc_id'] : [];
+                $intro = isset($params['finance_payment_intro']) ? trim($params['finance_payment_intro']) : '';
+                $add_time = date('Y-m-d H:i:s');
+
+                $data = [
+                    'fp_payment_date' => $payment_date,
+                    'fp_detail' => $intro,
+                    'fp_status' => Bill_Constant::VALID_STATUS,
+                    'fp_create_time' => $add_time,
+                    'fp_update_time' => $add_time
+                ];
+                if (Bill_Util::validDate($payment_date))
+                {
+                    foreach ($payments as $payment)
+                    {
+                        $payment = floatval($payment);
+                        if ($payment > 0)
+                        {
+                            $data['fp_payment'] = $payment;
+                            $fp_id = $this->_adapter_finance_payment->insert($data);
+                            $this->_addFinancePaymentMap($fp_id, $category_ids);
+                            $affected_rows += $fp_id;
+                        }
+                    }
+                }
                 $this->_adapter_finance_payment->getAdapter()->commit();
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows
+                    ],
+                ];
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From addFinancePayment');
             }
         }
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
         
-        echo json_encode($affected_rows);
+        echo json_encode($json_array);
         exit;
     }
     
     public function modifyFinancePaymentAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['finance_payment_fp_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
             try
             {
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
+                $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
-                $affected_rows = $this->_updateFinancePayment();
+                $fp_id = isset($params['finance_payment_fp_id']) ? intval($params['finance_payment_fp_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+                $payment = isset($params['finance_payment_payment']) ? floatval($params['finance_payment_payment']) : 0;
+                $payment_date = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
+                $category_ids = isset($params['finance_payment_fc_id']) ? $params['finance_payment_fc_id'] : [];
+                $intro = isset($params['finance_payment_intro']) ? trim($params['finance_payment_intro']) : '';
+
+                if (Bill_Util::validDate($payment_date) && $payment > 0)
+                {
+                    $data = [
+                        'fp_payment' => $payment,
+                        'fp_payment_date' => $payment_date,
+                        'fp_detail' => $intro,
+                        'fp_update_time' => date('Y-m-d H:i:s')
+                    ];
+                    $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_id=?', $fp_id);
+                    $affected_rows = $this->_adapter_finance_payment->update($data, $where);
+                    $affected_rows += $this->_updateFinancePaymentMap($fp_id, $category_ids);
+                }
                 $this->_adapter_finance_payment->getAdapter()->commit();
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows
+                    ],
+                ];
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From modifyFinancePayment');
             }
         }
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
         
-        echo json_encode($affected_rows);
+        echo json_encode($json_array);
         exit;
     }
     
     public function deleteFinancePaymentAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['fp_id']))
+        $json_array = [];
+        if ($this->getRequest()->isPost())
         {
             try
             {
+                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
+                $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
-                $fp_id = intval($_POST['fp_id']);
-                $update_data = [
-                    'fp_status' => Bill_Constant::INVALID_STATUS,
-                    'fp_update_time' => date('Y-m-d H:i:s')
-                ];
-                $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_status=1 and fp_id=?', $fp_id);
-                $affected_rows = $this->_adapter_finance_payment->update($update_data, $where);
-                //update map table
-                $update_data = [
-                    'status' => Bill_Constant::INVALID_STATUS,
-                    'update_time' => date('Y-m-d H:i:s')
-                ];
-                $where = [
-                    $this->_adapter_finance_payment_map->getAdapter()->quoteInto('fp_id=?', $fp_id),
-                    $this->_adapter_finance_payment_map->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
-                ];
-                $affected_rows += $this->_adapter_finance_payment_map->update($update_data, $where);
+                $fp_id = isset($params['fp_id']) ? intval($params['fp_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+                if ($fp_id > Bill_Constant::INVALID_PRIMARY_ID)
+                {
+                    $payment_update_data = [
+                        'fp_status' => Bill_Constant::INVALID_STATUS,
+                        'fp_update_time' => date('Y-m-d H:i:s')
+                    ];
+                    $payment_where = [
+                        $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_id=?', $fp_id),
+                        $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_status=?', Bill_Constant::VALID_STATUS)
+                    ];
+                    $affected_rows = $this->_adapter_finance_payment->update($payment_update_data, $payment_where);
+                    //update map table
+                    $map_update_data = [
+                        'status' => Bill_Constant::INVALID_STATUS,
+                        'update_time' => date('Y-m-d H:i:s')
+                    ];
+                    $map_where = [
+                        $this->_adapter_finance_payment_map->getAdapter()->quoteInto('fp_id=?', $fp_id),
+                        $this->_adapter_finance_payment_map->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                    ];
+                    $affected_rows += $this->_adapter_finance_payment_map->update($map_update_data, $map_where);
+                }
                 $this->_adapter_finance_payment->getAdapter()->commit();
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows
+                    ],
+                ];
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_finance_payment->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From deleteFinancePayment');
             }
         }
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
         
-        echo json_encode($affected_rows);
+        echo json_encode($json_array);
         exit;
     }
     
     public function getFinancePaymentAction()
     {
-        $data = [];
-        if (isset($_GET['fp_id']))
+        $json_array = [];
+        if ($this->getRequest()->isGet())
         {
-            $fp_id = intval($_GET['fp_id']);
+            $params = $this->getRequest()->getQuery('params', []);
+            $fp_id = isset($params['fp_id']) ? intval($params['fp_id']) : Bill_Constant::INVALID_PRIMARY_ID;
             if ($fp_id > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $data = $this->_adapter_finance_payment->getFinancePaymentByID($fp_id);
                 $data['fc_ids'] = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($fp_id);
+                if (!empty($data))
+                {
+                    $json_array = [
+                        'data' => $data,
+                    ];
+                }
             }
         }
 
-        echo json_encode($data);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
@@ -194,41 +296,8 @@ class person_FinancePaymentController extends Zend_Controller_Action
         ];
         return $json_data;
     }
-    
-    private function _addFinancePayment()
-    {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
 
-        $payments = array_filter(explode(',', $_POST['finance_payment_payment']));
-        $payment_date = trim($_POST['finance_payment_payment_date']);
-        $category_ids = $_POST['finance_payment_fc_id'];
-        $intro = trim($_POST['finance_payment_intro']);
-        $add_time = date('Y-m-d H:i:s');
-
-        $data = [
-            'fp_payment_date' => $payment_date,
-            'fp_detail' => $intro,
-            'fp_status' => Bill_Constant::VALID_STATUS,
-            'fp_create_time' => $add_time,
-            'fp_update_time' => $add_time
-        ];
-        foreach ($payments as $payment)
-        {
-            $payment = floatval($payment);
-            if ($payment > 0)
-            {
-                $data['fp_payment'] = $payment;
-                $fp_id = $this->_adapter_finance_payment->insert($data);
-                $this->_addFinancePaymentMap($fp_id, $category_ids);
-
-                $affected_rows += $fp_id;
-            }
-        }
-
-        return $affected_rows;
-    }
-
-    private function _addFinancePaymentMap($fp_id, $fc_ids)
+    private function _addFinancePaymentMap($fp_id, array $fc_ids)
     {
         $add_time = date('Y-m-d H:i:s');
         $map_data = [
@@ -247,30 +316,9 @@ class person_FinancePaymentController extends Zend_Controller_Action
         }
     }
     
-    private function _updateFinancePayment()
+    private function _updateFinancePaymentMap($fp_id, array $fc_ids)
     {
-        $fp_id = intval($_POST['finance_payment_fp_id']);
-        $payment = floatval($_POST['finance_payment_payment']);
-        $payment_date = trim($_POST['finance_payment_payment_date']);
-        $category_ids = $_POST['finance_payment_fc_id'];
-        $intro = trim($_POST['finance_payment_intro']);
-
-        $data = [
-            'fp_payment' => $payment,
-            'fp_payment_date' => $payment_date,
-            'fp_detail' => $intro,
-            'fp_update_time' => date('Y-m-d H:i:s')
-        ];
-        $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_id=?', $fp_id);
-        $affected_rows = $this->_adapter_finance_payment->update($data, $where);
-        $affected_rows += $this->_updateFinancePaymentMap($fp_id, $category_ids);
-
-        return $affected_rows;
-    }
-
-    private function _updateFinancePaymentMap($fp_id, $fc_ids)
-    {
-        $affected_rows = 0;
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
 
         $update_data = [
             'status' => Bill_Constant::INVALID_STATUS,
@@ -288,8 +336,11 @@ class person_FinancePaymentController extends Zend_Controller_Action
         $insert_fc_ids = array_diff($fc_ids, $origin_fc_ids);
         foreach ($update_fc_ids as $fc_id)
         {
-            $where = $this->_adapter_finance_payment_map->getAdapter()
-                ->quoteInto("fp_id={$fp_id} and status=1 and fc_id=?", $fc_id);
+            $where = [
+                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fp_id=?", $fp_id),
+                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("status=?", Bill_Constant::VALID_STATUS),
+                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fc_id=?", $fc_id),
+            ];
             $affected_rows += $this->_adapter_finance_payment_map->update($update_data, $where);
         }
 
