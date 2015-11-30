@@ -71,14 +71,6 @@ function getRandomColorHex() {
     return color;
 }
 
-function getFormObjectData(formID) {
-    var formObject = {};
-    $('#' + formID).serializeArray().map(function(x) {
-        formObject[x.name] = x.value;
-    });
-    return formObject;
-}
-
 function callAjaxWithAlert(url, data, msg_success, msg_error, method, is_reload) {
     var success_function = function (flag) {
         if (parseInt(flag) != 0) {
