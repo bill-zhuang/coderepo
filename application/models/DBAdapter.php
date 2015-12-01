@@ -15,31 +15,13 @@ class Application_Model_DBAdapter
      */
     public static function getDBAdapter($section_name = 'localdb')
     {
-        if (!Zend_Registry::isRegistered($section_name))
+        if (Zend_Registry::isRegistered($section_name))
         {
-            $db_config_path = APPLICATION_PATH . '/configs/db.ini';
-            if (file_exists($db_config_path))
-            {
-                $db_config = new Zend_Config_Ini($db_config_path, $section_name);
-                if (isset($db_config->adapter) && isset($db_config->database))
-                {
-                    $db_adapter = Zend_Db::factory($db_config->adapter, $db_config->database->toArray());
-                    Zend_Registry::set($section_name, $db_adapter);
-                    return $db_adapter;
-                }
-                else
-                {
-                    throw new Exception('Database config error!');
-                }
-            }
-            else
-            {
-                throw new Exception('Database config file not exist!');
-            }
+            return Zend_Registry::get($section_name);
         }
         else
         {
-            return Zend_Registry::get($section_name);
+            throw new Exception('Database config error!');
         }
     }
 }

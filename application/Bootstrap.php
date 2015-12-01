@@ -2,6 +2,45 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+    protected function _initConfig()
+    {
+        try
+        {
+            $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', null, true);
+            Zend_Registry::set('config', $config);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+            die('Init config failed.');
+        }
+    }
+
+    protected function _initLocalDB()
+    {
+        try
+        {
+            $config = Zend_Registry::get('config');
+            $db_adapter = Zend_Db::factory($config->localdb->adapter, $config->localdb->toArray());
+            Zend_Registry::set('localdb', $db_adapter);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+            die('Init local db failed.');
+        }
+    }
+
+    protected function _initAlphaDB()
+    {
+        //init alpha db like local
+    }
+
+    protected function _initReleaseDB()
+    {
+        //init alpha db like local
+    }
+
     protected function _initGetopt()
     {
         if(php_sapi_name() === 'cli' || defined('STDIN'))
