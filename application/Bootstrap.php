@@ -38,7 +38,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     protected function _initReleaseDB()
     {
-        //init alpha db like local
+        //init release db like local
     }
 
     protected function _initGetopt()
