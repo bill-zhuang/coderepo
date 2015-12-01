@@ -150,7 +150,9 @@ class TemplateGenerator
         $folder_name = strtolower(implode('-', $camel_name));
         if ($folder_name !== '')
         {
-            $js_folder_path = __DIR__ . '/../public/js';
+            $js_folder_name = $this->_module_name === '' ? 'default' : strtolower($this->_module_name);
+            $js_folder_path = __DIR__ . '/../public/js/' . $js_folder_name;
+            $this->_createDirectory($js_folder_path);
             //create js file
             $template_path = __DIR__ . '/template/JsTemplate.php';
             $dest_path = $js_folder_path . '/' . $folder_name . '.js';
