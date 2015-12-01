@@ -60,103 +60,190 @@ echo PHP_EOL;
 <?php if(!empty($model_names)){ ?>
     public function add<?php echo $controller_name; ?>Action()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['<?php echo $form_element_prefix; ?>_name']))
+        if ($this->getRequest()->isPost())
         {
             try 
             {
+                $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
-                $affected_rows = $this->_add<?php echo $model_names[0]; ?>();
+                $data = [
+<?php foreach ($table_data as $key => $default_value)
+{
+    if ($key != $primary_id)
+    {
+        echo str_repeat(' ', 4 * 5) . "'" . $key . "' => " . $default_value . "," . PHP_EOL;
+    }
+}
+?>
+                ];
+                $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->insert($data);
+<?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
+                if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                {
+                    $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($affected_rows, '<?php echo $form_element_prefix; ?>_image');
+                }
+<?php } ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+                $json_array = [
+                    'data' => [
+                        'affectedRows' => $affected_rows
+                    ],
+                ];
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From add<?php echo $controller_name; ?>');
             }
         }
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
         
-        echo json_encode($affected_rows);
+        echo json_encode($json_array);
         exit;
     }
     
     public function modify<?php echo $controller_name; ?>Action()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>']))
+        if ($this->getRequest()->isPost())
         {
             try
             {
+                $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
-                $affected_rows = $this->_update<?php echo $model_names[0]; ?>();
-                $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+                $<?php echo $primary_id; ?> = intval($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>']);
+                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID)
+                {
+                    $data = [
+<?php foreach ($table_data as $key => $default_value)
+{
+    if ($key != $primary_id)
+    {
+        echo str_repeat(' ', 4 * 6) . "'" . $key . "' => " . $default_value . "," . PHP_EOL;
+    }
+}
+?>
+                    ];
+                    $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
+                    $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($data, $where);
+<?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
+                    if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                    {
+                        $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, '<?php echo $form_element_prefix; ?>_image');
+                    }
+<?php } ?>
+                    $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+                    $json_array = [
+                        'data' => [
+                            'affectedRows' => $affected_rows,
+                        ]
+                    ];
+                }
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From modify<?php echo $controller_name; ?>');
             }
         }
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
         
-        echo json_encode($affected_rows);
+        echo json_encode($json_array);
         exit;
     }
     
     public function delete<?php echo $controller_name; ?>Action()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        if (isset($_POST['<?php echo $primary_id; ?>']))
+        if ($this->getRequest()->isPost())
         {
             try
             {
+                $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
-                $<?php echo $primary_id; ?> = intval($_POST['<?php echo $primary_id; ?>']);
-                $update_data = [
-                    //TODO set update data
-                ];
-                $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('status=1 and <?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
-                $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($update_data, $where);
-                $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+                $<?php echo $primary_id; ?> = isset($params['<?php echo $primary_id; ?>']) ? intval($params['<?php echo $primary_id; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
+                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID)
+                {
+                    $update_data = [
+                        'status' => Bill_Constant::VALID_STATUS,
+                        'update_time' => date('Y-m-d H:i:s'),
+                        //TODO set update data
+                    ];
+                    $where = [
+                        $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>),
+                        $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                    ];
+                    $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($update_data, $where);
+                    $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+                    $json_array = [
+                        'data' => [
+                            'affectedRows' => $affected_rows,
+                        ]
+                    ];
+                }
             }
             catch (Exception $e)
             {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From delete<?php echo $controller_name; ?>');
             }
         }
-        
-        echo json_encode($affected_rows);
+
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
     
     public function get<?php echo $controller_name; ?>Action()
     {
-        $data = [];
-        if (isset($_GET['<?php echo $primary_id; ?>']))
+        if ($this->getRequest()->isGet())
         {
-            $<?php echo $primary_id; ?> = intval($_GET['<?php echo $primary_id; ?>']);
-            if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID)
+            $params = $this->getRequest()->getQuery('params', []);
+            $<?php echo $primary_id; ?> = (isset($params['<?php echo $primary_id; ?>'])) ? intval($params['<?php echo $primary_id; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>ByID($<?php echo $primary_id; ?>);
+            if (!empty($data))
             {
-                $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>ByID($<?php echo $primary_id; ?>);
+                $json_array = [
+                    'data' => $data,
+                ];
             }
         }
 
-        echo json_encode($data);
+        if (!isset($json_array['data']))
+        {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
         exit;
     }
 
     private function _index()
     {
 <?php if(!empty($model_names)){ ?>
-        $current_page = intval($this->_getParam('current_page', Bill_Constant::INIT_START_PAGE));
-        $page_length = intval($this->_getParam('page_length', Bill_Constant::INIT_PAGE_LENGTH));
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
-        $keyword = trim($this->_getParam('keyword', ''));
+        $params = $this->_getParam('params', []);
+        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 <?php if(!empty($tab_types)){ ?>
-        $tab_type = intval($this->_getParam('tab_type', 1));
+        $tab_type = isset($params['tab_type']) ? intval($params['tab_type']) : 1;
 <?php } ?>
 
         $conditions = [
@@ -167,64 +254,20 @@ echo PHP_EOL;
         $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>Data($conditions, $page_length, $start, $order_by);
 
         $json_data = [
-            'data' => $data,
-            'current_page' => $current_page,
-            'total_pages' => ceil($total / $page_length) ? ceil($total / $page_length) : Bill_Constant::INIT_TOTAL_PAGE,
-            'total' => $total,
-            'start' => $start,
+            'data' => [
+                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
+                'pageIndex' => $current_page,
+                'totalItems' => $total,
+                'startIndex' => $start + 1,
+                'itemsPerPage' => $page_length,
+                'currentItemCount' => count($data),
+                'items' => $data,
+            ],
         ];
         return $json_data;
 <?php } ?>
     }
     
-    private function _add<?php echo $model_names[0]; ?>()
-    {
-        $data = [
-<?php foreach ($table_data as $key => $default_value)
-{
-    if ($key != $primary_id)
-    {
-        echo str_repeat(' ', 4 * 3) . "'" . $key . "' => " . $default_value . "," . PHP_EOL;
-    }
-}
-?>
-        ];
-        $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->insert($data);
-<?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-        if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
-        {
-            $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($affected_rows, '<?php echo $form_element_prefix; ?>_image');
-        }
-<?php } ?>
-
-        return $affected_rows;
-    }
-    
-    private function _update<?php echo $model_names[0]; ?>()
-    {
-        $<?php echo $primary_id; ?> = intval($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>']);
-
-        $data = [
-<?php foreach ($table_data as $key => $default_value)
-{
-    if ($key != $primary_id)
-    {
-        echo str_repeat(' ', 4 * 3) . "'" . $key . "' => " . $default_value . "," . PHP_EOL;
-    }
-}
-?>
-        ];
-        $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
-        $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($data, $where);
-<?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-        if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
-        {
-            $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, '<?php echo $form_element_prefix; ?>_image');
-        }
-<?php } ?>
-
-        return $affected_rows;
-    }
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
     private function _update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, $file_id)
     {

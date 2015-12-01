@@ -131,7 +131,7 @@ foreach ($table_row_data as $key => $value)
                 <div class="modal-body">
 <?php foreach ($table_data as $key => $default_value)
 {
-    if ($key != $primary_id)
+    if ($key != $primary_id && strpos($key, 'create_time') === false && strpos($key, 'update_time') === false && strpos($key, 'status') === false)
     {
         echo str_repeat(' ', 4 * 5) . '<div class="input-group">' . PHP_EOL;
         echo str_repeat(' ', 4 * 6) . '<span class="input-group-addon">' . $key . '：</span>' . PHP_EOL;
@@ -171,6 +171,7 @@ foreach ($table_row_data as $key => $value)
 <script src="/assets/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script src="/js/public/datetimepicker.js"></script>
 <?php } ?>
+<script src="/assets/jquery-serialize-object/js/jquery.serialize-object.min.js"></script>
 <script src="/js/public/util.js"></script>
 <script src="/js/public/common.js"></script>
 <script src="/js/public/alertInfo.js"></script>
