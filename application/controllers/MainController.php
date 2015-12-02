@@ -27,22 +27,23 @@ class MainController extends Zend_Controller_Action
     {
         if ($_POST)
         {
-            $user_name = Application_Model_Auth::getIdentity()->bu_name;
+            $user_name = Application_Model_Auth::getIdentity()->name;
+            $salt = Application_Model_Auth::getIdentity()->salt;
             $old_password = addslashes($_POST['old_password']);
             $new_password = addslashes($_POST['new_password']);
             $user_info = $this->_adapter_backend_user->getUserInfo($user_name);
-            if (isset($user_info['bu_password']))
+            if (isset($user_info['password']))
             {
-                if ($user_info['bu_password'] !== md5($old_password))
+                if ($user_info['password'] !== md5($old_password . $salt))
                 {
                     $this->view->content = '原密码错误！';
                 }
                 else 
                 {
-                    $where = $this->_adapter_backend_user->getAdapter()->quoteInto('bu_name = ?', $user_name);
+                    $where = $this->_adapter_backend_user->getAdapter()->quoteInto('name = ?', $user_name);
                     $update_data = [
-                        'bu_password' => md5($new_password),
-                        'bu_update_time' => date('Y-m-d H:i:s')
+                        'password' => md5($new_password . $salt),
+                        'update_time' => date('Y-m-d H:i:s')
                     ];
                     $affect_rows = $this->_adapter_backend_user->update($update_data, $where);
                     if ($affect_rows > 0)
