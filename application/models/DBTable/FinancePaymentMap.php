@@ -43,24 +43,24 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
     public function getFinanceCategoryIDs($fpid)
     {
         $data = $this->select()->reset()
-            ->from($this->_name, 'fc_id')
-            ->where('fp_id=?', $fpid)
+            ->from($this->_name, 'fcid')
+            ->where('fpid=?', $fpid)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
-        $fc_ids = [];
+        $fcids = [];
         foreach ($data as $value)
         {
-            $fc_ids[] = $value['fc_id'];
+            $fcids[] = $value['fcid'];
         }
 
-        return $fc_ids;
+        return $fcids;
     }
 
     public function getFpidByFcid($fcid, $order_by, $count, $offset)
     {
         $data = $this->select()->reset()
-            ->from($this->_name, 'fp_id')
-            ->where('fc_id=?', $fcid)
+            ->from($this->_name, 'fpid')
+            ->where('fcid=?', $fcid)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->order($order_by)
             ->limit($count, $offset)
@@ -68,7 +68,7 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
         $fpids = [];
         foreach ($data as $value)
         {
-            $fpids[] = $value['fp_id'];
+            $fpids[] = $value['fpid'];
         }
 
         return $fpids;

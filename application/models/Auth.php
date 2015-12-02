@@ -11,7 +11,7 @@ class Application_Model_Auth
             $table_name,
             $column_name,
             $column_password,
-            'MD5(CONCAT(?, bu_salt)) AND bu_status=1'
+            'MD5(CONCAT(?, salt)) AND status=1'
         );
     }
 
@@ -26,7 +26,7 @@ class Application_Model_Auth
             $database = new Application_Model_DBTable_BackendUser();
             $database_adapter = $database->getAdapter();
         }
-        $this->setauth($table_name, 'bu_name', 'bu_password', $database_adapter);
+        $this->setauth($table_name, 'name', 'password', $database_adapter);
         $this->authAdapter->setIdentity($username);
         $this->authAdapter->setCredential($password);
 
@@ -74,7 +74,7 @@ class Application_Model_Auth
         if($auth->hasIdentity())
         {
             $identity = $auth->getIdentity();
-            $role = $identity->bu_role; //bu_role field in table backend_user
+            $role = $identity->role; //role field in table backend_user
             $user_info = new Zend_Session_Namespace('user_info');
             $user_info->setExpirationSeconds(G_SESSIONTIMEOUT);
             return $role;

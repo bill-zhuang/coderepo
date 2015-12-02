@@ -31,64 +31,64 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
         return $data;
     }
 
-    public function getFinanceCategoryByID($fc_id)
+    public function getFinanceCategoryByID($fcid)
     {
         return $this->select()->reset()
-            ->where('fc_id=?', $fc_id)
+            ->where('fcid=?', $fcid)
             ->query()->fetch();
     }
 
     public function getAllParentCategory($is_key_value_format = false)
     {
         $parent_data = $this->select()->reset()
-            ->from($this->_name, ['fc_id', 'fc_name'])
-            ->where('fc_parent_id=?', 0)
-            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
-            ->order('fc_weight desc')
+            ->from($this->_name, ['fcid', 'name'])
+            ->where('parent_id=?', 0)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->order('weight desc')
             ->query()->fetchAll();
         if ($is_key_value_format)
         {
             $data = [];
             foreach ($parent_data as $parent_value)
             {
-                $data[$parent_value['fc_id']] = $parent_value['fc_name'];
+                $data[$parent_value['fcid']] = $parent_value['name'];
             }
             return $data;
         }
         return $parent_data;
     }
 
-    public function isFinanceCategoryExist($name, $fc_id)
+    public function isFinanceCategoryExist($name, $fcid)
     {
         $data = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('fc_name=?', $name)
-            ->where('fc_id!=?', $fc_id)
-            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
+            ->where('name=?', $name)
+            ->where('fcid!=?', $fcid)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         return $data[0]['total'] == 0 ? false : true;
     }
 
-    public function getFinanceCategoryName($fc_id)
+    public function getFinanceCategoryName($fcid)
     {
         $data = $this->select()->reset()
-            ->from($this->_name, 'fc_name')
-            ->where('fc_id=?', $fc_id)
+            ->from($this->_name, 'name')
+            ->where('fcid=?', $fcid)
             ->query()->fetch();
-        return isset($data['fc_name']) ? $data['fc_name'] : '';
+        return isset($data['name']) ? $data['name'] : '';
     }
 
-    public function getFinanceCategoryNames(array $fc_ids)
+    public function getFinanceCategoryNames(array $fcids)
     {
         $data = $this->select()->reset()
-            ->from($this->_name, 'fc_name')
-            ->where('fc_id in(?)', $fc_ids)
-            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
+            ->from($this->_name, 'name')
+            ->where('fcid in(?)', $fcids)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         $names = [];
         foreach ($data as $value)
         {
-            $names[] = $value['fc_name'];
+            $names[] = $value['name'];
         }
 
         return $names;
@@ -97,34 +97,34 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
     public function getFinanceSubcategory($parent_id)
     {
         $subcategory_data = $this->select()->reset()
-            ->from($this->_name, ['fc_id', 'fc_name'])
-            ->where('fc_parent_id=?', $parent_id)
-            ->where('fc_status=?', Bill_Constant::VALID_STATUS)
+            ->from($this->_name, ['fcid', 'name'])
+            ->where('parent_id=?', $parent_id)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         $data = [];
         foreach ($subcategory_data as $subcategory_value)
         {
-            $data[$subcategory_value['fc_id']] = $subcategory_value['fc_name'];
+            $data[$subcategory_value['fcid']] = $subcategory_value['name'];
         }
 
         return $data;
     }
 
-    public function getFinanceParentCategory($fc_id)
+    public function getFinanceParentCategory($fcid)
     {
         $data = $this->select()->reset()
-            ->from($this->_name, 'fc_parent_id')
-            ->where('fc_id=?', $fc_id)
+            ->from($this->_name, 'parent_id')
+            ->where('fcid=?', $fcid)
             ->query()->fetch();
-        return isset($data['fc_parent_id']) ? $data['fc_parent_id'] : 0;
+        return isset($data['parent_id']) ? $data['parent_id'] : 0;
     }
 
-    public function getParentCategoryName($fc_id)
+    public function getParentCategoryName($fcid)
     {
         $data = $this->select()->reset()
-            ->from($this->_name, 'fc_name')
-            ->where('fc_id=?', $fc_id)
+            ->from($this->_name, 'name')
+            ->where('fcid=?', $fcid)
             ->query()->fetch();
-        return isset($data['fc_name']) ? $data['fc_name'] : '';
+        return isset($data['name']) ? $data['name'] : '';
     }
 }

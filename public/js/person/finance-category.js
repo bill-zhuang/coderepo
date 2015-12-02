@@ -15,18 +15,18 @@ function ajaxIndex() {
                 $('#tbl tbody').append(
                     $('<tr>')
                         .append($('<td>').text(result.data.startIndex + i))
-                        .append($('<td>').text(result.data.items[i]['fc_name']))
+                        .append($('<td>').text(result.data.items[i]['name']))
                         .append($('<td>').text(result.data.items[i]['parent']))
-                        .append($('<td>').text(result.data.items[i]['fc_weight']))
-                        .append($('<td>').text(result.data.items[i]['fc_update_time']))
+                        .append($('<td>').text(result.data.items[i]['weight']))
+                        .append($('<td>').text(result.data.items[i]['update_time']))
                         .append($('<td>')
-                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['fc_id'], text: '修改'})
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['fcid'], text: '修改'})
                                 .click(function () {
                                     modifyFinanceCategory(this.id);
                                 })
                             )
                             .append('  ')
-                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['fc_id'], text: '删除'})
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['fcid'], text: '删除'})
                                 .click(function () {
                                     deleteFinanceCategory(this.id);
                                 })
@@ -55,7 +55,7 @@ function ajaxIndex() {
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
     window.FinanceCategoryForm.reset();
-    $('#finance_category_fc_id').val('');
+    $('#finance_category_fcid').val('');
     $('#btn_submit_finance_category').attr('disabled', false);
     $('#FinanceCategoryModal').modal('show');
 });
@@ -63,8 +63,8 @@ $('#btn_add').on('click', function () {
 $('#FinanceCategoryForm').on('submit', (function (event) {
     event.preventDefault();
 
-    var fc_id = $('#finance_category_fc_id').val();
-    var type = (fc_id == '') ? 'add' : 'modify';
+    var fcid = $('#finance_category_fcid').val();
+    var type = (fcid == '') ? 'add' : 'modify';
     var error_num = validInput(type);
     if (error_num == 0) {
         $('#btn_submit_finance_category').attr('disabled', true);
@@ -72,8 +72,8 @@ $('#FinanceCategoryForm').on('submit', (function (event) {
         var post_data = {
             "params": $('#FinanceCategoryForm').serializeObject()
         };
-        var msg_success = (fc_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-        var msg_error = (fc_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
+        var msg_success = (fcid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+        var msg_error = (fcid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
         var success_function = function (result) {
             $('#FinanceCategoryModal').modal('hide');
@@ -93,20 +93,20 @@ $('#FinanceCategoryForm').on('submit', (function (event) {
 }));
 
 function modifyFinanceCategory(modify_id) {
-    var fc_id = modify_id.substr('modify_'.length);
+    var fcid = modify_id.substr('modify_'.length);
     var post_url = '/person/finance-category/get-finance-category';
     var post_data = {
         "params": {
-            "fc_id": fc_id
+            "fcid": fcid
         }
     };
     var method = 'get';
     var success_function = function (result) {
         if (typeof result.data != 'undefined') {
-            $('#finance_category_name').val(result.data.fc_name);
-            $('#finance_category_parent_id').val(result.data.fc_parent_id);
-            $('#finance_category_weight').val(result.data.fc_weight);
-            $('#finance_category_fc_id').val(result.data.fc_id);
+            $('#finance_category_name').val(result.data.name);
+            $('#finance_category_parent_id').val(result.data.parent_id);
+            $('#finance_category_weight').val(result.data.weight);
+            $('#finance_category_fcid').val(result.data.fcid);
             $('#btn_submit_finance_category').attr('disabled', false);
             $('#FinanceCategoryModal').modal('show');
         } else {
@@ -118,11 +118,11 @@ function modifyFinanceCategory(modify_id) {
 
 function deleteFinanceCategory(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
-        var fc_id = delete_id.substr('delete_'.length);
+        var fcid = delete_id.substr('delete_'.length);
         var post_url = '/person/finance-category/delete-finance-category';
         var post_data = {
             "params": {
-                "fc_id": fc_id
+                "fcid": fcid
             }
         };
         var method = 'post';

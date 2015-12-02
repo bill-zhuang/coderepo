@@ -26,11 +26,11 @@ class person_ConsoleController extends Zend_Controller_Action
         foreach ($payment_data as $payment_value)
         {
             $map_data = [
-                'fp_id' => $payment_value['fp_id'],
-                'fc_id' => $payment_value['fc_id'],
+                'fpid' => $payment_value['fpid'],
+                'fcid' => $payment_value['fcid'],
                 'status' => Bill_Constant::VALID_STATUS,
-                'create_time' => $payment_value['fp_create_time'],
-                'update_time' => $payment_value['fp_update_time']
+                'create_time' => $payment_value['create_time'],
+                'update_time' => $payment_value['update_time']
             ];
             $adapter_payment_map->insert($map_data);
         }
@@ -90,13 +90,13 @@ class person_ConsoleController extends Zend_Controller_Action
                 $security = new Bill_Security();
                 $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
                 $insert_data = [
-                    'bu_name' => $user_name,
-                    'bu_password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
-                    'bu_salt' => $salt,
-                    'bu_role' => Bill_Constant::DEFAULT_ROLE,
-                    'bu_status' => Bill_Constant::VALID_STATUS,
-                    'bu_create_time' => date('Y-m-d H:i:s'),
-                    'bu_update_time' => date('Y-m-d H:i:s'),
+                    'name' => $user_name,
+                    'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
+                    'salt' => $salt,
+                    'role' => Bill_Constant::DEFAULT_ROLE,
+                    'status' => Bill_Constant::VALID_STATUS,
+                    'create_time' => date('Y-m-d H:i:s'),
+                    'update_time' => date('Y-m-d H:i:s'),
                 ];
                 $adapter_backend_user->insert($insert_data);
                 echo 'User create successfully.';

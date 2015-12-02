@@ -16,7 +16,7 @@ class Application_Model_DBTable_BadHistory extends Application_Model_DBTableFact
     public function getBadHistoryData($limit, $offset, $order_by)
     {
         return $this->select()->reset()
-            ->where('bh_status=?', Bill_Constant::VALID_STATUS)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->limit($limit, $offset)
             ->order($order_by)
             ->query()->fetchAll();
@@ -26,7 +26,7 @@ class Application_Model_DBTable_BadHistory extends Application_Model_DBTableFact
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('bh_status=?', Bill_Constant::VALID_STATUS)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
 
         return $count[0]['total'];
@@ -35,15 +35,15 @@ class Application_Model_DBTable_BadHistory extends Application_Model_DBTableFact
     public function getTotalBadHistoryDataByDay()
     {
         return $this->select()->reset()
-            ->from($this->_name, array('bh_happen_date as period', 'bh_count as number'))
-            ->where('bh_status=?', Bill_Constant::VALID_STATUS)
+            ->from($this->_name, array('happen_date as period', 'count as number'))
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
     }
 
-    public function getBadHistoryDayByID($bh_id)
+    public function getBadHistoryDayByID($bhid)
     {
         return $this->select()->reset()
-            ->where('bh_id=?', $bh_id)
+            ->where('bhid=?', $bhid)
             ->query()->fetch();
     }
 } 

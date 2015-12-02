@@ -15,18 +15,18 @@ function ajaxIndex() {
                 $('#tbl tbody').append(
                     $('<tr>')
                         .append($('<td>').text(result.data.startIndex + i))
-                        .append($('<td>').text(result.data.items[i]['bh_happen_date']))
-                        .append($('<td>').text(result.data.items[i]['bh_count']))
-                        .append($('<td>').text(result.data.items[i]['bh_create_time']))
-                        .append($('<td>').text(result.data.items[i]['bh_update_time']))
+                        .append($('<td>').text(result.data.items[i]['happen_date']))
+                        .append($('<td>').text(result.data.items[i]['count']))
+                        .append($('<td>').text(result.data.items[i]['create_time']))
+                        .append($('<td>').text(result.data.items[i]['update_time']))
                         .append($('<td>')
-                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['bh_id'], text: '修改'})
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['bhid'], text: '修改'})
                                 .click(function () {
                                     modifyBadHistory(this.id);
                                 })
                             )
                             .append('  ')
-                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['bh_id'], text: '删除'})
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['bhid'], text: '删除'})
                                 .click(function () {
                                     deleteBadHistory(this.id);
                                 })
@@ -62,16 +62,15 @@ $('#btn_add').on('click', function () {
 $('#BadHistoryForm').on('submit', (function (event) {
     event.preventDefault();
 
-    var bh_id = $('#bad_history_id').val();
-    var type = (bh_id == '') ? 'add' : 'modify';
+    var bhid = $('#bad_history_id').val();
+    var type = (bhid == '') ? 'add' : 'modify';
     $('#btn_submit_bad_history').attr('disabled', true);
     var post_url = '/person/bad-history/' + type + '-bad-history';
     var post_data = {
         "params": $('#BadHistoryForm').serializeObject()
     };
-    console.log(post_data);
-    var msg_success = (bh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-    var msg_error = (bh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
+    var msg_success = (bhid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+    var msg_error = (bhid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
     var method = 'post';
     var success_function = function (result) {
         $('#BadHistoryModal').modal('hide');
@@ -90,19 +89,19 @@ $('#BadHistoryForm').on('submit', (function (event) {
 }));
 
 function modifyBadHistory(modify_id) {
-    var bh_id = modify_id.substr('delete_'.length);
+    var bhid = modify_id.substr('delete_'.length);
     var post_url = '/person/bad-history/get-bad-history';
     var post_data = {
         "params": {
-            "bh_id": bh_id
+            "bhid": bhid
         }
     };
     var method = 'get';
     var success_function = function (result) {
         if (typeof result.data != 'undefined') {
-            $('#bad_history_date').val(result.data.bh_happen_date).attr('disabled', true);
-            $('#bad_history_count').val(result.data.bh_count);
-            $('#bad_history_id').val(result.data.bh_id);
+            $('#bad_history_date').val(result.data.happen_date).attr('disabled', true);
+            $('#bad_history_count').val(result.data.count);
+            $('#bad_history_id').val(result.data.bhid);
             $('#btn_submit_bad_history').attr('disabled', false);
             $('#BadHistoryModal').modal('show');
         } else {
@@ -114,11 +113,11 @@ function modifyBadHistory(modify_id) {
 
 function deleteBadHistory(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
-        var bh_id = delete_id.substr('delete_'.length);
+        var bhid = delete_id.substr('delete_'.length);
         var post_url = '/person/bad-history/delete-bad-history';
         var post_data = {
             "params": {
-                "bh_id": bh_id
+                "bhid": bhid
             }
         };
         var method = 'post';

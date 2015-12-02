@@ -47,16 +47,16 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
                 $payments = isset($params['finance_payment_payment']) ? array_filter(explode(',', $params['finance_payment_payment'])) : [];
                 $payment_date = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
-                $category_ids = isset($params['finance_payment_fc_id']) ? $params['finance_payment_fc_id'] : [];
+                $category_ids = isset($params['finance_payment_fcid']) ? $params['finance_payment_fcid'] : [];
                 $intro = isset($params['finance_payment_intro']) ? trim($params['finance_payment_intro']) : '';
                 $add_time = date('Y-m-d H:i:s');
 
                 $data = [
-                    'fp_payment_date' => $payment_date,
-                    'fp_detail' => $intro,
-                    'fp_status' => Bill_Constant::VALID_STATUS,
-                    'fp_create_time' => $add_time,
-                    'fp_update_time' => $add_time
+                    'payment_date' => $payment_date,
+                    'detail' => $intro,
+                    'status' => Bill_Constant::VALID_STATUS,
+                    'create_time' => $add_time,
+                    'update_time' => $add_time
                 ];
                 if (Bill_Util::validDate($payment_date))
                 {
@@ -65,7 +65,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
                         $payment = floatval($payment);
                         if ($payment > 0)
                         {
-                            $data['fp_payment'] = $payment;
+                            $data['payment'] = $payment;
                             $fp_id = $this->_adapter_finance_payment->insert($data);
                             $this->_addFinancePaymentMap($fp_id, $category_ids);
                             $affected_rows += $fp_id;
@@ -107,23 +107,23 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
-                $fp_id = isset($params['finance_payment_fp_id']) ? intval($params['finance_payment_fp_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+                $fpid = isset($params['finance_payment_fpid']) ? intval($params['finance_payment_fpid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 $payment = isset($params['finance_payment_payment']) ? floatval($params['finance_payment_payment']) : 0;
                 $payment_date = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
-                $category_ids = isset($params['finance_payment_fc_id']) ? $params['finance_payment_fc_id'] : [];
+                $category_ids = isset($params['finance_payment_fcid']) ? $params['finance_payment_fcid'] : [];
                 $intro = isset($params['finance_payment_intro']) ? trim($params['finance_payment_intro']) : '';
 
                 if (Bill_Util::validDate($payment_date) && $payment > 0)
                 {
                     $data = [
-                        'fp_payment' => $payment,
-                        'fp_payment_date' => $payment_date,
-                        'fp_detail' => $intro,
-                        'fp_update_time' => date('Y-m-d H:i:s')
+                        'payment' => $payment,
+                        'payment_date' => $payment_date,
+                        'detail' => $intro,
+                        'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_id=?', $fp_id);
+                    $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fpid=?', $fpid);
                     $affected_rows = $this->_adapter_finance_payment->update($data, $where);
-                    $affected_rows += $this->_updateFinancePaymentMap($fp_id, $category_ids);
+                    $affected_rows += $this->_updateFinancePaymentMap($fpid, $category_ids);
                 }
                 $this->_adapter_finance_payment->getAdapter()->commit();
                 $json_array = [
@@ -160,16 +160,16 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_finance_payment->getAdapter()->beginTransaction();
-                $fp_id = isset($params['fp_id']) ? intval($params['fp_id']) : Bill_Constant::INVALID_PRIMARY_ID;
-                if ($fp_id > Bill_Constant::INVALID_PRIMARY_ID)
+                $fpid = isset($params['fpid']) ? intval($params['fpid']) : Bill_Constant::INVALID_PRIMARY_ID;
+                if ($fpid > Bill_Constant::INVALID_PRIMARY_ID)
                 {
                     $payment_update_data = [
-                        'fp_status' => Bill_Constant::INVALID_STATUS,
-                        'fp_update_time' => date('Y-m-d H:i:s')
+                        'status' => Bill_Constant::INVALID_STATUS,
+                        'update_time' => date('Y-m-d H:i:s')
                     ];
                     $payment_where = [
-                        $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_id=?', $fp_id),
-                        $this->_adapter_finance_payment->getAdapter()->quoteInto('fp_status=?', Bill_Constant::VALID_STATUS)
+                        $this->_adapter_finance_payment->getAdapter()->quoteInto('fpid=?', $fpid),
+                        $this->_adapter_finance_payment->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS)
                     ];
                     $affected_rows = $this->_adapter_finance_payment->update($payment_update_data, $payment_where);
                     //update map table
@@ -178,7 +178,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
                         'update_time' => date('Y-m-d H:i:s')
                     ];
                     $map_where = [
-                        $this->_adapter_finance_payment_map->getAdapter()->quoteInto('fp_id=?', $fp_id),
+                        $this->_adapter_finance_payment_map->getAdapter()->quoteInto('fpid=?', $fpid),
                         $this->_adapter_finance_payment_map->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                     ];
                     $affected_rows += $this->_adapter_finance_payment_map->update($map_update_data, $map_where);
@@ -214,11 +214,11 @@ class person_FinancePaymentController extends Zend_Controller_Action
         if ($this->getRequest()->isGet())
         {
             $params = $this->getRequest()->getQuery('params', []);
-            $fp_id = isset($params['fp_id']) ? intval($params['fp_id']) : Bill_Constant::INVALID_PRIMARY_ID;
-            if ($fp_id > Bill_Constant::INVALID_PRIMARY_ID)
+            $fpid = isset($params['fpid']) ? intval($params['fpid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            if ($fpid > Bill_Constant::INVALID_PRIMARY_ID)
             {
-                $data = $this->_adapter_finance_payment->getFinancePaymentByID($fp_id);
-                $data['fc_ids'] = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($fp_id);
+                $data = $this->_adapter_finance_payment->getFinancePaymentByID($fpid);
+                $data['fcids'] = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($fpid);
                 if (!empty($data))
                 {
                     $json_array = [
@@ -247,11 +247,11 @@ class person_FinancePaymentController extends Zend_Controller_Action
         $finance_category_id = isset($params['category_parent_id']) ? intval($params['category_parent_id']) : 0;
 
         $conditions = [
-            'fp_status =?' => Bill_Constant::VALID_STATUS
+            'status =?' => Bill_Constant::VALID_STATUS
         ];
         if ('' != $payment_date)
         {
-            $conditions['fp_payment_date =?'] = $payment_date;
+            $conditions['payment_date =?'] = $payment_date;
         }
         if (0 !== $finance_category_id)
         {
@@ -259,23 +259,23 @@ class person_FinancePaymentController extends Zend_Controller_Action
             $fpids = $adapter_payment_map->getFpidByFcid($finance_category_id, 'create_time desc', $page_length, $start);
             if (!empty($fpids))
             {
-                $conditions['fp_id in (?)'] = $fpids;
+                $conditions['fpid in (?)'] = $fpids;
             }
             else
             {
                 $conditions['1 =?'] = 0;
             }
         }
-        $order_by = 'fp_payment_date desc';
+        $order_by = 'payment_date desc';
         $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
         $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $page_length, $start, $order_by);
         foreach ($data as &$value)
         {
-            $fc_ids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($value['fp_id']);
-            if (!empty($fc_ids))
+            $fcids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($value['fpid']);
+            if (!empty($fcids))
             {
                 $value['category'] =
-                    implode(',', $this->_adapter_finance_category->getFinanceCategoryNames($fc_ids));
+                    implode(',', $this->_adapter_finance_category->getFinanceCategoryNames($fcids));
             }
             else
             {
@@ -297,26 +297,26 @@ class person_FinancePaymentController extends Zend_Controller_Action
         return $json_data;
     }
 
-    private function _addFinancePaymentMap($fp_id, array $fc_ids)
+    private function _addFinancePaymentMap($fpid, array $fcids)
     {
         $add_time = date('Y-m-d H:i:s');
         $map_data = [
-            'fp_id' => 0,
-            'fc_id' => 0,
+            'fpid' => 0,
+            'fcid' => 0,
             'status' => Bill_Constant::VALID_STATUS,
             'create_time' => $add_time,
             'update_time' => $add_time
         ];
 
-        $map_data['fp_id'] = $fp_id;
-        foreach ($fc_ids as $category_id)
+        $map_data['fpid'] = $fpid;
+        foreach ($fcids as $category_id)
         {
-            $map_data['fc_id'] = $category_id;
+            $map_data['fcid'] = $category_id;
             $this->_adapter_finance_payment_map->insert($map_data);
         }
     }
     
-    private function _updateFinancePaymentMap($fp_id, array $fc_ids)
+    private function _updateFinancePaymentMap($fpid, array $fcids)
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
 
@@ -325,28 +325,28 @@ class person_FinancePaymentController extends Zend_Controller_Action
             'update_time' => date('Y-m-d H:i:s')
         ];
         $insert_data = [
-            'fp_id' => $fp_id,
-            'fc_id' => 0,
+            'fpid' => $fpid,
+            'fcid' => 0,
             'status' => Bill_Constant::VALID_STATUS,
             'create_time' => date('Y-m-d H:i:s'),
             'update_time' => date('Y-m-d H:i:s')
         ];
-        $origin_fc_ids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($fp_id);
-        $update_fc_ids = array_diff($origin_fc_ids, $fc_ids);
-        $insert_fc_ids = array_diff($fc_ids, $origin_fc_ids);
-        foreach ($update_fc_ids as $fc_id)
+        $origin_fcids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($fpid);
+        $update_fcids = array_diff($origin_fcids, $fcids);
+        $insert_fcids = array_diff($fcids, $origin_fcids);
+        foreach ($update_fcids as $fcid)
         {
             $where = [
-                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fp_id=?", $fp_id),
+                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fpid=?", $fpid),
                 $this->_adapter_finance_payment_map->getAdapter()->quoteInto("status=?", Bill_Constant::VALID_STATUS),
-                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fc_id=?", $fc_id),
+                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fcid=?", $fcid),
             ];
             $affected_rows += $this->_adapter_finance_payment_map->update($update_data, $where);
         }
 
-        foreach ($insert_fc_ids as $fc_id)
+        foreach ($insert_fcids as $fcid)
         {
-            $insert_data['fc_id'] = $fc_id;
+            $insert_data['fcid'] = $fcid;
             $affected_rows += $this->_adapter_finance_payment_map->insert($insert_data);
         }
 

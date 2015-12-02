@@ -31,18 +31,18 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
         return $data;
     }
 
-    public function getBackendUserByID($bu_id)
+    public function getBackendUserByID($buid)
     {
         return $this->select()->reset()
-            ->where('bu_id=?', $bu_id)
+            ->where('buid=?', $buid)
             ->query()->fetch();
     }
 
     public function getUserInfo($user_name)
     {
         return $this->select()->reset()
-            ->where('bu_name=?', $user_name)
-            ->where('bu_status=?', Bill_Constant::VALID_STATUS)
+            ->where('name=?', $user_name)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetch();
     }
 
@@ -50,9 +50,9 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
     {
         $count = $this->select()->reset()
             ->from($this->_name, 'count(*) as total')
-            ->where('bu_name = ?', $name)
-            ->where('bu_id!=?', $buid)
-            ->where('bu_status=?', Bill_Constant::VALID_STATUS)
+            ->where('name = ?', $name)
+            ->where('buid!=?', $buid)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
 
         return $count[0]['total'] == 0 ? false : true;
@@ -61,9 +61,9 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
     public function getUserName($buid)
     {
         $data = $this->select()->reset()
-            ->from($this->_name, 'bu_name')
-            ->where('bu_id=?', $buid)
+            ->from($this->_name, 'name')
+            ->where('buid=?', $buid)
             ->query()->fetch();
-        return isset($data['bu_name']) ? $data['bu_name'] : '';
+        return isset($data['name']) ? $data['name'] : '';
     }
 }

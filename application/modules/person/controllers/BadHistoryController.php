@@ -37,11 +37,11 @@ class person_BadHistoryController extends Zend_Controller_Action
             {
                 $date = date('Y-m-d H:i:s');
                 $data = [
-                    'bh_happen_date' => $occur_date,
-                    'bh_count' => $occur_count,
-                    'bh_status' => Bill_Constant::VALID_STATUS,
-                    'bh_create_time' => $date,
-                    'bh_update_time' => $date
+                    'happen_date' => $occur_date,
+                    'count' => $occur_count,
+                    'status' => Bill_Constant::VALID_STATUS,
+                    'create_time' => $date,
+                    'update_time' => $date
                 ];
                 $affected_rows = $this->_adapter_bad_history->insert($data);
                 $json_array = [
@@ -68,8 +68,8 @@ class person_BadHistoryController extends Zend_Controller_Action
         if ($this->getRequest()->isGet())
         {
             $params = $this->getRequest()->getQuery('params', []);
-            $bh_id = (isset($params['bh_id'])) ? intval($params['bh_id']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $history_data = $this->_adapter_bad_history->getBadHistoryDayByID($bh_id);
+            $bhid = (isset($params['bhid'])) ? intval($params['bhid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $history_data = $this->_adapter_bad_history->getBadHistoryDayByID($bhid);
             if (!empty($history_data))
             {
                 $json_array = [
@@ -95,15 +95,15 @@ class person_BadHistoryController extends Zend_Controller_Action
         if ($this->getRequest()->isPost())
         {
             $params = $this->getRequest()->getPost('params', []);
-            $bh_id = isset($params['bad_history_id']) ? intval($params['bad_history_id']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $bh_count = isset($params['bad_history_count']) ?  intval($params['bad_history_count']) : 0;
-            if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID && $bh_count > 0)
+            $bhid = isset($params['bad_history_id']) ? intval($params['bad_history_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $count = isset($params['bad_history_count']) ?  intval($params['bad_history_count']) : 0;
+            if ($bhid > Bill_Constant::INVALID_PRIMARY_ID && $count > 0)
             {
                 $update_data = [
-                    'bh_count' => $bh_count,
-                    'bh_update_time' => date('Y-m-d H:i:s')
+                    'count' => $count,
+                    'update_time' => date('Y-m-d H:i:s')
                 ];
-                $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id);
+                $where = $this->_adapter_bad_history->getAdapter()->quoteInto('bhid=?', $bhid);
                 $affected_rows = $this->_adapter_bad_history->update($update_data, $where);
                 $json_array = [
                     'data' => [
@@ -130,16 +130,16 @@ class person_BadHistoryController extends Zend_Controller_Action
         if ($this->getRequest()->isPost())
         {
             $params = $this->getRequest()->getPost('params', []);
-            $bh_id = isset($params['bh_id']) ? intval($params['bh_id']) : Bill_Constant::INVALID_PRIMARY_ID;
-            if ($bh_id > Bill_Constant::INVALID_PRIMARY_ID)
+            $bhid = isset($params['bhid']) ? intval($params['bhid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            if ($bhid > Bill_Constant::INVALID_PRIMARY_ID)
             {
                 $update_data = [
-                    'bh_status' => Bill_Constant::INVALID_STATUS,
-                    'bh_update_time' => date('Y-m-d H:i:s')
+                    'status' => Bill_Constant::INVALID_STATUS,
+                    'update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = [
-                    $this->_adapter_bad_history->getAdapter()->quoteInto('bh_id=?', $bh_id),
-                    $this->_adapter_bad_history->getAdapter()->quoteInto('bh_status=?', Bill_Constant::VALID_STATUS),
+                    $this->_adapter_bad_history->getAdapter()->quoteInto('bhid=?', $bhid),
+                    $this->_adapter_bad_history->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                 ];
                 $affected_rows = $this->_adapter_bad_history->update($update_data, $where);
                 $json_array = [
@@ -161,34 +161,12 @@ class person_BadHistoryController extends Zend_Controller_Action
         exit;
     }
 
-    public function fakeAction()
-    {
-        $init_date = date('Y-m-d');
-        $data = [
-            'bh_happen_date' => '',
-            'bh_count' => 1,
-            'bh_status' => Bill_Constant::VALID_STATUS,
-            'bh_create_time' => '',
-            'bh_update_time' => ''
-        ];
-        for ($i = 0; $i < 100; $i++)
-        {
-            $init_date = date('Y-m-d', strtotime($init_date . ' + 3 days'));
-            $data['bh_happen_date'] = $init_date;
-            $data['bh_create_time'] = $init_date;
-            $data['bh_update_time'] = $init_date;
-
-            $this->_adapter_bad_history->insert($data);
-        }
-        exit;
-    }
-
     private function _index()
     {
         $params = $this->_getParam('params', []);
         list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
-        $order_by = 'bh_create_time desc';
+        $order_by = 'create_time desc';
 
         $data = $this->_adapter_bad_history->getBadHistoryData($page_length, $start, $order_by);
         $total = $this->_adapter_bad_history->getTotalBadHistoryNumber();

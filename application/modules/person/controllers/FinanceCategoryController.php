@@ -42,12 +42,12 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                 if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0))
                 {
                     $data = [
-                        'fc_name' => $name,
-                        'fc_parent_id' => $parent_id,
-                        'fc_weight' => $weight,
-                        'fc_status' => Bill_Constant::VALID_STATUS,
-                        'fc_create_time' => $add_time,
-                        'fc_update_time' => $add_time
+                        'name' => $name,
+                        'parent_id' => $parent_id,
+                        'weight' => $weight,
+                        'status' => Bill_Constant::VALID_STATUS,
+                        'create_time' => $add_time,
+                        'update_time' => $add_time
                     ];
                     $affected_rows = $this->_adapter_finance_category->insert($data);
                     $json_array = [
@@ -82,21 +82,21 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             try
             {
                 $params = $this->getRequest()->getPost('params', []);
-                $fc_id = isset($params['finance_category_fc_id']) ? intval($params['finance_category_fc_id']) : 0;
+                $fcid = isset($params['finance_category_fcid']) ? intval($params['finance_category_fcid']) : 0;
                 $name = isset($params['finance_category_name']) ? trim($params['finance_category_name']) : '';
                 $parent_id = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
                 $weight = isset($params['finance_category_weight'])
                     ? intval($params['finance_category_weight']) : Bill_Constant::DEFAULT_WEIGHT;
 
-                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fc_id))
+                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fcid))
                 {
                     $data = [
-                        'fc_name' => $name,
-                        'fc_parent_id' => $parent_id,
-                        'fc_weight' => $weight,
-                        'fc_update_time' => date('Y-m-d H:i:s')
+                        'name' => $name,
+                        'parent_id' => $parent_id,
+                        'weight' => $weight,
+                        'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $where = $this->_adapter_finance_category->getAdapter()->quoteInto('fc_id=?', $fc_id);
+                    $where = $this->_adapter_finance_category->getAdapter()->quoteInto('fcid=?', $fcid);
                     $affected_rows = $this->_adapter_finance_category->update($data, $where);
                     $json_array = [
                         'data' => [
@@ -130,14 +130,14 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             try
             {
                 $params = $this->getRequest()->getPost('params', []);
-                $fc_id = isset($params['fc_id']) ? intval($params['fc_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+                $fcid = isset($params['fcid']) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 $update_data = [
-                    'fc_status' => Bill_Constant::INVALID_STATUS,
-                    'fc_update_time' => date('Y-m-d H:i:s')
+                    'status' => Bill_Constant::INVALID_STATUS,
+                    'update_time' => date('Y-m-d H:i:s')
                 ];
                 $where = [
-                    $this->_adapter_finance_category->getAdapter()->quoteInto('(fc_id=? or fc_parent_id=?)', $fc_id),
-                    $this->_adapter_finance_category->getAdapter()->quoteInto('fc_status=?', Bill_Constant::VALID_STATUS),
+                    $this->_adapter_finance_category->getAdapter()->quoteInto('(fcid=? or parent_id=?)', $fcid),
+                    $this->_adapter_finance_category->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                 ];
                 $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
                 $json_array = [
@@ -168,8 +168,8 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         if ($this->getRequest()->isGet())
         {
             $params = $this->getRequest()->getQuery('params', []);
-            $fc_id = (isset($params['fc_id'])) ? intval($params['fc_id']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapter_finance_category->getFinanceCategoryByID($fc_id);
+            $fcid = (isset($params['fcid'])) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $data = $this->_adapter_finance_category->getFinanceCategoryByID($fcid);
             if (!empty($data))
             {
                 $json_array = [
@@ -222,13 +222,13 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 
         $conditions = [
-            'fc_status =?' => Bill_Constant::VALID_STATUS
+            'status =?' => Bill_Constant::VALID_STATUS
         ];
         if ('' !== $keyword)
         {
-            $conditions['fc_name like ?'] = '%' . $keyword . '%';
+            $conditions['name like ?'] = '%' . $keyword . '%';
         }
-        $order_by = 'fc_weight desc';
+        $order_by = 'weight desc';
         $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);
         $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $page_length, $start, $order_by);
         foreach ($data as &$value)

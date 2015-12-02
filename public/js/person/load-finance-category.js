@@ -13,8 +13,8 @@ function loadMainCategory(selectID, isContainNoneOption) {
             }
             for (var i = 0; i < result.data.currentItemCount; i++) {
                 $('#' + selectID).append($('<option>', {
-                    value: result.data.items[i]['fc_id'],
-                    text: result.data.items[i]['fc_name']
+                    value: result.data.items[i]['fcid'],
+                    text: result.data.items[i]['name']
                 }));
             }
         } else {

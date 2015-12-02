@@ -15,18 +15,18 @@ function ajaxIndex() {
                 $('#tbl tbody').append(
                     $('<tr>')
                         .append($('<td>').text(result.data.startIndex + i))
-                        .append($('<td>').text(result.data.items[i]['dh_happen_date']))
-                        .append($('<td>').text(result.data.items[i]['dh_count']))
-                        .append($('<td>').text(result.data.items[i]['dh_create_time']))
-                        .append($('<td>').text(result.data.items[i]['dh_update_time']))
+                        .append($('<td>').text(result.data.items[i]['happen_date']))
+                        .append($('<td>').text(result.data.items[i]['count']))
+                        .append($('<td>').text(result.data.items[i]['create_time']))
+                        .append($('<td>').text(result.data.items[i]['update_time']))
                         .append($('<td>')
-                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['dh_id'], text: '修改'})
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['dhid'], text: '修改'})
                                 .click(function () {
                                     modifyDreamHistory(this.id);
                                 })
                             )
                             .append('  ')
-                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['dh_id'], text: '删除'})
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['dhid'], text: '删除'})
                                 .click(function () {
                                     deleteDreamHistory(this.id);
                                 })
@@ -62,15 +62,15 @@ $('#btn_add').on('click', function () {
 $('#DreamHistoryForm').on('submit', (function (event) {
     event.preventDefault();
 
-    var dh_id = $('#dream_history_id').val();
-    var type = (dh_id == '') ? 'add' : 'modify';
+    var dhid = $('#dream_history_id').val();
+    var type = (dhid == '') ? 'add' : 'modify';
     $('#btn_submit_dream_history').attr('disabled', true);
     var post_url = '/person/dream-history/' + type + '-dream-history';
     var post_data = {
         "params": $('#DreamHistoryForm').serializeObject()
     };
-    var msg_success = (dh_id == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-    var msg_error = (dh_id == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
+    var msg_success = (dhid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+    var msg_error = (dhid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
     var method = 'post';
     var success_function = function (result) {
         $('#DreamHistoryModal').modal('hide');
@@ -89,19 +89,19 @@ $('#DreamHistoryForm').on('submit', (function (event) {
 }));
 
 function modifyDreamHistory(modify_id) {
-    var dh_id = modify_id.substr('delete_'.length);
+    var dhid = modify_id.substr('delete_'.length);
     var post_url = '/person/dream-history/get-dream-history';
     var post_data = {
         "params": {
-            "dh_id": dh_id
+            "dhid": dhid
         }
     };
     var method = 'get';
     var success_function = function (result) {
         if (typeof result.data != 'undefined') {
-            $('#dream_history_date').val(result.data.dh_happen_date);
-            $('#dream_history_count').val(result.data.dh_count);
-            $('#dream_history_id').val(result.data.dh_id);
+            $('#dream_history_date').val(result.data.happen_date);
+            $('#dream_history_count').val(result.data.count);
+            $('#dream_history_id').val(result.data.dhid);
             $('#btn_submit_dream_history').attr('disabled', false);
             $('#DreamHistoryModal').modal('show');
         } else {
@@ -113,11 +113,11 @@ function modifyDreamHistory(modify_id) {
 
 function deleteDreamHistory(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
-        var dh_id = delete_id.substr('delete_'.length);
+        var dhid = delete_id.substr('delete_'.length);
         var post_url = '/person/dream-history/delete-dream-history';
         var post_data = {
             "params": {
-                "dh_id": dh_id
+                "dhid": dhid
             }
         };
         var method = 'post';
