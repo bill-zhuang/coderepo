@@ -55,12 +55,10 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
             'period' => [],
             'number' => [],
         ];
-        if (isset($_POST['select_date']))
-        {
+        if (isset($_POST['select_date'])) {
             $select_date = $_POST['select_date'];
             $group_data = $this->_adapter_dream_history->getTotalDreamHistoryGroupDataByYearMonth($select_date);
-            foreach ($group_data as $group_value)
-            {
+            foreach ($group_data as $group_value) {
                 $chart_data['period'][] = $group_value['period'];
                 $chart_data['number'][] = $group_value['number'];
             }
@@ -77,8 +75,7 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
             'number' => [],
         ];
         $all_data = $this->_adapter_dream_history->getTotalDreamHistoryDataByDay($start_date, $end_date);
-        foreach ($all_data as $key => $all_value)
-        {
+        foreach ($all_data as $key => $all_value) {
             $all_chart_data['period'][] = $all_value['period'];
             $all_chart_data['number'][] = $all_value['number'];
             $all_chart_data['interval'][] = ($key == 0) ? 0 :
@@ -95,8 +92,7 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
             'number' => [],
         ];
         $month_data = $this->_adapter_dream_history->getTotalDreamHistoryGroupData($start_date, $end_date);
-        foreach ($month_data as $month_value)
-        {
+        foreach ($month_data as $month_value) {
             $data['period'][] = $month_value['period'];
             $data['number'][] = $month_value['number'];
         }

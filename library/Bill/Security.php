@@ -19,13 +19,11 @@ class Bill_Security
 
     public function generateRandomKey($length = 32)
     {
-        if (!extension_loaded('mcrypt'))
-        {
+        if (!extension_loaded('mcrypt')) {
             throw new Exception('The mcrypt PHP extension is not installed.');
         }
         $bytes = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
-        if ($bytes === false)
-        {
+        if ($bytes === false) {
             throw new Exception('Unable to generate random bytes.');
         }
         return $bytes;

@@ -16,12 +16,9 @@ class Bill_Curl
     {
         $ch = curl_init();
         //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        if (strtolower($method) == 'get')
-        {
+        if (strtolower($method) == 'get') {
             curl_setopt($ch, CURLOPT_URL, $request_url . '?' . http_build_query($data));
-        }
-        else
-        {
+        } else {
             curl_setopt($ch, CURLOPT_URL, $request_url);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);

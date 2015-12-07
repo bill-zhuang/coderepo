@@ -10,8 +10,7 @@ class Bill_BaiduMap
         $address_content = self::_getBaiduAddressContent($address);
 
         $lng_lat_info = array();
-        if ($address_content['status'] == 0)
-        {
+        if ($address_content['status'] == 0) {
             $lng_lat_info['Longitude'] = $address_content['result']['location']['lng'];
             $lng_lat_info['Latitude'] = $address_content['result']['location']['lat'];
         }
@@ -27,8 +26,7 @@ class Bill_BaiduMap
         $decode_content = json_decode($lnglat_content, true);
 
         $city_province_info = array();
-        if ($decode_content['status'] == 0)
-        {
+        if ($decode_content['status'] == 0) {
             $city_province_info['City'] = $decode_content['result']['addressComponent']['city'];
             $city_province_info['Province'] = $decode_content['result']['addressComponent']['province'];
         }
@@ -40,8 +38,7 @@ class Bill_BaiduMap
     {
         $address_info = self::getLngLatByAddress($address);
 
-        if (!empty($address_info))
-        {
+        if (!empty($address_info)) {
             $city_province_info = self::getCityProvinceByLngLat($address_info['Latitude'], $address_info['Longitude']);
 
             $address_info['City'] = $city_province_info['City'];

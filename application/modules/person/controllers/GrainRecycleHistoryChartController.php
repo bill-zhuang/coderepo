@@ -53,12 +53,10 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             'period' => [],
             'number' => [],
         ];
-        if (isset($_POST['select_date']))
-        {
+        if (isset($_POST['select_date'])) {
             $select_date = $_POST['select_date'];
             $group_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupDataByYearMonth($select_date);
-            foreach ($group_data as $group_value)
-            {
+            foreach ($group_data as $group_value) {
                 $chart_data['period'][] = $group_value['period'];
                 $chart_data['number'][] = $group_value['number'];
             }
@@ -76,25 +74,19 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         ];
         $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
         $all_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryDataByDay($start_date, $end_date);
-        foreach ($all_data as $all_value)
-        {
+        foreach ($all_data as $all_value) {
             $all_chart_data['period'][] = $all_value['period'];
             $all_chart_data['number'][] = $all_value['number'];
         }
 
-        if (count($all_chart_data['period']) != $day_interval)
-        {
+        if (count($all_chart_data['period']) != $day_interval) {
             $sort_chart_data = [];
-            for($i = 1; $i <= $day_interval; $i++)
-            {
+            for($i = 1; $i <= $day_interval; $i++) {
                 $period_date = date('Y-m-d', strtotime($start_date . ' + ' . $i . ' day'));
                 $sort_chart_data['period'][] = $period_date;
-                if (!in_array($period_date, $all_chart_data['period']))
-                {
+                if (!in_array($period_date, $all_chart_data['period'])) {
                     $sort_chart_data['number'][] = 0;
-                }
-                else
-                {
+                } else {
                     $period_key = array_search($period_date, $all_chart_data['period']);
                     $sort_chart_data['number'][] = $all_chart_data['number'][$period_key];
                 }
@@ -112,8 +104,7 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             'number' => [],
         ];
         $month_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupData($start_date, $end_date);
-        foreach ($month_data as $month_value)
-        {
+        foreach ($month_data as $month_value) {
             $data['period'][] = $month_value['period'];
             $data['number'][] = $month_value['number'];
         }

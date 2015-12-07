@@ -22,15 +22,12 @@ class Bill_XmlParse
         $domDoc->load($filename);
         $items = $domDoc->getElementsByTagName($subRootTagName);
 
-        foreach ($items as $item)
-        {
+        foreach ($items as $item) {
             $data = array();
 
-            foreach ($xmlKeys as $xmlkey)
-            {
+            foreach ($xmlKeys as $xmlkey) {
                 $rs = $item->getElementsByTagName($xmlkey);
                 $data[$xmlkey] = $rs->item(0)->nodeValue;
-
             }
 
             $result[] = $data;
@@ -48,8 +45,7 @@ class Bill_XmlParse
     {
         $xml = simplexml_load_file($filename);
 
-        foreach ($xml->children() as $child)
-        {
+        foreach ($xml->children() as $child) {
             //node data process...
         }
     }
@@ -62,31 +58,25 @@ class Bill_XmlParse
     public function XmlReaderParse($filename, $subRootTagName)
     {
         $xml = new XMLReader();
-        if (!$xml->open($filename, null, 1 << 19))
-        {
+        if (!$xml->open($filename, null, 1 << 19)) {
             echo "Failed to open input file: {$filename}.<br>";
             return;
         }
 
-        while ($xml->read())
-        {
+        while ($xml->read()) {
             $productData = array();
 
-            if ($xml->nodeType == XMLReader::ELEMENT && $xml->name == $subRootTagName)
-            {
+            if ($xml->nodeType == XMLReader::ELEMENT && $xml->name == $subRootTagName) {
                 $productData = NULL;
 
-                while ($xml->read())
-                {
-                    if ($xml->nodeType == XMLReader::ELEMENT)
-                    {
+                while ($xml->read()) {
+                    if ($xml->nodeType == XMLReader::ELEMENT) {
                         $key = $xml->name;
                         $xml->read();
                         $productData[$key] = $xml->value;
                     }
 
-                    if ($xml->nodeType == XMLReader::END_ELEMENT && $xml->name == $subRootTagName)
-                    {
+                    if ($xml->nodeType == XMLReader::END_ELEMENT && $xml->name == $subRootTagName) {
                         //node data process...
                     }
                 }

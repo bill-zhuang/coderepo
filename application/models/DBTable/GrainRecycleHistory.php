@@ -10,8 +10,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
     public function getGrainRecycleHistoryCount(array $conditions)
     {
         $select = $this->select()->reset()->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value)
-        {
+        foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
@@ -21,8 +20,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
     public function getGrainRecycleHistoryData(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value)
-        {
+        foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select
@@ -53,12 +51,10 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         $select = $this->select()->reset()
             ->from($this->_name, array('date_format(happen_date, "%Y-%m") as period', 'sum(count) as number'))
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '')
-        {
+        if ($start_date !== '') {
             $select->where('happen_date>=?', $start_date);
         }
-        if ($end_date !== '')
-        {
+        if ($end_date !== '') {
             $select->where('happen_date<=?', $end_date);
         }
 
@@ -72,12 +68,10 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         $select = $this->select()->reset()
             ->from($this->_name, array('happen_date as period', 'count as number'))
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '')
-        {
+        if ($start_date !== '') {
             $select->where('happen_date>=?', $start_date);
         }
-        if ($end_date !== '')
-        {
+        if ($end_date !== '') {
             $select->where('happen_date<=?', $end_date);
         }
 

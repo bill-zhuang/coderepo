@@ -28,13 +28,11 @@ class person_DreamHistoryController extends Zend_Controller_Action
     public function addDreamHistoryAction()
     {
         $json_array = [];
-        if ($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $params = $this->getRequest()->getPost('params', []);
             $occur_date = isset($params['dream_history_date']) ? $params['dream_history_date'] : '';
             $occur_count = isset($params['dream_history_count']) ? intval($params['dream_history_count']) : 0;
-            if (Bill_Util::validDate($occur_date) && $occur_count > 0)
-            {
+            if (Bill_Util::validDate($occur_date) && $occur_count > 0) {
                 $date = date('Y-m-d H:i:s');
                 $data = [
                     'happen_date' => $occur_date,
@@ -52,8 +50,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -65,21 +62,18 @@ class person_DreamHistoryController extends Zend_Controller_Action
 
     public function getDreamHistoryAction()
     {
-        if ($this->getRequest()->isGet())
-        {
+        if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $dhid = (isset($params['dhid'])) ? intval($params['dhid']) : Bill_Constant::INVALID_PRIMARY_ID;
             $history_data = $this->_adapter_dream_history->getDreamHistoryDayByID($dhid);
-            if (!empty($history_data))
-            {
+            if (!empty($history_data)) {
                 $json_array = [
                     'data' => $history_data,
                 ];
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -92,14 +86,12 @@ class person_DreamHistoryController extends Zend_Controller_Action
     public function modifyDreamHistoryAction()
     {
         $json_array = [];
-        if ($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $params = $this->getRequest()->getPost('params', []);
             $dhid = isset($params['dream_history_id']) ? intval($params['dream_history_id']) : Bill_Constant::INVALID_PRIMARY_ID;
             $count = isset($params['dream_history_count']) ?  intval($params['dream_history_count']) : 0;
             $date = isset($params['dream_history_date']) ? trim($params['dream_history_date']) : '';
-            if ($dhid > Bill_Constant::INVALID_PRIMARY_ID && $count > 0 && Bill_Util::validDate($date))
-            {
+            if ($dhid > Bill_Constant::INVALID_PRIMARY_ID && $count > 0 && Bill_Util::validDate($date)) {
                 $update_data = [
                     'happen_date' => $date,
                     'count' => $count,
@@ -115,8 +107,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -129,12 +120,10 @@ class person_DreamHistoryController extends Zend_Controller_Action
     public function deleteDreamHistoryAction()
     {
         $json_array = [];
-        if ($this->getRequest()->isPost())
-        {
+        if ($this->getRequest()->isPost()) {
             $params = $this->getRequest()->getPost('params', []);
             $dhid = isset($params['dhid']) ? intval($params['dhid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            if ($dhid > Bill_Constant::INVALID_PRIMARY_ID)
-            {
+            if ($dhid > Bill_Constant::INVALID_PRIMARY_ID) {
                 $update_data = [
                     'status' => Bill_Constant::INVALID_STATUS,
                     'update_time' => date('Y-m-d H:i:s')
@@ -152,8 +141,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];

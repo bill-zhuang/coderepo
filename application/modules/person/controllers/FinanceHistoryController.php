@@ -111,18 +111,13 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
         $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date, $end_date);
         $sort_chart_data = [];
-        if (count($all_chart_data['period']) != $day_interval)
-        {
-            for($i = 1; $i <= $day_interval; $i++)
-            {
+        if (count($all_chart_data['period']) != $day_interval) {
+            for($i = 1; $i <= $day_interval; $i++) {
                 $period_date = date('Y-m-d', strtotime($start_date . ' + ' . $i . ' day'));
                 $sort_chart_data['period'][] = $period_date;
-                if (!in_array($period_date, $all_chart_data['period']))
-                {
+                if (!in_array($period_date, $all_chart_data['period'])) {
                     $sort_chart_data['payment'][] = 0;
-                }
-                else
-                {
+                } else {
                     $period_key = array_search($period_date, $all_chart_data['period']);
                     $sort_chart_data['payment'][] = $all_chart_data['payment'][$period_key];
                 }
@@ -140,28 +135,20 @@ class person_FinanceHistoryController extends Zend_Controller_Action
             'payment' => [],
         ];
         $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData($start_date, $end_date);
-        foreach ($month_data as $key => $month_value)
-        {
-            if ($key > 0)
-            {
+        foreach ($month_data as $key => $month_value) {
+            if ($key > 0) {
                 $previous_month = date('Y-m', strtotime($month_value['period'] . ' - 1 month'));
-                while (1)
-                {
-                    if ($previous_month != end($data['period']))
-                    {
+                while (1) {
+                    if ($previous_month != end($data['period'])) {
                         $data['period'][] = date('Y-m', strtotime(end($data['period']) . ' + 1 month'));
                         $data['payment'][] = 0;
-                    }
-                    else
-                    {
+                    } else {
                         $data['period'][] = $month_value['period'];
                         $data['payment'][] = $month_value['payment'];
                         break;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $data['period'][] = $month_value['period'];
                 $data['payment'][] = $month_value['payment'];
             }
@@ -193,8 +180,7 @@ class person_FinanceHistoryController extends Zend_Controller_Action
             'payment' => [],
         ];
         $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date, $end_date);
-        foreach ($all_data as $all_value)
-        {
+        foreach ($all_data as $all_value) {
             $all_chart_data['period'][] = $all_value['period'];
             $all_chart_data['payment'][] = $all_value['payment'];
         }
@@ -209,8 +195,7 @@ class person_FinanceHistoryController extends Zend_Controller_Action
             'payment' => [],
         ];
         $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByCategory($start_date);
-        foreach ($all_data as $all_value)
-        {
+        foreach ($all_data as $all_value) {
             $all_chart_data['category'][] = $this->_categories[$all_value['fcid']];
             $all_chart_data['payment'][] = $all_value['payment'];
         }

@@ -10,8 +10,7 @@ class Bill_GoogleMap
         $address_content = self::_getAddressContents($address);
 
         $lng_lat_array = array();
-        if ($address_content['status'] == 'OK')
-        {
+        if ($address_content['status'] == 'OK') {
             $lng_lat_array['Longitude'] = $address_content['results'][0]['geometry']['location']['lng'];
             $lng_lat_array['Latitude'] = $address_content['results'][0]['geometry']['location']['lat'];
         }
@@ -24,17 +23,13 @@ class Bill_GoogleMap
         $address_content = self::_getAddressContents($address);
 
         $city_province_array = array();
-        if ($address_content['status'] == 'OK')
-        {
-            foreach ($address_content['results'][0]['address_components'] as $address_componet)
-            {
-                if ($address_componet['types'][0] == 'locality')
-                {
+        if ($address_content['status'] == 'OK') {
+            foreach ($address_content['results'][0]['address_components'] as $address_componet) {
+                if ($address_componet['types'][0] == 'locality') {
                     $city_province_array['City'] = $address_componet['long_name'];
                 }
 
-                if ($address_componet['types'][0] == 'administrative_area_level_1')
-                {
+                if ($address_componet['types'][0] == 'administrative_area_level_1') {
                     $city_province_array['Province'] = $address_componet['long_name'];
                 }
             }
@@ -49,12 +44,9 @@ class Bill_GoogleMap
         $content = file_get_contents(self::$google_url_api_direction_prefix . $http_query);
         $decode_content = json_decode($content, true);
 
-        if ($decode_content['status'] == 'OK')
-        {
+        if ($decode_content['status'] == 'OK') {
             return ($decode_content['routes'][0]['legs'][0]['distance']['value'] / 1000);
-        }
-        else
-        {
+        } else {
             return 'get distance failed';
         }
     }

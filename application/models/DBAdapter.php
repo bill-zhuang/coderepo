@@ -15,12 +15,9 @@ class Application_Model_DBAdapter
      */
     public static function getDBAdapter($section_name = 'localdb')
     {
-        if (Zend_Registry::isRegistered($section_name))
-        {
+        if (Zend_Registry::isRegistered($section_name)) {
             return Zend_Registry::get($section_name);
-        }
-        else
-        {
+        } else {
             throw new Exception('Database config error!');
         }
     }

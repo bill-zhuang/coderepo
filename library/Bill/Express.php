@@ -7,13 +7,11 @@ class Bill_Express
         $request_url = 'http://www.kuaidi100.com/query';
         $method = 'GET';
         $express_company = $this->_getExpressCompanyName($express_code);
-        if ($express_company !== false)
-        {
+        if ($express_company !== false) {
             $param = array('type' => $express_company, 'postid' => $express_code);
             $json_data = Bill_Curl::sendRequestByCurl($request_url, $param, $method);
             $decode_data = json_decode($json_data, true);
-            if ($decode_data['message'] == 'ok')
-            {
+            if ($decode_data['message'] == 'ok') {
                 return $decode_data['data'];
             }
         }
@@ -29,8 +27,7 @@ class Bill_Express
 
         $json_data = Bill_Curl::sendRequestByCurl($request_url, $param, $method);
         $decode_data = json_decode($json_data, true);
-        if (!empty($decode_data))
-        {
+        if (!empty($decode_data)) {
             return $decode_data[0]['comCode'];
         }
 

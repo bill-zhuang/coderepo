@@ -17,8 +17,7 @@ class Application_Model_DBTable_<?php echo $model_name; ?> extends Application_M
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value)
-        {
+        foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
@@ -28,8 +27,7 @@ class Application_Model_DBTable_<?php echo $model_name; ?> extends Application_M
     public function get<?php echo $model_name; ?>Data(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value)
-        {
+        foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select

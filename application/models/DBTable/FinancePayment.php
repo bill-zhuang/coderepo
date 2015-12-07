@@ -17,8 +17,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value)
-        {
+        foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
@@ -28,8 +27,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
     public function getFinancePaymentData(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value)
-        {
+        foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select
@@ -51,12 +49,10 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
         $select = $this->select()->reset()
             ->from($this->_name, ['date_format(payment_date, "%Y-%m") as period', 'sum(payment) as payment'])
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '')
-        {
+        if ($start_date !== '') {
             $select->where('payment_date>=?', $start_date);
         }
-        if ($end_date !== '')
-        {
+        if ($end_date !== '') {
             $select->where('payment_date<=?', $end_date);
         }
         return $select

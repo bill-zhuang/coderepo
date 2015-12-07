@@ -60,10 +60,8 @@ echo PHP_EOL;
 <?php if(!empty($model_names)){ ?>
     public function add<?php echo $controller_name; ?>Action()
     {
-        if ($this->getRequest()->isPost())
-        {
-            try 
-            {
+        if ($this->getRequest()->isPost()) {
+            try {
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
                 $data = [
@@ -78,8 +76,7 @@ echo PHP_EOL;
                 ];
                 $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->insert($data);
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-                if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
-                {
+                if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS) {
                     $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($affected_rows, '<?php echo $form_element_prefix; ?>_image');
                 }
 <?php } ?>
@@ -89,16 +86,13 @@ echo PHP_EOL;
                         'affectedRows' => $affected_rows
                     ],
                 ];
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From add<?php echo $controller_name; ?>');
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -110,15 +104,12 @@ echo PHP_EOL;
     
     public function modify<?php echo $controller_name; ?>Action()
     {
-        if ($this->getRequest()->isPost())
-        {
-            try
-            {
+        if ($this->getRequest()->isPost()) {
+            try {
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
                 $<?php echo $primary_id; ?> = intval($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>']);
-                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID)
-                {
+                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $data = [
 <?php foreach ($table_data as $key => $default_value)
 {
@@ -132,8 +123,7 @@ echo PHP_EOL;
                     $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
                     $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($data, $where);
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-                    if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
-                    {
+                    if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS) {
                         $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, '<?php echo $form_element_prefix; ?>_image');
                     }
 <?php } ?>
@@ -144,16 +134,13 @@ echo PHP_EOL;
                         ]
                     ];
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From modify<?php echo $controller_name; ?>');
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -165,15 +152,12 @@ echo PHP_EOL;
     
     public function delete<?php echo $controller_name; ?>Action()
     {
-        if ($this->getRequest()->isPost())
-        {
-            try
-            {
+        if ($this->getRequest()->isPost()) {
+            try {
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
                 $<?php echo $primary_id; ?> = isset($params['<?php echo $primary_id; ?>']) ? intval($params['<?php echo $primary_id; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
-                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID)
-                {
+                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $update_data = [
                         'status' => Bill_Constant::VALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s'),
@@ -191,16 +175,13 @@ echo PHP_EOL;
                         ]
                     ];
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From delete<?php echo $controller_name; ?>');
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -212,21 +193,18 @@ echo PHP_EOL;
     
     public function get<?php echo $controller_name; ?>Action()
     {
-        if ($this->getRequest()->isGet())
-        {
+        if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $<?php echo $primary_id; ?> = (isset($params['<?php echo $primary_id; ?>'])) ? intval($params['<?php echo $primary_id; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
             $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>ByID($<?php echo $primary_id; ?>);
-            if (!empty($data))
-            {
+            if (!empty($data)) {
                 $json_array = [
                     'data' => $data,
                 ];
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -273,8 +251,7 @@ echo PHP_EOL;
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         $image_url = $this->_upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, $file_id);
-        if ($image_url != '')
-        {
+        if ($image_url != '') {
             $update_data = [
                 '<?php echo $form_element_prefix; ?>_imgurl' => $image_url,
                 '<?php echo $form_element_prefix; ?>_update_time' => date('Y-m-d H:i:s')
@@ -298,18 +275,14 @@ echo PHP_EOL;
         $base64_contents = [];
         $preg_img = '/<img.*?src="([^"]+)"/';
         $is_match = preg_match_all($preg_img, $content, $matches);
-        if ($is_match > 0)
-        {
-            foreach ($matches[1] as $value)
-            {
-                if ('http' != substr($value, 0, 4))
-                {
+        if ($is_match > 0) {
+            foreach ($matches[1] as $value) {
+                if ('http' != substr($value, 0, 4)) {
                     $base64_contents[] = $value;
                 }
             }
         }
-        if (!empty($base64_contents))
-        {
+        if (!empty($base64_contents)) {
             $aliyun_upload = new Bill_Tools_Uploadfiles();
             $img_urls = $aliyun_upload->uploadImageByBase64Content($base64_contents, '{action_object_name}');
             $content = str_replace($base64_contents, $img_urls, $content);

@@ -17,12 +17,10 @@ class Application_Model_Auth
 
     public function logIn($username, $password, $table_name = null, $database_adapter = null)
     {
-        if ($table_name == null)
-        {
+        if ($table_name == null) {
             $table_name = 'backend_user';
         }
-        if ($database_adapter == null)
-        {
+        if ($database_adapter == null) {
             $database = new Application_Model_DBTable_BackendUser();
             $database_adapter = $database->getAdapter();
         }
@@ -36,8 +34,7 @@ class Application_Model_Auth
         $user_info->setExpirationSeconds(G_SESSIONTIMEOUT);
         $result = $auth->authenticate($this->authAdapter);
 
-        if($result->isValid())
-        {
+        if($result->isValid()) {
             $storage = $auth->getStorage();
             $storage->write($this->authAdapter->getResultRowObject());
         }
@@ -55,13 +52,10 @@ class Application_Model_Auth
         $auth = Zend_Auth::getInstance();
         $auth->setStorage(new Zend_Auth_Storage_Session('user_info'));
 
-        if($auth->hasIdentity())
-        {
+        if($auth->hasIdentity()) {
             $identity = $auth->getIdentity();
             return $identity;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -71,36 +65,26 @@ class Application_Model_Auth
         $auth = Zend_Auth::getInstance();
         $auth->setStorage(new Zend_Auth_Storage_Session('user_info'));
 
-        if($auth->hasIdentity())
-        {
+        if($auth->hasIdentity()) {
             $identity = $auth->getIdentity();
             $role = $identity->role; //role field in table backend_user
             $user_info = new Zend_Session_Namespace('user_info');
             $user_info->setExpirationSeconds(G_SESSIONTIMEOUT);
             return $role;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     public static function getClientIp()
     {
-        if ($_SERVER['REMOTE_ADDR'])
-        {
+        if ($_SERVER['REMOTE_ADDR']) {
             $cip = $_SERVER['REMOTE_ADDR'];
-        }
-        elseif (getenv("REMOTE_ADDR"))
-        {
+        } else if (getenv("REMOTE_ADDR")) {
             $cip = getenv("REMOTE_ADDR");
-        }
-        elseif (getenv("HTTP_CLIENT_IP"))
-        {
+        } else if (getenv("HTTP_CLIENT_IP")) {
             $cip = getenv("HTTP_CLIENT_IP");
-        }
-        else
-        {
+        } else {
             $cip = "unknown";
         }
         return $cip;

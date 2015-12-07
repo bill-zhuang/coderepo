@@ -23,8 +23,7 @@ class person_ConsoleController extends Zend_Controller_Action
         $adapter_payment_map = new Application_Model_DBTable_FinancePaymentMap();
 
         $payment_data = $adapter_payment->getAllPaymentDataForTransfer();
-        foreach ($payment_data as $payment_value)
-        {
+        foreach ($payment_data as $payment_value) {
             $map_data = [
                 'fpid' => $payment_value['fpid'],
                 'fcid' => $payment_value['fcid'],
@@ -41,15 +40,12 @@ class person_ConsoleController extends Zend_Controller_Action
         $regex = '/^(\w+)\s+(\w+)\s+([^\(]+)/';
         $adapter_backend_log = new Application_Model_DBTable_BackendLog();
         $log_data = $adapter_backend_log->getAllBlidAndContent();
-        foreach ($log_data as $log_value)
-        {
+        foreach ($log_data as $log_value) {
             $match = preg_match($regex, $log_value['content'], $matches);
-            if ($match)
-            {
+            if ($match) {
                 $type = '';
                 $table = '';
-                switch($matches[1])
-                {
+                switch($matches[1]) {
                     case 'insert':
                     case 'delete':
                         $type = $matches[1];
@@ -63,8 +59,7 @@ class person_ConsoleController extends Zend_Controller_Action
                         break;
                 }
 
-                if ($type !== '' && $table !== '')
-                {
+                if ($type !== '' && $table !== '') {
                     $update_data = [
                         'type' => $type,
                         'table' => $table,
@@ -82,11 +77,9 @@ class person_ConsoleController extends Zend_Controller_Action
         $opts = new Zend_Console_Getopt('c');
         $args = $opts->getRemainingArgs();
         $user_name = isset($args[0]) ? $args[0] : '';
-        if (preg_match('/^[\da-zA-Z]+[\da-zA-Z_]*$/', $user_name))
-        {
+        if (preg_match('/^[\da-zA-Z]+[\da-zA-Z_]*$/', $user_name)) {
             $adapter_backend_user = new Application_Model_DBTable_BackendUser();
-            if (!$adapter_backend_user->isUserNameExist($user_name, Bill_Constant::INVALID_PRIMARY_ID))
-            {
+            if (!$adapter_backend_user->isUserNameExist($user_name, Bill_Constant::INVALID_PRIMARY_ID)) {
                 $security = new Bill_Security();
                 $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
                 $insert_data = [
@@ -100,14 +93,10 @@ class person_ConsoleController extends Zend_Controller_Action
                 ];
                 $adapter_backend_user->insert($insert_data);
                 echo 'User create successfully.';
-            }
-            else
-            {
+            } else {
                 echo 'User name already exist, change another one.';
             }
-        }
-        else
-        {
+        } else {
             echo 'Account name only accept letter a-z & A-Z & _, and _ not allowed at first letter.';
         }
     }

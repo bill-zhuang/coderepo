@@ -37,12 +37,10 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
         $select = $this->select()->reset()
             ->from($this->_name, array('date_format(happen_date, "%Y-%m") as period', 'sum(count) as number'))
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '')
-        {
+        if ($start_date !== '') {
             $select->where('happen_date>=?', $start_date);
         }
-        if ($end_date !== '')
-        {
+        if ($end_date !== '') {
             $select->where('happen_date<=?', $end_date);
         }
         return $select
@@ -64,12 +62,10 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
         $select = $this->select()->reset()
             ->from($this->_name, array('happen_date as period', 'count as number'))
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '')
-        {
+        if ($start_date !== '') {
             $select->where('happen_date>=?', $start_date);
         }
-        if ($end_date !== '')
-        {
+        if ($end_date !== '') {
             $select->where('happen_date<=?', $end_date);
         }
 

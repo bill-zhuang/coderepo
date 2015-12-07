@@ -9,8 +9,7 @@ class Bill_Network
     {
         $socket_con = fsockopen($host, 80, $error_no, $error_str, 10);
 
-        if ($socket_con)
-        {
+        if ($socket_con) {
             //$script_url=$remote_house/script.php?parameters=...
             $socket_data = "GET $script_url HTTP/1.1\r\n";
             $socket_data .= "Host: $host\r\n";
@@ -22,9 +21,7 @@ class Bill_Network
                 echo fgets($socket_con, 128);
             }*/
             fclose($socket_con);
-        }
-        else
-        {
+        } else {
             echo "$error_str ($error_no)<br />\n";
         }
     }

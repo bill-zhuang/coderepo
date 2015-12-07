@@ -59,33 +59,27 @@ class Bill_Download
      */
     public function curlSingleDownload($url, $fileName, $dir = null)
     {
-        if ($dir != null)
-        {
-            if (!file_exists($dir))
-            {
+        if ($dir != null) {
+            if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
         }
 
         $fullPath = ($dir == null) ? $fileName : $dir . $fileName;
 
-        if (file_exists($fullPath))
-        {
+        if (file_exists($fullPath)) {
             return;
             //unlink($fullPath);
         }
 
         $fp = fopen($fullPath, 'w+');
 
-        if ($fp)
-        {
+        if ($fp) {
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_FILE, $fp);
             curl_exec($ch);
             curl_close($ch);
-        }
-        else
-        {
+        } else {
             echo "Download {$fileName} file from {$url} failed.<br>";
             return;
         }
@@ -103,20 +97,16 @@ class Bill_Download
      * <p>download files at one time, default 100.</p>*/
     public function curlMultipleDownload(array $filenameUrl, $dir, $downloadNum = 100)
     {
-        if (!file_exists($dir))
-        {
+        if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
         }
 
         $mh = curl_multi_init();
         $urlhundred = array_chunk($filenameUrl, $downloadNum, true);
 
-        foreach ($urlhundred as $nameurls)
-        {
-            foreach ($nameurls as $filename => $url)
-            {
-                if (!is_file($dir . $filename))
-                {
+        foreach ($urlhundred as $nameurls) {
+            foreach ($nameurls as $filename => $url) {
+                if (!is_file($dir . $filename)) {
                     $conn[$filename] = curl_init($url);
                     $fp[$filename] = fopen($dir . $filename, "w+");
 
@@ -127,13 +117,11 @@ class Bill_Download
                 }
             }
 
-            do
-            {
+            do {
                 $n = curl_multi_exec($mh, $active);
             } while ($active);
 
-            foreach ($nameurls as $filename => $url)
-            {
+            foreach ($nameurls as $filename => $url) {
                 curl_multi_remove_handle($mh, $conn[$filename]);
                 curl_close($conn[$filename]);
                 fclose($fp[$filename]);

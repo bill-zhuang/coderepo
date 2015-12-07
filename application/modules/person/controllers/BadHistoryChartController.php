@@ -35,8 +35,7 @@ class person_BadHistoryChartController extends Zend_Controller_Action
             'number' => [],
         ];
         $all_data = $this->_adapter_bad_history->getTotalBadHistoryDataByDay();
-        foreach ($all_data as $key => $all_value)
-        {
+        foreach ($all_data as $key => $all_value) {
             $all_chart_data['period'][] = $all_value['period'];
             $all_chart_data['number'][] = $all_value['number'];
             $all_chart_data['interval'][] = ($key == 0) ? 0 :
@@ -45,8 +44,7 @@ class person_BadHistoryChartController extends Zend_Controller_Action
 
         $total = count($all_data);
         $current_date = date('Y-m-d');
-        if ($all_chart_data['period'][$total - 1] != $current_date)
-        {
+        if ($all_chart_data['period'][$total - 1] != $current_date) {
             $all_chart_data['period'][] = date('Y-m-d');
             $all_chart_data['number'][] = 1;
             $all_chart_data['interval'][] =

@@ -4,13 +4,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     protected function _initConfig()
     {
-        try
-        {
+        try {
             $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', null, true);
             Zend_Registry::set('config', $config);
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             echo $e->getMessage();
             die('Init config failed.');
         }
@@ -18,14 +15,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     protected function _initLocalDB()
     {
-        try
-        {
+        try {
             $config = Zend_Registry::get('config');
             $db_adapter = Zend_Db::factory($config->localdb->adapter, $config->localdb->toArray());
             Zend_Registry::set('localdb', $db_adapter);
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             echo $e->getMessage();
             die('Init local db failed.');
         }
@@ -43,8 +37,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     protected function _initGetopt()
     {
-        if(php_sapi_name() === 'cli' || defined('STDIN'))
-        {
+        if(php_sapi_name() === 'cli' || defined('STDIN')) {
             $opts = new Zend_Console_Getopt(
                 array(
                     'index|i' => 'index',
@@ -53,8 +46,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'createUser|c' => 'create user',
                 )
             );
-            if(isset($opts->index))
-            {
+            if(isset($opts->index)) {
                 $route = new Zend_Controller_Router_Route_Hostname(
                     '',
                     array(
@@ -64,8 +56,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     )
                 );
             }
-            if (isset($opts->transferPaymentCategory))
-            {
+            if (isset($opts->transferPaymentCategory)) {
                 $route = new Zend_Controller_Router_Route_Hostname(
                     '',
                     array(
@@ -75,8 +66,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     )
                 );
             }
-            if (isset($opts->updateLog))
-            {
+            if (isset($opts->updateLog)) {
                 $route = new Zend_Controller_Router_Route_Hostname(
                     '',
                     array(
@@ -86,8 +76,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     )
                 );
             }
-            if (isset($opts->createUser))
-            {
+            if (isset($opts->createUser)) {
                 $route = new Zend_Controller_Router_Route_Hostname(
                     '',
                     array(
@@ -98,8 +87,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 );
             }
 
-            if(isset($route))
-            {
+            if(isset($route)) {
                 $router = Zend_Controller_Front::getInstance()->getRouter();
                 $router->addRoute('', $route);
             }
@@ -115,8 +103,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 function errorHandler($error_number, $error_message, $filename, $line_number, $vars)
 {
-    if ($error_number == E_NOTICE || $error_number == E_WARNING || $error_number == E_STRICT)
-    {
+    if ($error_number == E_NOTICE || $error_number == E_WARNING || $error_number == E_STRICT) {
         return;
     }
     $title = 'Error from errorHandler';
@@ -132,8 +119,7 @@ function errorHandler($error_number, $error_message, $filename, $line_number, $v
 function shutDownFunction()
 {
     $error = error_get_last();
-    if (!empty($error))
-    {
+    if (!empty($error)) {
         errorHandler($error['type'], $error['message'], $error['file'], $error['line'], '');
     }
 }

@@ -10,8 +10,7 @@ class Bill_Mail
 
     public static function send($title, $body, $receiver = null, $attachment = null, $charset = 'utf-8')
     {
-        if (!Bill_Util::isProductionEnv() && !Bill_Util::isAlphaEnv())
-        {
+        if (!Bill_Util::isProductionEnv() && !Bill_Util::isAlphaEnv()) {
             return true;
         }
 
@@ -22,13 +21,11 @@ class Bill_Mail
         $mail->setFrom(self::$_username, self::$_username);
 
         $receivers = self::_initReceivers($receiver);
-        for ($i = 0, $len = count($receivers); $i < $len; $i++)
-        {
+        for ($i = 0, $len = count($receivers); $i < $len; $i++) {
             $mail->addTo($receiver[$i]);
         }
 
-        if ($attachment != null)
-        {
+        if ($attachment != null) {
             $mail->createAttachment(
                 file_get_contents($attachment),
                 Zend_Mime::TYPE_OCTETSTREAM,
@@ -59,13 +56,11 @@ class Bill_Mail
 
     private static function _initReceivers($receiver)
     {
-        if (is_array($receiver) && count($receiver) == 0)
-        {
+        if (is_array($receiver) && count($receiver) == 0) {
             return [self::$_receiver];
         }
 
-        if ($receiver == null)
-        {
+        if ($receiver == null) {
             return [self::$_receiver];
         }
 

@@ -28,10 +28,8 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     public function addFinanceCategoryAction()
     {
         $json_array = [];
-        if ($this->getRequest()->isPost())
-        {
-            try
-            {
+        if ($this->getRequest()->isPost()) {
+            try {
                 $params = $this->getRequest()->getPost('params', []);
                 $name = isset($params['finance_category_name']) ? trim($params['finance_category_name']) : '';
                 $parent_id = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
@@ -39,8 +37,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                     ? intval($params['finance_category_weight']) : Bill_Constant::DEFAULT_WEIGHT;
                 $add_time = date('Y-m-d H:i:s');
 
-                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0))
-                {
+                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0)) {
                     $data = [
                         'name' => $name,
                         'parent_id' => $parent_id,
@@ -56,15 +53,12 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                         ],
                     ];
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 Bill_Util::handleException($e, 'Error From addFinanceCategory');
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -77,10 +71,8 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     public function modifyFinanceCategoryAction()
     {
         $json_array = [];
-        if ($this->getRequest()->isPost())
-        {
-            try
-            {
+        if ($this->getRequest()->isPost()) {
+            try {
                 $params = $this->getRequest()->getPost('params', []);
                 $fcid = isset($params['finance_category_fcid']) ? intval($params['finance_category_fcid']) : 0;
                 $name = isset($params['finance_category_name']) ? trim($params['finance_category_name']) : '';
@@ -88,8 +80,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                 $weight = isset($params['finance_category_weight'])
                     ? intval($params['finance_category_weight']) : Bill_Constant::DEFAULT_WEIGHT;
 
-                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fcid))
-                {
+                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fcid)) {
                     $data = [
                         'name' => $name,
                         'parent_id' => $parent_id,
@@ -104,15 +95,12 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                         ],
                     ];
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 Bill_Util::handleException($e, 'Error From modifyFinanceCategory');
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -125,10 +113,8 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     public function deleteFinanceCategoryAction()
     {
         $json_array = [];
-        if ($this->getRequest()->isPost())
-        {
-            try
-            {
+        if ($this->getRequest()->isPost()) {
+            try {
                 $params = $this->getRequest()->getPost('params', []);
                 $fcid = isset($params['fcid']) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 $update_data = [
@@ -145,15 +131,12 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                         'affectedRows' => $affected_rows,
                     ]
                 ];
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 Bill_Util::handleException($e, 'Error From deleteFinanceCategory');
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -165,21 +148,18 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     
     public function getFinanceCategoryAction()
     {
-        if ($this->getRequest()->isGet())
-        {
+        if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $fcid = (isset($params['fcid'])) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
             $data = $this->_adapter_finance_category->getFinanceCategoryByID($fcid);
-            if (!empty($data))
-            {
+            if (!empty($data)) {
                 $json_array = [
                     'data' => $data,
                 ];
             }
         }
 
-        if (!isset($json_array['data']))
-        {
+        if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
@@ -192,8 +172,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     public function getFinanceSubcategoryAction()
     {
         $data = [];
-        if (isset($_GET['parent_id']))
-        {
+        if (isset($_GET['parent_id'])) {
             $parent_id = intval($_GET['parent_id']);
             $data = $this->_adapter_finance_category->getFinanceSubcategory($parent_id);
         }
@@ -224,15 +203,13 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS
         ];
-        if ('' !== $keyword)
-        {
+        if ('' !== $keyword) {
             $conditions['name like ?'] = '%' . $keyword . '%';
         }
         $order_by = 'weight desc';
         $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);
         $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $current_page, $page_length, $order_by);
-        foreach ($data as &$value)
-        {
+        foreach ($data as &$value) {
             $value['parent'] = $value['fc_parent_id'] == 0 ?
                 '无' : $this->_adapter_finance_category->getParentCategoryName($value['fc_parent_id']);
         }

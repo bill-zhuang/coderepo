@@ -39,15 +39,13 @@ class person_BackendLogController extends Zend_Controller_Action
         $conditions = [
             'status=?' => Bill_Constant::VALID_STATUS
         ];
-        if ('' !== $keyword)
-        {
+        if ('' !== $keyword) {
             $conditions['content like ?'] = '%' . $keyword . '%';
         }
         $order_by = 'blid DESC';
         $total = $this->_adapter_backend_log->getBackendLogCount($conditions);
         $data = $this->_adapter_backend_log->getBackendLogData($conditions, $current_page, $page_length, $order_by);
-        foreach ($data as &$value)
-        {
+        foreach ($data as &$value) {
             $value['name'] = $this->_adapter_backend_user->getUserName($value['buid']);
         }
 

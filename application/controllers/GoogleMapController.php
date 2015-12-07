@@ -18,20 +18,14 @@ class GoogleMapController extends Zend_Controller_Action
     {
         $json_array = [];
         $params = $this->_getParam('params', []);
-        if(isset($params['location']))
-        {
+        if(isset($params['location'])) {
             $coordinate_info = Bill_GoogleMap::getLngLatByAddress($params['location']);
-            if (!empty($coordinate_info))
-            {
+            if (!empty($coordinate_info)) {
                 $json_array['data'] = $coordinate_info;
-            }
-            else
-            {
+            } else {
                 $json_array['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Fetch Location coordinate failed.');
             }
-        }
-        else
-        {
+        } else {
             $json_array['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Param location not provided.');
         }
         
@@ -60,8 +54,7 @@ class GoogleMapController extends Zend_Controller_Action
         $lng_diff = 121.43 - 121.06;
         $lat_diff = 31.21 - 30.55;
         $lng_lat = array();
-        for($i = 0; $i < 100; $i++)
-        {
+        for($i = 0; $i < 100; $i++) {
             $lng_lat[] = array('Longitude' => 120.51 + $lng_diff * lcg_value(), 'Latitude' => 30.40 + $lat_diff * lcg_value());
         }
 
