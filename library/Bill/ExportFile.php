@@ -14,7 +14,7 @@ class Bill_ExportFile
         exit;
     }
 
-    //char only with alphabatic will save success. chinese or other failed.
+    //char only with alphabetic will save success. chinese or other failed.
     public static function exportExcel($filename, $xls_content)
     {
         ob_clean();

@@ -24,13 +24,13 @@ class Bill_GoogleMap
 
         $city_province_array = array();
         if ($address_content['status'] == 'OK') {
-            foreach ($address_content['results'][0]['address_components'] as $address_componet) {
-                if ($address_componet['types'][0] == 'locality') {
-                    $city_province_array['City'] = $address_componet['long_name'];
+            foreach ($address_content['results'][0]['address_components'] as $address_component) {
+                if ($address_component['types'][0] == 'locality') {
+                    $city_province_array['City'] = $address_component['long_name'];
                 }
 
-                if ($address_componet['types'][0] == 'administrative_area_level_1') {
-                    $city_province_array['Province'] = $address_componet['long_name'];
+                if ($address_component['types'][0] == 'administrative_area_level_1') {
+                    $city_province_array['Province'] = $address_component['long_name'];
                 }
             }
         }

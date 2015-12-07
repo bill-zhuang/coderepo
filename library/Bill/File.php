@@ -9,7 +9,7 @@ class Bill_File
         return $path_info['extension'];
     }
 
-    public static function moveUploadFile($upload_id, $destnation_directory)
+    public static function moveUploadFile($upload_id, $destination_directory)
     {
         if ($_FILES && array_key_exists($upload_id, $_FILES) && $_FILES[$upload_id]['size'] != 0) {
             $upload_path = $_FILES[$upload_id]['tmp_name'];
@@ -18,7 +18,7 @@ class Bill_File
             //or use unix timestamp to rename filename.
             $dest_filename = time() . '.' . self::getFileExtension($_FILES[$upload_id]['name']);
 
-            $move_ok = move_uploaded_file($upload_path, $destnation_directory . $dest_filename);
+            $move_ok = move_uploaded_file($upload_path, $destination_directory . $dest_filename);
 
             if ($move_ok) {
                 return $dest_filename;
