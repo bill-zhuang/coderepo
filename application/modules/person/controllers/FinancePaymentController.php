@@ -256,7 +256,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         if (0 !== $finance_category_id)
         {
             $adapter_payment_map = new Application_Model_DBTable_FinancePaymentMap();
-            $fpids = $adapter_payment_map->getFpidByFcid($finance_category_id, 'create_time desc', $page_length, $start);
+            $fpids = $adapter_payment_map->getFpidByFcid($finance_category_id, 'create_time desc', $current_page, $page_length);
             if (!empty($fpids))
             {
                 $conditions['fpid in (?)'] = $fpids;
@@ -268,7 +268,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         }
         $order_by = 'payment_date desc';
         $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
-        $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $page_length, $start, $order_by);
+        $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $current_page, $page_length, $order_by);
         foreach ($data as &$value)
         {
             $fcids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($value['fpid']);

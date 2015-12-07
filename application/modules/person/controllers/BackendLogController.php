@@ -45,7 +45,7 @@ class person_BackendLogController extends Zend_Controller_Action
         }
         $order_by = 'blid DESC';
         $total = $this->_adapter_backend_log->getBackendLogCount($conditions);
-        $data = $this->_adapter_backend_log->getBackendLogData($conditions, $page_length, $start, $order_by);
+        $data = $this->_adapter_backend_log->getBackendLogData($conditions, $current_page, $page_length, $order_by);
         foreach ($data as &$value)
         {
             $value['name'] = $this->_adapter_backend_user->getUserName($value['buid']);

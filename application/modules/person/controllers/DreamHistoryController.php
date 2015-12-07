@@ -170,7 +170,7 @@ class person_DreamHistoryController extends Zend_Controller_Action
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
         $order_by = 'create_time desc';
 
-        $data = $this->_adapter_dream_history->getDreamHistoryData($page_length, $start, $order_by);
+        $data = $this->_adapter_dream_history->getDreamHistoryData($current_page, $page_length, $order_by);
         $total = $this->_adapter_dream_history->getTotalDreamHistoryNumber();
 
         $json_data = [

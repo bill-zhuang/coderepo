@@ -13,12 +13,12 @@ class Application_Model_DBTable_DreamHistory extends Application_Model_DBTableFa
         parent::__construct('dream_history');
     }
 
-    public function getDreamHistoryData($limit, $offset, $order_by)
+    public function getDreamHistoryData($startPage, $pageLength, $order_by)
     {
         return $this->select()->reset()
             ->where('status=?', Bill_Constant::VALID_STATUS)
-            ->limit($limit, $offset)
             ->order($order_by)
+            ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
     }
 

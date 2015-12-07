@@ -230,7 +230,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         }
         $order_by = 'weight desc';
         $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);
-        $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $page_length, $start, $order_by);
+        $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $current_page, $page_length, $order_by);
         foreach ($data as &$value)
         {
             $value['parent'] = $value['fc_parent_id'] == 0 ?

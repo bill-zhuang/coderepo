@@ -23,7 +23,7 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
         return $count[0]['total'];
     }
 
-    public function getBackendLogData(array $conditions, $count, $offset, $order_by)
+    public function getBackendLogData(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value)
@@ -31,7 +31,7 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
             $select->where($cond, $value);
         }
         $data = $select
-            ->limit($count, $offset)
+            ->limitPage($startPage, $pageLength)
             ->order($order_by)
             ->query()->fetchAll();
         return $data;

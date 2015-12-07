@@ -25,7 +25,7 @@ class Application_Model_DBTable_<?php echo $model_name; ?> extends Application_M
         return intval($count[0]['total']);
     }
 
-    public function get<?php echo $model_name; ?>Data(array $conditions, $count, $offset, $order_by)
+    public function get<?php echo $model_name; ?>Data(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value)
@@ -33,8 +33,8 @@ class Application_Model_DBTable_<?php echo $model_name; ?> extends Application_M
             $select->where($cond, $value);
         }
         $data = $select
-            ->limit($count, $offset)
             ->order($order_by)
+            ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
     }

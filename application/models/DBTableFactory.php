@@ -9,13 +9,16 @@
 class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
 {
     private $_table_name;
+    //private $_primary;
 
-    public function __construct($table_name, $section_name = 'localdb')
+    public function __construct($table_name, /*$primary,*/ $section_name = 'localdb')
     {
         $this->_table_name = $table_name;
+        //$this->_primary = $primary;
         $config = [
             'db' => Application_Model_DBAdapter::getDBAdapter($section_name),
-            'name' => $table_name
+            'name' => $table_name,
+            //'primary' => $primary,
         ];
         parent::__construct($config);
     }

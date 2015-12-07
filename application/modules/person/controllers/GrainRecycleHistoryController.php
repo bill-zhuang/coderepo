@@ -174,7 +174,7 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         ];
         $order_by = 'grhid DESC';
         $total = $this->_adapter_grain_recycle_history->getGrainRecycleHistoryCount($conditions);
-        $data = $this->_adapter_grain_recycle_history->getGrainRecycleHistoryData($conditions, $page_length, $start, $order_by);
+        $data = $this->_adapter_grain_recycle_history->getGrainRecycleHistoryData($conditions, $current_page, $page_length, $order_by);
 
         $json_data = [
             'data' => [

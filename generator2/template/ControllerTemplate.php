@@ -251,7 +251,7 @@ echo PHP_EOL;
         ];
         $order_by = '<?php echo $primary_id; ?> ASC'; //TODO reset order by
         $total = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>Count($conditions);
-        $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>Data($conditions, $page_length, $start, $order_by);
+        $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>Data($conditions, $current_page, $page_length, $order_by);
 
         $json_data = [
             'data' => [

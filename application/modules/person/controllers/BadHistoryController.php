@@ -168,7 +168,7 @@ class person_BadHistoryController extends Zend_Controller_Action
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
         $order_by = 'create_time desc';
 
-        $data = $this->_adapter_bad_history->getBadHistoryData($page_length, $start, $order_by);
+        $data = $this->_adapter_bad_history->getBadHistoryData($current_page, $page_length, $order_by);
         $total = $this->_adapter_bad_history->getTotalBadHistoryNumber();
 
         $json_array = [

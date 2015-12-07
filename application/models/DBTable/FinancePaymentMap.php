@@ -19,7 +19,7 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
         return $count[0]['total'];
     }
 
-    public function getFinancePaymentMapData(array $conditions, $count, $offset, $order_by)
+    public function getFinancePaymentMapData(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value)
@@ -27,8 +27,8 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
             $select->where($cond, $value);
         }
         $data = $select
-            ->limit($count, $offset)
             ->order($order_by)
+            ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
     }

@@ -13,12 +13,12 @@ class Application_Model_DBTable_BadHistory extends Application_Model_DBTableFact
         parent::__construct('bad_history');
     }
 
-    public function getBadHistoryData($limit, $offset, $order_by)
+    public function getBadHistoryData($startPage, $pageLength, $order_by)
     {
         return $this->select()->reset()
             ->where('status=?', Bill_Constant::VALID_STATUS)
-            ->limit($limit, $offset)
             ->order($order_by)
+            ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
     }
 

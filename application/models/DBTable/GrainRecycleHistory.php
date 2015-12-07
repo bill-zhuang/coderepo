@@ -18,7 +18,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         return intval($count[0]['total']);
     }
 
-    public function getGrainRecycleHistoryData(array $conditions, $count, $offset, $order_by)
+    public function getGrainRecycleHistoryData(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value)
@@ -26,7 +26,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
             $select->where($cond, $value);
         }
         $data = $select
-            ->limit($count, $offset)
+            ->limitPage($startPage, $pageLength)
             ->order($order_by)
             ->query()->fetchAll();
         return $data;

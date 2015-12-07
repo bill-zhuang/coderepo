@@ -19,14 +19,16 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
         return $count[0]['total'];
     }
 
-    public function getBackendUserData(array $conditions, $count, $offset, $order_by)
+    public function getBackendUserData(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value)
         {
             $select->where($cond, $value);
         }
-        $data = $select->limit($count, $offset)->order($order_by)
+        $data = $select
+            ->order($order_by)
+            ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
     }

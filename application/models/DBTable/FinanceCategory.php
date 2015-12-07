@@ -19,14 +19,16 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
         return $count[0]['total'];
     }
 
-    public function getFinanceCategoryData(array $conditions, $count, $offset, $order_by)
+    public function getFinanceCategoryData(array $conditions, $startPage, $pageLength, $order_by)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value)
         {
             $select->where($cond, $value);
         }
-        $data = $select->limit($count, $offset)->order($order_by)
+        $data = $select
+            ->order($order_by)
+            ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
     }
