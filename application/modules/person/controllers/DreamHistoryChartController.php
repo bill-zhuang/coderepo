@@ -22,9 +22,10 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
     public function ajaxDreamHistoryPeriodAction()
     {
         $params = $this->_getParam('params', []);
-        $start_date = isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date'])
+        $start_date = (isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date']))
             ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 year'));
-        $end_date = isset($params['day_end_date']) ? trim($params['day_end_date']) : '';
+        $end_date = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
+            ? trim($params['day_end_date']) : '';
         $data = $this->_getAllDreamHistoryDataByDay($start_date, $end_date);
         $json_array = [
             'data' => $data
@@ -37,8 +38,10 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
     public function ajaxDreamHistoryMonthAction()
     {
         $params = trim($this->_getParam('params', []));
-        $start_date = isset($params['month_start_date']) ? trim($params['month_start_date']) : date('Y-m', strtotime('-1 year')) . '-01';
-        $end_date = isset($params['month_end_date']) ? trim($params['month_end_date']) : '';
+        $start_date = (isset($params['month_start_date']) && Bill_Util::validDate($params['month_start_date']))
+            ? trim($params['month_start_date']) : date('Y-m', strtotime('-11 month')) . '-01';
+        $end_date = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
+            ? trim($params['month_end_date']) : '';
         $data = $this->_getAllDreamHistoryDataByMonth($start_date, $end_date);
         $json_array = [
             'data' => $data
