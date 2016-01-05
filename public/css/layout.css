@@ -17,7 +17,7 @@
     position: fixed;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 200px) {
     .bill-sidebar {
         bottom: 10px;
         left: 0;
@@ -31,10 +31,21 @@
 }
 
 .bill-content {
-    margin-top: 80px;
-    bottom: 20px;
     height: 100%;
     float: right;
+    position: fixed;
+}
+
+@media (min-width: 800px) {
+    .bill-content {
+        bottom: 30px;
+        right: 0;
+        z-index: 1000;
+        padding-top: 90px;
+        padding-right: 5px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 }
 
 .bill-footer {
