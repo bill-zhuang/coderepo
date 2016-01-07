@@ -27,12 +27,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     protected function _initAlphaDB()
     {
-        //init alpha db like local
+        try {
+            $config = Zend_Registry::get('config');
+            $db_adapter = Zend_Db::factory($config->alphadb->adapter, $config->alphadb->toArray());
+            Zend_Registry::set('alphadb', $db_adapter);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            die('Init alpha db failed.');
+        }
     }
 
     protected function _initReleaseDB()
     {
-        //init release db like local
+        try {
+            $config = Zend_Registry::get('config');
+            $db_adapter = Zend_Db::factory($config->releasedb->adapter, $config->releasedb->toArray());
+            Zend_Registry::set('releasedb', $db_adapter);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            die('Init release db failed.');
+        }
     }
 
     protected function _initGetopt()
