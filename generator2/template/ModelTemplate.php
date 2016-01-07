@@ -1,7 +1,7 @@
 <?php
 /* @var $model_name string model name */
 /* @var $table_name string table name */
-/* @var $primary_id string table primary id */
+/* @var $primary_id array table primary id */
 
 echo "<?php\n";
 ?>
@@ -37,10 +37,10 @@ class Application_Model_DBTable_<?php echo $model_name; ?> extends Application_M
         return $data;
     }
 
-    public function get<?php echo $model_name; ?>ByID($<?php echo $primary_id; ?>)
+    public function get<?php echo $model_name; ?>ByID($<?php echo $primary_id[0]; ?>)
     {
         return $this->select()->reset()
-            ->where('<?php echo $primary_id ?>=?', $<?php echo $primary_id ?>)
+            ->where('<?php echo $primary_id[0] ?>=?', $<?php echo $primary_id[0] ?>)
             ->query()->fetch();
     }
 }

@@ -5,7 +5,7 @@
 /* @var $all_batch_id string check all checkbox id */
 /* @var $batch_id string checkbox id */
 /* @var $table_row_data array html table, key is name, value is data key */
-/* @var $primary_id string primary key name */
+/* @var $primary_id array primary key name */
 /* @var $table_data array table fields and default value */
 /* @var $form_name_postfix string form postfix name*/
 /* @var $form_element_prefix string prefix of form element */
@@ -21,7 +21,7 @@ $(document).ready(function() {
     ajaxIndex();
 });
 
-<?php if ($primary_id !== ''){ ?>
+<?php if ($primary_id[0] !== ''){ ?>
 function ajaxIndex() {
     var get_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/ajax-index';
     var get_data = {
@@ -37,7 +37,7 @@ function ajaxIndex() {
 <?php if($all_batch_id !== ''){ ?>
                         .append(
                             $('<td>').append(
-                                $('<input>', {type: 'checkbox', name: '<?php echo $primary_id; ?>', value: result.data[i]['<?php echo $primary_id; ?>']})
+                                $('<input>', {type: 'checkbox', name: '<?php echo $primary_id[0]; ?>', value: result.data[i]['<?php echo $primary_id[0]; ?>']})
                                     .click(function(){closeBatch(this, '<?php echo $batch_id; ?>')})
                             )
                         )
@@ -47,11 +47,11 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data[i]['<?php echo $value; ?>']))
 <?php } ?>
                         .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data[i]['<?php echo $primary_id; ?>'], text: '修改'})
+                        .append($('<a>', {href: '#', id:'modify_' + result.data[i]['<?php echo $primary_id[0]; ?>'], text: '修改'})
                             .click(function(){modify<?php echo $form_name_postfix; ?>(this.id);})
                         )
                         .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data[i]['<?php echo $primary_id; ?>'], text: '删除'})
+                        .append($('<a>', {href: '#', id:'delete_' + result.data[i]['<?php echo $primary_id[0]; ?>'], text: '删除'})
                             .click(function(){delete<?php echo $form_name_postfix; ?>(this.id);})
                         )
                     )
@@ -91,7 +91,7 @@ $('#btn_add').on('click', function(){
 <?php if ($is_ckeditor){ ?>
     CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.setData('');
 <?php } ?>
-    $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>').val('');
+    $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>').val('');
     $('#btn_submit_<?php echo $form_element_prefix; ?>').attr('disabled', false);
     $('#modal<?php echo $form_name_postfix; ?>').modal('show');
 });
@@ -99,8 +99,8 @@ $('#btn_add').on('click', function(){
 $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
     event.preventDefault();
 
-    var <?php echo $primary_id; ?> = $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>').val();
-    var type = (<?php echo $primary_id; ?> == '') ? 'add' : 'modify';
+    var <?php echo $primary_id[0]; ?> = $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>').val();
+    var type = (<?php echo $primary_id[0]; ?> == '') ? 'add' : 'modify';
     var error_num = validInput(type);
     if(error_num == 0) {
         $('#btn_submit_<?php echo $form_element_prefix; ?>').attr('disabled', true);
@@ -112,8 +112,8 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
         var post_data = {
             "params": $('#form<?php echo $form_name_postfix; ?>').serializeObject()
         };
-        var msg_success = (<?php echo $primary_id; ?> == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-        var msg_error = (<?php echo $primary_id; ?> == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
+        var msg_success = (<?php echo $primary_id[0]; ?> == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
+        var msg_error = (<?php echo $primary_id[0]; ?> == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
         var success_function = function(result){
             $('#modal<?php echo $form_name_postfix; ?>').modal('hide');
@@ -133,11 +133,11 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
 }));
 
 function modify<?php echo $form_name_postfix; ?>(modify_id) {
-    var <?php echo $primary_id; ?> = modify_id.substr('modify_'.length);
+    var <?php echo $primary_id[0]; ?> = modify_id.substr('modify_'.length);
     var get_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/get-<?php echo strtolower($controller_name); ?>';
     var get_data = {
         "params": {
-            "<?php echo $primary_id; ?>" : <?php echo $primary_id . PHP_EOL; ?>
+            "<?php echo $primary_id[0]; ?>" : <?php echo $primary_id[0] . PHP_EOL; ?>
         }
     };
     var method = 'get';
@@ -162,11 +162,11 @@ function modify<?php echo $form_name_postfix; ?>(modify_id) {
 
 function delete<?php echo $form_name_postfix; ?>(delete_id) {
     if (confirm(MESSAGE_DELETE_CONFIRM)) {
-        var <?php echo $primary_id; ?> = delete_id.substr('delete_'.length);
+        var <?php echo $primary_id[0]; ?> = delete_id.substr('delete_'.length);
         var post_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
         var post_data = {
             "params": {
-                "<?php echo $primary_id; ?>" : <?php echo $primary_id . PHP_EOL; ?>
+                "<?php echo $primary_id[0]; ?>" : <?php echo $primary_id[0] . PHP_EOL; ?>
             }
         };
         var method = 'post';
@@ -191,7 +191,7 @@ function validInput(type)
     var error_num = 0;
 <?php foreach ($table_data as $key => $default_value)
 {
-    if ($key != $primary_id)
+    if ($key != $primary_id[0])
     {
         if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){
             echo str_repeat(' ', 4 * 1) . 'var image = $(\'#' . $form_element_prefix . '_image\').val();' . PHP_EOL;
@@ -208,14 +208,14 @@ function validInput(type)
 $table_keys_no_pkid = [];
 foreach ($table_keys as $table_key)
 {
-    if ($table_key != $primary_id)
+    if ($table_key != $primary_id[0])
     {
         $table_keys_no_pkid[] = $table_key;
     }
 }
 foreach ($table_data as $key => $default_value)
 {
-    if ($key != $primary_id)
+    if ($key != $primary_id[0])
     {
         if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){
             echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (type == \'add\' && image == \'\') {' . PHP_EOL;

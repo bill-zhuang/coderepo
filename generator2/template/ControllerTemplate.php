@@ -4,7 +4,7 @@
 /* @var $controller_name string controller name */
 /* @var $table_prefix string table name prefix */
 /* @var $table_names array table names */
-/* @var $primary_id string table primary key */
+/* @var $primary_id array table primary key */
 /* @var $table_data array table fields and default value */
 /* @var $form_element_prefix string prefix of form element */
 /* @var $tab_types array tab types for select */
@@ -67,7 +67,7 @@ echo PHP_EOL;
                 $data = [
 <?php foreach ($table_data as $key => $default_value)
 {
-    if ($key != $primary_id)
+    if ($key != $primary_id[0])
     {
         echo str_repeat(' ', 4 * 5) . "'" . $key . "' => " . $default_value . "," . PHP_EOL;
     }
@@ -108,23 +108,23 @@ echo PHP_EOL;
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
-                $<?php echo $primary_id; ?> = intval($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>']);
-                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
+                $<?php echo $primary_id[0]; ?> = intval($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>']);
+                if ($<?php echo $primary_id[0]; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $data = [
 <?php foreach ($table_data as $key => $default_value)
 {
-    if ($key != $primary_id)
+    if ($key != $primary_id[0])
     {
         echo str_repeat(' ', 4 * 6) . "'" . $key . "' => " . $default_value . "," . PHP_EOL;
     }
 }
 ?>
                     ];
-                    $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
+                    $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id[0]; ?>=?', $<?php echo $primary_id[0]; ?>);
                     $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($data, $where);
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
                     if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS) {
-                        $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, '<?php echo $form_element_prefix; ?>_image');
+                        $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, '<?php echo $form_element_prefix; ?>_image');
                     }
 <?php } ?>
                     $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
@@ -156,15 +156,15 @@ echo PHP_EOL;
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
-                $<?php echo $primary_id; ?> = isset($params['<?php echo $primary_id; ?>']) ? intval($params['<?php echo $primary_id; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
-                if ($<?php echo $primary_id; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
+                $<?php echo $primary_id[0]; ?> = isset($params['<?php echo $primary_id[0]; ?>']) ? intval($params['<?php echo $primary_id[0]; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
+                if ($<?php echo $primary_id[0]; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $update_data = [
                         'status' => Bill_Constant::VALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s'),
                         //TODO set update data
                     ];
                     $where = [
-                        $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>),
+                        $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id[0]; ?>=?', $<?php echo $primary_id[0]; ?>),
                         $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                     ];
                     $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($update_data, $where);
@@ -195,8 +195,8 @@ echo PHP_EOL;
     {
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
-            $<?php echo $primary_id; ?> = (isset($params['<?php echo $primary_id; ?>'])) ? intval($params['<?php echo $primary_id; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>ByID($<?php echo $primary_id; ?>);
+            $<?php echo $primary_id[0]; ?> = (isset($params['<?php echo $primary_id[0]; ?>'])) ? intval($params['<?php echo $primary_id[0]; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>ByID($<?php echo $primary_id[0]; ?>);
             if (!empty($data)) {
                 $json_array = [
                     'data' => $data,
@@ -227,7 +227,7 @@ echo PHP_EOL;
         $conditions = [
             '<?php echo ($status_name === '') ? 'todo status' : $status_name; ?> =?' => Bill_Constant::VALID_STATUS
         ];
-        $order_by = '<?php echo $primary_id; ?> ASC'; //TODO reset order by
+        $order_by = '<?php echo $primary_id[0]; ?> ASC'; //TODO reset order by
         $total = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>Count($conditions);
         $data = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->get<?php echo $model_names[0]; ?>Data($conditions, $current_page, $page_length, $order_by);
 
@@ -247,26 +247,26 @@ echo PHP_EOL;
     }
     
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-    private function _update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, $file_id)
+    private function _update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $file_id)
     {
         $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        $image_url = $this->_upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, $file_id);
+        $image_url = $this->_upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $file_id);
         if ($image_url != '') {
             $update_data = [
                 '<?php echo $form_element_prefix; ?>_imgurl' => $image_url,
                 '<?php echo $form_element_prefix; ?>_update_time' => date('Y-m-d H:i:s')
             ];
-            $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id; ?>=?', $<?php echo $primary_id; ?>);
+            $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id[0]; ?>=?', $<?php echo $primary_id[0]; ?>);
             $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($update_data, $where);
         }
 
         return $affected_rows;
     }
 
-    private function _upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id; ?>, $file_id)
+    private function _upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $file_id)
     {
         $aliyun = new Bill_Tools_Uploadfiles();
-        $image_url = $aliyun->uploadImageFrom<?php echo $model_names[0]; ?>($file_id, $<?php echo $primary_id; ?>);
+        $image_url = $aliyun->uploadImageFrom<?php echo $model_names[0]; ?>($file_id, $<?php echo $primary_id[0]; ?>);
         return $image_url;
     }
 

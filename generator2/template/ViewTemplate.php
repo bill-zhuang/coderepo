@@ -5,7 +5,7 @@
 /* @var $all_batch_id string check all checkbox id */
 /* @var $batch_id string checkbox id */
 /* @var $table_row_data array html table, key is name, value is data key */
-/* @var $primary_id string primary key name */
+/* @var $primary_id array primary key name */
 /* @var $table_data array table fields and default value */
 /* @var $form_name_postfix string form postfix name*/
 /* @var $form_element_prefix string prefix of form element */
@@ -30,7 +30,7 @@ $table_keys = array_keys($table_data);
     <!-- panel body -->
     <div class="panel-body">
         <div class="row">
-<?php if ($primary_id !== ''){ ?>
+<?php if ($primary_id[0] !== ''){ ?>
             <form action="#" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     关键字: <input type="text" class="form-control" id="keyword" name="keyword"/>
@@ -71,7 +71,7 @@ $table_keys = array_keys($table_data);
             </form>
 <?php } ?>
         </div><hr>
-<?php if($primary_id !== ''){ ?>
+<?php if($primary_id[0] !== ''){ ?>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
 <?php if(!empty($tab_types)){ ?>
@@ -118,7 +118,7 @@ foreach ($table_row_data as $key => $value)
     </div>
 <?php } ?>
 </div>
-<?php if ($primary_id !== ''){ ?>
+<?php if ($primary_id[0] !== ''){ ?>
 <!-- modal -->
 <div id="modal<?php echo $form_name_postfix; ?>" class="modal fade" >
     <div class="modal-dialog bill_modal_<?php echo $view_modal_size; ?>" >
@@ -131,7 +131,7 @@ foreach ($table_row_data as $key => $value)
                 <div class="modal-body">
 <?php foreach ($table_data as $key => $default_value)
 {
-    if ($key != $primary_id && strpos($key, 'create_time') === false && strpos($key, 'update_time') === false && strpos($key, 'status') === false)
+    if ($key != $primary_id[0] && strpos($key, 'create_time') === false && strpos($key, 'update_time') === false && strpos($key, 'status') === false)
     {
         echo str_repeat(' ', 4 * 5) . '<div class="input-group">' . PHP_EOL;
         echo str_repeat(' ', 4 * 6) . '<span class="input-group-addon">' . $key . '：</span>' . PHP_EOL;
@@ -149,7 +149,7 @@ foreach ($table_row_data as $key => $value)
                             <textarea class="ckeditor" id="ck_<?php echo $form_element_prefix; ?>_intro"></textarea>
                             <input type="hidden" id="<?php echo $form_element_prefix; ?>_intro" name="<?php echo $form_element_prefix; ?>_intro"/>
 <?php } ?>
-                        <input type="hidden" id="<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>" name="<?php echo $form_element_prefix; ?>_<?php echo $primary_id; ?>"/>
+                        <input type="hidden" id="<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>" name="<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>"/>
                     </div>
 
                     <div class="modal-footer">
@@ -175,7 +175,7 @@ foreach ($table_row_data as $key => $value)
 <script src="/js/public/util.js"></script>
 <script src="/js/public/common.js"></script>
 <script src="/js/public/alertInfo.js"></script>
-<?php if ($primary_id !== ''){ ?>
+<?php if ($primary_id[0] !== ''){ ?>
 <script src="/js/public/pagination.js"></script>
 <?php } ?>
 <script src="/js/<?php echo strtolower($controller_name); ?>.js"></script>

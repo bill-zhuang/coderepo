@@ -65,7 +65,7 @@ class TemplateGenerator
         }
         else
         {
-            $this->_primary_id = '';
+            $this->_primary_id = [];
             $this->_model_names = [];
         }
 
@@ -329,12 +329,12 @@ class TemplateGenerator
     private function _getTablePrimaryID($table_name)
     {
         $definitions = $this->_getTableInfo($table_name);
-        $primary_id = '';
+        $primary_id = [];
         foreach ($definitions as $definition)
         {
             if ($definition['Key'] === 'PRI')
             {
-                $primary_id = $definition['Field'];
+                $primary_id[] = $definition['Field'];
             }
         }
 
