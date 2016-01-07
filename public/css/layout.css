@@ -40,7 +40,6 @@
     .bill-content {
         bottom: 30px;
         right: 0;
-        z-index: 1000;
         padding-top: 90px;
         padding-right: 5px;
         overflow-x: hidden;
