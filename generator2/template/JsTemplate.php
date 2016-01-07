@@ -108,7 +108,7 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
         var content = $.trim(CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.getData());
         $('#<?php echo $form_element_prefix; ?>_intro').val(content);
 <?php } ?>
-        var post_url = '/<?php echo $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type +'-<?php echo strtolower($controller_name); ?>';
+        var post_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type +'-<?php echo strtolower($controller_name); ?>';
         var post_data = {
             "params": $('#form<?php echo $form_name_postfix; ?>').serializeObject()
         };
@@ -145,7 +145,10 @@ function modify<?php echo $form_name_postfix; ?>(modify_id) {
         if (typeof result.data != 'undefined') {
 <?php foreach ($table_data as $key => $default_value)
 {
-    echo str_repeat(' ', 4 * 3) . "$('#" . $form_element_prefix . '_' . $key . "').val(result.data." . $key . ");" . PHP_EOL;
+    if (strpos($key, 'create_time') === false && strpos($key, 'update_time') === false && strpos($key, 'status') === false)
+    {
+        echo str_repeat(' ', 4 * 3) . "$('#" . $form_element_prefix . '_' . $key . "').val(result.data." . $key . ");" . PHP_EOL;
+    }
 }
 ?>
 <?php if ($is_ckeditor){ ?>
@@ -195,7 +198,7 @@ function validInput(type)
     {
         if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){
             echo str_repeat(' ', 4 * 1) . 'var image = $(\'#' . $form_element_prefix . '_image\').val();' . PHP_EOL;
-        } else {
+        } else if (strpos($key, 'create_time') === false && strpos($key, 'update_time') === false && strpos($key, 'status') === false) {
             echo str_repeat(' ', 4 * 1) . 'var '. $key . ' = $(\'#' . $form_element_prefix . '_' . $key . '\').val();' . PHP_EOL;
         }
     }
@@ -222,7 +225,7 @@ foreach ($table_data as $key => $default_value)
             echo str_repeat(' ', 4 * 2) . 'error_num = error_num + 1;' . PHP_EOL;
             echo str_repeat(' ', 4 * 2) . 'alert(MESSAGE_UPLOAD_IMAGE_ERROR)' . PHP_EOL;
             echo str_repeat(' ', 4 * 1) . '} ';
-        } else {
+        } else if (strpos($key, 'create_time') && strpos($key, 'update_time') && strpos($key, 'status') === false) {
             echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (' . $key . ' == \'\') {' . PHP_EOL;
             echo str_repeat(' ', 4 * 2) . 'error_num = error_num + 1;' . PHP_EOL;
             echo str_repeat(' ', 4 * 2) . 'alert(\'todo set alert message\')' . PHP_EOL;

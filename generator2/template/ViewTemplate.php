@@ -141,25 +141,25 @@ foreach ($table_row_data as $key => $value)
 }
 ?>
 <?php if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){ ?>
-                            图片：
-                            <input type="file" name="<?php echo $form_element_prefix; ?>_image" id="<?php echo $form_element_prefix; ?>_image" accept="image/*"/><br /><br />
+                        图片：
+                        <input type="file" name="<?php echo $form_element_prefix; ?>_image" id="<?php echo $form_element_prefix; ?>_image" accept="image/*"/><br /><br />
 <?php } ?>
 <?php if ($is_ckeditor){ ?>
-                            简介：
-                            <textarea class="ckeditor" id="ck_<?php echo $form_element_prefix; ?>_intro"></textarea>
-                            <input type="hidden" id="<?php echo $form_element_prefix; ?>_intro" name="<?php echo $form_element_prefix; ?>_intro"/>
+                        简介：
+                        <textarea class="ckeditor" id="ck_<?php echo $form_element_prefix; ?>_intro"></textarea>
+                        <input type="hidden" id="<?php echo $form_element_prefix; ?>_intro" name="<?php echo $form_element_prefix; ?>_intro"/>
 <?php } ?>
                         <input type="hidden" id="<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>" name="<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>"/>
-                    </div>
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success" id="btn_submit_<?php echo $form_element_prefix; ?>">提交</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 <?php } ?>
 <!-- ------------------------------------------javascript--------------------------------------------------- -->
 <script src="/assets/pagination/jquery.twbsPagination.min.js"></script>
