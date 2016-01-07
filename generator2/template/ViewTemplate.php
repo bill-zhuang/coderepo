@@ -178,4 +178,4 @@ foreach ($table_row_data as $key => $value)
 <?php if ($primary_id[0] !== ''){ ?>
 <script src="/js/public/pagination.js"></script>
 <?php } ?>
-<script src="/js/<?php echo strtolower($controller_name); ?>.js"></script>
+<script src="/js/<?php echo ($module_name == '') ? 'default' : $module_name; ?>/<?php echo strtolower($controller_name); ?>.js"></script>
