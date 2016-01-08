@@ -108,7 +108,7 @@ echo PHP_EOL;
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
-                $<?php echo $primary_id[0]; ?> = intval($_POST['<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>']);
+                $<?php echo $primary_id[0]; ?> = intval($params['<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>']);
                 if ($<?php echo $primary_id[0]; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $data = [
 <?php foreach ($table_data as $key => $default_value)
@@ -159,7 +159,7 @@ echo PHP_EOL;
                 $<?php echo $primary_id[0]; ?> = isset($params['<?php echo $primary_id[0]; ?>']) ? intval($params['<?php echo $primary_id[0]; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
                 if ($<?php echo $primary_id[0]; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $update_data = [
-                        'status' => Bill_Constant::VALID_STATUS,
+                        'status' => Bill_Constant::INVALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s'),
                         //TODO set update data
                     ];

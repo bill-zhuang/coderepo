@@ -150,11 +150,10 @@ foreach ($table_row_data as $key => $value)
                         <input type="hidden" id="<?php echo $form_element_prefix; ?>_intro" name="<?php echo $form_element_prefix; ?>_intro"/>
 <?php } ?>
                         <input type="hidden" id="<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>" name="<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>"/>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" id="btn_submit_<?php echo $form_element_prefix; ?>">提交</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btn_submit_<?php echo $form_element_prefix; ?>">提交</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                 </div>
             </form>
         </div>

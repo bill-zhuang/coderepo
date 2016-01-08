@@ -37,21 +37,21 @@ function ajaxIndex() {
 <?php if($all_batch_id !== ''){ ?>
                         .append(
                             $('<td>').append(
-                                $('<input>', {type: 'checkbox', name: '<?php echo $primary_id[0]; ?>', value: result.data[i]['<?php echo $primary_id[0]; ?>']})
+                                $('<input>', {type: 'checkbox', name: '<?php echo $primary_id[0]; ?>', value: result.data.items[i]['<?php echo $primary_id[0]; ?>']})
                                     .click(function(){closeBatch(this, '<?php echo $batch_id; ?>')})
                             )
                         )
 <?php } ?>
-                        .append($('<td>').text(result.start + i + 1))
+                        .append($('<td>').text(result.data.startIndex + i))
 <?php foreach($table_row_data as $value){ ?>
-                        .append($('<td>').text(result.data[i]['<?php echo $value; ?>']))
+                        .append($('<td>').text(result.data.items[i]['<?php echo $value; ?>']))
 <?php } ?>
                         .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data[i]['<?php echo $primary_id[0]; ?>'], text: '修改'})
+                        .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '修改'})
                             .click(function(){modify<?php echo $form_name_postfix; ?>(this.id);})
                         )
                         .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data[i]['<?php echo $primary_id[0]; ?>'], text: '删除'})
+                        .append($('<a>', {href: '#', id:'delete_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '删除'})
                             .click(function(){delete<?php echo $form_name_postfix; ?>(this.id);})
                         )
                     )
@@ -128,7 +128,7 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
             }
             ajaxIndex();
         };
-        callAjaxWithFormAndFunction(post_url, post_data, success_function, method);
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
 }));
 
