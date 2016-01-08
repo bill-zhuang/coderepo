@@ -113,7 +113,7 @@ echo PHP_EOL;
                     $data = [
 <?php foreach ($table_data as $key => $default_value)
 {
-    if ($key != $primary_id[0])
+    if ($key != $primary_id[0] && strpos($key, 'create_time') === false && strpos($key, 'status') === false)
     {
         echo str_repeat(' ', 4 * 6) . "'" . $key . "' => " . $default_value . "," . PHP_EOL;
     }
