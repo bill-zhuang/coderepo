@@ -52,4 +52,15 @@ class Application_Model_DBTable_BackendRoleAcl extends Application_Model_DBTable
 
         return $baids;
     }
+
+    public function isAccessGranted($brid, $baid)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'brid')
+            ->where('brid=?', $brid)
+            ->where('baid=?', $baid)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->query()->fetchAll();
+        return isset($data['brid']) ? true : false;
+    }
 }

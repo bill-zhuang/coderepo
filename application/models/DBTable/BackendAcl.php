@@ -51,6 +51,18 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         return intval($data[0]['total']) === 0 ? false : true;
     }
 
+    public function getAclID($module, $controller, $action)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'baid')
+            ->where('module=?', $module)
+            ->where('controller=?', $controller)
+            ->where('action=?', $action)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->query()->fetch();
+        return isset($data['baid']) ? $data['baid'] : Bill_Constant::INVALID_PRIMARY_ID;
+    }
+
     public function getAclList()
     {
         $data = $this->select()->reset()
