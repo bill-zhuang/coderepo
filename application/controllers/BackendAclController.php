@@ -199,9 +199,9 @@ class BackendAclController extends Zend_Controller_Action
                         $controller_name = strtolower(implode('-', $this->_splitCamel($controller_name)));
                         $controller_content = file_get_contents($controller_path . $controller);
                         $is_match = preg_match_all($preg_action, $controller_content, $action_matches);
+                        $data['module'] = $module_name;
+                        $data['controller'] = $controller_name;
                         if ($is_match) {
-                            $data['module'] = $module_name;
-                            $data['controller'] = $controller_name;
                             foreach ($action_matches[1] as $action) {
                                 $action_name = preg_replace($preg_action_postfix, '', $action);
                                 $action_name = strtolower(implode('-', $this->_splitCamel($action_name)));
@@ -210,6 +210,12 @@ class BackendAclController extends Zend_Controller_Action
                                     $data['name'] = $data['module'] . '/' . $data['controller'] . '/' . $data['action'];
                                     $this->_adapter_backend_acl->insert($data);
                                 }
+                            }
+                        } else {
+                            $data['action'] = '';
+                            if (!$this->_adapter_backend_acl->isAclExist($data['module'], $data['controller'], $data['action'])) {
+                                $data['name'] = $data['module'] . '/' . $data['controller'];
+                                $this->_adapter_backend_acl->insert($data);
                             }
                         }
                     }
