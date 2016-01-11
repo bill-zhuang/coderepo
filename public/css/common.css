@@ -46,6 +46,10 @@ table css
     cursor: pointer;
 }
 
+.bill_font_bold {
+    font-weight: bold;
+}
+
 .bill_font_bold_red {
     font-weight: bold;
     color: #ff0000;
