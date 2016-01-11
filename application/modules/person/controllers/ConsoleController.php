@@ -74,30 +74,32 @@ class person_ConsoleController extends Zend_Controller_Action
 
     public function createUserAction()
     {
-        $opts = new Zend_Console_Getopt('c');
-        $args = $opts->getRemainingArgs();
-        $user_name = isset($args[0]) ? $args[0] : '';
-        if (preg_match('/^[\da-zA-Z]+[\da-zA-Z_]*$/', $user_name)) {
-            $adapter_backend_user = new Application_Model_DBTable_BackendUser();
-            if (!$adapter_backend_user->isUserNameExist($user_name, Bill_Constant::INVALID_PRIMARY_ID)) {
-                $security = new Bill_Security();
-                $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
-                $insert_data = [
-                    'name' => $user_name,
-                    'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
-                    'salt' => $salt,
-                    'brid' => Bill_Constant::DEFAULT_ROLE,
-                    'status' => Bill_Constant::VALID_STATUS,
-                    'create_time' => date('Y-m-d H:i:s'),
-                    'update_time' => date('Y-m-d H:i:s'),
-                ];
-                $adapter_backend_user->insert($insert_data);
-                echo 'User create successfully.';
-            } else {
-                echo 'User name already exist, change another one.';
-            }
+        $user_name = Bill_Constant::ADMIN_NAME;
+        $adapter_backend_role = new Application_Model_DBTable_BackendRole();
+        $adapter_backend_user = new Application_Model_DBTable_BackendUser();
+        if (!$adapter_backend_user->isUserNameExist($user_name, Bill_Constant::INVALID_PRIMARY_ID)) {
+            $insert_data = [
+                'role' => 'admin',
+                'status' => Bill_Constant::VALID_STATUS,
+                'create_time' => date('Y-m-d H:i:s'),
+                'update_time' => date('Y-m-d H:i:s'),
+            ];
+            $brid = $adapter_backend_role->insert($insert_data);
+            $security = new Bill_Security();
+            $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
+            $insert_data = [
+                'name' => $user_name,
+                'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
+                'salt' => $salt,
+                'brid' => $brid,
+                'status' => Bill_Constant::VALID_STATUS,
+                'create_time' => date('Y-m-d H:i:s'),
+                'update_time' => date('Y-m-d H:i:s'),
+            ];
+            $adapter_backend_user->insert($insert_data);
+            echo 'User create successfully.';
         } else {
-            echo 'Account name only accept letter a-z & A-Z & _, and _ not allowed at first letter.';
+            echo 'User name already exist, change another one.';
         }
     }
 }
