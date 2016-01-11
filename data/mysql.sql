@@ -10,10 +10,27 @@ Target Server Type    : MYSQL
 Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2015-12-02 14:37:49
+Date: 2016-01-11 15:50:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for backend_acl
+-- ----------------------------
+DROP TABLE IF EXISTS `backend_acl`;
+CREATE TABLE `backend_acl` (
+  `baid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT 'acl name',
+  `module` varchar(100) NOT NULL DEFAULT '' COMMENT 'module name',
+  `controller` varchar(100) NOT NULL DEFAULT '' COMMENT 'controller name',
+  `action` varchar(100) NOT NULL DEFAULT '' COMMENT 'action name',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT 'status: 1-valid, 0-invalid',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`baid`),
+  UNIQUE KEY `idx_m_c_a` (`module`,`controller`,`action`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for backend_log
@@ -32,6 +49,33 @@ CREATE TABLE `backend_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for backend_role
+-- ----------------------------
+DROP TABLE IF EXISTS `backend_role`;
+CREATE TABLE `backend_role` (
+  `brid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role` varchar(100) NOT NULL DEFAULT '' COMMENT 'backend role name',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'status: 1-valid, 0-invalid',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`brid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for backend_role_acl
+-- ----------------------------
+DROP TABLE IF EXISTS `backend_role_acl`;
+CREATE TABLE `backend_role_acl` (
+  `braid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `brid` int(10) unsigned NOT NULL COMMENT 'backend role pkid',
+  `baid` int(10) unsigned NOT NULL COMMENT 'backend_acl pkid',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'status: 1-valid, 0-invalid',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`braid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for backend_user
 -- ----------------------------
 DROP TABLE IF EXISTS `backend_user`;
@@ -40,7 +84,7 @@ CREATE TABLE `backend_user` (
   `name` varchar(128) NOT NULL DEFAULT '',
   `password` varchar(64) NOT NULL DEFAULT '',
   `salt` char(64) NOT NULL COMMENT 'password salt',
-  `role` int(11) unsigned NOT NULL COMMENT 'user role',
+  `brid` int(10) unsigned NOT NULL COMMENT 'backend role pkid',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '1:valid, 0: invalid',
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
