@@ -25,7 +25,7 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
             $request->setActionName('index');
         } else if (Application_Model_Auth::getIdentity()->name == 'admin') {
             return;
-        }else {
+        } else {
             $baid = $adapter_acl->getAclID($request_module, $request_controller, $request_action);
             if ($adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)) {
                 return;

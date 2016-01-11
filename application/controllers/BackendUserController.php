@@ -203,7 +203,6 @@ class BackendUserController extends Zend_Controller_Action
             }
         }
 
-
         $json_data = [
             'data' => [
                 'totalPages' => Bill_Util::getTotalPages($total, $page_length),
