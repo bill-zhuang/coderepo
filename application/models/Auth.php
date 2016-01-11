@@ -67,7 +67,7 @@ class Application_Model_Auth
 
         if($auth->hasIdentity()) {
             $identity = $auth->getIdentity();
-            $role = $identity->role; //role field in table backend_user
+            $role = $identity->brid; //brid field in table backend_user
             $user_info = new Zend_Session_Namespace('user_info');
             $user_info->setExpirationSeconds(G_SESSIONTIMEOUT);
             return $role;
