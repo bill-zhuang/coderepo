@@ -44,6 +44,30 @@
                     </li>
                 </ul>
             </li>
+            <?php if (Application_Model_Auth::getIdentity()->name == Bill_Constant::ADMIN_NAME){ ?>
+                <li class="dropwond">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span> Backend Panel<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/backend-user/index">
+                                <span class="glyphicon glyphicon-user"></span>Backend User
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/backend-acl/index">
+                                <span class="glyphicon glyphicon-tasks"></span>Access List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/backend-role/index">
+                                <span class="glyphicon glyphicon-tags"></span>Backend Role
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            <?php } ?>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-leaf"></span> Variety<b class="caret"></b>
