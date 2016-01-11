@@ -81,6 +81,26 @@
         </div>
     </div>
 </div>
+<div id="modalBackendRoleAcl" class="modal fade">
+    <div class="modal-dialog bill_modal_lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>修改权限</span>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form id="formBackendRoleAcl" action="#" method="post" enctype="multipart/form-data" class="form-inline">
+                <div class="modal-body">
+                    <div id="aclList"></div>
+                    <input type="hidden" id="backend_role_acl_brid" name="backend_role_acl_brid"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="btn_submit_backend_role_acl">提交</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- ------------------------------------------javascript--------------------------------------------------- -->
 <script src="/assets/pagination/jquery.twbsPagination.min.js"></script>
 <script src="/assets/jquery-serialize-object/js/jquery.serialize-object.min.js"></script>
