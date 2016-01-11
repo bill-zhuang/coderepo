@@ -260,6 +260,15 @@ class BackendRoleController extends Zend_Controller_Action
         exit;
     }
 
+    public function getAllRolesAction()
+    {
+        $json_array = [
+            'data' => $this->_adapter_backend_role->getAllRoles(),
+        ];
+        echo json_encode($json_array);
+        exit;
+    }
+
     private function _index()
     {
         $params = $this->_getParam('params', []);
