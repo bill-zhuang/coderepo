@@ -86,7 +86,7 @@ class person_ConsoleController extends Zend_Controller_Action
                     'name' => $user_name,
                     'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
                     'salt' => $salt,
-                    'role' => Bill_Constant::DEFAULT_ROLE,
+                    'brid' => Bill_Constant::DEFAULT_ROLE,
                     'status' => Bill_Constant::VALID_STATUS,
                     'create_time' => date('Y-m-d H:i:s'),
                     'update_time' => date('Y-m-d H:i:s'),
