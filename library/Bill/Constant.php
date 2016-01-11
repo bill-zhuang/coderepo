@@ -19,6 +19,7 @@ class Bill_Constant
     const ALPHA_HOST = 'alpha.host';
 
     //user section
+    const ADMIN_NAME = 'admin';
     const DEFAULT_PASSWORD = '123456';
     const DEFAULT_ROLE = 1;
     const SALT_STRING_LENGTH = 64;

@@ -23,7 +23,7 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
             $request->setModuleName('default');
             $request->setControllerName('login');
             $request->setActionName('index');
-        } else if (Application_Model_Auth::getIdentity()->name == 'admin') {
+        } else if (Application_Model_Auth::getIdentity()->name == Bill_Constant::ADMIN_NAME) {
             return;
         } else {
             $baid = $adapter_acl->getAclID($request_module, $request_controller, $request_action);
