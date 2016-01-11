@@ -50,4 +50,32 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
             ->query()->fetchAll();
         return intval($data[0]['total']) === 0 ? false : true;
     }
+
+    public function getAclList()
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, ['module', 'controller', 'action', 'baid'])
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->group(['module', 'controller', 'action'])
+            ->query()->fetchAll();
+        $acl = [];
+        foreach ($data as $value) {
+            $module = $value['module'];
+            $controller = $value['controller'];
+            $action = $value['action'];
+            if (isset($acl[$module])) {
+                if (!isset($acl[$module][$controller])) {
+                    $acl[$module][$controller] = [];
+                }
+                $acl[$module][$controller][] = [
+                    'action' => $action,
+                    'id' => $value['baid'],
+                ];
+            } else {
+                $acl[$module] = [];
+            }
+        }
+
+        return $acl;
+    }
 }
