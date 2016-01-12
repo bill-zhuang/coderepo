@@ -138,3 +138,23 @@ function validInput()
 
     return error_num;
 }
+
+$('#btn_load_acl').on('click', function(){
+    var get_url = '/backend-acl/load-backend-acl';
+    var get_data = {
+        'params': {}
+    };
+    var method = 'get';
+    var success_function = function(result){
+        if (typeof result.data != 'undefined') {
+            if (parseInt(result.data.affectedRows) != 0) {
+                alert(MESSAGE_LOAD_ACL_SUCCESS);
+            } else {
+                alert(MESSAGE_LOAD_ACL_ERROR);
+            }
+        } else {
+            alert(result.error.message);
+        }
+    };
+    callAjaxWithFunction(get_url, get_data, success_function, method);
+});

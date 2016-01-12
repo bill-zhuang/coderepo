@@ -27,6 +27,7 @@ class BackendAclController extends Zend_Controller_Action
 
     public function loadBackendAclAction()
     {
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         $default_controller_dir = APPLICATION_PATH . '/controllers/';
         $module_dir = APPLICATION_PATH . '/modules/';
         //default
@@ -38,16 +39,21 @@ class BackendAclController extends Zend_Controller_Action
                 if ($module != '.' && $module != '..' && is_dir($module_dir . $module . DIRECTORY_SEPARATOR)) {
                     $controller_dir_path = $module_dir . $module . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR;
                     if (is_dir($controller_dir_path)) {
-                        $this->_loadAcl2DB(strtolower($module), $controller_dir_path);
+                        $affected_rows += $this->_loadAcl2DB(strtolower($module), $controller_dir_path);
                     }
                 }
             }
+            $json_array = [
+                'data' => [
+                    'affectedRows' => $affected_rows,
+                ],
+            ];
         }
-        $json_array = [
-            'data' => [
-                'affectedRows' => 1
-            ],
-        ];
+        if (!isset($json_array['data'])) {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
 
         echo json_encode($json_array);
         exit;
@@ -176,6 +182,7 @@ class BackendAclController extends Zend_Controller_Action
 
     private function _loadAcl2DB($module_name, $controller_path)
     {
+        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
         $preg_controller = '/.*?Controller.php$/';
         $preg_controller_postfix = '/Controller.php$/';
         $preg_action = '/public\s+function\s+(.*?)Action\(\)/';
@@ -208,20 +215,22 @@ class BackendAclController extends Zend_Controller_Action
                                 $data['action'] = $action_name;
                                 if (!$this->_adapter_backend_acl->isAclExist($data['module'], $data['controller'], $data['action'])) {
                                     $data['name'] = $data['module'] . '/' . $data['controller'] . '/' . $data['action'];
-                                    $this->_adapter_backend_acl->insert($data);
+                                    $affected_rows += $this->_adapter_backend_acl->insert($data);
                                 }
                             }
                         } else {
                             $data['action'] = '';
                             if (!$this->_adapter_backend_acl->isAclExist($data['module'], $data['controller'], $data['action'])) {
                                 $data['name'] = $data['module'] . '/' . $data['controller'];
-                                $this->_adapter_backend_acl->insert($data);
+                                $affected_rows += $this->_adapter_backend_acl->insert($data);
                             }
                         }
                     }
                 }
             }
         }
+
+        return $affected_rows;
     }
 
     private function _splitCamel($controller)
