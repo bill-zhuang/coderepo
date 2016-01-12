@@ -191,6 +191,9 @@ class BackendUserController extends Zend_Controller_Action
             'status =?' => Bill_Constant::VALID_STATUS,
             'name!=?' => 'admin',
         ];
+        if ($keyword !== '') {
+            $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
+        }
         $order_by = 'buid ASC';
         $total = $this->_adapter_backend_user->getBackendUserCount($conditions);
         $data = $this->_adapter_backend_user->getBackendUserData($conditions, $current_page, $page_length, $order_by);

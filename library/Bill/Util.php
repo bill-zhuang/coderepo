@@ -92,4 +92,23 @@ class Bill_Util
     {
         return ceil($totalItems / $itemsPerPage) ? ceil($totalItems / $itemsPerPage) : Bill_Constant::INIT_TOTAL_PAGE;
     }
+
+    public static function getLikeString($keyword, $like_type = Bill_Constant::LIKE_FULL)
+    {
+        switch($like_type) {
+            case Bill_Constant::LIKE_FULL:
+                $keyword = '%' . $keyword . '%';
+                break;
+            case Bill_Constant::LIKE_LEFT:
+                $keyword = '%' . $keyword;
+                break;
+            case Bill_Constant::LIKE_RIGHT:
+                $keyword = $keyword . '%';
+                break;
+            default:
+                $keyword = '%' . $keyword . '%';
+                break;
+        }
+        return $keyword;
+    }
 } 

@@ -40,7 +40,7 @@ class person_BackendLogController extends Zend_Controller_Action
             'status=?' => Bill_Constant::VALID_STATUS
         ];
         if ('' !== $keyword) {
-            $conditions['content like ?'] = '%' . $keyword . '%';
+            $conditions['content like ?'] = Bill_Util::getLikeString($keyword);
         }
         $order_by = 'blid DESC';
         $total = $this->_adapter_backend_log->getBackendLogCount($conditions);

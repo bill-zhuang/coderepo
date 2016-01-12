@@ -219,7 +219,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             'status =?' => Bill_Constant::VALID_STATUS
         ];
         if ('' !== $keyword) {
-            $conditions['name like ?'] = '%' . $keyword . '%';
+            $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
         }
         $order_by = 'weight desc';
         $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);

@@ -29,4 +29,9 @@ class Bill_Constant
 
     //
     const DEFAULT_WEIGHT = 0;
+
+    //sql like type
+    const LIKE_FULL = 0;
+    const LIKE_LEFT = 1;
+    const LIKE_RIGHT = 2;
 } 

@@ -153,7 +153,7 @@ class BackendAclController extends Zend_Controller_Action
             'status =?' => Bill_Constant::VALID_STATUS
         ];
         if ($keyword !== '') {
-            $conditions['module LIKE ? OR controller LIKE ? OR action LIKE ?'] = '%' . $keyword . '%';
+            $conditions['module LIKE ? OR controller LIKE ? OR action LIKE ?'] = Bill_Util::getLikeString($keyword);
         }
         $order_by = null;
         $group_by = ['module', 'controller', 'action'];
