@@ -42,6 +42,11 @@ table css
     font-weight: bold;
 }
 
+.bill_table_td_60 {
+    width : 60%;
+    text-align : center;
+}
+
 .bill_cursor_pointer {
     cursor: pointer;
 }

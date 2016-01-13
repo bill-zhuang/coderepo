@@ -3,7 +3,7 @@ $(document).ready(function () {
 });
 
 function ajaxIndex() {
-    var get_url = '/person/backend-log/ajax-index';
+    var get_url = '/backend-log/ajax-index';
     var get_data = {
         "params": $('#formSearch').serializeObject()
     };

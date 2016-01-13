@@ -1,6 +1,6 @@
 <?php
 
-class person_BackendLogController extends Zend_Controller_Action
+class BackendLogController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_BackendLog
