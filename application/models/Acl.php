@@ -30,9 +30,19 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
                 && $adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)) {
                 return;
             } else {
-                $request->setModuleName('default');
-                $request->setControllerName('error');
-                $request->setActionName('error');
+                if ($this->getRequest()->isXmlHttpRequest()) {
+                    $json_array = [
+                        'error' => [
+                            'message' => '无权限访问',
+                        ],
+                    ];
+                    echo json_encode($json_array);
+                    exit;
+                } else {
+                    $request->setModuleName('default');
+                    $request->setControllerName('error');
+                    $request->setActionName('error');
+                }
             }
         }
     }
