@@ -66,4 +66,15 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
             ->query()->fetch();
         return isset($data['name']) ? $data['name'] : '';
     }
+
+    public function getRoleCount($brid)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'count(*) as total')
+            ->where('brid = ?', $brid)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->query()->fetchAll();
+
+        return intval($data[0]['total']);
+    }
 }

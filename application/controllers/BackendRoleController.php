@@ -14,6 +14,10 @@ class BackendRoleController extends Zend_Controller_Action
      * @var Application_Model_DBTable_BackendRoleAcl
      */
     private $_adapter_backend_role_acl;
+    /**
+     * @var Application_Model_DBTable_BackendUser
+     */
+    private $_adapter_backend_user;
 
     public function init()
     {
@@ -22,6 +26,7 @@ class BackendRoleController extends Zend_Controller_Action
         $this->_adapter_backend_role= new Application_Model_DBTable_BackendRole();
         $this->_adapter_backend_acl = new Application_Model_DBTable_BackendAcl();
         $this->_adapter_backend_role_acl = new Application_Model_DBTable_BackendRoleAcl();
+        $this->_adapter_backend_user= new Application_Model_DBTable_BackendUser();
     }
 
     public function indexAction()
@@ -284,6 +289,9 @@ class BackendRoleController extends Zend_Controller_Action
         $order_by = 'brid ASC';
         $total = $this->_adapter_backend_role->getBackendRoleCount($conditions);
         $data = $this->_adapter_backend_role->getBackendRoleData($conditions, $current_page, $page_length, $order_by);
+        foreach ($data as &$value) {
+            $value['count'] = $this->_adapter_backend_user->getRoleCount($value['brid']);
+        }
 
         $json_data = [
             'data' => [

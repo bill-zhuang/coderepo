@@ -15,7 +15,7 @@ function ajaxIndex() {
                 $('#tbl tbody').append(
                     $('<tr>')
                         .append($('<td>').text(result.data.startIndex + i))
-                        .append($('<td>').text(result.data.items[i]['role']))
+                        .append($('<td>').text(result.data.items[i]['role'] + '(' + result.data.items[i]['count'] + ')'))
                         .append($('<td>')
                         .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['brid'], text: '修改角色名'})
                             .click(function(){modifyBackendRole(this.id);})
