@@ -120,21 +120,29 @@ class BackendRoleController extends Zend_Controller_Action
                 $this->_adapter_backend_role->getAdapter()->beginTransaction();
                 $brid = isset($params['brid']) ? intval($params['brid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 if ($brid > Bill_Constant::INVALID_PRIMARY_ID) {
-                    $update_data = [
-                        'status' => Bill_Constant::INVALID_STATUS,
-                        'update_time' => date('Y-m-d H:i:s'),
-                    ];
-                    $where = [
-                        $this->_adapter_backend_role->getAdapter()->quoteInto('brid=?', $brid),
-                        $this->_adapter_backend_role->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
-                    ];
-                    $affected_rows = $this->_adapter_backend_role->update($update_data, $where);
-                    $this->_adapter_backend_role->getAdapter()->commit();
-                    $json_array = [
-                        'data' => [
-                            'affectedRows' => $affected_rows,
-                        ]
-                    ];
+                    if ($this->_adapter_backend_user->getRoleCount($brid) == 0) {
+                        $update_data = [
+                            'status' => Bill_Constant::INVALID_STATUS,
+                            'update_time' => date('Y-m-d H:i:s'),
+                        ];
+                        $where = [
+                            $this->_adapter_backend_role->getAdapter()->quoteInto('brid=?', $brid),
+                            $this->_adapter_backend_role->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                        ];
+                        $affected_rows = $this->_adapter_backend_role->update($update_data, $where);
+                        $this->_adapter_backend_role->getAdapter()->commit();
+                        $json_array = [
+                            'data' => [
+                                'affectedRows' => $affected_rows,
+                            ]
+                        ];
+                    } else {
+                        $json_array = [
+                            'error' => [
+                                'message' => '改角色下还有用户，删除失败',
+                            ],
+                        ];
+                    }
                 }
             } catch (Exception $e) {
                 $this->_adapter_backend_role->getAdapter()->rollBack();
@@ -142,7 +150,7 @@ class BackendRoleController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
+        if (!isset($json_array['data']) && !isset($json_array['error'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
