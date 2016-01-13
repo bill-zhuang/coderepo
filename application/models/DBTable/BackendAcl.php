@@ -90,4 +90,19 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
 
         return $acl;
     }
+
+    public function getAclMap()
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, ['module', 'controller', 'action', 'baid'])
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->group(['module', 'controller', 'action'])
+            ->query()->fetchAll();
+        $map = [];
+        foreach ($data as $value) {
+            $map[$value['module'] . '_' . $value['controller'] . '_' . $value['action']] = $value['baid'];
+        }
+
+        return $map;
+    }
 }

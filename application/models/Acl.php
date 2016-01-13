@@ -16,7 +16,6 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
         }
 
         $current_role = Application_Model_Auth::isValid();
-        $adapter_acl = new Application_Model_DBTable_BackendAcl();
         $adapter_role_acl = new Application_Model_DBTable_BackendRoleAcl();
 
         if ($current_role == null) {
@@ -26,8 +25,9 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
         } else if (Application_Model_Auth::getIdentity()->name == Bill_Constant::ADMIN_NAME) {
             return;
         } else {
-            $baid = $adapter_acl->getAclID($request_module, $request_controller, $request_action);
-            if ($adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)) {
+            $baid = $this->_getAclID($request_module, $request_controller, $request_action);
+            if ($baid > Bill_Constant::INVALID_PRIMARY_ID
+                && $adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)) {
                 return;
             } else {
                 $request->setModuleName('default');
@@ -35,5 +35,18 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
                 $request->setActionName('error');
             }
         }
+    }
+
+    private function _getAclID($module, $controller, $action)
+    {
+        if (Zend_Registry::isRegistered('acl_map')) {
+            $acl_map = Zend_Registry::get('acl_map');
+        } else {
+            $adapter_acl = new Application_Model_DBTable_BackendAcl();
+            $acl_map = $adapter_acl->getAclMap();
+            Zend_Registry::set('acl_map', $acl_map);
+        }
+        $acl_map_key = $module . '_' . $controller . '_' . $action;
+        return isset($acl_map[$acl_map_key]) ? $acl_map[$acl_map_key] : Bill_Constant::INVALID_PRIMARY_ID;
     }
 }
