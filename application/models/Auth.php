@@ -75,18 +75,4 @@ class Application_Model_Auth
             return null;
         }
     }
-
-    public static function getClientIp()
-    {
-        if ($_SERVER['REMOTE_ADDR']) {
-            $cip = $_SERVER['REMOTE_ADDR'];
-        } else if (getenv("REMOTE_ADDR")) {
-            $cip = getenv("REMOTE_ADDR");
-        } else if (getenv("HTTP_CLIENT_IP")) {
-            $cip = getenv("HTTP_CLIENT_IP");
-        } else {
-            $cip = "unknown";
-        }
-        return $cip;
-    }
 }
