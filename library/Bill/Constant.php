@@ -34,4 +34,7 @@ class Bill_Constant
     const LIKE_FULL = 0;
     const LIKE_LEFT = 1;
     const LIKE_RIGHT = 2;
+
+    //acl map key
+    const ACL_MAP_NAME = 'acl_map';
 } 

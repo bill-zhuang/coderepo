@@ -111,4 +111,9 @@ class Bill_Util
         }
         return $keyword;
     }
+
+    public static function getAclMapKey($module, $controller, $action)
+    {
+        return $module . '_' . $controller . '_' . $action;
+    }
 } 

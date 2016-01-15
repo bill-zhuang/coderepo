@@ -100,9 +100,16 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
             ->query()->fetchAll();
         $map = [];
         foreach ($data as $value) {
-            $map[$value['module'] . '_' . $value['controller'] . '_' . $value['action']] = $value['baid'];
+            $acl_map_key = Bill_Util::getAclMapKey($value['module'], $value['controller'], $value['action']);
+            $map[$acl_map_key] = $value['baid'];
         }
 
         return $map;
+    }
+
+    public function updateGlobalAclMap()
+    {
+        //set expire key???
+        Zend_Registry::set(Bill_Constant::ACL_MAP_NAME, $this->getAclMap());
     }
 }
