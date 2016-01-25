@@ -59,13 +59,6 @@ class Bill_Util
         Bill_Mail::send($title, $content);
     }
 
-    public static function createDirectory($dir)
-    {
-        if (!file_exists($dir)) {
-            mkdir($dir, '0777', true);
-        }
-    }
-
     public static function getJsonResponseErrorArray($error_code, $error_message)
     {
         return [

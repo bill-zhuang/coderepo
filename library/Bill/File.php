@@ -40,6 +40,13 @@ class Bill_File
         return false;
     }
 
+    public static function createDirectory($dir, $mode = 0777, $recursive = true, $content = null)
+    {
+        if (!file_exists($dir)) {
+            mkdir($dir, $mode, $recursive, $content);
+        }
+    }
+
     public static function deleteDirectory($dir_path)
     {
         if (file_exists($dir_path)) {
