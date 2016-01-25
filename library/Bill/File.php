@@ -61,4 +61,12 @@ class Bill_File
         }
     }
 
+    public static function getTempDir()
+    {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            return 'C:' . DIRECTORY_SEPARATOR . 'Windows' . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR;
+        } else {
+            return DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+        }
+    }
 }
