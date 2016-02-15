@@ -84,7 +84,14 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
                     'id' => $value['baid'],
                 ];
             } else {
-                $acl[$module] = [];
+                $acl[$module] = [
+                    $controller => [
+                        [
+                            'action' => $action,
+                            'id' => $value['baid'],
+                        ]
+                    ]
+                ];
             }
         }
 
