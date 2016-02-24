@@ -8,9 +8,17 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/css/layout.css" rel="stylesheet"/>
     <!-- jquery -->
     <script src="/assets/jquery/jquery-1.11.0.min.js"></script>
+    <!-- Font Awesome本地css会与AdminLTE css冲突，采用cdn解决 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/assets/ionicons/ionicons.min.css"/>
+    <link rel="stylesheet" href="/assets/fonts.googleapis.com/fonts.googleapis.com.css"/>
+    <link rel="stylesheet" href="/assets/adminlte/css/AdminLTE.min.css"/>
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/assets/adminlte/css/skins/_all-skins.min.css"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -20,123 +28,162 @@
 </head>
 
 <body>
-<div class="navbar navbar-default navbar-fixed-top">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#">Bill</a>
-    </div>
-    <div class="navbar-collapse collapse navbar-right">
-        <a href="/login/logout" class="navbar-brand" style="color: steelblue;">
-            <span class="glyphicon glyphicon-log-out"></span>
-            注销&nbsp;&nbsp;&nbsp;
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>B</b></span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>Bill</b></span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
         </a>
-    </div>
-</div>
-<div class="bill-layout-width">
-    <div class="col-sm-3 col-md-3 col-lg-2 well bill-sidebar" id="main">
-        <ul class="nav nav-sidebar">
-            <li class="dropdown active">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user"></span> Person center<b class="caret"></b>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/login/logout" class="btn" ><span>Log out</span></a>
+                </li>
+                <!-- Control Sidebar Toggle Button -->
+                <li>
+                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i><span> </span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- =============================================== -->
+
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="#" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p>Welcome, <?php echo Application_Model_Auth::getIdentity()->name; ?></p>
+            </div>
+        </div>
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-user"></i> <span>Person center</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="/main/modify-password">
-                            <span class="glyphicon glyphicon-wrench"></span>Modify Password
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/login/logout">
-                            <span class="glyphicon glyphicon-log-out"></span>Logout
-                        </a>
-                    </li>
+                <ul class="treeview-menu">
+                    <li><a href="/main/modify-password"><i class="fa fa-circle-o"></i>Modify Password</a></li>
+                    <li><a href="/login/logout"><i class="fa fa-circle-o"></i>Logout</a></li>
                 </ul>
             </li>
             <?php if (Application_Model_Auth::getIdentity()->name == Bill_Constant::ADMIN_NAME){ ?>
-                <li class="dropwond">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-user"></span> Backend Panel<b class="caret"></b>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>Backend Panel</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="/backend-user/index">
-                                <span class="glyphicon glyphicon-user"></span>Backend User
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/backend-role/index">
-                                <span class="glyphicon glyphicon-tags"></span>Backend Role
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/backend-acl/index">
-                                <span class="glyphicon glyphicon-tasks"></span>Access List
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/backend-log/index">
-                                <span class="glyphicon glyphicon-book"></span>Backend Log
-                            </a>
-                        </li>
+                    <ul class="treeview-menu">
+                        <li><a href="/backend-user/index"><i class="fa fa-circle-o"></i>Backend User</a></li>
+                        <li><a href="/backend-role/index"><i class="fa fa-circle-o"></i>Backend Role</a></li>
+                        <li><a href="/backend-acl/index"><i class="fa fa-circle-o"></i>Access List</a></li>
+                        <li><a href="/backend-log/index"><i class="fa fa-circle-o"></i>Backend Log</a></li>
                     </ul>
                 </li>
-            <?php } ?>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-leaf"></span> Variety<b class="caret"></b>
+            <?php }?>
+            <li class="treeview">
+                <a href="#">
+                    <i class="glyphicon glyphicon-leaf"></i> <span>Variety</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/index/index">Other</a></li>
-                    <li><a href="/color-hex/index">Color Hex</a></li>
+                <ul class="treeview-menu">
+                    <li><a href="/index/index"><i class="fa fa-circle-o"></i>Other</a></li>
+                    <li><a href="/color-hex/index"><i class="fa fa-circle-o"></i>Color Hex</a></li>
                 </ul>
             </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-map-marker"></span> Map<b class="caret"></b>
+            <li class="treeview">
+                <a href="#">
+                    <i class="glyphicon glyphicon-map-marker"></i> <span>Map</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/google-map">Google Map</a></li>
-                    <li><a href="/google-map/multiple-location">Multiple Markes</a></li>
+                <ul class="treeview-menu">
+                    <li><a href="/google-map"><i class="fa fa-circle-o"></i>Google Map</a></li>
+                    <li><a href="/google-map/multiple-location"><i class="fa fa-circle-o"></i>Multiple Markes</a></li>
                 </ul>
             </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-stats"></span> History<b class="caret"></b>
+            <li class="treeview">
+                <a href="#">
+                    <i class="glyphicon glyphicon-stats"></i> <span>History</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/person/grain-recycle-history/index">Grain Recycle History</a></li>
-                    <li><a href="/person/grain-recycle-history-chart/index">Grain Recycle History Chart</a></li>
-                    <li><a href="/person/dream-history/index">Dream History</a></li>
-                    <li><a href="/person/dream-history-chart/index">Dream History Chart</a></li>
-                    <li><a href="/person/bad-history/index">Bad History</a></li>
-                    <li><a href="/person/bad-history-chart/index">Bad History Chart</a></li>
+                <ul class="treeview-menu">
+                    <li><a href="/person/grain-recycle-history/index"><i class="fa fa-circle-o"></i>Grain Recycle History</a></li>
+                    <li><a href="/person/grain-recycle-history-chart/index"><i class="fa fa-circle-o"></i>Grain Recycle History Chart</a></li>
+                    <li><a href="/person/dream-history/index"><i class="fa fa-circle-o"></i>Dream History</a></li>
+                    <li><a href="/person/dream-history-chart/index"><i class="fa fa-circle-o"></i>Dream History Chart</a></li>
+                    <li><a href="/person/bad-history/index"><i class="fa fa-circle-o"></i>Bad History</a></li>
+                    <li><a href="/person/bad-history-chart/index"><i class="fa fa-circle-o"></i>Bad History Chart</a></li>
                 </ul>
             </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-usd"></span>
-                    Finance<b class="caret"></b>
+            <li class="treeview">
+                <a href="#">
+                    <i class="glyphicon glyphicon-usd"></i> <span>Finance</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/person/finance-category/index">Finance Category</a></li>
-                    <li><a href="/person/finance-payment/index">Finance Payment</a></li>
-                    <li><a href="/person/finance-history/index">Finance History</a></li>
+                <ul class="treeview-menu">
+                    <li><a href="/person/finance-category/index"><i class="fa fa-circle-o"></i>Finance Category</a></li>
+                    <li><a href="/person/finance-payment/index"><i class="fa fa-circle-o"></i>Finance Payment</a></li>
+                    <li><a href="/person/finance-history/index"><i class="fa fa-circle-o"></i>Finance History</a></li>
                 </ul>
             </li>
         </ul>
-    </div>
-    <!-- below is for show action view phtml file. -->
-    <div class="col-sm-9 col-md-9 col-lg-10 bill-content">
-        <?php echo $this->layout()->content; ?>
-    </div>
-</div>
+    </section>
+    <!-- /.sidebar -->
+</aside>
 
-<div class="navbar-default navbar-fixed-bottom">
-    <div class="container text-center">
-        <p class="text-muted">
-            <a href="mailto:zstu_bill@yahoo.com">Send mail</a>.
-            Released under <a href="http://apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache 2.0</a>
-        </p>
+<!-- =============================================== -->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <?php echo $this->layout()->content;?>
+</div>
+<!-- /.content-wrapper -->
+
+<footer class="main-footer text-center">
+    <strong><a href="mailto:zstu_bill@yahoo.com">Send mail</a>.</strong>
+    Released under <a href="http://apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache 2.0</a>
+</footer>
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <!-- Home tab content -->
+        <div class="tab-pane" id="control-sidebar-home-tab"></div>
+        <!-- /.tab-pane -->
+        <!-- Stats tab content -->
+        <div class="tab-pane" id="control-sidebar-stats-tab"></div>
+        <!-- /.tab-pane -->
     </div>
+</aside>
+<!-- /.control-sidebar -->
+<!-- Add the sidebar's background. This div must be placed
+     immediately after the control sidebar -->
+<div class="control-sidebar-bg"></div>
 </div>
 
 <!-- Placed at the end of the document so the pages load faster -->
@@ -144,6 +191,14 @@
 <script src="/assets/jquery.cookie/jquery.cookie.js"></script>
 <script src="/assets/snow/snow.js"></script>
 <script src="/assets/snow/three.min.js"></script>
+<!-- SlimScroll -->
+<script src="/assets/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/assets/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/assets/adminlte/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/assets/adminlte/js/demo.js"></script>
 <script src="/js/layout.js"></script>
 </body>
 </html>
