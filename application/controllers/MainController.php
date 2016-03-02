@@ -26,14 +26,16 @@ class MainController extends Zend_Controller_Action
     public function modifyPasswordAction()
     {
         if ($this->getRequest()->isPost()) {
+            $json_array = [];
             $user_name = Application_Model_Auth::getIdentity()->name;
             $salt = Application_Model_Auth::getIdentity()->salt;
-            $old_password = addslashes($_POST['old_password']);
-            $new_password = addslashes($_POST['new_password']);
+            $params = $this->getRequest()->getPost('params', []);
+            $old_password = addslashes($params['old_password']);
+            $new_password = addslashes($params['new_password']);
             $user_info = $this->_adapter_backend_user->getUserInfo($user_name);
             if (isset($user_info['password'])) {
                 if ($user_info['password'] !== md5($old_password . $salt)) {
-                    $this->view->content = '原密码错误！';
+                    $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, '原密码错误!');
                 } else {
                     $where = $this->_adapter_backend_user->getAdapter()->quoteInto('name = ?', $user_name);
                     $update_data = [
@@ -41,20 +43,26 @@ class MainController extends Zend_Controller_Action
                         'update_time' => date('Y-m-d H:i:s')
                     ];
                     $affect_rows = $this->_adapter_backend_user->update($update_data, $where);
-                    if ($affect_rows > 0) {
+                    if ($affect_rows > Bill_Constant::INIT_AFFECTED_ROWS) {
                         $this->_auth->logIn($user_name, $new_password, 'backend_user',
                             $this->_adapter_backend_user->getAdapter());
-                        $this->view->content = '修改成功！';
+                        $json_array['data'] = [
+                            'affectedRows' => $affect_rows,
+                        ];
                     } else {
-                        $this->view->content = '修改失败！';
+                        $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, '修改失败!');
                     }
                 }
-                
-                $this->view->reurl = '/main/index';
-                $this->render('result', null, true);
             }
+
+            if (!isset($json_array['data']) && !isset($json_array['error'])) {
+                $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO);
+            }
+
+            echo json_encode($json_array);
+            exit;
         }
     }
-    
+
 }
 
