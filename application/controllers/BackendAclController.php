@@ -6,12 +6,17 @@ class BackendAclController extends Zend_Controller_Action
      * @var Application_Model_DBTable_BackendAcl
      */
     private $_adapter_backend_acl;
+    /**
+     * @var Application_Model_DBTable_BackendRoleAcl
+     */
+    private $_adapter_backend_role_acl;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout()->setLayout('layout');
         $this->_adapter_backend_acl= new Application_Model_DBTable_BackendAcl();
+        $this->_adapter_backend_role_acl = new Application_Model_DBTable_BackendRoleAcl();
     }
 
     public function indexAction()
@@ -215,21 +220,23 @@ class BackendAclController extends Zend_Controller_Action
                         $data['module'] = $module_name;
                         $data['controller'] = $controller_name;
                         if ($is_match) {
+                            $valid_actions = [];
                             foreach ($action_matches[1] as $action) {
                                 $action_name = preg_replace($preg_action_postfix, '', $action);
                                 $action_name = strtolower(implode('-', $this->_splitCamel($action_name)));
                                 $data['action'] = $action_name;
+                                $valid_actions[] = $action_name;
                                 if (!$this->_adapter_backend_acl->isAclExist($data['module'], $data['controller'], $data['action'])) {
                                     $data['name'] = $data['module'] . '/' . $data['controller'] . '/' . $data['action'];
                                     $affected_rows += $this->_adapter_backend_acl->insert($data);
                                 }
                             }
-                        } else {
-                            $data['action'] = '';
-                            if (!$this->_adapter_backend_acl->isAclExist($data['module'], $data['controller'], $data['action'])) {
-                                $data['name'] = $data['module'] . '/' . $data['controller'];
-                                $affected_rows += $this->_adapter_backend_acl->insert($data);
+                            //delete unused action
+                            if (!empty($valid_actions)) {
+                                $this->_removeInvalidAcl($data['module'], $data['controller'], $valid_actions);
                             }
+                        } else {
+                            $this->_removeInvalidAcl($data['module'], $data['controller'], array());
                         }
                     }
                 }
@@ -237,6 +244,24 @@ class BackendAclController extends Zend_Controller_Action
         }
 
         return $affected_rows;
+    }
+
+    private function _removeInvalidAcl($module, $controller, array $valid_actions)
+    {
+        $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidAclIDs($module, $controller, $valid_actions);
+        if (!empty($invalid_acl_ids)) {
+            $delete_where = [
+                $this->_adapter_backend_acl->getAdapter()->quoteInto('baid in (?)', $invalid_acl_ids),
+            ];
+            try {
+                $this->_adapter_backend_acl->getAdapter()->beginTransaction();
+                $this->_adapter_backend_acl->delete($delete_where);
+                $this->_adapter_backend_role_acl->delete($delete_where);
+                $this->_adapter_backend_acl->getAdapter()->commit();
+            } catch (Exception $e) {
+                $this->_adapter_backend_acl->getAdapter()->rollBack();
+            }
+        }
     }
 
     private function _splitCamel($controller)
