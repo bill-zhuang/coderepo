@@ -15,7 +15,7 @@ class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
         $this->_table_name = $table_name;
         $config = [
             Zend_Db_Table_Abstract::ADAPTER => Application_Model_DBAdapter::getDBAdapter($section_name),
-            Zend_Db_Table_Abstract::NAME => $table_name,
+            Zend_Db_Table_Abstract::NAME => $this->_table_name,
         ];
         parent::__construct($config);
     }
