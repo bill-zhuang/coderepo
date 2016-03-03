@@ -5,8 +5,8 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
     public function __construct($section_name = 'localdb')
     {
         $config = [
-            'db' => Application_Model_DBAdapter::getDBAdapter($section_name),
-            'name' => 'backend_log'
+            Zend_Db_Table_Abstract::ADAPTER => Application_Model_DBAdapter::getDBAdapter($section_name),
+            Zend_Db_Table_Abstract::NAME => 'backend_log'
         ];
         parent::__construct($config);
     }
