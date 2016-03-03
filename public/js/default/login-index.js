@@ -29,7 +29,7 @@ $('#formLogin').on('submit', function (event) {
                 window.location.href = result.data.redirectUrl;
             } else {
                 alert(result.error.message);
-                $('#username').val('');
+                $('#username').val('').focus();
                 $('#password').val('');
             }
         };
