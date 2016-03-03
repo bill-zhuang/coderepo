@@ -48,6 +48,11 @@ class Bill_Util
         return ($_SERVER['HTTP_HOST'] == Bill_Constant::ALPHA_HOST) ? true : false;
     }
 
+    public static function isCommandLineInterface()
+    {
+        return php_sapi_name() == 'cli';
+    }
+
     public static function handleException($exception, $from)
     {
         $title = trim($from);

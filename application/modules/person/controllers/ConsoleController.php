@@ -7,6 +7,10 @@ class person_ConsoleController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->_helper->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        //only command line interface available
+        if(!Bill_Util::isCommandLineInterface()) {
+            exit;
+        }
     }
 
     public function indexAction()
