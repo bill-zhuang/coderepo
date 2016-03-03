@@ -25,8 +25,8 @@ class LoginController extends Zend_Controller_Action
     {
         $json_array = [];
         $params = $this->getRequest()->getPost('params', []);
-        $user_name = addslashes($params['username']);
-        $user_password = addslashes($params['password']);
+        $user_name = isset($params['username']) ? addslashes($params['username']) : '';
+        $user_password = isset($params['password']) ? addslashes($params['password']) : '';
         $database = new Application_Model_DBTable_BackendUser();
         $this->_auth->logIn($user_name, $user_password, 'backend_user', $database->getAdapter());
 

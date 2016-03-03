@@ -30,8 +30,8 @@ class MainController extends Zend_Controller_Action
             $user_name = Application_Model_Auth::getIdentity()->name;
             $salt = Application_Model_Auth::getIdentity()->salt;
             $params = $this->getRequest()->getPost('params', []);
-            $old_password = addslashes($params['old_password']);
-            $new_password = addslashes($params['new_password']);
+            $old_password = isset($params['old_password']) ? addslashes($params['old_password']) : '';
+            $new_password = isset($params['new_password']) ? addslashes($params['new_password']) : '';
             $user_info = $this->_adapter_backend_user->getUserInfo($user_name);
             if (isset($user_info['password'])) {
                 if ($user_info['password'] !== md5($old_password . $salt)) {
