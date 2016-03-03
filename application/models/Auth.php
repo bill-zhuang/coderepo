@@ -66,13 +66,11 @@ class Application_Model_Auth
         $auth->setStorage(new Zend_Auth_Storage_Session('user_info'));
 
         if($auth->hasIdentity()) {
-            $identity = $auth->getIdentity();
-            $role = $identity->brid; //brid field in table backend_user
             $user_info = new Zend_Session_Namespace('user_info');
             $user_info->setExpirationSeconds(G_SESSIONTIMEOUT);
-            return $role;
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 }

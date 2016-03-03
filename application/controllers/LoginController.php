@@ -16,8 +16,7 @@ class LoginController extends Zend_Controller_Action
     {
         // action body
         $this->_helper->layout->setLayout('layoutindex');
-        $role = Application_Model_Auth::isValid();
-        if ($role != null) {
+        if (Application_Model_Auth::isValid()) {
             $this->redirect('/main/index');
         }
     }
@@ -31,7 +30,7 @@ class LoginController extends Zend_Controller_Action
         $database = new Application_Model_DBTable_BackendUser();
         $this->_auth->logIn($user_name, $user_password, 'backend_user', $database->getAdapter());
 
-        if (Application_Model_Auth::isValid() != null) {
+        if (Application_Model_Auth::isValid()) {
             $json_array['data'] = [
                 'redirectUrl' => '/main/index',
             ];

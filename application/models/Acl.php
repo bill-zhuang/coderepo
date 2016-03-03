@@ -15,35 +15,35 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
             return;
         }
 
-        $current_role = Application_Model_Auth::isValid();
-        $adapter_role_acl = new Application_Model_DBTable_BackendRoleAcl();
-
-        if ($current_role == null) {
+        if (Application_Model_Auth::isValid()) {
+            if (Application_Model_Auth::getIdentity()->name == Bill_Constant::ADMIN_NAME) {
+                return;
+            } else {
+                $adapter_role_acl = new Application_Model_DBTable_BackendRoleAcl();
+                $baid = $this->_getAclID($request_module, $request_controller, $request_action);
+                if ($baid > Bill_Constant::INVALID_PRIMARY_ID
+                    && $adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)) {
+                    return;
+                } else {
+                    if ($this->getRequest()->isXmlHttpRequest()) {
+                        $json_array = [
+                            'error' => [
+                                'message' => '无权限访问',
+                            ],
+                        ];
+                        echo json_encode($json_array);
+                        exit;
+                    } else {
+                        $request->setModuleName('default');
+                        $request->setControllerName('error');
+                        $request->setActionName('error');
+                    }
+                }
+            }
+        } else {
             $request->setModuleName('default');
             $request->setControllerName('login');
             $request->setActionName('index');
-        } else if (Application_Model_Auth::getIdentity()->name == Bill_Constant::ADMIN_NAME) {
-            return;
-        } else {
-            $baid = $this->_getAclID($request_module, $request_controller, $request_action);
-            if ($baid > Bill_Constant::INVALID_PRIMARY_ID
-                && $adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)) {
-                return;
-            } else {
-                if ($this->getRequest()->isXmlHttpRequest()) {
-                    $json_array = [
-                        'error' => [
-                            'message' => '无权限访问',
-                        ],
-                    ];
-                    echo json_encode($json_array);
-                    exit;
-                } else {
-                    $request->setModuleName('default');
-                    $request->setControllerName('error');
-                    $request->setActionName('error');
-                }
-            }
         }
     }
 
