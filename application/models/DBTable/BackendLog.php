@@ -2,7 +2,7 @@
 
 class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
 {
-    public function __construct($section_name = 'localdb')
+    public function __construct($section_name = Bill_Constant::LOCAL_DB)
     {
         $config = [
             Zend_Db_Table_Abstract::ADAPTER => Application_Model_DBAdapter::getDBAdapter($section_name),
