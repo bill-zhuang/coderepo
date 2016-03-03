@@ -10,7 +10,7 @@ class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
 {
     private $_table_name;
 
-    public function __construct($table_name, $section_name = 'localdb')
+    public function __construct($table_name, $section_name = Bill_Constant::LOCAL_DB)
     {
         $this->_table_name = $table_name;
         $config = [

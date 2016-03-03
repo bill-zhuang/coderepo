@@ -18,6 +18,11 @@ class Bill_Constant
     const PRODUCTION_HOST = 'production.host';
     const ALPHA_HOST = 'alpha.host';
 
+    //db config name in application.ini
+    const LOCAL_DB = 'localdb';
+    const ALPHA_DB = 'alphadb';
+    const RELEASE_DB = 'releasedb';
+
     //user section
     const ADMIN_NAME = 'admin';
     const DEFAULT_PASSWORD = '123456';

@@ -18,7 +18,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $db_adapter = Zend_Db::factory($config->localdb->adapter, $config->localdb->toArray());
-            Zend_Registry::set('localdb', $db_adapter);
+            Zend_Registry::set(Bill_Constant::LOCAL_DB, $db_adapter);
         } catch (Exception $e) {
             echo $e->getMessage();
             die('Init local db failed.');
@@ -30,7 +30,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $db_adapter = Zend_Db::factory($config->alphadb->adapter, $config->alphadb->toArray());
-            Zend_Registry::set('alphadb', $db_adapter);
+            Zend_Registry::set(Bill_Constant::ALPHA_DB, $db_adapter);
         } catch (Exception $e) {
             echo $e->getMessage();
             die('Init alpha db failed.');
@@ -42,7 +42,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $db_adapter = Zend_Db::factory($config->releasedb->adapter, $config->releasedb->toArray());
-            Zend_Registry::set('releasedb', $db_adapter);
+            Zend_Registry::set(Bill_Constant::RELEASE_DB, $db_adapter);
         } catch (Exception $e) {
             echo $e->getMessage();
             die('Init release db failed.');
