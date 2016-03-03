@@ -6,23 +6,33 @@ $(document).ready(function () {
     }
 });
 
-$('#login').on('submit', function (event) {
+$('#formLogin').on('submit', function (event) {
     event.preventDefault();
-    loginCheck();
-});
-
-function loginCheck() {
     var name = $.trim($('#username').val());
     var password = $.trim($('#password').val());
 
-    if (name == '') {
+    if (name === '') {
         alert('用户名不能为空！');
-    } else if (password == '') {
+    } else if (password === '') {
         alert('密码不能为空！');
     } else {
         if ($('#remember').prop('checked')) {
             $.cookie('name', name, {expires: 1, path: '/'});
         }
-        $('#login').get(0).submit();
+        var post_url = '/login/login';
+        var post_data = {
+            "params": $('#formLogin').serializeObject()
+        };
+        var method = 'post';
+        var success_function = function(result){
+            if (typeof result.data != 'undefined') {
+                window.location.href = result.data.redirectUrl;
+            } else {
+                alert(result.error.message);
+                $('#username').val('');
+                $('#password').val('');
+            }
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
     }
-}
+});

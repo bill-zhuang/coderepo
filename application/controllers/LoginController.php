@@ -24,18 +24,25 @@ class LoginController extends Zend_Controller_Action
     
     public function loginAction()
     {
-        $user_name = addslashes($_POST['username']);
-        $user_password = addslashes($_POST['password']);
+        $json_array = [];
+        $params = $this->getRequest()->getPost('params', []);
+        $user_name = addslashes($params['username']);
+        $user_password = addslashes($params['password']);
         $database = new Application_Model_DBTable_BackendUser();
         $this->_auth->logIn($user_name, $user_password, 'backend_user', $database->getAdapter());
 
         if (Application_Model_Auth::isValid() != null) {
-            $this->redirect('/main/index');
+            $json_array['data'] = [
+                'redirectUrl' => '/main/index',
+            ];
         } else {
-            $this->view->ret = 0;
+            $json_array['error'] = [
+                'message' => '用户名或密码错误!',
+            ];
         }
-        
-        $this->view->name = $user_name;
+
+        echo json_encode($json_array);
+        exit;
     }
     
     
