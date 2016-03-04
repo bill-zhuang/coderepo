@@ -13,7 +13,7 @@ class Application_Model_DBAdapter
      * @return mixed|Zend_Db_Adapter_Abstract
      * @throws Exception when no db config exist
      */
-    public static function getDBAdapter($section_name = 'localdb')
+    public static function getDBAdapter($section_name = Bill_Constant::LOCAL_DB)
     {
         if (Zend_Registry::isRegistered($section_name)) {
             return Zend_Registry::get($section_name);
