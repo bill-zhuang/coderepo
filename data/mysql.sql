@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50522
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : bill
 
 Target Server Type    : MYSQL
 Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2016-01-11 15:50:07
+Date: 2016-03-04 22:11:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -84,7 +84,7 @@ CREATE TABLE `backend_user` (
   `name` varchar(128) NOT NULL DEFAULT '',
   `password` varchar(64) NOT NULL DEFAULT '',
   `salt` char(64) NOT NULL COMMENT 'password salt',
-  `brid` int(10) unsigned NOT NULL COMMENT 'backend role pkid',
+  `brid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'backend role pkid',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '1:valid, 0: invalid',
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -99,7 +99,7 @@ CREATE TABLE `bad_history` (
   `bhid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `happen_date` date NOT NULL,
   `count` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'status',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bhid`)
@@ -113,7 +113,7 @@ CREATE TABLE `dream_history` (
   `dhid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `happen_date` date NOT NULL,
   `count` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'status',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`dhid`)
@@ -140,7 +140,7 @@ CREATE TABLE `finance_category` (
 DROP TABLE IF EXISTS `finance_payment`;
 CREATE TABLE `finance_payment` (
   `fpid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `payment` float(9,1) unsigned NOT NULL,
+  `payment` float(9,2) unsigned NOT NULL,
   `payment_date` date NOT NULL,
   `detail` varchar(255) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
