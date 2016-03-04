@@ -15,7 +15,7 @@ class LoginController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $this->_helper->layout->setLayout('layoutindex');
+        $this->_helper->layout->setLayout('layout-login');
         if (Application_Model_Auth::isValid()) {
             $this->redirect('/main/index');
         }
