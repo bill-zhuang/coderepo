@@ -51,7 +51,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     protected function _initGetopt()
     {
-        if(php_sapi_name() === 'cli' || defined('STDIN')) {
+        if(Bill_Util::isCommandLineInterface() || defined('STDIN')) {
             $opts = new Zend_Console_Getopt(
                 array(
                     'index|i' => 'index',
