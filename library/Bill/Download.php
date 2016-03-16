@@ -2,7 +2,6 @@
 
 class Bill_Download
 {
-
     /**
      * send request through get/post method.
      * @param string $url
@@ -14,8 +13,14 @@ class Bill_Download
     {
         $postData = http_build_query($postData);
 
-        $options = array('http' => array('method' => $method, 'header' => 'Content-type:application/x-www-form-urlencoded', 'content' => $postData, /* ��ʱʱ��(��λ:s)*/
-            'timeout' => 15 * 60,),);
+        $options = array(
+            'http' => array(
+                'method' => $method,
+                'header' => 'Content-type:application/x-www-form-urlencoded',
+                'content' => $postData,
+                'timeout' => 15 * 60, //second
+            ),
+        );
 
         $context = stream_context_create($options);
         return file_get_contents($url, false, $context);
@@ -24,67 +29,45 @@ class Bill_Download
     /**
      * Download file through file_get_contents.
      * @param string $url
-     * @param string $fileName
-     * @param string/null $dir
+     * @param string $savePath
      */
-    public function fileGetContentDownload($url, $fileName, $dir = null)
+    public function fileGetContentDownload($url, $savePath)
     {
-        $fullPath = ($dir == null) ? $fileName : $dir . $fileName;
-
-        $file_content = file_get_contents($url);
-        file_put_contents($fullPath, $file_content);
+        $fileContent = file_get_contents($url);
+        file_put_contents($savePath, $fileContent);
     }
 
     /**
      * Download file through wget.
      * @param string $url
-     * @param string $fileName
-     * @param string/null $dir
+     * @param string $savePath
+     * @param string $commandPath wget command path
      */
-    public function wgetDownload($url, $fileName, $dir = null)
+    public function wgetDownload($url, $savePath, $commandPath = 'wget')
     {
-        $fullPath = ($dir == null) ? $fileName : $dir . $fileName;
-
-        $cmd = "e:/wget1.11.4.exe " . $url . " -O " . $fullPath;
-        exec($cmd, $array, $ret);
-
-        return $ret;
+        if (file_exists($commandPath)) {
+            $cmd = $commandPath . $url . " -O " . $savePath;
+            exec($cmd, $array, $ret);
+        }
     }
 
     /**
      * download file through curl.
      * @param string $url
-     * @param string $fileName
-     * @param string $dir
+     * @param string $savePath
      */
-    public function curlSingleDownload($url, $fileName, $dir = null)
+    public function curlDownload($url, $savePath)
     {
-        if ($dir != null) {
-            if (!file_exists($dir)) {
-                mkdir($dir, 0777, true);
-            }
-        }
+        $fp = fopen($savePath, 'w+');
 
-        $fullPath = ($dir == null) ? $fileName : $dir . $fileName;
-
-        if (file_exists($fullPath)) {
-            return;
-            //unlink($fullPath);
-        }
-
-        $fp = fopen($fullPath, 'w+');
-
-        if ($fp) {
+        if ($fp !== false) {
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_FILE, $fp);
             curl_exec($ch);
             curl_close($ch);
-        } else {
-            echo "Download {$fileName} file from {$url} failed.<br>";
-            return;
-        }
 
-        fclose($fp);
+            fclose($fp);
+        }
     }
 
     /**
@@ -93,7 +76,7 @@ class Bill_Download
      * <p>key-filename, value-url.</p>
      * @param string $dir
      * <p>directory to save the files.</p>
-     * @param integer $downloadNum [optinal]
+     * @param integer $downloadNum [optional]
      * <p>download files at one time, default 100.</p>*/
     public function curlMultipleDownload(array $filenameUrl, $dir, $downloadNum = 100)
     {
@@ -102,10 +85,12 @@ class Bill_Download
         }
 
         $mh = curl_multi_init();
-        $urlhundred = array_chunk($filenameUrl, $downloadNum, true);
+        $urlChunks = array_chunk($filenameUrl, $downloadNum, true);
 
-        foreach ($urlhundred as $nameurls) {
-            foreach ($nameurls as $filename => $url) {
+        foreach ($urlChunks as $urlSections) {
+            $fp = [];
+            $conn = [];
+            foreach ($urlSections as $filename => $url) {
                 if (!is_file($dir . $filename)) {
                     $conn[$filename] = curl_init($url);
                     $fp[$filename] = fopen($dir . $filename, "w+");
@@ -121,7 +106,7 @@ class Bill_Download
                 $n = curl_multi_exec($mh, $active);
             } while ($active);
 
-            foreach ($nameurls as $filename => $url) {
+            foreach ($urlSections as $filename => $url) {
                 curl_multi_remove_handle($mh, $conn[$filename]);
                 curl_close($conn[$filename]);
                 fclose($fp[$filename]);
