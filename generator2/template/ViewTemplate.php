@@ -10,15 +10,14 @@
 /* @var $form_name_postfix string form postfix name*/
 /* @var $form_element_prefix string prefix of form element */
 /* @var $view_modal_size string modal size */
-/* @var $is_blacklist bool use blacklist or not */
-/* @var $is_ckeditor bool use ckeditor or not */
-/* @var $is_datetime_picker bool use datetimepicker or not */
+/* @var $using_ckeditor bool use ckeditor or not */
+/* @var $using_datetime_picker bool use datetimepicker or not */
 /* @var $tab_types array tab types for select */
 /* @var $default_tab_value mixed default selected tab value */
 
 $table_keys = array_keys($table_data);
 ?>
-<?php if($is_datetime_picker){ ?>
+<?php if($using_datetime_picker){ ?>
 <link href="/assets/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
 <?php } ?>
 <link href="/css/common.css" rel="stylesheet" />
@@ -42,12 +41,6 @@ $table_keys = array_keys($table_data);
                         <span class="glyphicon glyphicon-plus"></span>
                         <span>新增</span>
                     </button>&nbsp;&nbsp;&nbsp;&nbsp;
-<?php if ($is_blacklist){ ?>
-                        <button class="btn btn-warning" type="button" id="btn_blacklist">
-                            <span class="glyphicon glyphicon-warning-sign"></span>
-                            <span>黑名单</span>
-                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
-<?php } ?>
 <?php if($all_batch_id !== ''){ ?>
                         <button class="btn btn-danger" type="button" id="btn_batch_delete">
                             <span class="glyphicon glyphicon-trash"></span>
@@ -144,7 +137,7 @@ foreach ($table_row_data as $key => $value)
                         图片：
                         <input type="file" name="<?php echo $form_element_prefix; ?>_image" id="<?php echo $form_element_prefix; ?>_image" accept="image/*"/><br /><br />
 <?php } ?>
-<?php if ($is_ckeditor){ ?>
+<?php if ($using_ckeditor){ ?>
                         简介：
                         <textarea class="ckeditor" id="ck_<?php echo $form_element_prefix; ?>_intro"></textarea>
                         <input type="hidden" id="<?php echo $form_element_prefix; ?>_intro" name="<?php echo $form_element_prefix; ?>_intro"/>
@@ -162,10 +155,10 @@ foreach ($table_row_data as $key => $value)
 <?php } ?>
 <!-- ------------------------------------------javascript--------------------------------------------------- -->
 <script src="/assets/pagination/jquery.twbsPagination.min.js"></script>
-<?php if ($is_ckeditor){ ?>
+<?php if ($using_ckeditor){ ?>
 <script src="/assets/ckeditor/ckeditor.js"></script>
 <?php } ?>
-<?php if($is_datetime_picker){ ?>
+<?php if($using_datetime_picker){ ?>
 <script src="/assets/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script src="/assets/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script src="/js/public/datetimepicker.js"></script>

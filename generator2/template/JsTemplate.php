@@ -10,8 +10,7 @@
 /* @var $form_name_postfix string form postfix name*/
 /* @var $form_element_prefix string prefix of form element */
 /* @var $view_modal_size string modal size */
-/* @var $is_blacklist bool use blacklist or not */
-/* @var $is_ckeditor bool use ckeditor or not */
+/* @var $using_ckeditor bool use ckeditor or not */
 /* @var $tab_types array tab types for select */
 /* @var $default_tab_value mixed default selected tab value */
 
@@ -88,7 +87,7 @@ $('#ul_tab_type li').on('click', function(){
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function(){
     window.form<?php echo $form_name_postfix; ?>.reset();
-<?php if ($is_ckeditor){ ?>
+<?php if ($using_ckeditor){ ?>
     CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.setData('');
 <?php } ?>
     $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>').val('');
@@ -104,7 +103,7 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
     var error_num = validInput(type);
     if(error_num == 0) {
         $('#btn_submit_<?php echo $form_element_prefix; ?>').attr('disabled', true);
-<?php if ($is_ckeditor){ ?>
+<?php if ($using_ckeditor){ ?>
         var content = $.trim(CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.getData());
         $('#<?php echo $form_element_prefix; ?>_intro').val(content);
 <?php } ?>
@@ -151,7 +150,7 @@ function modify<?php echo $form_name_postfix; ?>(modify_id) {
     }
 }
 ?>
-<?php if ($is_ckeditor){ ?>
+<?php if ($using_ckeditor){ ?>
         CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.setData(result.data.{table_prefix}_intro);
 <?php } ?>
             $('#btn_submit_<?php echo $form_element_prefix; ?>').attr('disabled', false);
@@ -204,7 +203,7 @@ function validInput(type)
     }
 }
 ?>
-<?php if ($is_ckeditor){ ?>
+<?php if ($using_ckeditor){ ?>
     var content = $.trim(CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.getData());
 <?php } ?>
 <?php
@@ -234,7 +233,7 @@ foreach ($table_data as $key => $default_value)
     }
 }
 ?>
-<?php if ($is_ckeditor){ ?>else if(content == '') {
+<?php if ($using_ckeditor){ ?>else if(content == '') {
     error_num = error_num + 1;
     alert(MESSAGE_CONTENT_ERROR);
     }<?php } ?>

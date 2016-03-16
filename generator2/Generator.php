@@ -13,9 +13,8 @@ class TemplateGenerator
     private $_table_names;
     private $_table_prefix;
     private $_view_modal_size;
-    private $_is_blacklist;
-    private $_is_ckeditor;
-    private $_is_datetime_picker;
+    private $_using_ckeditor;
+    private $_using_datetime_picker;
     private $_tab_types;
     private $_default_tab_value;
 
@@ -38,9 +37,8 @@ class TemplateGenerator
             'update time' => 'fc_update_time',
         ];
         $this->_view_modal_size = 'md'; //optional: sm/md/lg, refer to small/middle/large
-        $this->_is_blacklist = false;
-        $this->_is_ckeditor = false;
-        $this->_is_datetime_picker = false;
+        $this->_using_ckeditor = false;
+        $this->_using_datetime_picker = false;
         /*
          * //tab 标签 key => value,如果没有tab，请置空数组
          * 1 => 'First',
@@ -120,9 +118,8 @@ class TemplateGenerator
                 'form_element_prefix' => strtolower(implode('_', $camel_name)),
                 'form_name_postfix' => implode('', $camel_name),
                 'view_modal_size' => $this->_view_modal_size,
-                'is_blacklist' => $this->_is_blacklist,
-                'is_ckeditor' => $this->_is_ckeditor,
-                'is_datetime_picker' => $this->_is_datetime_picker,
+                'using_ckeditor' => $this->_using_ckeditor,
+                'using_datetime_picker' => $this->_using_datetime_picker,
                 'tab_types' => $this->_tab_types,
                 'default_tab_value' => $this->_default_tab_value,
             ];
@@ -158,8 +155,7 @@ class TemplateGenerator
                 'form_element_prefix' => strtolower(implode('_', $camel_name)),
                 'form_name_postfix' => implode('', $camel_name),
                 'view_modal_size' => $this->_view_modal_size,
-                'is_blacklist' => $this->_is_blacklist,
-                'is_ckeditor' => $this->_is_ckeditor,
+                'using_ckeditor' => $this->_using_ckeditor,
                 'tab_types' => $this->_tab_types,
                 'default_tab_value' => $this->_default_tab_value,
             ];
