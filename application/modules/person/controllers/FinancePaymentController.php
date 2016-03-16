@@ -18,7 +18,6 @@ class person_FinancePaymentController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout()->setLayout('layout');
         $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
         $this->_adapter_finance_payment = new Application_Model_DBTable_FinancePayment();
         $this->_adapter_finance_payment_map = new Application_Model_DBTable_FinancePaymentMap();

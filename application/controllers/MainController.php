@@ -13,7 +13,6 @@ class MainController extends Zend_Controller_Action
     
     public function init ()
     {
-        $this->_helper->layout->setLayout('layout');
         /* Initialize action controller here */
         $this->_auth = new Application_Model_Auth();
         $this->_adapter_backend_user = new Application_Model_DBTable_BackendUser();

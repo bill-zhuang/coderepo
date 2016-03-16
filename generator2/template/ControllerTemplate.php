@@ -38,7 +38,6 @@ echo PHP_EOL;
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout()->setLayout('layout');
 <?php foreach ($model_names as $key => $model_name)
 {
     echo str_repeat(' ', 4 * 2) . '$this->_adapter_' . str_replace($table_prefix, '', $table_names[$key]) . '= new Application_Model_DBTable_' . $model_name . '();' . PHP_EOL;

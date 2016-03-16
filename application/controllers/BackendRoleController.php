@@ -22,7 +22,6 @@ class BackendRoleController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout()->setLayout('layout');
         $this->_adapter_backend_role= new Application_Model_DBTable_BackendRole();
         $this->_adapter_backend_acl = new Application_Model_DBTable_BackendAcl();
         $this->_adapter_backend_role_acl = new Application_Model_DBTable_BackendRoleAcl();

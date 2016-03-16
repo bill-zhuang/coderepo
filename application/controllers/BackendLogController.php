@@ -14,7 +14,6 @@ class BackendLogController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-        $this->_helper->layout()->setLayout('layout');
         $this->_adapter_backend_log= new Application_Model_DBTable_BackendLog();
         $this->_adapter_backend_user= new Application_Model_DBTable_BackendUser();
     }
