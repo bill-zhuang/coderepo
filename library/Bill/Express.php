@@ -23,7 +23,7 @@ class Bill_Express
     {
         $request_url = 'http://www.kuaidi100.com/autonumber/auto';
         $param = array('num' => $express_code);
-        $method = 'GET';
+        $method = Bill_Constant::HTTP_METHOD_GET;
 
         $json_data = Bill_Curl::sendRequestByCurl($request_url, $param, $method);
         $decode_data = json_decode($json_data, true);

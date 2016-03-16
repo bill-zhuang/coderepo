@@ -15,6 +15,10 @@ class Bill_Constant
 
     const DAY_SECONDS = 86400;
 
+    //http method
+    const HTTP_METHOD_GET = 'GET';
+    const HTTP_METHOD_POST = 'POST';
+
     const PRODUCTION_HOST = 'production.host';
     const ALPHA_HOST = 'alpha.host';
 

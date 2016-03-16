@@ -9,7 +9,7 @@ class Bill_Download
      * @param string $method
      * @return string
      */
-    public function sendRequest($url, array $postData, $method = 'GET')
+    public function sendRequest($url, array $postData, $method = Bill_Constant::HTTP_METHOD_GET)
     {
         $postData = http_build_query($postData);
 

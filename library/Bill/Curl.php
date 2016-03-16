@@ -12,11 +12,11 @@ class Bill_Curl
         return curl_getinfo($ch);
     }
 
-    public static function sendRequestByCurl($request_url, array $data, $method = 'POST')
+    public static function sendRequestByCurl($request_url, array $data, $method = Bill_Constant::HTTP_METHOD_POST)
     {
         $ch = curl_init();
         //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        if (strtolower($method) == 'get') {
+        if (strtoupper($method) == Bill_Constant::HTTP_METHOD_GET) {
             curl_setopt($ch, CURLOPT_URL, $request_url . '?' . http_build_query($data));
         } else {
             curl_setopt($ch, CURLOPT_URL, $request_url);
