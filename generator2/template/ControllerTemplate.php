@@ -253,7 +253,7 @@ echo PHP_EOL;
         $image_url = $this->_upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $file_id);
         if ($image_url != '') {
             $update_data = [
-                '<?php echo $form_element_prefix; ?>_imgurl' => $image_url,
+                //todo update image field
                 '<?php echo $form_element_prefix; ?>_update_time' => date('Y-m-d H:i:s')
             ];
             $where = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('<?php echo $primary_id[0]; ?>=?', $<?php echo $primary_id[0]; ?>);
@@ -265,30 +265,7 @@ echo PHP_EOL;
 
     private function _upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $file_id)
     {
-        $aliyun = new Bill_Tools_Uploadfiles();
-        $image_url = $aliyun->uploadImageFrom<?php echo $model_names[0]; ?>($file_id, $<?php echo $primary_id[0]; ?>);
-        return $image_url;
-    }
-
-    private function _processImagesInContent($content)
-    {
-        $base64_contents = [];
-        $preg_img = '/<img.*?src="([^"]+)"/';
-        $is_match = preg_match_all($preg_img, $content, $matches);
-        if ($is_match > 0) {
-            foreach ($matches[1] as $value) {
-                if ('http' != substr($value, 0, 4)) {
-                    $base64_contents[] = $value;
-                }
-            }
-        }
-        if (!empty($base64_contents)) {
-            $aliyun_upload = new Bill_Tools_Uploadfiles();
-            $img_urls = $aliyun_upload->uploadImageByBase64Content($base64_contents, '{action_object_name}');
-            $content = str_replace($base64_contents, $img_urls, $content);
-        }
-
-        return $content;
+        //todo upload image & get image url
     }
 <?php } ?>
 }
