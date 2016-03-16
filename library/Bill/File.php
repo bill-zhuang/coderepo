@@ -4,9 +4,7 @@ class Bill_File
 {
     public static function getFileExtension($filename)
     {
-        $path_info = pathinfo($filename);
-
-        return $path_info['extension'];
+        return pathinfo($filename, PATHINFO_EXTENSION);
     }
 
     public static function moveUploadFile($upload_id, $destination_directory)
