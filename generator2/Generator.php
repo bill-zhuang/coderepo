@@ -306,8 +306,6 @@ class TemplateGenerator
         $table_data = [];
         $element_prefix = strtolower(implode('_', $this->_splitControllerName()));
         foreach ($definitions as $definition) {
-            //replace fp_payment to finance_payment_payment
-            //replace fc_id to finance_payment_fc_id
             if (strpos($definition['Field'], str_replace('_id', '', $this->_primary_id[0])) !== false) {
                 $element_name = preg_replace('/^([^_]+)/', $element_prefix, $definition['Field']);
             } else {
