@@ -133,10 +133,4 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
 
         return $map;
     }
-
-    public function updateGlobalAclMap()
-    {
-        //set expire key???
-        Zend_Registry::set(Bill_Constant::ACL_MAP_NAME, $this->getAclMap());
-    }
 }

@@ -188,12 +188,7 @@ class BackendRoleController extends Zend_Controller_Action
             $params = $this->getRequest()->getQuery('params', []);
             $brid = (isset($params['brid'])) ? intval($params['brid']) : Bill_Constant::INVALID_PRIMARY_ID;
             //
-            if (Zend_Registry::isRegistered('aclList')) {
-                $aclList = Zend_Registry::get('aclList');
-            } else {
-                $aclList = $this->_adapter_backend_acl->getAclList();
-                Zend_Registry::set('aclList', $aclList);
-            }
+            $aclList = $this->_adapter_backend_acl->getAclList();
             $json_array = [
                 'data' => [
                     'brid' => $brid,

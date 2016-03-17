@@ -49,11 +49,8 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
 
     private function _getAclID($module, $controller, $action)
     {
-        if (!Zend_Registry::isRegistered(Bill_Constant::ACL_MAP_NAME)) {
-            $adapter_acl = new Application_Model_DBTable_BackendAcl();
-            $adapter_acl->updateGlobalAclMap();
-        }
-        $acl_map = Zend_Registry::get(Bill_Constant::ACL_MAP_NAME);
+        $adapter_acl = new Application_Model_DBTable_BackendAcl();
+        $acl_map = $adapter_acl->getAclMap();
         $acl_map_key = Bill_Util::getAclMapKey($module, $controller, $action);
         return isset($acl_map[$acl_map_key]) ? $acl_map[$acl_map_key] : Bill_Constant::INVALID_PRIMARY_ID;
     }

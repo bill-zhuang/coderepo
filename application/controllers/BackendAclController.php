@@ -54,9 +54,6 @@ class BackendAclController extends Zend_Controller_Action
             ];
         }
 
-        //update global acl map
-        $this->_adapter_backend_acl->updateGlobalAclMap();
-
         if (!isset($json_array['data'])) {
             $json_array = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
@@ -118,8 +115,6 @@ class BackendAclController extends Zend_Controller_Action
                             'affectedRows' => $affected_rows,
                         ]
                     ];
-                    //update global acl map
-                    $this->_adapter_backend_acl->updateGlobalAclMap();
                 }
             } catch (Exception $e) {
                 Bill_Util::handleException($e, 'Error From deleteBackendAcl');
