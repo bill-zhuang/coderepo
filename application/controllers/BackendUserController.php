@@ -188,7 +188,7 @@ class BackendUserController extends Zend_Controller_Action
 
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS,
-            'name!=?' => 'admin',
+            'name!=?' => Bill_Constant::ADMIN_NAME,
         ];
         if ($keyword !== '') {
             $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
