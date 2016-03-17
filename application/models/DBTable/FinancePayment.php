@@ -61,16 +61,30 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             ->query()->fetchAll();
     }
 
-    public function getTotalPaymentHistoryDataByDay($start_date, $end_date)
+    public function getTotalPaymentHistoryDataByDay($start_date, $end_date, $fcid)
     {
-        return $this->select()->reset()
-            ->from($this->_name, ['payment_date as period', 'sum(payment) as payment'])
-            ->where('status=?', Bill_Constant::VALID_STATUS)
-            ->where('payment_date>=?', $start_date)
-            ->where('payment_date<=?', $end_date)
-            ->group('payment_date')
-            ->order('payment_date asc')
-            ->query()->fetchAll();
+        if ($fcid == Bill_Constant::INVALID_PRIMARY_ID) {
+            return $this->select()->reset()
+                ->from($this->_name, ['payment_date as period', 'sum(payment) as payment'])
+                ->where('status=?', Bill_Constant::VALID_STATUS)
+                ->where('payment_date>=?', $start_date)
+                ->where('payment_date<=?', $end_date)
+                ->group('payment_date')
+                ->order('payment_date asc')
+                ->query()->fetchAll();
+        } else {
+            return $this->select()->reset()
+                ->setIntegrityCheck(false)
+                ->from($this->_name, ['payment_date as period', 'sum(payment) as payment'])
+                ->joinInner($this->_join_table, $this->_join_condition, [])
+                ->where($this->_name . '.status=?', Bill_Constant::VALID_STATUS)
+                ->where($this->_name . '.payment_date>=?', $start_date)
+                ->where($this->_name . '.payment_date<=?', $end_date)
+                ->where($this->_join_table . '.fcid=?', $fcid)
+                ->group($this->_name . '.payment_date')
+                ->order($this->_name . '.payment_date asc')
+                ->query()->fetchAll();
+        }
     }
 
     public function getTotalPaymentHistoryDataByCategory($start_date)

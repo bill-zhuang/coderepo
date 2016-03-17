@@ -32,7 +32,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
             ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
         $end_date = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
             ? trim($params['day_end_date']) : date('Y-m-d');
-        $period_data = $this->_getFinanceHistoryPeriodData($start_date, $end_date);
+        $fcid = (isset($params['day_category_id'])) ? intval($params['day_category_id']) : 0;
+        $period_data = $this->_getFinanceHistoryPeriodData($start_date, $end_date, $fcid);
         $json_array = [
             'data' => $period_data
         ];
@@ -107,10 +108,10 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         exit;
     }
 
-    private function _getFinanceHistoryPeriodData($start_date, $end_date)
+    private function _getFinanceHistoryPeriodData($start_date, $end_date, $fcid)
     {
         $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
-        $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date, $end_date);
+        $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date, $end_date, $fcid);
         $sort_chart_data = [];
         if (count($all_chart_data['period']) != $day_interval) {
             for($i = 1; $i <= $day_interval; $i++) {
@@ -174,13 +175,13 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         return $year_category_data;
     }
 
-    private function _getAllPaymentHistoryDataByDay($start_date, $end_date)
+    private function _getAllPaymentHistoryDataByDay($start_date, $end_date, $fcid)
     {
         $all_chart_data = [
             'period' => [],
             'payment' => [],
         ];
-        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date, $end_date);
+        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date, $end_date, $fcid);
         foreach ($all_data as $all_value) {
             $all_chart_data['period'][] = $all_value['period'];
             $all_chart_data['payment'][] = $all_value['payment'];

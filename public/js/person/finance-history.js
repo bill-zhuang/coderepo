@@ -5,6 +5,7 @@ $(document).ready(function () {
     initYearCategoryChart();
     initMonthSpent();
     initYearSpent();
+    loadMainCategory('day_category_id');
 });
 
 function initPeriodChart() {
