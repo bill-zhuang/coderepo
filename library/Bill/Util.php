@@ -114,4 +114,18 @@ class Bill_Util
     {
         return $module . '_' . $controller . '_' . $action;
     }
+
+    /**
+     * @param $logPath string log file absolute path
+     * @param $mode string function fopen param mode
+     * @param $content string log content
+     */
+    public static function writeLog($logPath, $mode, $content)
+    {
+        $handle = fopen($logPath, $mode);
+        if ($handle !== false) {
+            fwrite($handle, $content);
+            fclose($handle);
+        }
+    }
 } 
