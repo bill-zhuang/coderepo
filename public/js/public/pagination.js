@@ -11,6 +11,7 @@ function initPagination(total_pages, current_page) {
         onPageClick: function (event, page) {
             $('#current_page').val(page);
             ajaxIndex();
+            $('html, body').animate({'scrollTop' : 0}, 'normal');
         }
     });
 }
