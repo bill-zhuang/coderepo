@@ -79,7 +79,7 @@ $('#ul_tab_type li').on('click', function(){
     tab_value = isNaN(tab_value) ? <?php echo ($default_tab_value == '') ? 0 : $default_tab_value; ?> : tab_value;
     $('#tab_type').val(tab_value);
     $('#ul_tab_type li').removeClass('active');
-    $('#li_tab_type_' + tab_type).addClass('active');
+    $('#li_tab_type_' + tab_value).addClass('active');
     $('#current_page').val(1);
     ajaxIndex();
 });
