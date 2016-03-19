@@ -29,10 +29,19 @@
                     &nbsp;<label>每页</label>
                 </div>
                 <input type="hidden" id="current_page" name="current_page"/>
+                <input type="hidden" id="tab_type" name="tab_type" value="1"/>
             </form>
         </div><hr>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
+                <nav class="navbar nav-tabs" role="navigation">
+                    <div>
+                        <ul class="nav nav-tabs" id="ul_tab_type">
+                            <li id="li_tab_type_1" class="active"><a href="#">正常用户</a></li>
+                            <li id="li_tab_type_0"><a href="#">已删除</a></li>
+                        </ul>
+                    </div>
+                </nav>
                 <table id="tbl" class="table table-striped table-bordered bill_table text-center">
                     <thead>
                         <tr>

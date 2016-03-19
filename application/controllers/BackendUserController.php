@@ -155,6 +155,43 @@ class BackendUserController extends Zend_Controller_Action
         echo json_encode($json_array);
         exit;
     }
+
+    public function recoverBackendUserAction()
+    {
+        if ($this->getRequest()->isPost()) {
+            try {
+                $params = $this->getRequest()->getPost('params', []);
+                $buid = isset($params['buid']) ? intval($params['buid']) : Bill_Constant::INVALID_PRIMARY_ID;
+                if ($buid > Bill_Constant::INVALID_PRIMARY_ID) {
+                    $update_data = [
+                        'status' => Bill_Constant::VALID_STATUS,
+                        'update_time' => date('Y-m-d H:i:s'),
+                    ];
+                    $where = [
+                        $this->_adapter_backend_user->getAdapter()->quoteInto('buid=?', $buid),
+                        $this->_adapter_backend_user->getAdapter()->quoteInto('status=?', Bill_Constant::INVALID_STATUS),
+                    ];
+                    $affected_rows = $this->_adapter_backend_user->update($update_data, $where);
+                    $json_array = [
+                        'data' => [
+                            'affectedRows' => $affected_rows,
+                        ]
+                    ];
+                }
+            } catch (Exception $e) {
+                Bill_Util::handleException($e, 'Error From recoverBackendUser');
+            }
+        }
+
+        if (!isset($json_array['data'])) {
+            $json_array = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($json_array);
+        exit;
+    }
     
     public function getBackendUserAction()
     {
@@ -185,9 +222,10 @@ class BackendUserController extends Zend_Controller_Action
         $params = $this->_getParam('params', []);
         list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
+        $tab_type = isset($params['tab_type']) ? intval($params['tab_type']) : 1;
 
         $conditions = [
-            'status =?' => Bill_Constant::VALID_STATUS,
+            'status =?' => $tab_type,
             'name!=?' => Bill_Constant::ADMIN_NAME,
         ];
         if ($keyword !== '') {

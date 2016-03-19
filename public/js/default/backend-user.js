@@ -11,7 +11,11 @@ function ajaxIndex() {
     var success_function = function(result){
         $('#tbl tbody').empty();
         if (typeof result.data != "undefined") {
+            var isDelete = ($('#tab_type').val() == 1);
+            var operateName = isDelete ? '删除' : '恢复';
             for (var i = 0; i < result.data.currentItemCount; i++) {
+                var operateID = (isDelete ? 'delete_' : 'recover_')  + result.data.items[i]['buid'];
+                var operateMethod = isDelete ? deleteBackendUser : recoverBackendUser;
                 $('#tbl tbody').append(
                     $('<tr>')
                         .append($('<td>').text(result.data.startIndex + i))
@@ -22,8 +26,8 @@ function ajaxIndex() {
                             .click(function(){modifyBackendUser(this.id);})
                         )
                         .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data.items[i]['buid'], text: '删除'})
-                            .click(function(){deleteBackendUser(this.id);})
+                        .append($('<a>', {href: '#', id: operateID, text: operateName})
+                            .click(function(){operateMethod(this.id);})
                         )
                     )
                 );
@@ -43,6 +47,17 @@ function ajaxIndex() {
     };
     callAjaxWithFunction(get_url, get_data, success_function, method);
 }
+
+$('#ul_tab_type li').on('click', function(){
+    var tab_value = parseInt($(this).attr('id').substr('li_tab_type_'.length));
+    tab_value = isNaN(tab_value) ? 1 : tab_value;
+    $('#tab_type').val(tab_value);
+    $('#ul_tab_type li').removeClass('active');
+    $('#li_tab_type_' + tab_value).addClass('active');
+    $('#current_page').val(1);
+    ajaxIndex();
+});
+
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function(){
     window.formBackendUser.reset();
@@ -144,6 +159,32 @@ function deleteBackendUser(delete_id) {
                     alert(MESSAGE_DELETE_SUCCESS);
                 } else {
                     alert(MESSAGE_DELETE_ERROR);
+                }
+            } else {
+                alert(result.error.message);
+            }
+            ajaxIndex();
+        };
+        callAjaxWithFunction(post_url, post_data, success_function, method);
+    }
+}
+
+function recoverBackendUser(recover_id) {
+    if (confirm(MESSAGE_RECOVER_ACCOUNT_CONFIRM)) {
+        var buid = recover_id.substr('recover_'.length);
+        var post_url = '/backend-user/recover-backend-user';
+        var post_data = {
+            "params": {
+                "buid" : buid
+            }
+        };
+        var method = 'post';
+        var success_function = function(result){
+            if (typeof result.data != 'undefined') {
+                if (parseInt(result.data.affectedRows) != 0) {
+                    alert(MESSAGE_RECOVER_SUCCESS);
+                } else {
+                    alert(MESSAGE_RECOVER_ERROR);
                 }
             } else {
                 alert(result.error.message);
