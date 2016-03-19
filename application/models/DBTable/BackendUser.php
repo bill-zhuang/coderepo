@@ -52,7 +52,6 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
             ->from($this->_name, 'count(*) as total')
             ->where('name = ?', $name)
             ->where('buid!=?', $buid)
-            ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
 
         return $count[0]['total'] == 0 ? false : true;
