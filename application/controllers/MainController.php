@@ -36,9 +36,12 @@ class MainController extends Zend_Controller_Action
                 if ($user_info['password'] !== md5($old_password . $salt)) {
                     $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, '原密码错误!');
                 } else {
+                    $security = new Bill_Security();
+                    $new_salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
                     $where = $this->_adapter_backend_user->getAdapter()->quoteInto('name = ?', $user_name);
                     $update_data = [
-                        'password' => md5($new_password . $salt),
+                        'password' => md5($new_password . $new_salt),
+                        'salt' => $new_salt,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
                     $affect_rows = $this->_adapter_backend_user->update($update_data, $where);
