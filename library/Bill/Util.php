@@ -50,7 +50,13 @@ class Bill_Util
 
     public static function isCommandLineInterface()
     {
-        return php_sapi_name() == 'cli';
+        return (php_sapi_name() == 'cli' || defined('STDIN'));
+    }
+
+    public static function isAjaxRequest()
+    {
+        return (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
     }
 
     public static function handleException($exception, $from)
