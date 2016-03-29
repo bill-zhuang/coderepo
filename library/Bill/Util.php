@@ -124,7 +124,9 @@ class Bill_Util
     {
         $handle = fopen($logPath, $mode);
         if ($handle !== false) {
+            flock($handle, LOCK_EX);
             fwrite($handle, $content);
+            flock($handle, LOCK_UN);
             fclose($handle);
         }
     }
