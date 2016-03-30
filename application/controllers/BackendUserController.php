@@ -199,10 +199,14 @@ class BackendUserController extends Zend_Controller_Action
             $params = $this->getRequest()->getQuery('params', []);
             $buid = (isset($params['buid'])) ? intval($params['buid']) : Bill_Constant::INVALID_PRIMARY_ID;
             $data = $this->_adapter_backend_user->getBackendUserByID($buid);
-            $data['roles'] = $this->_adapter_backend_role->getAllRoles();
             if (!empty($data)) {
                 $json_array = [
-                    'data' => $data,
+                    'data' => [
+                        'buid' => $data['buid'],
+                        'name' => $data['name'],
+                        'brid' => $data['brid'],
+                        'roles' => $this->_adapter_backend_role->getAllRoles(),
+                    ],
                 ];
             }
         }
@@ -235,12 +239,13 @@ class BackendUserController extends Zend_Controller_Action
         $total = $this->_adapter_backend_user->getBackendUserCount($conditions);
         $data = $this->_adapter_backend_user->getBackendUserData($conditions, $current_page, $page_length, $order_by);
         $roles = $this->_adapter_backend_role->getAllRoles();
-        foreach ($data as &$value) {
-            if (isset($roles[$value['brid']])) {
-                $value['role'] = $roles[$value['brid']];
-            } else {
-                $value['role'] = '-';
-            }
+        $output = [];
+        foreach ($data as $value) {
+            $output[] = [
+                'buid' => $value['buid'],
+                'name' => $value['name'],
+                'role' => isset($roles[$value['brid']]) ? $roles[$value['brid']] : '-',
+            ];
         }
 
         $json_data = [
@@ -250,8 +255,8 @@ class BackendUserController extends Zend_Controller_Action
                 'totalItems' => $total,
                 'startIndex' => $start + 1,
                 'itemsPerPage' => $page_length,
-                'currentItemCount' => count($data),
-                'items' => $data,
+                'currentItemCount' => count($output),
+                'items' => $output,
             ],
         ];
         return $json_data;
