@@ -136,4 +136,35 @@ class Bill_Util
             fclose($handle);
         }
     }
+
+    public static function printSQL()
+    {
+        $queryContent = array();
+        $adapter = Application_Model_DBAdapter::getDBAdapter();
+        if ($adapter instanceof Zend_Db_Adapter_Abstract) {
+            $profiler = $adapter->getProfiler();
+            $queryNum = $profiler->getTotalNumQueries();
+            if ($queryNum > 0) {
+                $queryContent['queryNum'] = $queryNum;
+                $queryContent['queryCost'] = $profiler->getTotalElapsedSecs();
+                //
+                $queries = $profiler->getQueryProfiles();
+                $queryDetail = array();
+                foreach ($queries as $query) {
+                    if ($query instanceof Zend_Db_Profiler_Query) {
+                        $queryDetail[] = array(
+                            'sql' => $query->getQuery(),
+                            'second' => $query->getElapsedSecs(),
+                        );
+                    }
+                }
+
+                $queryContent['queryDetail'] = $queryDetail;
+            }
+        }
+
+        echo '<pre>';
+        print_r($queryContent);
+        exit;
+    }
 } 
