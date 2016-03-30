@@ -18,6 +18,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $db_adapter = Zend_Db::factory($config->localdb->adapter, $config->localdb->toArray());
+            if ($config->localdb->profiler) {
+                $db_adapter->setProfiler($this->_getDbProfileFirebug());
+            }
             Zend_Registry::set(Bill_Constant::LOCAL_DB, $db_adapter);
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -30,6 +33,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $db_adapter = Zend_Db::factory($config->alphadb->adapter, $config->alphadb->toArray());
+            if ($config->localdb->profiler) {
+                $db_adapter->setProfiler($this->_getDbProfileFirebug());
+            }
             Zend_Registry::set(Bill_Constant::ALPHA_DB, $db_adapter);
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -42,6 +48,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $db_adapter = Zend_Db::factory($config->releasedb->adapter, $config->releasedb->toArray());
+            if ($config->localdb->profiler) {
+                $db_adapter->setProfiler($this->_getDbProfileFirebug());
+            }
             Zend_Registry::set(Bill_Constant::RELEASE_DB, $db_adapter);
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -90,6 +99,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         set_error_handler('errorHandler');
         register_shutdown_function('shutdownFunction');
+    }
+
+    private function _getDbProfileFirebug()
+    {
+        $profiler = new Zend_Db_Profiler_Firebug('All Database Queries:');
+        $profiler->setEnabled(true);
+        return $profiler;
     }
 }
 
