@@ -165,6 +165,5 @@ class Bill_Util
 
         echo '<pre>';
         print_r($queryContent);
-        exit;
     }
 } 
