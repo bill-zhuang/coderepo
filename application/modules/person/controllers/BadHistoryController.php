@@ -10,18 +10,21 @@ class person_BadHistoryController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_bad_history = new Application_Model_DBTable_BadHistory();
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     public function addBadHistoryAction()
@@ -56,7 +59,6 @@ class person_BadHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getBadHistoryAction()
@@ -79,7 +81,6 @@ class person_BadHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function modifyBadHistoryAction()
@@ -111,7 +112,6 @@ class person_BadHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function deleteBadHistoryAction()
@@ -145,7 +145,6 @@ class person_BadHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()

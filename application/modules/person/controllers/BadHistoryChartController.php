@@ -10,12 +10,16 @@ class person_BadHistoryChartController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_bad_history = new Application_Model_DBTable_BadHistory();
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
@@ -24,7 +28,6 @@ class person_BadHistoryChartController extends Zend_Controller_Action
             'data' => $this->_index(),
         ];
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()

@@ -10,18 +10,21 @@ class person_DreamHistoryController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_dream_history = new Application_Model_DBTable_DreamHistory();
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     public function addDreamHistoryAction()
@@ -56,7 +59,6 @@ class person_DreamHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getDreamHistoryAction()
@@ -79,7 +81,6 @@ class person_DreamHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function modifyDreamHistoryAction()
@@ -113,7 +114,6 @@ class person_DreamHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function deleteDreamHistoryAction()
@@ -147,7 +147,6 @@ class person_DreamHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()

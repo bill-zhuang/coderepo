@@ -22,6 +22,8 @@ class BackendRoleController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_backend_role= new Application_Model_DBTable_BackendRole();
         $this->_adapter_backend_acl = new Application_Model_DBTable_BackendAcl();
         $this->_adapter_backend_role_acl = new Application_Model_DBTable_BackendRoleAcl();
@@ -31,12 +33,13 @@ class BackendRoleController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     public function addBackendRoleAction()
@@ -72,7 +75,6 @@ class BackendRoleController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function modifyBackendRoleAction()
@@ -108,7 +110,6 @@ class BackendRoleController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function deleteBackendRoleAction()
@@ -156,7 +157,6 @@ class BackendRoleController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
     
     public function getBackendRoleAction()
@@ -179,7 +179,6 @@ class BackendRoleController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getBackendRoleAclAction()
@@ -205,7 +204,6 @@ class BackendRoleController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function modifyBackendRoleAclAction()
@@ -264,7 +262,6 @@ class BackendRoleController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getAllRolesAction()
@@ -273,7 +270,6 @@ class BackendRoleController extends Zend_Controller_Action
             'data' => $this->_adapter_backend_role->getAllRoles(),
         ];
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()

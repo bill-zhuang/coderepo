@@ -10,12 +10,16 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_dream_history = new Application_Model_DBTable_DreamHistory();
     }
 
     public function indexAction()
     {
         //action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxDreamHistoryPeriodAction()
@@ -31,7 +35,6 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
         ];
         
         echo json_encode($json_array);
-        exit;
     }
 
     public function ajaxDreamHistoryMonthAction()
@@ -47,7 +50,6 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     //not used
@@ -80,7 +82,6 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _getAllDreamHistoryDataByDay($start_date, $end_date)

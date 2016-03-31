@@ -10,11 +10,13 @@ class LoginController extends Zend_Controller_Action
     public function init()
     {
         $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_auth = new Application_Model_Auth();
     }
     public function indexAction()
     {
         // action body
+        $this->_helper->viewRenderer->setNoRender(false);
         $this->_helper->layout->setLayout('layout-login');
         if (Application_Model_Auth::isValid()) {
             $this->redirect('/main/index');
@@ -41,7 +43,6 @@ class LoginController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
     
     

@@ -6,11 +6,15 @@ class GoogleMapController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
     
     public function markLocationAction()
@@ -29,12 +33,12 @@ class GoogleMapController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
 
     public function multipleLocationAction()
     {
-
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxMultipleLocationAction()
@@ -45,7 +49,6 @@ class GoogleMapController extends Zend_Controller_Action
             ],
         ];
         echo json_encode($json_array);
-        exit;
     }
 
     private function _multipleLocation()

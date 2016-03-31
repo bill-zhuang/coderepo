@@ -10,18 +10,21 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     public function addFinanceCategoryAction()
@@ -64,7 +67,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function modifyFinanceCategoryAction()
@@ -106,7 +108,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function deleteFinanceCategoryAction()
@@ -142,7 +143,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
     
     public function getFinanceCategoryAction()
@@ -165,7 +165,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getFinanceSubcategoryAction()
@@ -192,7 +191,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getFinanceMainCategoryAction()
@@ -205,7 +203,6 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             ],
         ];
         echo json_encode($json_data);
-        exit;
     }
 
     private function _index()

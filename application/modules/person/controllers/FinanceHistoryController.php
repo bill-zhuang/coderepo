@@ -15,6 +15,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
         $this->_adapter_finance_payment = new Application_Model_DBTable_FinancePayment();
         $this->_categories = $this->_adapter_finance_category->getAllParentCategory(true);
@@ -23,6 +25,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxFinanceHistoryPeriodAction()
@@ -39,7 +43,6 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function ajaxFinanceHistoryMonthAction()
@@ -55,7 +58,6 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function ajaxFinanceHistoryMonthCategoryAction()
@@ -66,7 +68,6 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function ajaxFinanceHistoryYearCategoryAction()
@@ -77,7 +78,6 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function ajaxFinanceHistoryMonthSpentAction()
@@ -91,7 +91,6 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function ajaxFinanceHistoryYearSpentAction()
@@ -105,7 +104,6 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _getFinanceHistoryPeriodData($start_date, $end_date, $fcid)

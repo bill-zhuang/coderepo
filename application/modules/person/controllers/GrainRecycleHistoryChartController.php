@@ -10,12 +10,16 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_grain_recycle_history = new Application_Model_DBTable_GrainRecycleHistory();
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxGrainRecycleHistoryPeriodAction()
@@ -31,7 +35,6 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function ajaxGrainRecycleHistoryMonthAction()
@@ -47,7 +50,6 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getGrainRecycleHistoryMonthDetailAction()
@@ -66,7 +68,6 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         }
 
         echo json_encode($chart_data);
-        exit;
     }
 
     private function _getAllGrainRecycleHistoryDataByDay($start_date, $end_date)

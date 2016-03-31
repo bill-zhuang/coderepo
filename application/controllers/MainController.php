@@ -14,12 +14,15 @@ class MainController extends Zend_Controller_Action
     public function init ()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_auth = new Application_Model_Auth();
         $this->_adapter_backend_user = new Application_Model_DBTable_BackendUser();
     }
     public function indexAction()
     {
-        
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
     
     public function modifyPasswordAction()
@@ -62,7 +65,9 @@ class MainController extends Zend_Controller_Action
             }
 
             echo json_encode($json_array);
-            exit;
+        } else {
+            $this->_helper->layout()->enableLayout();
+            $this->_helper->viewRenderer->setNoRender(false);
         }
     }
 

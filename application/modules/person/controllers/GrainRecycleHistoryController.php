@@ -10,18 +10,21 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_grain_recycle_history = new Application_Model_DBTable_GrainRecycleHistory();
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     public function addGrainRecycleHistoryAction()
@@ -56,7 +59,6 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function modifyGrainRecycleHistoryAction()
@@ -91,7 +93,6 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function deleteGrainRecycleHistoryAction()
@@ -125,7 +126,6 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function getGrainRecycleHistoryAction()
@@ -148,7 +148,6 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()

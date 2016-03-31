@@ -14,6 +14,8 @@ class BackendLogController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_backend_log= new Application_Model_DBTable_BackendLog();
         $this->_adapter_backend_user= new Application_Model_DBTable_BackendUser();
     }
@@ -21,12 +23,13 @@ class BackendLogController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     private function _index()

@@ -6,11 +6,15 @@ class IndexController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
     }
 
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function getBaiduMusicLinkAction()
@@ -42,7 +46,6 @@ class IndexController extends Zend_Controller_Action
         }
 
 	    echo json_encode($json_array);
-	    exit;
     }
 }
 

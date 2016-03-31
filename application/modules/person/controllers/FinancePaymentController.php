@@ -18,6 +18,8 @@ class person_FinancePaymentController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
         $this->_adapter_finance_payment = new Application_Model_DBTable_FinancePayment();
         $this->_adapter_finance_payment_map = new Application_Model_DBTable_FinancePaymentMap();
@@ -26,12 +28,13 @@ class person_FinancePaymentController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     public function addFinancePaymentAction()
@@ -85,7 +88,6 @@ class person_FinancePaymentController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function modifyFinancePaymentAction()
@@ -132,7 +134,6 @@ class person_FinancePaymentController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function deleteFinancePaymentAction()
@@ -184,7 +185,6 @@ class person_FinancePaymentController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function getFinancePaymentAction()
@@ -211,7 +211,6 @@ class person_FinancePaymentController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()

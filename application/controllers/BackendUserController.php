@@ -14,6 +14,8 @@ class BackendUserController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
         $this->_adapter_backend_user= new Application_Model_DBTable_BackendUser();
         $this->_adapter_backend_role= new Application_Model_DBTable_BackendRole();
     }
@@ -21,12 +23,13 @@ class BackendUserController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
     public function addBackendUserAction()
@@ -72,7 +75,6 @@ class BackendUserController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function modifyBackendUserAction()
@@ -116,7 +118,6 @@ class BackendUserController extends Zend_Controller_Action
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function deleteBackendUserAction()
@@ -153,7 +154,6 @@ class BackendUserController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     public function recoverBackendUserAction()
@@ -190,7 +190,6 @@ class BackendUserController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
     
     public function getBackendUserAction()
@@ -218,7 +217,6 @@ class BackendUserController extends Zend_Controller_Action
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()
