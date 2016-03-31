@@ -38,6 +38,8 @@ echo PHP_EOL;
     public function init()
     {
         /* Initialize action controller here */
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
 <?php foreach ($model_names as $key => $model_name)
 {
     echo str_repeat(' ', 4 * 2) . '$this->_adapter_' . str_replace($table_prefix, '', $table_names[$key]) . '= new Application_Model_DBTable_' . $model_name . '();' . PHP_EOL;
@@ -48,12 +50,13 @@ echo PHP_EOL;
     public function indexAction()
     {
         // action body
+        $this->_helper->layout()->enableLayout();
+        $this->_helper->viewRenderer->setNoRender(false);
     }
 
     public function ajaxIndexAction()
     {
         echo json_encode($this->_index());
-        exit;
     }
 
 <?php if(!empty($model_names)){ ?>
@@ -98,7 +101,6 @@ echo PHP_EOL;
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function modify<?php echo $controller_name; ?>Action()
@@ -146,7 +148,6 @@ echo PHP_EOL;
         }
         
         echo json_encode($json_array);
-        exit;
     }
     
     public function delete<?php echo $controller_name; ?>Action()
@@ -187,7 +188,6 @@ echo PHP_EOL;
         }
 
         echo json_encode($json_array);
-        exit;
     }
     
     public function get<?php echo $controller_name; ?>Action()
@@ -210,7 +210,6 @@ echo PHP_EOL;
         }
 
         echo json_encode($json_array);
-        exit;
     }
 
     private function _index()
