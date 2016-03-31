@@ -52,6 +52,11 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
         if (isset($_REQUEST['sql']) && boolval($_REQUEST['sql'])) {
             Bill_Util::printSQL();
         }
+
+        $sql_info = Bill_Util::getSQLInfo();
+        if (isset($sql_info['queryCost']) && $sql_info['queryCost'] > Bill_Constant::SQL_QUERY_COST_TRIGGER) {
+            //TODO slow query trigger
+        }
     }
 
     private function _getAclID($module, $controller, $action)

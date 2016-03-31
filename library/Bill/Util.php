@@ -139,6 +139,14 @@ class Bill_Util
 
     public static function printSQL()
     {
+        $queryContent = self::getSQLInfo();
+
+        echo '<pre>';
+        print_r($queryContent);
+    }
+
+    public static function getSQLInfo()
+    {
         $queryContent = array();
         $adapter = Application_Model_DBAdapter::getDBAdapter();
         if ($adapter instanceof Zend_Db_Adapter_Abstract) {
@@ -163,7 +171,6 @@ class Bill_Util
             }
         }
 
-        echo '<pre>';
-        print_r($queryContent);
+        return $queryContent;
     }
 } 

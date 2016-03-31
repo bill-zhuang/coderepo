@@ -27,6 +27,9 @@ class Bill_Constant
     const ALPHA_DB = 'alphadb';
     const RELEASE_DB = 'releasedb';
 
+    //sql query cost warning
+    const SQL_QUERY_COST_TRIGGER = 10; //second
+
     //user section
     const ADMIN_NAME = 'admin';
     const DEFAULT_PASSWORD = '123456';
