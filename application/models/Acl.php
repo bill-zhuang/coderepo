@@ -47,6 +47,13 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
         }
     }
 
+    public function postDispatch(Zend_Controller_Request_Abstract $request)
+    {
+        if (isset($_REQUEST['sql']) && boolval($_REQUEST['sql'])) {
+            Bill_Util::printSQL();
+        }
+    }
+
     private function _getAclID($module, $controller, $action)
     {
         $adapter_acl = new Application_Model_DBTable_BackendAcl();
