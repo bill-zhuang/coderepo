@@ -118,3 +118,7 @@ bootstrap modal css
     display:table-cell;
     vertical-align:middle;
 }
+
+.bill-ime-disabled {
+    ime-mode: disabled;
+}
