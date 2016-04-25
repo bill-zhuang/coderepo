@@ -36,14 +36,6 @@ class Bill_ExportFile
         fclose($fp);
     }
 
-    private static function _exprotPdf($filename, $pdf_content)
-    {
-        ob_clean();
-        self::_setHeaderInfo();
-        header("Content-Type: application/pdf;");
-        header("Content-Disposition: attachment; filename=" . $filename);
-    }
-
     private static function _setHeaderInfo()
     {
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
