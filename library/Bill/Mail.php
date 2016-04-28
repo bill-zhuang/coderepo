@@ -37,6 +37,7 @@ class Bill_Mail
 
         $env = Bill_Util::isProductionEnv() ? 'product' : 'alpha';
         $title = '(' . Application_Model_Auth::getIdentity()->name . '-' . $env . ')' . $title;
+        $title = '=?UTF-8?B?' . base64_encode($title) . '?=';
         $mail->setSubject($title);
         try {
             $mail->send($transport);
