@@ -40,7 +40,7 @@ function ajaxIndex() {
             //init pagination
             initPagination(result.data.totalPages, result.data.pageIndex);
         } else {
-        alert(result.error.message);
+            alert(result.error.message);
         }
     };
     jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
