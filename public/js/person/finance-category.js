@@ -149,7 +149,7 @@ function validInput(type) {
     if (name == '') {
         error_num = error_num + 1;
         alert(MESSAGE_NAME_ERROR);
-    } else if (!isUnsignedInt(weight)) {
+    } else if (!RegexWidget.isUnsignedInt(weight)) {
         error_num = error_num + 1;
         alert(MESSAGE_WEIGHT_FORMAT_ERROR);
     }

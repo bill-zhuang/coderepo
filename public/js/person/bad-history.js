@@ -52,7 +52,7 @@ function ajaxIndex() {
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
     window.BadHistoryForm.reset();
-    $('#bad_history_date').val(getCurrentDate()).attr('disabled', false);
+    $('#bad_history_date').val(DateWidget.getCurrentDate()).attr('disabled', false);
     $('#bad_history_count').val(1);
     $('#bad_history_id').val('');
     $('#btn_submit_bad_history').attr('disabled', false);

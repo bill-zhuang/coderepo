@@ -58,7 +58,7 @@ var g_selectpicker = $('#finance_payment_fcid').selectpicker();
 
 $('#btn_add').on('click', function () {
     window.FinancePaymentForm.reset();
-    $('#finance_payment_payment_date').val(getCurrentDate());
+    $('#finance_payment_payment_date').val(DateWidget.getCurrentDate());
     g_selectpicker.selectpicker('refresh');
     g_selectpicker.selectpicker('val', $("#finance_payment_fcid option:first").val());
     $('#finance_payment_fpid').val('');

@@ -52,7 +52,7 @@ function ajaxIndex() {
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
     window.formGrainRecycleHistory.reset();
-    $('#grain_recycle_history_happen_date').val(getCurrentDate()).attr('disabled', false);
+    $('#grain_recycle_history_happen_date').val(DateWidget.getCurrentDate()).attr('disabled', false);
     $('#grain_recycle_history_grhid').val('');
     $('#btn_submit_grain_recycle_history').attr('disabled', false);
     $('#modalGrainRecycleHistory').modal('show');
