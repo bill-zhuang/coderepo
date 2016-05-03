@@ -1,29 +1,3 @@
-function callAjax(url, para) {
-    $.ajax({
-        url: url,
-        type: 'post',
-        data: {
-            'send_para': para,
-        },
-        dataType: 'json',
-        success: function (strResult) {
-            console.log(strResult);
-            if (strResult == '') {
-                alert('error info');
-                return false;
-            } else {
-
-            }
-        },
-
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log("XMLHttpRequest.status=" + XMLHttpRequest.status +
-                "\nXMLHttpRequest.readyState=" + XMLHttpRequest.readyState +
-                "\ntextStatus=" + textStatus);
-        }
-    });
-}
-
 function httpRequest(url) {
     var xmlhttp;
 
