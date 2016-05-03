@@ -52,7 +52,9 @@ class BackendAclController extends Zend_Controller_Action
             }
             $json_array = [
                 'data' => [
-                    'affectedRows' => $affected_rows,
+                    'code' => $affected_rows,
+                    'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            ? Bill_JsMessage::LOAD_ACL_SUCCESS : Bill_JsMessage::LOAD_ACL_NO_ACL_LOADED,
                 ],
             ];
         }
@@ -81,7 +83,9 @@ class BackendAclController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_backend_acl->update($data, $where);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ]
                     ];
                 }
@@ -113,7 +117,9 @@ class BackendAclController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_backend_acl->delete($where);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
                 }

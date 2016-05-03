@@ -69,7 +69,7 @@ function ajaxIndex() {
         alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 <?php } ?>
 <?php if(!empty($tab_types)){ ?>
@@ -117,17 +117,13 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
         var success_function = function(result){
             $('#modal<?php echo $form_name_postfix; ?>').modal('hide');
             if (typeof result.data != 'undefined') {
-                if (parseInt(result.data.affectedRows) != 0) {
-                    alert(msg_success);
-                } else {
-                    alert(msg_error);
-                }
+                alert(result.data.message);
             } else {
                 alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
     }
 }));
 
@@ -159,7 +155,7 @@ function modify<?php echo $form_name_postfix; ?>(modify_id) {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 
 function delete<?php echo $form_name_postfix; ?>(delete_id) {
@@ -174,17 +170,13 @@ function delete<?php echo $form_name_postfix; ?>(delete_id) {
         var method = 'post';
         var success_function = function(result){
             if (typeof result.data != 'undefined') {
-                if (parseInt(result.data.affectedRows) != 0) {
-                    alert(MESSAGE_DELETE_SUCCESS);
-                } else {
-                    alert(MESSAGE_DELETE_ERROR);
-                }
+                alert(result.data.message);
             } else {
                 alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
     }
 }
 

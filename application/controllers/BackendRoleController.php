@@ -59,7 +59,9 @@ class BackendRoleController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_backend_role->insert($data);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                         ],
                     ];
                 }
@@ -94,7 +96,9 @@ class BackendRoleController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_backend_role->update($data, $where);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ]
                     ];
                 }
@@ -133,7 +137,9 @@ class BackendRoleController extends Zend_Controller_Action
                         $this->_adapter_backend_role->getAdapter()->commit();
                         $json_array = [
                             'data' => [
-                                'affectedRows' => $affected_rows,
+                                'code' => $affected_rows,
+                                'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                        ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                             ]
                         ];
                     } else {
@@ -245,7 +251,9 @@ class BackendRoleController extends Zend_Controller_Action
                     $this->_adapter_backend_role_acl->getAdapter()->commit();
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ],
                     ];
                 } catch (Exception $e) {

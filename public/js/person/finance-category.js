@@ -47,7 +47,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
     //load main category
     loadMainCategory('finance_category_parent_id');
 }
@@ -72,23 +72,17 @@ $('#FinanceCategoryForm').on('submit', (function (event) {
         var post_data = {
             "params": $('#FinanceCategoryForm').serializeObject()
         };
-        var msg_success = (fcid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-        var msg_error = (fcid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
         var success_function = function (result) {
             $('#FinanceCategoryModal').modal('hide');
             if (typeof result.data != 'undefined') {
-                if (parseInt(result.data.affectedRows) != 0) {
-                    alert(msg_success);
-                } else {
-                    alert(msg_error);
-                }
+                alert(result.data.message);
             } else {
                 alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
     }
 }));
 
@@ -113,7 +107,7 @@ function modifyFinanceCategory(modify_id) {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
 }
 
 function deleteFinanceCategory(delete_id) {
@@ -128,17 +122,13 @@ function deleteFinanceCategory(delete_id) {
         var method = 'post';
         var success_function = function (result) {
             if (typeof result.data != 'undefined') {
-                if (parseInt(result.data.affectedRows) != 0) {
-                    alert(MESSAGE_DELETE_SUCCESS);
-                } else {
-                    alert(MESSAGE_DELETE_ERROR);
-                }
+                alert(result.data.message);
             } else {
                 alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
     }
 }
 

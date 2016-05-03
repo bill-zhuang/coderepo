@@ -21,7 +21,7 @@ $('#btn_generate_download_link').on('click', function () {
                 alert(result.error.message);
             }
         };
-        callAjaxWithFunction(get_url, get_data, success_function, method);
+        jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
     } else {
         alert('music url is empty!');
     }

@@ -46,7 +46,9 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
                 $affected_rows = $this->_adapter_grain_recycle_history->insert($data);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                     ],
                 ];
             }
@@ -80,7 +82,9 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
                 $affected_rows = $this->_adapter_grain_recycle_history->update($update_data, $where);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows,
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                     ]
                 ];
             }
@@ -113,7 +117,9 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
                 $affected_rows = $this->_adapter_grain_recycle_history->update($update_data, $where);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows,
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                     ]
                 ];
             }

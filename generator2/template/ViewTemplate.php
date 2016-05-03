@@ -164,7 +164,7 @@ foreach ($table_row_data as $key => $value)
 <script src="/js/public/datetimepicker.js"></script>
 <?php } ?>
 <script src="/assets/jquery-serialize-object/js/jquery.serialize-object.min.js"></script>
-<script src="/js/public/util.js"></script>
+<script src="/js/public/jAjaxWidget.js"></script>
 <script src="/js/public/common.js"></script>
 <script src="/js/public/alertInfo.js"></script>
 <?php if ($primary_id[0] !== ''){ ?>

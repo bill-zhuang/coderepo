@@ -49,7 +49,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
     //load main category
     loadMainCategory('finance_payment_fcid', false);
 }
@@ -78,23 +78,17 @@ $('#FinancePaymentForm').on('submit', (function (event) {
         var post_data = {
             "params": $('#FinancePaymentForm').serializeObject()
         };
-        var msg_success = (fpid == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-        var msg_error = (fpid == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
         var success_function = function (result) {
             $('#FinancePaymentModal').modal('hide');
             if (typeof result.data != 'undefined') {
-                if (parseInt(result.data.affectedRows) != 0) {
-                    alert(msg_success);
-                } else {
-                    alert(msg_error);
-                }
+                alert(result.data.message);
             } else {
                 alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
     }
 }));
 
@@ -120,7 +114,7 @@ function modifyFinancePayment(modify_id) {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
 }
 
 function deleteFinancePayment(delete_id) {
@@ -135,17 +129,13 @@ function deleteFinancePayment(delete_id) {
         var method = 'post';
         var success_function = function (result) {
             if (typeof result.data != 'undefined') {
-                if (parseInt(result.data.affectedRows) != 0) {
-                    alert(MESSAGE_DELETE_SUCCESS);
-                } else {
-                    alert(MESSAGE_DELETE_ERROR);
-                }
+                alert(result.data.message);
             } else {
                 alert(result.error.message);
             }
             ajaxIndex();
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
     }
 }
 

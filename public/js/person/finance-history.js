@@ -21,7 +21,7 @@ function initPeriodChart() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 
 function initMonthChart() {
@@ -42,7 +42,7 @@ function initMonthChart() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 
 function initMonthCategoryChart() {
@@ -63,7 +63,7 @@ function initMonthCategoryChart() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 
 function initYearCategoryChart() {
@@ -84,7 +84,7 @@ function initYearCategoryChart() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 
 function initMonthSpent() {
@@ -100,7 +100,7 @@ function initMonthSpent() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 
 function initYearSpent() {
@@ -116,7 +116,7 @@ function initYearSpent() {
             alert(result.error.message);
         }
     };
-    callAjaxWithFunction(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
 }
 
 $('#btn_search_day').on('click', function (event) {

@@ -85,7 +85,9 @@ echo PHP_EOL;
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                     ],
                 ];
             } catch (Exception $e) {
@@ -131,7 +133,9 @@ echo PHP_EOL;
                     $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ]
                     ];
                 }
@@ -171,7 +175,9 @@ echo PHP_EOL;
                     $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
                 }

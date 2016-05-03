@@ -33,6 +33,6 @@ $('#formLogin').on('submit', function (event) {
                 $('#password').val('');
             }
         };
-        callAjaxWithFunction(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
     }
 });

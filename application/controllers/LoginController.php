@@ -38,7 +38,7 @@ class LoginController extends Zend_Controller_Action
             ];
         } else {
             $json_array['error'] = [
-                'message' => '用户名或密码错误!',
+                'message' => Bill_JsMessage::ACCOUNT_PASSWORD_ERROR,
             ];
         }
 

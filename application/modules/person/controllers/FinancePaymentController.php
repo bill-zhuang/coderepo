@@ -72,7 +72,9 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 $this->_adapter_finance_payment->getAdapter()->commit();
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                     ],
                 ];
             } catch (Exception $e) {
@@ -118,7 +120,9 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 $this->_adapter_finance_payment->getAdapter()->commit();
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                     ],
                 ];
             } catch (Exception $e) {
@@ -169,7 +173,9 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 $this->_adapter_finance_payment->getAdapter()->commit();
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                     ],
                 ];
             } catch (Exception $e) {

@@ -53,13 +53,16 @@ class BackendUserController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_backend_user->insert($data);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                         ],
                     ];
                 } else {
                     $json_array = [
                         'data' => [
-                            'affectedRows' => Bill_Constant::INIT_AFFECTED_ROWS,
+                            'code' => Bill_Constant::INIT_AFFECTED_ROWS,
+                            'message' => Bill_JsMessage::ACCOUNT_EXIST,
                         ],
                     ];
                 }
@@ -95,13 +98,16 @@ class BackendUserController extends Zend_Controller_Action
                         $affected_rows = $this->_adapter_backend_user->update($data, $where);
                         $json_array = [
                             'data' => [
-                                'affectedRows' => $affected_rows,
+                                'code' => $affected_rows,
+                                'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                        ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                             ]
                         ];
                     } else {
                         $json_array = [
                             'data' => [
-                                'affectedRows' => Bill_Constant::INIT_AFFECTED_ROWS,
+                                'code' => Bill_Constant::INIT_AFFECTED_ROWS,
+                                'message' => Bill_JsMessage::ACCOUNT_EXIST,
                             ],
                         ];
                     }
@@ -138,7 +144,9 @@ class BackendUserController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_backend_user->update($update_data, $where);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
                 }
@@ -174,7 +182,9 @@ class BackendUserController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_backend_user->update($update_data, $where);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::RECOVER_ACCOUNT_SUCCESS : Bill_JsMessage::RECOVER_ACCOUNT_FAIL,
                         ]
                     ];
                 }

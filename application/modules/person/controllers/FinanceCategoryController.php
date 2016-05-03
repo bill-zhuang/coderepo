@@ -51,7 +51,9 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_finance_category->insert($data);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                         ],
                     ];
                 }
@@ -92,7 +94,9 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                     $affected_rows = $this->_adapter_finance_category->update($data, $where);
                     $json_array = [
                         'data' => [
-                            'affectedRows' => $affected_rows
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ],
                     ];
                 }
@@ -128,7 +132,9 @@ class person_FinanceCategoryController extends Zend_Controller_Action
                 $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
                 $json_array = [
                     'data' => [
-                        'affectedRows' => $affected_rows,
+                        'code' => $affected_rows,
+                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                     ]
                 ];
             } catch (Exception $e) {

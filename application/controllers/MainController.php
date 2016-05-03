@@ -47,12 +47,14 @@ class MainController extends Zend_Controller_Action
                         'salt' => $new_salt,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $affect_rows = $this->_adapter_backend_user->update($update_data, $where);
-                    if ($affect_rows > Bill_Constant::INIT_AFFECTED_ROWS) {
+                    $affected_rows = $this->_adapter_backend_user->update($update_data, $where);
+                    if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS) {
                         $this->_auth->logIn($user_name, $new_password, 'backend_user',
                             $this->_adapter_backend_user->getAdapter());
                         $json_array['data'] = [
-                            'affectedRows' => $affect_rows,
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ];
                     } else {
                         $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, '修改失败!');
