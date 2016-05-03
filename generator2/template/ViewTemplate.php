@@ -165,7 +165,7 @@ foreach ($table_row_data as $key => $value)
 <?php } ?>
 <script src="/assets/jquery-serialize-object/js/jquery.serialize-object.min.js"></script>
 <script src="/js/public/jAjaxWidget.js"></script>
-<script src="/js/public/common.js"></script>
+<script src="/js/public/jCommon.js"></script>
 <script src="/js/public/alertInfo.js"></script>
 <?php if ($primary_id[0] !== ''){ ?>
 <script src="/js/public/pagination.js"></script>
