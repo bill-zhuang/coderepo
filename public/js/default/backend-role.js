@@ -129,7 +129,7 @@ function validInput(type)
     var error_num = 0;
     var role = $.trim($('#backend_role_role').val());
     if (role == '') {
-        alert(MESSAGE_ROLE_NAME_EMPTY_ERROR);
+        alert('角色名不能为空');
         error_num = error_num + 1;
     }
 

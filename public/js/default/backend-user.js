@@ -160,7 +160,7 @@ function deleteBackendUser(delete_id) {
 }
 
 function recoverBackendUser(recover_id) {
-    if (confirm(MESSAGE_RECOVER_ACCOUNT_CONFIRM)) {
+    if (confirm('确认恢复帐号？')) {
         var buid = recover_id.substr('recover_'.length);
         var post_url = '/backend-user/recover-backend-user';
         var post_data = {
