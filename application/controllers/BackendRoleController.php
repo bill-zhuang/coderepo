@@ -290,7 +290,7 @@ class BackendRoleController extends Zend_Controller_Action
             'status =?' => Bill_Constant::VALID_STATUS
         ];
         if ($keyword !== '') {
-            $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
+            $conditions['role like ?'] = Bill_Util::getLikeString($keyword);
         }
         $order_by = 'brid ASC';
         $total = $this->_adapter_backend_role->getBackendRoleCount($conditions);
