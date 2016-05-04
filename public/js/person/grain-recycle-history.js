@@ -84,8 +84,8 @@ $('#formGrainRecycleHistory').on('submit', (function (event) {
     }
 }));
 
-function modifyGrainRecycleHistory(modify_id) {
-    var grhid = modify_id.substr('modify_'.length);
+function modifyGrainRecycleHistory(modifyId) {
+    var grhid = modifyId.substr('modify_'.length);
     var getUrl = '/person/grain-recycle-history/get-grain-recycle-history';
     var getData = {
         "params": {
@@ -107,9 +107,9 @@ function modifyGrainRecycleHistory(modify_id) {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
-function deleteGrainRecycleHistory(delete_id) {
+function deleteGrainRecycleHistory(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var grhid = delete_id.substr('delete_'.length);
+        var grhid = deleteId.substr('delete_'.length);
         var postUrl = '/person/grain-recycle-history/delete-grain-recycle-history';
         var postData = {
             "params": {
@@ -131,9 +131,9 @@ function deleteGrainRecycleHistory(delete_id) {
 
 function isValidInput() {
     var isVerified = true;
-    var happen_date = $('#grain_recycle_history_happen_date').val();
+    var happenDate = $('#grain_recycle_history_happen_date').val();
     var count = parseInt($('#grain_recycle_history_count').val());
-    if (happen_date == '') {
+    if (happenDate == '') {
         isVerified = false;
         alert(alertMessage.DATE_ERROR)
     } else if (count < 0) {

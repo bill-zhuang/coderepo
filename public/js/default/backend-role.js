@@ -80,8 +80,8 @@ $('#formBackendRole').on('submit', (function(event){
     }
 }));
 
-function modifyBackendRole(modify_id) {
-    var brid = modify_id.substr('modify_'.length);
+function modifyBackendRole(modifyId) {
+    var brid = modifyId.substr('modify_'.length);
     var getUrl = '/backend-role/get-backend-role';
     var getData = {
         "params": {
@@ -102,9 +102,9 @@ function modifyBackendRole(modify_id) {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
-function deleteBackendRole(delete_id) {
+function deleteBackendRole(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var brid = delete_id.substr('delete_'.length);
+        var brid = deleteId.substr('delete_'.length);
         var postUrl = '/backend-role/delete-backend-role';
         var postData = {
             "params": {
@@ -136,8 +136,8 @@ function isValidInput()
     return isVerified;
 }
 
-function modifyBackendRoleAcl(modify_id) {
-    var brid = modify_id.substr('modifyAcl_'.length);
+function modifyBackendRoleAcl(modifyId) {
+    var brid = modifyId.substr('modifyAcl_'.length);
     var getUrl = '/backend-role/get-backend-role-acl';
     var getData = {
         "params": {
@@ -147,26 +147,26 @@ function modifyBackendRoleAcl(modify_id) {
     var method = 'get';
     var successFunc = function(result){
         if (typeof result.data != 'undefined') {
-            var acl_content = '<input type="checkbox" id="ck_all" onclick="batchAclList(this);"/>&nbsp;全选<hr>';
+            var aclContent = '<input type="checkbox" id="ck_all" onclick="batchAclList(this);"/>&nbsp;全选<hr>';
             var aclList = result.data.aclList;
             var actionID;
             for (var module in aclList) {
                 for (var controller in aclList[module]) {
-                    acl_content = acl_content
+                    aclContent = aclContent
                         + '<div><input type="checkbox" onclick="batchControllerAcl(this);"/>&nbsp;'
                         + '<span class="bill_font_bold">' + module + '/' + controller + '</span></br>';
                     for (var itemIndex in aclList[module][controller]) {
                         actionID = aclList[module][controller][itemIndex].id;
-                        acl_content = acl_content + '<input type="checkbox" name="backend_role_acl_baid[]" id="acl_'
+                        aclContent = aclContent + '<input type="checkbox" name="backend_role_acl_baid[]" id="acl_'
                             + actionID + '"' + (result.data.roleAcl.indexOf(actionID) === -1 ? '' : 'checked')
                             + ' value="' + actionID + '" '
                             + ' onclick="batchActionAcl(this);"/>&nbsp;' + aclList[module][controller][itemIndex].action + '&nbsp;';
                     }
-                    acl_content = acl_content + '</div></br>';
+                    aclContent = aclContent + '</div></br>';
                 }
-                acl_content = acl_content + '<hr>';
+                aclContent = aclContent + '<hr>';
             }
-            $('#aclList').empty().append(acl_content);
+            $('#aclList').empty().append(aclContent);
             $('#backend_role_acl_brid').val(result.data.brid);
             $('#btn_submit_backend_role_acl').attr('disabled', false);
             $('#modalBackendRoleAcl').modal('show');

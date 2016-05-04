@@ -50,11 +50,11 @@ function ajaxIndex() {
 }
 
 $('#ul_tab_type').find('li').on('click', function(){
-    var tab_value = parseInt($(this).attr('id').substr('li_tab_type_'.length));
-    tab_value = isNaN(tab_value) ? 1 : tab_value;
-    $('#tab_type').val(tab_value);
+    var tabValue = parseInt($(this).attr('id').substr('li_tab_type_'.length));
+    tabValue = isNaN(tabValue) ? 1 : tabValue;
+    $('#tab_type').val(tabValue);
     $('#ul_tab_type').find('li').removeClass('active');
-    $('#li_tab_type_' + tab_value).addClass('active');
+    $('#li_tab_type_' + tabValue).addClass('active');
     $('#current_page').val(1);
     ajaxIndex();
 });
@@ -110,8 +110,8 @@ $('#formBackendUser').on('submit', (function(event){
     }
 }));
 
-function modifyBackendUser(modify_id) {
-    var buid = modify_id.substr('modify_'.length);
+function modifyBackendUser(modifyId) {
+    var buid = modifyId.substr('modify_'.length);
     var getUrl = '/backend-user/get-backend-user';
     var getData = {
         "params": {
@@ -137,9 +137,9 @@ function modifyBackendUser(modify_id) {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
-function deleteBackendUser(delete_id) {
+function deleteBackendUser(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var buid = delete_id.substr('delete_'.length);
+        var buid = deleteId.substr('delete_'.length);
         var postUrl = '/backend-user/delete-backend-user';
         var postData = {
             "params": {
@@ -159,9 +159,9 @@ function deleteBackendUser(delete_id) {
     }
 }
 
-function recoverBackendUser(recover_id) {
+function recoverBackendUser(recoverId) {
     if (confirm('确认恢复帐号？')) {
-        var buid = recover_id.substr('recover_'.length);
+        var buid = recoverId.substr('recover_'.length);
         var postUrl = '/backend-user/recover-backend-user';
         var postData = {
             "params": {

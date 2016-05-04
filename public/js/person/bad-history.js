@@ -83,8 +83,8 @@ $('#BadHistoryForm').on('submit', (function (event) {
     jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }));
 
-function modifyBadHistory(modify_id) {
-    var bhid = modify_id.substr('delete_'.length);
+function modifyBadHistory(modifyId) {
+    var bhid = modifyId.substr('delete_'.length);
     var postUrl = '/person/bad-history/get-bad-history';
     var postData = {
         "params": {
@@ -94,7 +94,7 @@ function modifyBadHistory(modify_id) {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
-            $('#bad_history_date').val(result.data.happen_date).attr('disabled', true);
+            $('#bad_history_date').val(result.data.happenDate).attr('disabled', true);
             $('#bad_history_count').val(result.data.count);
             $('#bad_history_id').val(result.data.bhid);
             $('#btn_submit_bad_history').attr('disabled', false);
@@ -106,9 +106,9 @@ function modifyBadHistory(modify_id) {
     jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }
 
-function deleteBadHistory(delete_id) {
+function deleteBadHistory(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var bhid = delete_id.substr('delete_'.length);
+        var bhid = deleteId.substr('delete_'.length);
         var postUrl = '/person/bad-history/delete-bad-history';
         var postData = {
             "params": {

@@ -70,8 +70,8 @@ $('#formBackendAcl').on('submit', (function(event){
     }
 }));
 
-function modifyBackendAcl(modify_id) {
-    var baid = modify_id.substr('modify_'.length);
+function modifyBackendAcl(modifyId) {
+    var baid = modifyId.substr('modify_'.length);
     var getUrl = '/backend-acl/get-backend-acl';
     var getData = {
         "params": {
@@ -95,9 +95,9 @@ function modifyBackendAcl(modify_id) {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
-function deleteBackendAcl(delete_id) {
+function deleteBackendAcl(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var baid = delete_id.substr('delete_'.length);
+        var baid = deleteId.substr('delete_'.length);
         var postUrl = '/backend-acl/delete-backend-acl';
         var postData = {
             "params": {

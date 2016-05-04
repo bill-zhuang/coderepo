@@ -6,7 +6,7 @@ var jCommon = (function() {
 
         getImageSrcsInDiv: function(divID) {
             var pics = [];
-            $('#' + div_id + ' img').each(function() {
+            $('#' + divID + ' img').each(function() {
                 pics.push($(this).attr('src'));
             });
 
@@ -29,9 +29,9 @@ var jCommon = (function() {
             }
         },
 
-        getBatchIDs: function(child_name) {
+        getBatchIDs: function(childName) {
             var selected = [];
-            $("input[name='" + child_name + "']:checked").each(function () {
+            $("input[name='" + childName + "']:checked").each(function () {
                 selected.push(this.value);
             });
 

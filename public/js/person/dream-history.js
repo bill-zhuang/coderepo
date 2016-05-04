@@ -83,8 +83,8 @@ $('#DreamHistoryForm').on('submit', (function (event) {
     jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }));
 
-function modifyDreamHistory(modify_id) {
-    var dhid = modify_id.substr('delete_'.length);
+function modifyDreamHistory(modifyId) {
+    var dhid = modifyId.substr('delete_'.length);
     var postUrl = '/person/dream-history/get-dream-history';
     var postData = {
         "params": {
@@ -106,9 +106,9 @@ function modifyDreamHistory(modify_id) {
     jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }
 
-function deleteDreamHistory(delete_id) {
+function deleteDreamHistory(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var dhid = delete_id.substr('delete_'.length);
+        var dhid = deleteId.substr('delete_'.length);
         var postUrl = '/person/dream-history/delete-dream-history';
         var postData = {
             "params": {

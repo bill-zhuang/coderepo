@@ -1,7 +1,7 @@
-function initLineChart(line_id, data_labels, data_values, line_option) {
-    if (typeof data_values != 'undefined' && data_values.length != 0) {
-        var line_data = {
-            labels: data_labels,
+function initLineChart(lineId, dataLabels, dataValues, lineOption) {
+    if (typeof dataValues != 'undefined' && dataValues.length != 0) {
+        var lineData = {
+            labels: dataLabels,
             datasets: [
                 {
                     fillColor: "rgba(151,187,205,0.2)",
@@ -10,31 +10,31 @@ function initLineChart(line_id, data_labels, data_values, line_option) {
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: data_values
+                    data: dataValues
                 }
             ]
         };
-        if (typeof line_option == 'undefined') {
-            line_option = {
+        if (typeof lineOption == 'undefined') {
+            lineOption = {
                 responsive: true
             };
         }
 
-        var w_chart = 'chart' + line_id;
-        if (typeof window[w_chart] != 'undefined') {
-            window[w_chart].destroy();
+        var wChart = 'chart' + lineId;
+        if (typeof window[wChart] != 'undefined') {
+            window[wChart].destroy();
         }
-        var chart_line_canvas = document.getElementById(line_id).getContext("2d");
-        window[w_chart] = new Chart(chart_line_canvas).Line(line_data, line_option);
+        var chartLineCanvas = document.getElementById(lineId).getContext("2d");
+        window[wChart] = new Chart(chartLineCanvas).Line(lineData, lineOption);
     } else {
         alert('No data.');
     }
 }
 
-function initBarChart(bar_id, data_labels, data_values) {
-    if (typeof data_values != 'undefined' && data_values.length > 0) {
-        var bar_data = {
-            labels: data_labels,
+function initBarChart(barId, dataLabels, dataValues) {
+    if (typeof dataValues != 'undefined' && dataValues.length > 0) {
+        var barData = {
+            labels: dataLabels,
             datasets: [
                 {
                     fillColor: "rgba(151,187,205,0.2)",
@@ -43,83 +43,83 @@ function initBarChart(bar_id, data_labels, data_values) {
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: data_values
+                    data: dataValues
                 }
             ]
         };
-        var bar_option = {
+        var barOption = {
             responsive: true
         };
 
-        var w_chart = 'chart' + bar_id;
-        if (typeof window[w_chart] != 'undefined') {
-            window[w_chart].destroy();
+        var wChart = 'chart' + barId;
+        if (typeof window[wChart] != 'undefined') {
+            window[wChart].destroy();
         }
-        //$('#' + doughnut_id).get(0).getContent('2d');
-        var chart_bar_canvas = document.getElementById(bar_id).getContext("2d");
-        window[w_chart] = new Chart(chart_bar_canvas).Bar(bar_data, bar_option);
+        //$('#' + doughnutId).get(0).getContent('2d');
+        var chartBarCanvas = document.getElementById(barId).getContext("2d");
+        window[wChart] = new Chart(chartBarCanvas).Bar(barData, barOption);
     } else {
         alert('No data.');
     }
 }
 
-function initPieChart(pie_id, data_labels, data_values) {
-    if (typeof data_values != 'undefined' && data_values.length > 0) {
-        var pie_data = [];
-        var hex_color = '';
-        for (var i = 0, len = data_labels.length; i < len; i++) {
-            hex_color = getRandomColorHex();
-            pie_data.push(
+function initPieChart(pieId, dataLabels, dataValues) {
+    if (typeof dataValues != 'undefined' && dataValues.length > 0) {
+        var pieData = [];
+        var hexColor = '';
+        for (var i = 0, len = dataLabels.length; i < len; i++) {
+            hexColor = getRandomColorHex();
+            pieData.push(
                 {
-                    value: Number(data_values[i]), //required, number, string failed
-                    color: hex_color, //required
-                    highlight: hex_color, //optional
-                    label: data_labels[i] //optional
+                    value: Number(dataValues[i]), //required, number, string failed
+                    color: hexColor, //required
+                    highlight: hexColor, //optional
+                    label: dataLabels[i] //optional
                 }
             );
         }
-        var pie_option = {
+        var pieOption = {
             responsive: true
         };
 
-        var w_chart = 'chart' + pie_id;
-        if (typeof window[w_chart] != 'undefined') {
-            window[w_chart].destroy();
+        var wChart = 'chart' + pieId;
+        if (typeof window[wChart] != 'undefined') {
+            window[wChart].destroy();
         }
-        //$('#' + pie_id).get(0).getContent('2d');
-        var chart_pie_canvas = document.getElementById(pie_id).getContext("2d");
-        window[w_chart] = new Chart(chart_pie_canvas).Pie(pie_data, pie_option);
+        //$('#' + pieId).get(0).getContent('2d');
+        var chartPieCanvas = document.getElementById(pieId).getContext("2d");
+        window[wChart] = new Chart(chartPieCanvas).Pie(pieData, pieOption);
     } else {
         alert('No data.');
     }
 }
 
-function initDoughnut(doughnut_id, data_labels, data_values) {
-    if (typeof data_values != 'undefined' && data_values.length > 0) {
-        var doughnut_data = [];
-        var hex_color = '';
-        for (var i = 0, len = data_labels.length; i < len; i++) {
-            hex_color = getRandomColorHex();
-            doughnut_data.push(
+function initDoughnut(doughnutId, dataLabels, dataValues) {
+    if (typeof dataValues != 'undefined' && dataValues.length > 0) {
+        var doughnutData = [];
+        var hexColor = '';
+        for (var i = 0, len = dataLabels.length; i < len; i++) {
+            hexColor = getRandomColorHex();
+            doughnutData.push(
                 {
-                    value: Number(data_values[i]), //required, number, string failed
-                    color: hex_color, //required
-                    highlight: hex_color, //optional
-                    label: data_labels[i] //optional
+                    value: Number(dataValues[i]), //required, number, string failed
+                    color: hexColor, //required
+                    highlight: hexColor, //optional
+                    label: dataLabels[i] //optional
                 }
             );
         }
-        var doughnut_option = {
+        var doughnutOption = {
             responsive: true
         };
 
-        var w_chart = 'chart' + doughnut_id;
-        if (typeof window[w_chart] != 'undefined') {
-            window[w_chart].destroy();
+        var wChart = 'chart' + doughnutId;
+        if (typeof window[wChart] != 'undefined') {
+            window[wChart].destroy();
         }
-        //$('#' + doughnut_id).get(0).getContent('2d');
-        var chart_doughnut_canvas = document.getElementById(doughnut_id).getContext("2d");
-        window[w_chart] = new Chart(chart_doughnut_canvas).Doughnut(doughnut_data, doughnut_option);
+        //$('#' + doughnutId).get(0).getContent('2d');
+        var chartDoughnutCanvas = document.getElementById(doughnutId).getContext("2d");
+        window[wChart] = new Chart(chartDoughnutCanvas).Doughnut(doughnutData, doughnutOption);
     } else {
         alert('No data.');
     }

@@ -1,8 +1,8 @@
 $(document).ready(function () {
-    var cookie_name = $.cookie('name');
-    if (typeof cookie_name != 'undefined') {
+    var cookieName = $.cookie('name');
+    if (typeof cookieName != 'undefined') {
         $('#remember').prop('checked', true);
-        $('#username').val(cookie_name);
+        $('#username').val(cookieName);
     }
 });
 

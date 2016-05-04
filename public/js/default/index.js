@@ -5,12 +5,12 @@ $('#baidu_music_url').on('keydown', function (event) {
 });
 
 $('#btn_generate_download_link').on('click', function () {
-    var music_url = $.trim($('#baidu_music_url').val());
-    if (music_url != '') {
+    var musicUrl = $.trim($('#baidu_music_url').val());
+    if (musicUrl != '') {
         var getUrl = '/index/get-baidu-music-link';
         var getData = {
             "params": {
-                "downloadLink": music_url
+                "downloadLink": musicUrl
             }
         };
         var method = 'get';

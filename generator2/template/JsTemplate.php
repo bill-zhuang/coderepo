@@ -76,11 +76,11 @@ function ajaxIndex() {
 <?php if(!empty($tab_types)){ ?>
 
 $('#ul_tab_type').find('li').on('click', function(){
-    var tab_value = parseInt($(this).attr('id').substr('li_tab_type_'.length));
-    tab_value = isNaN(tab_value) ? <?php echo ($default_tab_value == '') ? 0 : $default_tab_value; ?> : tab_value;
-    $('#tab_type').val(tab_value);
+    var tabValue = parseInt($(this).attr('id').substr('li_tab_type_'.length));
+    tabValue = isNaN(tabValue) ? <?php echo ($default_tab_value == '') ? 0 : $default_tab_value; ?> : tabValue;
+    $('#tab_type').val(tabValue);
     $('#ul_tab_type').find('li').removeClass('active');
-    $('#li_tab_type_' + tab_value).addClass('active');
+    $('#li_tab_type_' + tabValue).addClass('active');
     $('#current_page').val(1);
     ajaxIndex();
 });
@@ -111,8 +111,6 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
         var postData = {
             "params": $('#form<?php echo $form_name_postfix; ?>').serializeObject()
         };
-        var msg_success = (<?php echo $primary_id[0]; ?> == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
-        var msg_error = (<?php echo $primary_id[0]; ?> == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
         var successFunc = function(result){
             $('#modal<?php echo $form_name_postfix; ?>').modal('hide');
@@ -127,8 +125,8 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
     }
 }));
 
-function modify<?php echo $form_name_postfix; ?>(modify_id) {
-    var <?php echo $primary_id[0]; ?> = modify_id.substr('modify_'.length);
+function modify<?php echo $form_name_postfix; ?>(modifyId) {
+    var <?php echo $primary_id[0]; ?> = modifyId.substr('modify_'.length);
     var getUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/get-<?php echo strtolower($controller_name); ?>';
     var getData = {
         "params": {
@@ -158,9 +156,9 @@ function modify<?php echo $form_name_postfix; ?>(modify_id) {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
-function delete<?php echo $form_name_postfix; ?>(delete_id) {
+function delete<?php echo $form_name_postfix; ?>(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var <?php echo $primary_id[0]; ?> = delete_id.substr('delete_'.length);
+        var <?php echo $primary_id[0]; ?> = deleteId.substr('delete_'.length);
         var postUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
         var postData = {
             "params": {

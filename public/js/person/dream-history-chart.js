@@ -27,14 +27,14 @@ function initMonthChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var line_option = {
+            var lineOption = {
                 responsive: true,
                 scaleOverride: true,
                 scaleSteps: 9, //y axis length = steps * step_width
                 scaleStepWidth: 1, // y axis
                 scaleStartValue: 0 // y axis start value
             };
-            initLineChart('dream_history_line_chart', result.data['period'], result.data['number'], line_option);
+            initLineChart('dream_history_line_chart', result.data['period'], result.data['number'], lineOption);
             initBarChart('dream_history_bar_chart', result.data['period'], result.data['number']);
         } else {
             alert(result.error.message);

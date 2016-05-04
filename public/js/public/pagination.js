@@ -1,8 +1,8 @@
-function initPagination(total_pages, current_page) {
+function initPagination(totalPages, currentPage) {
     $('#div_pagination').empty().append('<ul id="pagination" class="pagination-md"></ul>');
     $('#pagination').twbsPagination({
-        totalPages: total_pages,
-        startPage: current_page,
+        totalPages: totalPages,
+        startPage: currentPage,
         visiblePages: 7,
         first: '首页',
         prev: '上一页',

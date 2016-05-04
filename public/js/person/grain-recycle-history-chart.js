@@ -10,7 +10,7 @@ function initPeriodChart() {
     };
     var method = 'get';
     var successFunc = function (result) {
-        var line_option = {
+        var lineOption = {
             responsive: true,
             scaleOverride: true,
             scaleSteps: 5, //y axis length = steps * step_width
@@ -18,7 +18,7 @@ function initPeriodChart() {
             scaleStartValue: 0 // y axis start value
         };
         if (typeof result.data != "undefined") {
-            initLineChart('grain_recycle_history_line_chart_all', result.data['period'], result.data['number'], line_option);
+            initLineChart('grain_recycle_history_line_chart_all', result.data['period'], result.data['number'], lineOption);
         } else {
             alert(result.error.message);
         }
@@ -34,14 +34,14 @@ function initMonthChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var line_option = {
+            var lineOption = {
                 responsive: true,
                 scaleOverride: true,
                 scaleSteps: 10, //y axis length = steps * step_width
                 scaleStepWidth: 5, // y axis
                 scaleStartValue: 0 // y axis start value
             };
-            initLineChart('grain_recycle_history_line_chart', result.data['period'], result.data['number'], line_option);
+            initLineChart('grain_recycle_history_line_chart', result.data['period'], result.data['number'], lineOption);
             initBarChart('grain_recycle_history_bar_chart', result.data['period'], result.data['number']);
         } else {
             alert(result.error.message);

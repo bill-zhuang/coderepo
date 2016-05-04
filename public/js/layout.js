@@ -1,8 +1,8 @@
 $(document).ready(function(){
-    var cookie_href =  $.cookie('nav-top');
-    if (typeof cookie_href != 'undefined') {
+    var cookieHref =  $.cookie('nav-top');
+    if (typeof cookieHref != 'undefined') {
         $('ul.sidebar-menu > li ul li').children('a').each(function(){
-            if (cookie_href == $(this).attr('href')) {
+            if (cookieHref == $(this).attr('href')) {
                 $(this).parent().parent().parent().addClass('active');
                 $(this).parent().addClass('active');
             }

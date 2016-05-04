@@ -86,8 +86,8 @@ $('#FinanceCategoryForm').on('submit', (function (event) {
     }
 }));
 
-function modifyFinanceCategory(modify_id) {
-    var fcid = modify_id.substr('modify_'.length);
+function modifyFinanceCategory(modifyId) {
+    var fcid = modifyId.substr('modify_'.length);
     var postUrl = '/person/finance-category/get-finance-category';
     var postData = {
         "params": {
@@ -110,9 +110,9 @@ function modifyFinanceCategory(modify_id) {
     jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }
 
-function deleteFinanceCategory(delete_id) {
+function deleteFinanceCategory(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var fcid = delete_id.substr('delete_'.length);
+        var fcid = deleteId.substr('delete_'.length);
         var postUrl = '/person/finance-category/delete-finance-category';
         var postData = {
             "params": {

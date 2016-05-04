@@ -4,17 +4,17 @@ $(document).ready(function () {
 
 $('#formModifyPassword').on('submit', function (event) {
     event.preventDefault();
-    var old_password = $.trim($('#old_password').val());
-    var new_password = $.trim($('#new_password').val());
-    var new_password_repeat = $.trim($('#new_password_repeat').val());
+    var oldPassword = $.trim($('#old_password').val());
+    var newPassword = $.trim($('#new_password').val());
+    var newPasswordRepeat = $.trim($('#new_password_repeat').val());
 
-    if (old_password == '') {
+    if (oldPassword == '') {
         alert('密码不能为空！');
-    } else if (new_password == '') {
+    } else if (newPassword == '') {
         alert('新密码不能为空！');
-    } else if (new_password_repeat == '') {
+    } else if (newPasswordRepeat == '') {
         alert('新密码确认不能为空！');
-    } else if (new_password != new_password_repeat) {
+    } else if (newPassword != newPasswordRepeat) {
         alert('两次密码不相同');
     } else {
         var postUrl = '/main/modify-password';

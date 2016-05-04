@@ -55,13 +55,13 @@ function ajaxIndex() {
     loadMainCategory('finance_payment_fcid', false);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
-var g_selectpicker = $('#finance_payment_fcid').selectpicker();
+var gSelectpicker = $('#finance_payment_fcid').selectpicker();
 
 $('#btn_add').on('click', function () {
     window.FinancePaymentForm.reset();
     $('#finance_payment_payment_date').val(DateWidget.getCurrentDate());
-    g_selectpicker.selectpicker('refresh');
-    g_selectpicker.selectpicker('val', $("#finance_payment_fcid").find('option:first').val());
+    gSelectpicker.selectpicker('refresh');
+    gSelectpicker.selectpicker('val', $("#finance_payment_fcid").find('option:first').val());
     $('#finance_payment_fpid').val('');
     $('#btn_submit_finance_payment').attr('disabled', false);
     $('#FinancePaymentModal').modal('show');
@@ -92,8 +92,8 @@ $('#FinancePaymentForm').on('submit', (function (event) {
     }
 }));
 
-function modifyFinancePayment(modify_id) {
-    var fpid = modify_id.substr('modify_'.length);
+function modifyFinancePayment(modifyId) {
+    var fpid = modifyId.substr('modify_'.length);
     var postUrl = '/person/finance-payment/get-finance-payment';
     var postData = {
         "params": {
@@ -105,7 +105,7 @@ function modifyFinancePayment(modify_id) {
         if (typeof result.data != 'undefined') {
             $('#finance_payment_payment_date').val(result.data.payment_date);
             $('#finance_payment_payment').val(result.data.payment);
-            g_selectpicker.selectpicker('val', result.data.fcids);
+            gSelectpicker.selectpicker('val', result.data.fcids);
             $('#finance_payment_intro').val(result.data.detail);
             $('#finance_payment_fpid').val(result.data.fpid);
             $('#btn_submit_finance_payment').attr('disabled', false);
@@ -117,9 +117,9 @@ function modifyFinancePayment(modify_id) {
     jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }
 
-function deleteFinancePayment(delete_id) {
+function deleteFinancePayment(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
-        var fpid = delete_id.substr('delete_'.length);
+        var fpid = deleteId.substr('delete_'.length);
         var postUrl = '/person/finance-payment/delete-finance-payment';
         var postData = {
             "params": {
@@ -141,9 +141,9 @@ function deleteFinancePayment(delete_id) {
 
 function isValidInput() {
     var isVerified = true;
-    var payment_date = $.trim($('#finance_payment_payment_date').val());
+    var paymentDate = $.trim($('#finance_payment_payment_date').val());
     var payment = $.trim($('#finance_payment_payment').val());
-    if (payment_date == '') {
+    if (paymentDate == '') {
         isVerified = false;
         alert(alertMessage.DATE_ERROR);
     } else if (payment === '') {

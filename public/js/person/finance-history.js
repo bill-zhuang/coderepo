@@ -32,12 +32,12 @@ function initMonthChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var data_period = result.data['period'];
-            var data_payment = result.data['payment'];
-            var line_canvas_id = 'payment_history_line_chart';
-            var bar_canvas_id = 'payment_history_bar_chart';
-            initLineChart(line_canvas_id, data_period, data_payment);
-            initBarChart(bar_canvas_id, data_period, data_payment);
+            var dataPeriod = result.data['period'];
+            var dataPayment = result.data['payment'];
+            var lineCanvasId = 'payment_history_line_chart';
+            var barCanvasId = 'payment_history_bar_chart';
+            initLineChart(lineCanvasId, dataPeriod, dataPayment);
+            initBarChart(barCanvasId, dataPeriod, dataPayment);
         } else {
             alert(result.error.message);
         }
@@ -53,12 +53,12 @@ function initMonthCategoryChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var data_category = result.data['category'];
-            var data_payment = result.data['payment'];
-            var line_canvas_id = 'month_category_payment_history_line_chart';
-            var bar_canvas_id = 'month_category_payment_history_bar_chart';
-            initLineChart(line_canvas_id, data_category, data_payment);
-            initBarChart(bar_canvas_id, data_category, data_payment);
+            var dataCategory = result.data['category'];
+            var dataPayment = result.data['payment'];
+            var lineCanvasId = 'month_category_payment_history_line_chart';
+            var barCanvasId = 'month_category_payment_history_bar_chart';
+            initLineChart(lineCanvasId, dataCategory, dataPayment);
+            initBarChart(barCanvasId, dataCategory, dataPayment);
         } else {
             alert(result.error.message);
         }
@@ -74,12 +74,12 @@ function initYearCategoryChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var data_category = result.data['category'];
-            var data_payment = result.data['payment'];
-            var line_canvas_id = 'category_payment_history_line_chart';
-            var bar_canvas_id = 'category_payment_history_bar_chart';
-            initLineChart(line_canvas_id, data_category, data_payment);
-            initBarChart(bar_canvas_id, data_category, data_payment);
+            var dataCategory = result.data['category'];
+            var dataPayment = result.data['payment'];
+            var lineCanvasId = 'category_payment_history_line_chart';
+            var barCanvasId = 'category_payment_history_bar_chart';
+            initLineChart(lineCanvasId, dataCategory, dataPayment);
+            initBarChart(barCanvasId, dataCategory, dataPayment);
         } else {
             alert(result.error.message);
         }
