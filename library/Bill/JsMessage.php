@@ -17,4 +17,6 @@ class Bill_JsMessage
 
     const ACCOUNT_EXIST = '帐号已存在';
     const ACCOUNT_PASSWORD_ERROR = '用户名或密码错误';
+
+    const PAYMENT_EXIST_UNDER_CATEGORY = '该分类下已有数据，无法删除';
 }

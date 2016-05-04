@@ -69,4 +69,14 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
 
         return $fpids;
     }
+
+    public function isPaymentExistUnderFcid($fcid)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'fpmid')
+            ->where('fcid=?', $fcid)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->query()->fetch();
+        return isset($data['fpmid']) ? true : false;
+    }
 }

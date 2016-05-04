@@ -118,25 +118,36 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     {
         $json_array = [];
         if ($this->getRequest()->isPost()) {
+            $adapter_finance_payment_map = new Application_Model_DBTable_FinancePaymentMap();
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $fcid = isset($params['fcid']) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
-                $update_data = [
-                    'status' => Bill_Constant::INVALID_STATUS,
-                    'update_time' => date('Y-m-d H:i:s')
-                ];
-                $where = [
-                    $this->_adapter_finance_category->getAdapter()->quoteInto('(fcid=? or parent_id=?)', $fcid),
-                    $this->_adapter_finance_category->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
-                ];
-                $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
-                $json_array = [
-                    'data' => [
-                        'code' => $affected_rows,
-                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
-                                ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
-                    ]
-                ];
+                $isPaymentExistUnderCategory = $adapter_finance_payment_map->isPaymentExistUnderFcid($fcid);
+                if (!$isPaymentExistUnderCategory) {
+                    $update_data = [
+                        'status' => Bill_Constant::INVALID_STATUS,
+                        'update_time' => date('Y-m-d H:i:s')
+                    ];
+                    $where = [
+                        $this->_adapter_finance_category->getAdapter()->quoteInto('(fcid=? or parent_id=?)', $fcid),
+                        $this->_adapter_finance_category->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                    ];
+                    $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
+                    $json_array = [
+                        'data' => [
+                            'code' => $affected_rows,
+                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                    ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
+                        ]
+                    ];
+                } else {
+                    $json_array = [
+                        'data' => [
+                            'code' => 0,
+                            'message' => Bill_JsMessage::PAYMENT_EXIST_UNDER_CATEGORY,
+                        ]
+                    ];
+                }
             } catch (Exception $e) {
                 Bill_Util::handleException($e, 'Error From deleteFinanceCategory');
             }
