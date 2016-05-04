@@ -94,7 +94,7 @@ function modifyBadHistory(modifyId) {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
-            $('#bad_history_date').val(result.data.happenDate).attr('disabled', true);
+            $('#bad_history_date').val(result.data.happen_date).attr('disabled', true);
             $('#bad_history_count').val(result.data.count);
             $('#bad_history_id').val(result.data.bhid);
             $('#btn_submit_bad_history').attr('disabled', false);
