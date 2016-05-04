@@ -42,7 +42,7 @@ function ajaxIndex() {
             //init pagination
             initPagination(result.data.totalPages, result.data.pageIndex);
         } else {
-        alert(result.error.message);
+            alert(result.error.message);
         }
     };
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
@@ -179,7 +179,6 @@ function modifyBackendRoleAcl(modifyId) {
 
 function batchAclList(obj) {
     $('#aclList').find('input[type="checkbox"]').prop('checked', obj.checked);
-    //$('#aclList input[type="checkbox"]').prop('checked', obj.checked);
 }
 
 function batchControllerAcl(obj) {
