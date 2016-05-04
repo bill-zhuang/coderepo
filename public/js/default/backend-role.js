@@ -60,8 +60,7 @@ $('#formBackendRole').on('submit', (function(event){
 
     var brid = $('#backend_role_brid').val();
     var type = (brid == '') ? 'add' : 'modify';
-    var error_num = validInput();
-    if(error_num == 0) {
+    if(isValidInput()) {
         $('#btn_submit_backend_role').attr('disabled', true);
         var postUrl = '/backend-role/' + type +'-backend-role';
         var postData = {
@@ -125,16 +124,16 @@ function deleteBackendRole(delete_id) {
     }
 }
 
-function validInput()
+function isValidInput()
 {
-    var error_num = 0;
+    var isVerified = true;
     var role = $.trim($('#backend_role_role').val());
     if (role == '') {
         alert('角色名不能为空');
-        error_num = error_num + 1;
+        isVerified = false;
     }
 
-    return error_num;
+    return isVerified;
 }
 
 function modifyBackendRoleAcl(modify_id) {

@@ -64,8 +64,7 @@ $('#formGrainRecycleHistory').on('submit', (function (event) {
 
     var grhid = $('#grain_recycle_history_grhid').val();
     var type = (grhid == '') ? 'add' : 'modify';
-    var error_num = validInput(type);
-    if (error_num == 0) {
+    if (isValidInput()) {
         $('#btn_submit_grain_recycle_history').attr('disabled', true);
         var postUrl = '/person/grain-recycle-history/' + type + '-grain-recycle-history';
         var postData = {
@@ -130,16 +129,16 @@ function deleteGrainRecycleHistory(delete_id) {
     }
 }
 
-function validInput(type) {
-    var error_num = 0;
+function isValidInput() {
+    var isVerified = true;
     var happen_date = $('#grain_recycle_history_happen_date').val();
     var count = parseInt($('#grain_recycle_history_count').val());
     if (happen_date == '') {
-        error_num = error_num + 1;
+        isVerified = false;
         alert(alertMessage.DATE_ERROR)
     } else if (count < 0) {
-        error_num = error_num + 1;
+        isVerified = false;
         alert(alertMessage.COUNT_ERROR)
     }
-    return error_num;
+    return isVerified;
 }

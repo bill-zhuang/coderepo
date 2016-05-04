@@ -72,8 +72,7 @@ $('#FinancePaymentForm').on('submit', (function (event) {
 
     var fpid = $('#finance_payment_fpid').val();
     var type = (fpid == '') ? 'add' : 'modify';
-    var error_num = validInput(type);
-    if (error_num == 0) {
+    if (isValidInput()) {
         $('#btn_submit_finance_payment').attr('disabled', true);
         var postUrl = '/person/finance-payment/' + type + '-finance-payment';
         var postData = {
@@ -140,17 +139,17 @@ function deleteFinancePayment(delete_id) {
     }
 }
 
-function validInput(type) {
-    var error_num = 0;
+function isValidInput() {
+    var isVerified = true;
     var payment_date = $.trim($('#finance_payment_payment_date').val());
     var payment = $.trim($('#finance_payment_payment').val());
     if (payment_date == '') {
-        error_num = error_num + 1;
+        isVerified = false;
         alert(alertMessage.DATE_ERROR);
     } else if (payment === '') {
-        error_num = error_num + 1;
+        isVerified = false;
         alert(alertMessage.MONEY_FORMAT_EMPTY_ERROR);
     }
 
-    return error_num;
+    return isVerified;
 }

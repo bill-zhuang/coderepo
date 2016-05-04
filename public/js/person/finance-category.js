@@ -66,8 +66,7 @@ $('#FinanceCategoryForm').on('submit', (function (event) {
 
     var fcid = $('#finance_category_fcid').val();
     var type = (fcid == '') ? 'add' : 'modify';
-    var error_num = validInput(type);
-    if (error_num == 0) {
+    if (isValidInput()) {
         $('#btn_submit_finance_category').attr('disabled', true);
         var postUrl = '/person/finance-category/' + type + '-finance-category';
         var postData = {
@@ -133,17 +132,17 @@ function deleteFinanceCategory(delete_id) {
     }
 }
 
-function validInput(type) {
-    var error_num = 0;
+function isValidInput() {
+    var isVerified = true;
     var name = $.trim($('#finance_category_name').val());
     var weight = $.trim($('#finance_category_weight').val());
     if (name == '') {
-        error_num = error_num + 1;
+        isVerified = false;
         alert(alertMessage.NAME_ERROR);
     } else if (!RegexWidget.isUnsignedInt(weight)) {
-        error_num = error_num + 1;
+        isVerified = false;
         alert(alertMessage.WEIGHT_FORMAT_ERROR);
     }
 
-    return error_num;
+    return isVerified;
 }

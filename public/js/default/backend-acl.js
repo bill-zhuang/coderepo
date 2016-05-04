@@ -50,8 +50,7 @@ function ajaxIndex() {
 $('#formBackendAcl').on('submit', (function(event){
     event.preventDefault();
 
-    var error_num = validInput();
-    if(error_num == 0) {
+    if(isValidInput()) {
         $('#btn_submit_backend_acl').attr('disabled', true);
         var postUrl = '/backend-acl/modify-backend-acl';
         var postData = {
@@ -118,16 +117,16 @@ function deleteBackendAcl(delete_id) {
     }
 }
 
-function validInput()
+function isValidInput()
 {
-    var error_num = 0;
+    var isVerified = true;
     var name = $.trim($('#backend_acl_name').val());
     if (name == '') {
         alert('name can\'t empty');
-        error_num = error_num + 1;
+        isVerified = false;
     }
 
-    return error_num;
+    return isVerified;
 }
 
 $('#btn_load_acl').on('click', function(){

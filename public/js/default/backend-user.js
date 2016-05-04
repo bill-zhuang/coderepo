@@ -90,8 +90,7 @@ $('#formBackendUser').on('submit', (function(event){
 
     var buid = $('#backend_user_buid').val();
     var type = (buid == '') ? 'add' : 'modify';
-    var error_num = validInput();
-    if(error_num == 0) {
+    if(isValidInput()) {
         $('#btn_submit_backend_user').attr('disabled', true);
         var postUrl = '/backend-user/' + type +'-backend-user';
         var postData = {
@@ -182,14 +181,14 @@ function recoverBackendUser(recover_id) {
     }
 }
 
-function validInput()
+function isValidInput()
 {
-    var error_num = 0;
+    var isVerified = true;
     var name = $.trim($('#backend_user_name').val());
     if (name === '') {
         alert('user name can\'t empty.');
-        error_num = error_num + 1;
+        isVerified = false;
     }
 
-    return error_num;
+    return isVerified;
 }

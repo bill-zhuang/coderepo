@@ -101,8 +101,7 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
 
     var <?php echo $primary_id[0]; ?> = $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>').val();
     var type = (<?php echo $primary_id[0]; ?> == '') ? 'add' : 'modify';
-    var error_num = validInput(type);
-    if(error_num == 0) {
+    if(isValidInput(type)) {
         $('#btn_submit_<?php echo $form_element_prefix; ?>').attr('disabled', true);
 <?php if ($using_ckeditor){ ?>
         var content = $.trim(CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.getData());
@@ -181,9 +180,9 @@ function delete<?php echo $form_name_postfix; ?>(delete_id) {
     }
 }
 
-function validInput(type)
+function isValidInput(type)
 {
-    var error_num = 0;
+    var isVerified = true;
 <?php foreach ($table_data as $key => $default_value)
 {
     if ($key != $primary_id[0])
@@ -214,12 +213,12 @@ foreach ($table_data as $key => $default_value)
     {
         if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){
             echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (type == \'add\' && image == \'\') {' . PHP_EOL;
-            echo str_repeat(' ', 4 * 2) . 'error_num = error_num + 1;' . PHP_EOL;
+            echo str_repeat(' ', 4 * 2) . 'isVerified = false;' . PHP_EOL;
             echo str_repeat(' ', 4 * 2) . 'alert(alertMessage.UPLOAD_IMAGE_ERROR)' . PHP_EOL;
             echo str_repeat(' ', 4 * 1) . '} ';
         } else if (strpos($key, 'create_time') && strpos($key, 'update_time') && strpos($key, 'status') === false) {
             echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (' . $key . ' == \'\') {' . PHP_EOL;
-            echo str_repeat(' ', 4 * 2) . 'error_num = error_num + 1;' . PHP_EOL;
+            echo str_repeat(' ', 4 * 2) . 'isVerified = false;' . PHP_EOL;
             echo str_repeat(' ', 4 * 2) . 'alert(\'todo set alert message\')' . PHP_EOL;
             echo str_repeat(' ', 4 * 1) . '} ';
         }
@@ -227,11 +226,11 @@ foreach ($table_data as $key => $default_value)
 }
 ?>
 <?php if ($using_ckeditor){ ?>else if(content == '') {
-    error_num = error_num + 1;
+    isVerified = false;
     alert(alertMessage.CONTENT_ERROR);
     }<?php } ?>
 
-    return error_num;
+    return isVerified;
 }
 <?php if($all_batch_id !== ''){ ?>
 /*  --------------------------------------------------------------------------------------------------------  */
