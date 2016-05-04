@@ -16,13 +16,12 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
         }
 
         if (Application_Model_Auth::isValid()) {
-            if (Application_Model_Auth::getIdentity()->name == Bill_Constant::ADMIN_NAME) {
-                return;
-            } else {
+            if (Application_Model_Auth::getIdentity()->name != Bill_Constant::ADMIN_NAME) {
                 $adapter_role_acl = new Application_Model_DBTable_BackendRoleAcl();
                 $baid = $this->_getAclID($request_module, $request_controller, $request_action);
                 if ($baid > Bill_Constant::INVALID_PRIMARY_ID
-                    && $adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)) {
+                    && $adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)
+                ) {
                     return;
                 } else {
                     if ($this->getRequest()->isXmlHttpRequest()) {
@@ -39,6 +38,8 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
                         $request->setActionName('error');
                     }
                 }
+            } else {
+                return;
             }
         } else {
             $request->setModuleName('default');
