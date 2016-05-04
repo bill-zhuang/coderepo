@@ -61,7 +61,7 @@ $('#btn_add').on('click', function () {
     window.FinancePaymentForm.reset();
     $('#finance_payment_payment_date').val(DateWidget.getCurrentDate());
     g_selectpicker.selectpicker('refresh');
-    g_selectpicker.selectpicker('val', $("#finance_payment_fcid option:first").val());
+    g_selectpicker.selectpicker('val', $("#finance_payment_fcid").find('option:first').val());
     $('#finance_payment_fpid').val('');
     $('#btn_submit_finance_payment').attr('disabled', false);
     $('#FinancePaymentModal').modal('show');

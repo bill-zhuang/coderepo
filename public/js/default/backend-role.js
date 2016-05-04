@@ -60,7 +60,7 @@ $('#formBackendRole').on('submit', (function(event){
 
     var brid = $('#backend_role_brid').val();
     var type = (brid == '') ? 'add' : 'modify';
-    var error_num = validInput(type);
+    var error_num = validInput();
     if(error_num == 0) {
         $('#btn_submit_backend_role').attr('disabled', true);
         var postUrl = '/backend-role/' + type +'-backend-role';
@@ -125,7 +125,7 @@ function deleteBackendRole(delete_id) {
     }
 }
 
-function validInput(type)
+function validInput()
 {
     var error_num = 0;
     var role = $.trim($('#backend_role_role').val());
@@ -179,7 +179,8 @@ function modifyBackendRoleAcl(modify_id) {
 }
 
 function batchAclList(obj) {
-    $('#aclList input[type="checkbox"]').prop('checked', obj.checked);
+    $('#aclList').find('input[type="checkbox"]').prop('checked', obj.checked);
+    //$('#aclList input[type="checkbox"]').prop('checked', obj.checked);
 }
 
 function batchControllerAcl(obj) {

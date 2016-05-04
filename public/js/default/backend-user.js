@@ -49,11 +49,11 @@ function ajaxIndex() {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
-$('#ul_tab_type li').on('click', function(){
+$('#ul_tab_type').find('li').on('click', function(){
     var tab_value = parseInt($(this).attr('id').substr('li_tab_type_'.length));
     tab_value = isNaN(tab_value) ? 1 : tab_value;
     $('#tab_type').val(tab_value);
-    $('#ul_tab_type li').removeClass('active');
+    $('#ul_tab_type').find('li').removeClass('active');
     $('#li_tab_type_' + tab_value).addClass('active');
     $('#current_page').val(1);
     ajaxIndex();
@@ -90,7 +90,7 @@ $('#formBackendUser').on('submit', (function(event){
 
     var buid = $('#backend_user_buid').val();
     var type = (buid == '') ? 'add' : 'modify';
-    var error_num = validInput(type);
+    var error_num = validInput();
     if(error_num == 0) {
         $('#btn_submit_backend_user').attr('disabled', true);
         var postUrl = '/backend-user/' + type +'-backend-user';
@@ -182,7 +182,7 @@ function recoverBackendUser(recover_id) {
     }
 }
 
-function validInput(type)
+function validInput()
 {
     var error_num = 0;
     var name = $.trim($('#backend_user_name').val());

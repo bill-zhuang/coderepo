@@ -75,11 +75,11 @@ function ajaxIndex() {
 <?php } ?>
 <?php if(!empty($tab_types)){ ?>
 
-$('#ul_tab_type li').on('click', function(){
+$('#ul_tab_type').find('li').on('click', function(){
     var tab_value = parseInt($(this).attr('id').substr('li_tab_type_'.length));
     tab_value = isNaN(tab_value) ? <?php echo ($default_tab_value == '') ? 0 : $default_tab_value; ?> : tab_value;
     $('#tab_type').val(tab_value);
-    $('#ul_tab_type li').removeClass('active');
+    $('#ul_tab_type').find('li').removeClass('active');
     $('#li_tab_type_' + tab_value).addClass('active');
     $('#current_page').val(1);
     ajaxIndex();
