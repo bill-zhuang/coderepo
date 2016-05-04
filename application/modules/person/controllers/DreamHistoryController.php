@@ -159,7 +159,6 @@ class person_DreamHistoryController extends Zend_Controller_Action
     {
         $params = $this->_getParam('params', []);
         list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
-        $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
         $order_by = 'create_time desc';
 
         $data = $this->_adapter_dream_history->getDreamHistoryData($current_page, $page_length, $order_by);
