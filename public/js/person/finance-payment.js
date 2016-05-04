@@ -5,12 +5,12 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/person/finance-payment/ajax-index';
-    var get_data = {
+    var getUrl = '/person/finance-payment/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -50,7 +50,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
     //load main category
     loadMainCategory('finance_payment_fcid', false);
 }
@@ -75,12 +75,12 @@ $('#FinancePaymentForm').on('submit', (function (event) {
     var error_num = validInput(type);
     if (error_num == 0) {
         $('#btn_submit_finance_payment').attr('disabled', true);
-        var post_url = '/person/finance-payment/' + type + '-finance-payment';
-        var post_data = {
+        var postUrl = '/person/finance-payment/' + type + '-finance-payment';
+        var postData = {
             "params": $('#FinancePaymentForm').serializeObject()
         };
         var method = 'post';
-        var success_function = function (result) {
+        var successFunc = function (result) {
             $('#FinancePaymentModal').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -89,20 +89,20 @@ $('#FinancePaymentForm').on('submit', (function (event) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }));
 
 function modifyFinancePayment(modify_id) {
     var fpid = modify_id.substr('modify_'.length);
-    var post_url = '/person/finance-payment/get-finance-payment';
-    var post_data = {
+    var postUrl = '/person/finance-payment/get-finance-payment';
+    var postData = {
         "params": {
             "fpid": fpid
         }
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             $('#finance_payment_payment_date').val(result.data.payment_date);
             $('#finance_payment_payment').val(result.data.payment);
@@ -115,20 +115,20 @@ function modifyFinancePayment(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }
 
 function deleteFinancePayment(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var fpid = delete_id.substr('delete_'.length);
-        var post_url = '/person/finance-payment/delete-finance-payment';
-        var post_data = {
+        var postUrl = '/person/finance-payment/delete-finance-payment';
+        var postData = {
             "params": {
                 "fpid": fpid
             }
         };
         var method = 'post';
-        var success_function = function (result) {
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -136,7 +136,7 @@ function deleteFinancePayment(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }
 

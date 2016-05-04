@@ -4,12 +4,12 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/person/grain-recycle-history/ajax-index';
-    var get_data = {
+    var getUrl = '/person/grain-recycle-history/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -48,7 +48,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
@@ -67,12 +67,12 @@ $('#formGrainRecycleHistory').on('submit', (function (event) {
     var error_num = validInput(type);
     if (error_num == 0) {
         $('#btn_submit_grain_recycle_history').attr('disabled', true);
-        var post_url = '/person/grain-recycle-history/' + type + '-grain-recycle-history';
-        var post_data = {
+        var postUrl = '/person/grain-recycle-history/' + type + '-grain-recycle-history';
+        var postData = {
             "params": $('#formGrainRecycleHistory').serializeObject()
         };
         var method = 'post';
-        var success_function = function (result) {
+        var successFunc = function (result) {
             $('#modalGrainRecycleHistory').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -81,20 +81,20 @@ $('#formGrainRecycleHistory').on('submit', (function (event) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }));
 
 function modifyGrainRecycleHistory(modify_id) {
     var grhid = modify_id.substr('modify_'.length);
-    var get_url = '/person/grain-recycle-history/get-grain-recycle-history';
-    var get_data = {
+    var getUrl = '/person/grain-recycle-history/get-grain-recycle-history';
+    var getData = {
         "params": {
             "grhid": grhid
         }
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             $('#grain_recycle_history_grhid').val(result.data.grhid);
             $('#grain_recycle_history_happen_date').val(result.data.happen_date);
@@ -105,20 +105,20 @@ function modifyGrainRecycleHistory(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function deleteGrainRecycleHistory(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var grhid = delete_id.substr('delete_'.length);
-        var post_url = '/person/grain-recycle-history/delete-grain-recycle-history';
-        var post_data = {
+        var postUrl = '/person/grain-recycle-history/delete-grain-recycle-history';
+        var postData = {
             "params": {
                 "grhid": grhid
             }
         };
         var method = 'post';
-        var success_function = function (result) {
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -126,7 +126,7 @@ function deleteGrainRecycleHistory(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }
 

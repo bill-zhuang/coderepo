@@ -4,28 +4,28 @@ $(document).ready(function () {
 });
 
 function initPeriodChart() {
-    var get_url = '/person/dream-history-chart/ajax-dream-history-period';
-    var get_data = {
+    var getUrl = '/person/dream-history-chart/ajax-dream-history-period';
+    var getData = {
         "params": $('#formSearchDay').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != "undefined") {
             initLineChart('dream_history_line_chart_all', result.data.period, result.data.interval);
         } else {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function initMonthChart() {
-    var get_url = '/person/dream-history-chart/ajax-dream-history-month';
-    var get_data = {
+    var getUrl = '/person/dream-history-chart/ajax-dream-history-month';
+    var getData = {
         "params": $('#formSearchMonth').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != "undefined") {
             var line_option = {
                 responsive: true,
@@ -40,7 +40,7 @@ function initMonthChart() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 $('#btn_search_day').on('click', function (event) {

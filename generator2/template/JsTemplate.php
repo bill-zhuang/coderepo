@@ -23,12 +23,12 @@ $(document).ready(function() {
 <?php if ($primary_id[0] !== ''){ ?>
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/ajax-index';
-    var get_data = {
+    var getUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -70,7 +70,7 @@ function ajaxIndex() {
         alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 <?php } ?>
 <?php if(!empty($tab_types)){ ?>
@@ -108,14 +108,14 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
         var content = $.trim(CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.getData());
         $('#<?php echo $form_element_prefix; ?>_intro').val(content);
 <?php } ?>
-        var post_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type +'-<?php echo strtolower($controller_name); ?>';
-        var post_data = {
+        var postUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type +'-<?php echo strtolower($controller_name); ?>';
+        var postData = {
             "params": $('#form<?php echo $form_name_postfix; ?>').serializeObject()
         };
         var msg_success = (<?php echo $primary_id[0]; ?> == '') ? MESSAGE_ADD_SUCCESS : MESSAGE_MODIFY_SUCCESS;
         var msg_error = (<?php echo $primary_id[0]; ?> == '') ? MESSAGE_ADD_ERROR : MESSAGE_MODIFY_ERROR;
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             $('#modal<?php echo $form_name_postfix; ?>').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -124,20 +124,20 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }));
 
 function modify<?php echo $form_name_postfix; ?>(modify_id) {
     var <?php echo $primary_id[0]; ?> = modify_id.substr('modify_'.length);
-    var get_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/get-<?php echo strtolower($controller_name); ?>';
-    var get_data = {
+    var getUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/get-<?php echo strtolower($controller_name); ?>';
+    var getData = {
         "params": {
             "<?php echo $primary_id[0]; ?>" : <?php echo $primary_id[0] . PHP_EOL; ?>
         }
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         if (typeof result.data != 'undefined') {
 <?php foreach ($table_data as $key => $default_value)
 {
@@ -156,20 +156,20 @@ function modify<?php echo $form_name_postfix; ?>(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function delete<?php echo $form_name_postfix; ?>(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var <?php echo $primary_id[0]; ?> = delete_id.substr('delete_'.length);
-        var post_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
-        var post_data = {
+        var postUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
+        var postData = {
             "params": {
                 "<?php echo $primary_id[0]; ?>" : <?php echo $primary_id[0] . PHP_EOL; ?>
             }
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -177,7 +177,7 @@ function delete<?php echo $form_name_postfix; ?>(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }
 

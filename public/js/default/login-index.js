@@ -19,12 +19,12 @@ $('#formLogin').on('submit', function (event) {
         if ($('#remember').prop('checked')) {
             $.cookie('name', name, {expires: 1, path: '/'});
         }
-        var post_url = '/login/login';
-        var post_data = {
+        var postUrl = '/login/login';
+        var postData = {
             "params": $('#formLogin').serializeObject()
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             if (typeof result.data != 'undefined') {
                 window.location.href = result.data.redirectUrl;
             } else {
@@ -33,6 +33,6 @@ $('#formLogin').on('submit', function (event) {
                 $('#password').val('');
             }
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 });

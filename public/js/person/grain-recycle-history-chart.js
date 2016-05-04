@@ -4,12 +4,12 @@ $(document).ready(function () {
 });
 
 function initPeriodChart() {
-    var get_url = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-period';
-    var get_data = {
+    var getUrl = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-period';
+    var getData = {
         "params": $('#formSearchDay').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         var line_option = {
             responsive: true,
             scaleOverride: true,
@@ -23,16 +23,16 @@ function initPeriodChart() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function initMonthChart() {
-    var get_url = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-month';
-    var get_data = {
+    var getUrl = '/person/grain-recycle-history-chart/ajax-grain-recycle-history-month';
+    var getData = {
         "params": $('#formSearchMonth').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != "undefined") {
             var line_option = {
                 responsive: true,
@@ -47,7 +47,7 @@ function initMonthChart() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 $('#btn_search_day').on('click', function (event) {

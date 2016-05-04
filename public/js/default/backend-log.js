@@ -4,12 +4,12 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/backend-log/ajax-index';
-    var get_data = {
+    var getUrl = '/backend-log/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -35,5 +35,5 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }

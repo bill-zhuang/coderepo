@@ -4,12 +4,12 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/person/dream-history/ajax-index';
-    var get_data = {
+    var getUrl = '/person/dream-history/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -48,7 +48,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
@@ -66,12 +66,12 @@ $('#DreamHistoryForm').on('submit', (function (event) {
     var dhid = $('#dream_history_id').val();
     var type = (dhid == '') ? 'add' : 'modify';
     $('#btn_submit_dream_history').attr('disabled', true);
-    var post_url = '/person/dream-history/' + type + '-dream-history';
-    var post_data = {
+    var postUrl = '/person/dream-history/' + type + '-dream-history';
+    var postData = {
         "params": $('#DreamHistoryForm').serializeObject()
     };
     var method = 'post';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         $('#DreamHistoryModal').modal('hide');
         if (typeof result.data != 'undefined') {
             alert(result.data.message);
@@ -80,19 +80,19 @@ $('#DreamHistoryForm').on('submit', (function (event) {
         }
         ajaxIndex();
     };
-    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }));
 
 function modifyDreamHistory(modify_id) {
     var dhid = modify_id.substr('delete_'.length);
-    var post_url = '/person/dream-history/get-dream-history';
-    var post_data = {
+    var postUrl = '/person/dream-history/get-dream-history';
+    var postData = {
         "params": {
             "dhid": dhid
         }
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             $('#dream_history_date').val(result.data.happen_date);
             $('#dream_history_count').val(result.data.count);
@@ -103,20 +103,20 @@ function modifyDreamHistory(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }
 
 function deleteDreamHistory(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var dhid = delete_id.substr('delete_'.length);
-        var post_url = '/person/dream-history/delete-dream-history';
-        var post_data = {
+        var postUrl = '/person/dream-history/delete-dream-history';
+        var postData = {
             "params": {
                 "dhid": dhid
             }
         };
         var method = 'post';
-        var success_function = function (result) {
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -124,6 +124,6 @@ function deleteDreamHistory(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }

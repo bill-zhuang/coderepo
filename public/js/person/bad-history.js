@@ -4,12 +4,12 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/person/bad-history/ajax-index';
-    var get_data = {
+    var getUrl = '/person/bad-history/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -48,7 +48,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function () {
@@ -66,12 +66,12 @@ $('#BadHistoryForm').on('submit', (function (event) {
     var bhid = $('#bad_history_id').val();
     var type = (bhid == '') ? 'add' : 'modify';
     $('#btn_submit_bad_history').attr('disabled', true);
-    var post_url = '/person/bad-history/' + type + '-bad-history';
-    var post_data = {
+    var postUrl = '/person/bad-history/' + type + '-bad-history';
+    var postData = {
         "params": $('#BadHistoryForm').serializeObject()
     };
     var method = 'post';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         $('#BadHistoryModal').modal('hide');
         if (typeof result.data != 'undefined') {
             alert(result.data.message);
@@ -80,19 +80,19 @@ $('#BadHistoryForm').on('submit', (function (event) {
         }
         ajaxIndex();
     };
-    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }));
 
 function modifyBadHistory(modify_id) {
     var bhid = modify_id.substr('delete_'.length);
-    var post_url = '/person/bad-history/get-bad-history';
-    var post_data = {
+    var postUrl = '/person/bad-history/get-bad-history';
+    var postData = {
         "params": {
             "bhid": bhid
         }
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             $('#bad_history_date').val(result.data.happen_date).attr('disabled', true);
             $('#bad_history_count').val(result.data.count);
@@ -103,20 +103,20 @@ function modifyBadHistory(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }
 
 function deleteBadHistory(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var bhid = delete_id.substr('delete_'.length);
-        var post_url = '/person/bad-history/delete-bad-history';
-        var post_data = {
+        var postUrl = '/person/bad-history/delete-bad-history';
+        var postData = {
             "params": {
                 "bhid": bhid
             }
         };
         var method = 'post';
-        var success_function = function (result) {
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -124,6 +124,6 @@ function deleteBadHistory(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }

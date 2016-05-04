@@ -4,12 +4,12 @@ $(document).ready(function () {
 });
 
 function initChart() {
-    var get_url = '/person/bad-history-chart/ajax-index';
-    var get_data = {
+    var getUrl = '/person/bad-history-chart/ajax-index';
+    var getData = {
         "params": {}
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != "undefined") {
             if (result.data.period.length != 0) {
                 initLineChart('bad_history_line_chart_all', result.data.period, result.data.interval);
@@ -18,5 +18,5 @@ function initChart() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }

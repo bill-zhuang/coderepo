@@ -4,12 +4,12 @@ $(document).ready(function() {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/backend-acl/ajax-index';
-    var get_data = {
+    var getUrl = '/backend-acl/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -44,7 +44,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#formBackendAcl').on('submit', (function(event){
@@ -53,12 +53,12 @@ $('#formBackendAcl').on('submit', (function(event){
     var error_num = validInput();
     if(error_num == 0) {
         $('#btn_submit_backend_acl').attr('disabled', true);
-        var post_url = '/backend-acl/modify-backend-acl';
-        var post_data = {
+        var postUrl = '/backend-acl/modify-backend-acl';
+        var postData = {
             "params": $('#formBackendAcl').serializeObject()
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             $('#modalBackendAcl').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -67,20 +67,20 @@ $('#formBackendAcl').on('submit', (function(event){
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }));
 
 function modifyBackendAcl(modify_id) {
     var baid = modify_id.substr('modify_'.length);
-    var get_url = '/backend-acl/get-backend-acl';
-    var get_data = {
+    var getUrl = '/backend-acl/get-backend-acl';
+    var getData = {
         "params": {
             "baid" : baid
         }
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         if (typeof result.data != 'undefined') {
             $('#backend_acl_baid').val(result.data.baid);
             $('#backend_acl_name').val(result.data.name);
@@ -93,20 +93,20 @@ function modifyBackendAcl(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function deleteBackendAcl(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var baid = delete_id.substr('delete_'.length);
-        var post_url = '/backend-acl/delete-backend-acl';
-        var post_data = {
+        var postUrl = '/backend-acl/delete-backend-acl';
+        var postData = {
             "params": {
                 "baid" : baid
             }
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -114,7 +114,7 @@ function deleteBackendAcl(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }
 
@@ -131,17 +131,17 @@ function validInput()
 }
 
 $('#btn_load_acl').on('click', function(){
-    var get_url = '/backend-acl/load-backend-acl';
-    var get_data = {
+    var getUrl = '/backend-acl/load-backend-acl';
+    var getData = {
         'params': {}
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         if (typeof result.data != 'undefined') {
             alert(result.data.message);
         } else {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 });

@@ -4,12 +4,12 @@ $(document).ready(function() {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/backend-role/ajax-index';
-    var get_data = {
+    var getUrl = '/backend-role/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -45,7 +45,7 @@ function ajaxIndex() {
         alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
 $('#btn_add').on('click', function(){
@@ -63,12 +63,12 @@ $('#formBackendRole').on('submit', (function(event){
     var error_num = validInput(type);
     if(error_num == 0) {
         $('#btn_submit_backend_role').attr('disabled', true);
-        var post_url = '/backend-role/' + type +'-backend-role';
-        var post_data = {
+        var postUrl = '/backend-role/' + type +'-backend-role';
+        var postData = {
             "params": $('#formBackendRole').serializeObject()
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             $('#modalBackendRole').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -77,20 +77,20 @@ $('#formBackendRole').on('submit', (function(event){
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }));
 
 function modifyBackendRole(modify_id) {
     var brid = modify_id.substr('modify_'.length);
-    var get_url = '/backend-role/get-backend-role';
-    var get_data = {
+    var getUrl = '/backend-role/get-backend-role';
+    var getData = {
         "params": {
             "brid" : brid
         }
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         if (typeof result.data != 'undefined') {
             $('#backend_role_brid').val(result.data.brid);
             $('#backend_role_role').val(result.data.role);
@@ -100,20 +100,20 @@ function modifyBackendRole(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function deleteBackendRole(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var brid = delete_id.substr('delete_'.length);
-        var post_url = '/backend-role/delete-backend-role';
-        var post_data = {
+        var postUrl = '/backend-role/delete-backend-role';
+        var postData = {
             "params": {
                 "brid" : brid
             }
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -121,7 +121,7 @@ function deleteBackendRole(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }
 
@@ -139,14 +139,14 @@ function validInput(type)
 
 function modifyBackendRoleAcl(modify_id) {
     var brid = modify_id.substr('modifyAcl_'.length);
-    var get_url = '/backend-role/get-backend-role-acl';
-    var get_data = {
+    var getUrl = '/backend-role/get-backend-role-acl';
+    var getData = {
         "params": {
             "brid" : brid
         }
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         if (typeof result.data != 'undefined') {
             var acl_content = '<input type="checkbox" id="ck_all" onclick="batchAclList(this);"/>&nbsp;全选<hr>';
             var aclList = result.data.aclList;
@@ -175,7 +175,7 @@ function modifyBackendRoleAcl(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function batchAclList(obj) {
@@ -204,12 +204,12 @@ $('#formBackendRoleAcl').on('submit', (function(event){
     event.preventDefault();
 
     $('#btn_submit_backend_role_acl').attr('disabled', true);
-    var post_url = '/backend-role/modify-backend-role-acl';
-    var post_data = {
+    var postUrl = '/backend-role/modify-backend-role-acl';
+    var postData = {
         "params": $('#formBackendRoleAcl').serializeObject()
     };
     var method = 'post';
-    var success_function = function(result){
+    var successFunc = function(result){
         $('#modalBackendRoleAcl').modal('hide');
         if (typeof result.data != 'undefined') {
             alert(result.data.message);
@@ -218,5 +218,5 @@ $('#formBackendRoleAcl').on('submit', (function(event){
         }
         ajaxIndex();
     };
-    jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+    jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
 }));

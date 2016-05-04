@@ -17,12 +17,12 @@ $('#formModifyPassword').on('submit', function (event) {
     } else if (new_password != new_password_repeat) {
         alert('两次密码不相同');
     } else {
-        var post_url = '/main/modify-password';
-        var post_data = {
+        var postUrl = '/main/modify-password';
+        var postData = {
             "params": $('#formModifyPassword').serializeObject()
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -32,6 +32,6 @@ $('#formModifyPassword').on('submit', function (event) {
             $('#new_password').val('');
             $('#new_password_repeat').val('');
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 });

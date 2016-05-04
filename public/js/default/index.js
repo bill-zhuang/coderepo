@@ -7,21 +7,21 @@ $('#baidu_music_url').on('keydown', function (event) {
 $('#btn_generate_download_link').on('click', function () {
     var music_url = $.trim($('#baidu_music_url').val());
     if (music_url != '') {
-        var get_url = '/index/get-baidu-music-link';
-        var get_data = {
+        var getUrl = '/index/get-baidu-music-link';
+        var getData = {
             "params": {
                 "downloadLink": music_url
             }
         };
         var method = 'get';
-        var success_function = function (result) {
+        var successFunc = function (result) {
             if (typeof result.data != "undefined") {
                 $('#generated_baidu_music_url').attr('href', result.data.downloadUrl).text(result.data.downloadUrl);
             } else {
                 alert(result.error.message);
             }
         };
-        jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+        jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
     } else {
         alert('music url is empty!');
     }

@@ -3,12 +3,12 @@ $(document).ready(function () {
 });
 
 function initPlotMarkers() {
-    var get_url = '/google-map/ajax-multiple-location';
-    var get_data = {
+    var getUrl = '/google-map/ajax-multiple-location';
+    var getData = {
         "params": {}
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != "undefined") {
             markMultiPosition(result.data.coordinates, 'map_canvas_nocluster');
             markMultiPostionAndCluster(result.data.coordinates, 'map_canvas_cluster');
@@ -16,6 +16,6 @@ function initPlotMarkers() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 
 }

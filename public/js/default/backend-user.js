@@ -4,12 +4,12 @@ $(document).ready(function() {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var get_url = '/backend-user/ajax-index';
-    var get_data = {
+    var getUrl = '/backend-user/ajax-index';
+    var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             var isDelete = ($('#tab_type').val() == 1);
@@ -46,7 +46,7 @@ function ajaxIndex() {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 $('#ul_tab_type li').on('click', function(){
@@ -64,12 +64,12 @@ $('#btn_add').on('click', function(){
     window.formBackendUser.reset();
     $('#backend_user_buid').val('');
     $('#btn_submit_backend_user').attr('disabled', false);
-    var get_url = '/backend-role/get-all-roles';
-    var get_data = {
+    var getUrl = '/backend-role/get-all-roles';
+    var getData = {
         'params': {}
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         if (typeof result.data != 'undefined') {
             var roleSelect = '';
             for (var brid in result.data) {
@@ -81,7 +81,7 @@ $('#btn_add').on('click', function(){
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 
 });
 
@@ -93,12 +93,12 @@ $('#formBackendUser').on('submit', (function(event){
     var error_num = validInput(type);
     if(error_num == 0) {
         $('#btn_submit_backend_user').attr('disabled', true);
-        var post_url = '/backend-user/' + type +'-backend-user';
-        var post_data = {
+        var postUrl = '/backend-user/' + type +'-backend-user';
+        var postData = {
             "params": $('#formBackendUser').serializeObject()
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             $('#modalBackendUser').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -107,20 +107,20 @@ $('#formBackendUser').on('submit', (function(event){
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }));
 
 function modifyBackendUser(modify_id) {
     var buid = modify_id.substr('modify_'.length);
-    var get_url = '/backend-user/get-backend-user';
-    var get_data = {
+    var getUrl = '/backend-user/get-backend-user';
+    var getData = {
         "params": {
             "buid" : buid
         }
     };
     var method = 'get';
-    var success_function = function(result){
+    var successFunc = function(result){
         if (typeof result.data != 'undefined') {
             var roleSelect = '';
             for (var brid in result.data.roles) {
@@ -135,20 +135,20 @@ function modifyBackendUser(modify_id) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
 function deleteBackendUser(delete_id) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var buid = delete_id.substr('delete_'.length);
-        var post_url = '/backend-user/delete-backend-user';
-        var post_data = {
+        var postUrl = '/backend-user/delete-backend-user';
+        var postData = {
             "params": {
                 "buid" : buid
             }
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -156,21 +156,21 @@ function deleteBackendUser(delete_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }
 
 function recoverBackendUser(recover_id) {
     if (confirm('确认恢复帐号？')) {
         var buid = recover_id.substr('recover_'.length);
-        var post_url = '/backend-user/recover-backend-user';
-        var post_data = {
+        var postUrl = '/backend-user/recover-backend-user';
+        var postData = {
             "params": {
                 "buid" : buid
             }
         };
         var method = 'post';
-        var success_function = function(result){
+        var successFunc = function(result){
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -178,7 +178,7 @@ function recoverBackendUser(recover_id) {
             }
             ajaxIndex();
         };
-        jAjaxWidget.additionFunc(post_url, post_data, success_function, method);
+        jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);
     }
 }
 

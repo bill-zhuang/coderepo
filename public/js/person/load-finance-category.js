@@ -1,10 +1,10 @@
 function loadMainCategory(selectID, isContainNoneOption) {
-    var get_url = '/person/finance-category/get-finance-main-category';
-    var get_data = {
+    var getUrl = '/person/finance-category/get-finance-main-category';
+    var getData = {
         "params": {}
     };
     var method = 'get';
-    var success_function = function (result) {
+    var successFunc = function (result) {
         if (typeof result.data != "undefined") {
             if (typeof isContainNoneOption != 'undefined' && !isContainNoneOption) {
                 $('#' + selectID).empty();
@@ -21,5 +21,5 @@ function loadMainCategory(selectID, isContainNoneOption) {
             alert(result.error.message);
         }
     };
-    jAjaxWidget.additionFunc(get_url, get_data, success_function, method);
+    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
