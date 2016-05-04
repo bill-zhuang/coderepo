@@ -108,7 +108,7 @@ function modifyGrainRecycleHistory(modify_id) {
 }
 
 function deleteGrainRecycleHistory(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var grhid = delete_id.substr('delete_'.length);
         var post_url = '/person/grain-recycle-history/delete-grain-recycle-history';
         var post_data = {
@@ -135,10 +135,10 @@ function validInput(type) {
     var count = parseInt($('#grain_recycle_history_count').val());
     if (happen_date == '') {
         error_num = error_num + 1;
-        alert(MESSAGE_DATE_ERROR)
+        alert(alertMessage.DATE_ERROR)
     } else if (count < 0) {
         error_num = error_num + 1;
-        alert(MESSAGE_COUNT_ERROR)
+        alert(alertMessage.COUNT_ERROR)
     }
     return error_num;
 }

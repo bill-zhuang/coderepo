@@ -111,7 +111,7 @@ function modifyFinanceCategory(modify_id) {
 }
 
 function deleteFinanceCategory(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var fcid = delete_id.substr('delete_'.length);
         var post_url = '/person/finance-category/delete-finance-category';
         var post_data = {
@@ -138,10 +138,10 @@ function validInput(type) {
     var weight = $.trim($('#finance_category_weight').val());
     if (name == '') {
         error_num = error_num + 1;
-        alert(MESSAGE_NAME_ERROR);
+        alert(alertMessage.NAME_ERROR);
     } else if (!RegexWidget.isUnsignedInt(weight)) {
         error_num = error_num + 1;
-        alert(MESSAGE_WEIGHT_FORMAT_ERROR);
+        alert(alertMessage.WEIGHT_FORMAT_ERROR);
     }
 
     return error_num;

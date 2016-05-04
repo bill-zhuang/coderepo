@@ -118,7 +118,7 @@ function modifyFinancePayment(modify_id) {
 }
 
 function deleteFinancePayment(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var fpid = delete_id.substr('delete_'.length);
         var post_url = '/person/finance-payment/delete-finance-payment';
         var post_data = {
@@ -145,10 +145,10 @@ function validInput(type) {
     var payment = $.trim($('#finance_payment_payment').val());
     if (payment_date == '') {
         error_num = error_num + 1;
-        alert(MESSAGE_DATE_ERROR);
+        alert(alertMessage.DATE_ERROR);
     } else if (payment === '') {
         error_num = error_num + 1;
-        alert(MESSAGE_MONEY_FORMAT_EMPTY_ERROR);
+        alert(alertMessage.MONEY_FORMAT_EMPTY_ERROR);
     }
 
     return error_num;

@@ -96,7 +96,7 @@ function modifyBackendAcl(modify_id) {
 }
 
 function deleteBackendAcl(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var baid = delete_id.substr('delete_'.length);
         var post_url = '/backend-acl/delete-backend-acl';
         var post_data = {

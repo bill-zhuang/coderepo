@@ -106,7 +106,7 @@ function modifyBadHistory(modify_id) {
 }
 
 function deleteBadHistory(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var bhid = delete_id.substr('delete_'.length);
         var post_url = '/person/bad-history/delete-bad-history';
         var post_data = {

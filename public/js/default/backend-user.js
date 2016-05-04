@@ -138,7 +138,7 @@ function modifyBackendUser(modify_id) {
 }
 
 function deleteBackendUser(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var buid = delete_id.substr('delete_'.length);
         var post_url = '/backend-user/delete-backend-user';
         var post_data = {

@@ -159,7 +159,7 @@ function modify<?php echo $form_name_postfix; ?>(modify_id) {
 }
 
 function delete<?php echo $form_name_postfix; ?>(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var <?php echo $primary_id[0]; ?> = delete_id.substr('delete_'.length);
         var post_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
         var post_data = {
@@ -214,7 +214,7 @@ foreach ($table_data as $key => $default_value)
         if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){
             echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (type == \'add\' && image == \'\') {' . PHP_EOL;
             echo str_repeat(' ', 4 * 2) . 'error_num = error_num + 1;' . PHP_EOL;
-            echo str_repeat(' ', 4 * 2) . 'alert(MESSAGE_UPLOAD_IMAGE_ERROR)' . PHP_EOL;
+            echo str_repeat(' ', 4 * 2) . 'alert(alertMessage.UPLOAD_IMAGE_ERROR)' . PHP_EOL;
             echo str_repeat(' ', 4 * 1) . '} ';
         } else if (strpos($key, 'create_time') && strpos($key, 'update_time') && strpos($key, 'status') === false) {
             echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (' . $key . ' == \'\') {' . PHP_EOL;
@@ -227,7 +227,7 @@ foreach ($table_data as $key => $default_value)
 ?>
 <?php if ($using_ckeditor){ ?>else if(content == '') {
     error_num = error_num + 1;
-    alert(MESSAGE_CONTENT_ERROR);
+    alert(alertMessage.CONTENT_ERROR);
     }<?php } ?>
 
     return error_num;

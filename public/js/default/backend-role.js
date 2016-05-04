@@ -103,7 +103,7 @@ function modifyBackendRole(modify_id) {
 }
 
 function deleteBackendRole(delete_id) {
-    if (confirm(MESSAGE_DELETE_CONFIRM)) {
+    if (confirm(alertMessage.DELETE_CONFIRM)) {
         var brid = delete_id.substr('delete_'.length);
         var post_url = '/backend-role/delete-backend-role';
         var post_data = {
