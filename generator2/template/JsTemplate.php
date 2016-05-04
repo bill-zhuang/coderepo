@@ -22,16 +22,17 @@ $(document).ready(function() {
 
 <?php if ($primary_id[0] !== ''){ ?>
 function ajaxIndex() {
+    var $tblTbody = $('#tbl').find('tbody');
     var get_url = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/ajax-index';
     var get_data = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
     var success_function = function(result){
-        $('#tbl tbody').empty();
+        $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
-                $('#tbl tbody').append(
+                $tblTbody.append(
                     $('<tr>')
 <?php if($all_batch_id !== ''){ ?>
                         .append(
@@ -57,7 +58,7 @@ function ajaxIndex() {
                 );
             }
             if (result.data.totalItems == 0) {
-                $('#tbl tbody').append($('<tr>')
+                $tblTbody.append($('<tr>')
                     .append(
                         $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', <?php echo (2 + ($all_batch_id ==='' ? 0 : 1) + ($batch_id === '' ? 0 : 1) + count($table_row_data)); ?>)
                     )

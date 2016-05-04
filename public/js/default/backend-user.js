@@ -3,20 +3,21 @@ $(document).ready(function() {
 });
 
 function ajaxIndex() {
+    var $tblTbody = $('#tbl').find('tbody');
     var get_url = '/backend-user/ajax-index';
     var get_data = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
     var success_function = function(result){
-        $('#tbl tbody').empty();
+        $tblTbody.empty();
         if (typeof result.data != "undefined") {
             var isDelete = ($('#tab_type').val() == 1);
             var operateName = isDelete ? '删除' : '恢复';
             for (var i = 0; i < result.data.currentItemCount; i++) {
                 var operateID = (isDelete ? 'delete_' : 'recover_')  + result.data.items[i]['buid'];
                 var operateMethod = isDelete ? deleteBackendUser : recoverBackendUser;
-                $('#tbl tbody').append(
+                $tblTbody.append(
                     $('<tr>')
                         .append($('<td>').text(result.data.startIndex + i))
                         .append($('<td>').text(result.data.items[i]['name']))
@@ -33,7 +34,7 @@ function ajaxIndex() {
                 );
             }
             if (result.data.totalItems == 0) {
-                $('#tbl tbody').append($('<tr>')
+                $tblTbody.append($('<tr>')
                     .append(
                         $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 4)
                     )

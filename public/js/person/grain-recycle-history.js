@@ -3,16 +3,17 @@ $(document).ready(function () {
 });
 
 function ajaxIndex() {
+    var $tblTbody = $('#tbl').find('tbody');
     var get_url = '/person/grain-recycle-history/ajax-index';
     var get_data = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
     var success_function = function (result) {
-        $('#tbl tbody').empty();
+        $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
-                $('#tbl tbody').append(
+                $tblTbody.append(
                     $('<tr>')
                         .append($('<td>').text(result.data.startIndex + i))
                         .append($('<td>').text(result.data.items[i]['happen_date']))
@@ -35,7 +36,7 @@ function ajaxIndex() {
                 );
             }
             if (result.data.totalItems == 0) {
-                $('#tbl tbody').append($('<tr>')
+                $tblTbody.append($('<tr>')
                     .append(
                         $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 6)
                     )
