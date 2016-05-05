@@ -49,4 +49,8 @@ class Bill_Constant
 
     //acl map key
     const ACL_MAP_NAME = 'acl_map';
+
+    //eject type
+    const EJECT_TYPE_DREAM = 1;
+    const EJECT_TYPE_BAD = 2;
 } 
