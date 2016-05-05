@@ -97,7 +97,7 @@ CREATE TABLE `backend_user` (
 DROP TABLE IF EXISTS `eject_history`;
 CREATE TABLE `eject_history` (
   `ehid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `happen_date` datetime NOT NULL,
+  `happen_date` date NOT NULL,
   `count` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1-dream, 2-bad',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'status',
