@@ -28,7 +28,7 @@ function ajaxIndex() {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -47,18 +47,18 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data.items[i]['<?php echo $value; ?>']))
 <?php } ?>
                         .append($('<td>')
-                            .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '修改'})
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '修改'})
                                 .click(function () {
                                     modify<?php echo $form_name_postfix; ?>(this.id);
                                 })
                             )
                             .append('  ')
-                            .append($('<a>', {href: '#', id:'delete_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '删除'})
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '删除'})
                                 .click(function () {
                                     delete<?php echo $form_name_postfix; ?>(this.id);
                                 })
                             )
-                    )
+                        )
                 );
             }
             if (result.data.totalItems == 0) {
@@ -71,7 +71,7 @@ function ajaxIndex() {
             //init pagination
             initPagination(result.data.totalPages, result.data.pageIndex);
         } else {
-        alert(result.error.message);
+            alert(result.error.message);
         }
     };
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
@@ -116,7 +116,7 @@ $('#form<?php echo $form_name_postfix; ?>').on('submit', (function (event) {
             "params": $('#form<?php echo $form_name_postfix; ?>').serializeObject()
         };
         var method = 'post';
-        var successFunc = function(result) {
+        var successFunc = function (result) {
             $('#modal<?php echo $form_name_postfix; ?>').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -134,11 +134,11 @@ function modify<?php echo $form_name_postfix; ?>(modifyId) {
     var getUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/get-<?php echo strtolower($controller_name); ?>';
     var getData = {
         "params": {
-            "<?php echo $primary_id[0]; ?>" : <?php echo $primary_id[0] . PHP_EOL; ?>
+            "<?php echo $primary_id[0]; ?>": <?php echo $primary_id[0] . PHP_EOL; ?>
         }
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
 <?php foreach ($table_data as $key => $default_value)
 {
@@ -166,7 +166,7 @@ function delete<?php echo $form_name_postfix; ?>(deleteId) {
         var postUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/delete-<?php echo strtolower($controller_name); ?>';
         var postData = {
             "params": {
-                "<?php echo $primary_id[0]; ?>" : <?php echo $primary_id[0] . PHP_EOL; ?>
+                "<?php echo $primary_id[0]; ?>": <?php echo $primary_id[0] . PHP_EOL; ?>
             }
         };
         var method = 'post';
