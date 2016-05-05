@@ -1,4 +1,4 @@
-<link href="/css/common.css" rel="stylesheet" />
+<link href="/css/common.css" rel="stylesheet"/>
 <div class="panel panel-warning">
     <!-- panel heading -->
     <div class="panel-heading">
@@ -13,11 +13,13 @@
                     <button class="btn btn-primary" type="submit" id="btn_search">
                         <span class="glyphicon glyphicon-search"></span>
                         <span>搜索</span>
-                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <button class="btn btn-success" type="button" id="btn_load_acl">
                         <span class="glyphicon glyphicon-refresh"></span>
                         <span>加载ACL</span>
-                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 text-right">
                     <select name="page_length" id="page_length" class="form-control">
@@ -30,19 +32,20 @@
                 </div>
                 <input type="hidden" id="current_page" name="current_page"/>
             </form>
-        </div><hr>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <table id="tbl" class="table table-striped table-bordered bill_table text-center">
                     <thead>
-                        <tr>
-                            <td>序号</td>
-                            <td>name</td>
-                            <td>module</td>
-                            <td>controller</td>
-                            <td>action</td>
-                            <td>操作</td>
-                        </tr>
+                    <tr>
+                        <td>序号</td>
+                        <td>name</td>
+                        <td>module</td>
+                        <td>controller</td>
+                        <td>action</td>
+                        <td>操作</td>
+                    </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -61,8 +64,8 @@
     </div>
 </div>
 <!-- modal -->
-<div id="modalBackendAcl" class="modal fade" >
-    <div class="modal-dialog bill_modal_md" >
+<div id="modalBackendAcl" class="modal fade">
+    <div class="modal-dialog bill_modal_md">
         <div class="modal-content">
             <div class="modal-header">
                 <span>修改</span>
@@ -73,20 +76,30 @@
                     <div class="input-group">
                         <span class="input-group-addon">name：</span>
                         <input type="text" name="backend_acl_name" id="backend_acl_name" class="form-control"/>
-                    </div><br />
+                    </div>
+                    <br/>
+
                     <div class="input-group">
                         <span class="input-group-addon">module：</span>
-                        <input type="text" name="backend_acl_module" id="backend_acl_module" class="form-control" readonly/>
-                    </div><br />
+                        <input type="text" name="backend_acl_module" id="backend_acl_module" class="form-control"
+                               readonly/>
+                    </div>
+                    <br/>
+
                     <div class="input-group">
                         <span class="input-group-addon">controller：</span>
-                        <input type="text" name="backend_acl_controller" id="backend_acl_controller" class="form-control" readonly/>
-                    </div><br />
+                        <input type="text" name="backend_acl_controller" id="backend_acl_controller"
+                               class="form-control" readonly/>
+                    </div>
+                    <br/>
+
                     <div class="input-group">
                         <span class="input-group-addon">action：</span>
-                        <input type="text" name="backend_acl_action" id="backend_acl_action" class="form-control" readonly/>
-                    </div><br />
-                        <input type="hidden" id="backend_acl_baid" name="backend_acl_baid"/>
+                        <input type="text" name="backend_acl_action" id="backend_acl_action" class="form-control"
+                               readonly/>
+                    </div>
+                    <br/>
+                    <input type="hidden" id="backend_acl_baid" name="backend_acl_baid"/>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success" id="btn_submit_backend_acl">提交</button>

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     ajaxIndex();
 });
 
@@ -9,7 +9,7 @@ function ajaxIndex() {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -21,14 +21,18 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data.items[i]['controller']))
                         .append($('<td>').text(result.data.items[i]['action']))
                         .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['baid'], text: '修改'})
-                            .click(function(){modifyBackendAcl(this.id);})
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['baid'], text: '修改'})
+                                .click(function () {
+                                    modifyBackendAcl(this.id);
+                                })
+                            )
+                            .append('  ')
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['baid'], text: '删除'})
+                                .click(function () {
+                                    deleteBackendAcl(this.id);
+                                })
+                            )
                         )
-                        .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data.items[i]['baid'], text: '删除'})
-                            .click(function(){deleteBackendAcl(this.id);})
-                        )
-                    )
                 );
             }
             if (result.data.totalItems == 0) {
@@ -47,17 +51,17 @@ function ajaxIndex() {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#formBackendAcl').on('submit', (function(event){
+$('#formBackendAcl').on('submit', (function (event) {
     event.preventDefault();
 
-    if(isValidInput()) {
+    if (isValidInput()) {
         $('#btn_submit_backend_acl').attr('disabled', true);
         var postUrl = '/backend-acl/modify-backend-acl';
         var postData = {
             "params": $('#formBackendAcl').serializeObject()
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             $('#modalBackendAcl').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -75,11 +79,11 @@ function modifyBackendAcl(modifyId) {
     var getUrl = '/backend-acl/get-backend-acl';
     var getData = {
         "params": {
-            "baid" : baid
+            "baid": baid
         }
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             $('#backend_acl_baid').val(result.data.baid);
             $('#backend_acl_name').val(result.data.name);
@@ -101,11 +105,11 @@ function deleteBackendAcl(deleteId) {
         var postUrl = '/backend-acl/delete-backend-acl';
         var postData = {
             "params": {
-                "baid" : baid
+                "baid": baid
             }
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -117,8 +121,7 @@ function deleteBackendAcl(deleteId) {
     }
 }
 
-function isValidInput()
-{
+function isValidInput() {
     var isVerified = true;
     var name = $.trim($('#backend_acl_name').val());
     if (name == '') {
@@ -129,13 +132,13 @@ function isValidInput()
     return isVerified;
 }
 
-$('#btn_load_acl').on('click', function(){
+$('#btn_load_acl').on('click', function () {
     var getUrl = '/backend-acl/load-backend-acl';
     var getData = {
         'params': {}
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             alert(result.data.message);
         } else {

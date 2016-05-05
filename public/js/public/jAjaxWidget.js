@@ -1,4 +1,4 @@
-var jAjaxWidget = (function() {
+var jAjaxWidget = (function () {
     var methodPost = 'POST';
 
     function ajaxErrorFunction() {
@@ -8,14 +8,14 @@ var jAjaxWidget = (function() {
                 "\ntextStatus=" + textStatus);
             var contentType = XMLHttpRequest.getResponseHeader("Content-Type");
             if (XMLHttpRequest.status === 200 && contentType.toLowerCase().indexOf("text/html") >= 0) {
-                // assume that our login has expired - reload our current page
+                // assume that login has expired - reload our current page
                 window.location.reload();
             }
         };
     }
 
     return {
-        additionFunc: function(url, data, successFunc, method) {
+        additionFunc: function (url, data, successFunc, method) {
             $.ajax({
                 url: url,
                 type: method || methodPost,
@@ -26,7 +26,7 @@ var jAjaxWidget = (function() {
             });
         },
 
-        formSubmit: function(url, data, successFunc, method) {
+        formSubmit: function (url, data, successFunc, method) {
             $.ajax({
                 url: url,
                 type: method || methodPost,

@@ -1,12 +1,12 @@
-var DateWidget = (function() {
+var DateWidget = (function () {
     var jsDate = new Date();
     return {
-        getCurrentTime: function() {
+        getCurrentTime: function () {
             return this.getYear() + '-' + this.getMonth() + '-' + this.getDay() + ' ' + this.getHour()
                 + ':' + this.getMinute() + ':' + this.getSecond();
         },
 
-        getCurrentDate: function() {
+        getCurrentDate: function () {
             var month = this.getMonth();
             var day = this.getDay();
 
@@ -20,27 +20,27 @@ var DateWidget = (function() {
             return this.getYear() + '-' + month + '-' + day;
         },
 
-        getYear: function() {
+        getYear: function () {
             return jsDate.getFullYear();
         },
 
-        getMonth: function() {
+        getMonth: function () {
             return jsDate.getMonth() + 1;
         },
 
-        getDay: function() {
+        getDay: function () {
             return jsDate.getDate();
         },
 
-        getHour: function() {
+        getHour: function () {
             return jsDate.getHours();
         },
 
-        getMinute: function() {
+        getMinute: function () {
             return jsDate.getMinutes();
         },
 
-        getSecond: function() {
+        getSecond: function () {
             return jsDate.getSeconds();
         }
     }

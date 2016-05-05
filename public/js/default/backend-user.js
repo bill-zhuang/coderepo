@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     ajaxIndex();
 });
 
@@ -9,13 +9,13 @@ function ajaxIndex() {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             var isDelete = ($('#tab_type').val() == 1);
             var operateName = isDelete ? '删除' : '恢复';
             for (var i = 0; i < result.data.currentItemCount; i++) {
-                var operateID = (isDelete ? 'delete_' : 'recover_')  + result.data.items[i]['buid'];
+                var operateID = (isDelete ? 'delete_' : 'recover_') + result.data.items[i]['buid'];
                 var operateMethod = isDelete ? deleteBackendUser : recoverBackendUser;
                 $tblTbody.append(
                     $('<tr>')
@@ -23,14 +23,18 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data.items[i]['name']))
                         .append($('<td>').text(result.data.items[i]['role']))
                         .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['buid'], text: '修改'})
-                            .click(function(){modifyBackendUser(this.id);})
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['buid'], text: '修改'})
+                                .click(function () {
+                                    modifyBackendUser(this.id);
+                                })
+                            )
+                            .append('  ')
+                            .append($('<a>', {href: '#', id: operateID, text: operateName})
+                                .click(function () {
+                                    operateMethod(this.id);
+                                })
+                            )
                         )
-                        .append('  ')
-                        .append($('<a>', {href: '#', id: operateID, text: operateName})
-                            .click(function(){operateMethod(this.id);})
-                        )
-                    )
                 );
             }
             if (result.data.totalItems == 0) {
@@ -49,7 +53,7 @@ function ajaxIndex() {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 
-$('#ul_tab_type').find('li').on('click', function(){
+$('#ul_tab_type').find('li').on('click', function () {
     var tabValue = parseInt($(this).attr('id').substr('li_tab_type_'.length));
     tabValue = isNaN(tabValue) ? 1 : tabValue;
     $('#tab_type').val(tabValue);
@@ -60,7 +64,7 @@ $('#ul_tab_type').find('li').on('click', function(){
 });
 
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function(){
+$('#btn_add').on('click', function () {
     window.formBackendUser.reset();
     $('#backend_user_buid').val('');
     $('#btn_submit_backend_user').attr('disabled', false);
@@ -69,7 +73,7 @@ $('#btn_add').on('click', function(){
         'params': {}
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             var roleSelect = '';
             for (var brid in result.data) {
@@ -85,19 +89,19 @@ $('#btn_add').on('click', function(){
 
 });
 
-$('#formBackendUser').on('submit', (function(event){
+$('#formBackendUser').on('submit', (function (event) {
     event.preventDefault();
 
     var buid = $('#backend_user_buid').val();
     var type = (buid == '') ? 'add' : 'modify';
-    if(isValidInput()) {
+    if (isValidInput()) {
         $('#btn_submit_backend_user').attr('disabled', true);
-        var postUrl = '/backend-user/' + type +'-backend-user';
+        var postUrl = '/backend-user/' + type + '-backend-user';
         var postData = {
             "params": $('#formBackendUser').serializeObject()
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             $('#modalBackendUser').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -115,11 +119,11 @@ function modifyBackendUser(modifyId) {
     var getUrl = '/backend-user/get-backend-user';
     var getData = {
         "params": {
-            "buid" : buid
+            "buid": buid
         }
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             var roleSelect = '';
             for (var brid in result.data.roles) {
@@ -143,11 +147,11 @@ function deleteBackendUser(deleteId) {
         var postUrl = '/backend-user/delete-backend-user';
         var postData = {
             "params": {
-                "buid" : buid
+                "buid": buid
             }
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -165,11 +169,11 @@ function recoverBackendUser(recoverId) {
         var postUrl = '/backend-user/recover-backend-user';
         var postData = {
             "params": {
-                "buid" : buid
+                "buid": buid
             }
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -181,8 +185,7 @@ function recoverBackendUser(recoverId) {
     }
 }
 
-function isValidInput()
-{
+function isValidInput() {
     var isVerified = true;
     var name = $.trim($('#backend_user_name').val());
     if (name === '') {

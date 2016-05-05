@@ -129,6 +129,6 @@ $('#btn_search_month').on('click', function (event) {
     initMonthChart();
 });
 
-$('#day_category_id').on('change', function(){
+$('#day_category_id').on('change', function () {
     $('#btn_search_day').click();
 });

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     ajaxIndex();
 });
 
@@ -9,7 +9,7 @@ function ajaxIndex() {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
             for (var i = 0; i < result.data.currentItemCount; i++) {
@@ -18,18 +18,24 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data.startIndex + i))
                         .append($('<td>').text(result.data.items[i]['role'] + '(' + result.data.items[i]['count'] + ')'))
                         .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['brid'], text: '修改角色名'})
-                            .click(function(){modifyBackendRole(this.id);})
+                            .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['brid'], text: '修改角色名'})
+                                .click(function () {
+                                    modifyBackendRole(this.id);
+                                })
+                            )
+                            .append('  ')
+                            .append($('<a>', {href: '#', id: 'modifyAcl_' + result.data.items[i]['brid'], text: '修改角色权限'})
+                                .click(function () {
+                                    modifyBackendRoleAcl(this.id);
+                                })
+                            )
+                            .append('  ')
+                            .append($('<a>', {href: '#', id: 'delete_' + result.data.items[i]['brid'], text: '删除'})
+                                .click(function () {
+                                    deleteBackendRole(this.id);
+                                })
+                            )
                         )
-                        .append('  ')
-                        .append($('<a>', {href: '#', id: 'modifyAcl_' + result.data.items[i]['brid'], text: '修改角色权限'})
-                                .click(function(){modifyBackendRoleAcl(this.id);})
-                        )
-                        .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data.items[i]['brid'], text: '删除'})
-                            .click(function(){deleteBackendRole(this.id);})
-                        )
-                    )
                 );
             }
             if (result.data.totalItems == 0) {
@@ -48,26 +54,26 @@ function ajaxIndex() {
     jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
 }
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function(){
+$('#btn_add').on('click', function () {
     window.formBackendRole.reset();
     $('#backend_role_brid').val('');
     $('#btn_submit_backend_role').attr('disabled', false);
     $('#modalBackendRole').modal('show');
 });
 
-$('#formBackendRole').on('submit', (function(event){
+$('#formBackendRole').on('submit', (function (event) {
     event.preventDefault();
 
     var brid = $('#backend_role_brid').val();
     var type = (brid == '') ? 'add' : 'modify';
-    if(isValidInput()) {
+    if (isValidInput()) {
         $('#btn_submit_backend_role').attr('disabled', true);
-        var postUrl = '/backend-role/' + type +'-backend-role';
+        var postUrl = '/backend-role/' + type + '-backend-role';
         var postData = {
             "params": $('#formBackendRole').serializeObject()
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             $('#modalBackendRole').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -85,11 +91,11 @@ function modifyBackendRole(modifyId) {
     var getUrl = '/backend-role/get-backend-role';
     var getData = {
         "params": {
-            "brid" : brid
+            "brid": brid
         }
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             $('#backend_role_brid').val(result.data.brid);
             $('#backend_role_role').val(result.data.role);
@@ -108,11 +114,11 @@ function deleteBackendRole(deleteId) {
         var postUrl = '/backend-role/delete-backend-role';
         var postData = {
             "params": {
-                "brid" : brid
+                "brid": brid
             }
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -124,8 +130,7 @@ function deleteBackendRole(deleteId) {
     }
 }
 
-function isValidInput()
-{
+function isValidInput() {
     var isVerified = true;
     var role = $.trim($('#backend_role_role').val());
     if (role == '') {
@@ -141,11 +146,11 @@ function modifyBackendRoleAcl(modifyId) {
     var getUrl = '/backend-role/get-backend-role-acl';
     var getData = {
         "params": {
-            "brid" : brid
+            "brid": brid
         }
     };
     var method = 'get';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         if (typeof result.data != 'undefined') {
             var aclContent = '<input type="checkbox" id="ck_all" onclick="batchAclList(this);"/>&nbsp;全选<hr>';
             var aclList = result.data.aclList;
@@ -199,7 +204,7 @@ function batchActionAcl(obj) {
     }
 }
 
-$('#formBackendRoleAcl').on('submit', (function(event){
+$('#formBackendRoleAcl').on('submit', (function (event) {
     event.preventDefault();
 
     $('#btn_submit_backend_role_acl').attr('disabled', true);
@@ -208,7 +213,7 @@ $('#formBackendRoleAcl').on('submit', (function(event){
         "params": $('#formBackendRoleAcl').serializeObject()
     };
     var method = 'post';
-    var successFunc = function(result){
+    var successFunc = function (result) {
         $('#modalBackendRoleAcl').modal('hide');
         if (typeof result.data != 'undefined') {
             alert(result.data.message);

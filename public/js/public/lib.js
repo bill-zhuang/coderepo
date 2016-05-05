@@ -16,7 +16,7 @@ function httpRequest(url) {
     }
 
     xmlhttp.open("get", url);
-    xmlhttp.onreadystatechange = function() {
+    xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4) {
             if (xmlhttp.status == 200) {
                 var result = xmlhttp.responseText;
@@ -33,7 +33,8 @@ function httpRequest(url) {
 
 //real-time refresh
 var seconds = 30;
-setInterval(function() { }, seconds * 1000);
+setInterval(function () {
+}, seconds * 1000);
 
 function popupwindow(url) {
     window.open(url, 'newwindow', 'height=800, width=550, top=0,left=200, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=no, status=no');

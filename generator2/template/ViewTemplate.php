@@ -20,7 +20,7 @@ $table_keys = array_keys($table_data);
 <?php if($using_datetime_picker){ ?>
 <link href="/assets/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
 <?php } ?>
-<link href="/css/common.css" rel="stylesheet" />
+<link href="/css/common.css" rel="stylesheet"/>
 <div class="panel panel-warning">
     <!-- panel heading -->
     <div class="panel-heading">
@@ -36,16 +36,19 @@ $table_keys = array_keys($table_data);
                     <button class="btn btn-primary" type="submit" id="btn_search">
                         <span class="glyphicon glyphicon-search"></span>
                         <span>搜索</span>
-                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <button class="btn btn-success" type="button" id="btn_add">
                         <span class="glyphicon glyphicon-plus"></span>
                         <span>新增</span>
-                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 <?php if($all_batch_id !== ''){ ?>
-                        <button class="btn btn-danger" type="button" id="btn_batch_delete">
-                            <span class="glyphicon glyphicon-trash"></span>
-                            <span>批量删除</span>
-                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-danger" type="button" id="btn_batch_delete">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        <span>批量删除</span>
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 <?php } ?>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2 text-right">
@@ -63,7 +66,8 @@ $table_keys = array_keys($table_data);
 <?php } ?>
             </form>
 <?php } ?>
-        </div><hr>
+        </div>
+        <hr>
 <?php if($primary_id[0] !== ''){ ?>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
@@ -80,19 +84,19 @@ $table_keys = array_keys($table_data);
 <?php } ?>
                 <table id="tbl" class="table table-striped table-bordered bill_table text-center">
                     <thead>
-                        <tr>
+                    <tr>
 <?php if($all_batch_id !== ''){ ?>
-                            <td><input type="checkbox" id="<?php echo $all_batch_id; ?>" name="<?php echo $all_batch_id; ?>"/></td>
+                        <td><input type="checkbox" id="<?php echo $all_batch_id; ?>" name="<?php echo $all_batch_id; ?>"/></td>
 <?php } ?>
 <?php
-echo str_repeat(' ', 4 * 7) . '<td>序号</td>' . PHP_EOL;
+echo str_repeat(' ', 4 * 6) . '<td>序号</td>' . PHP_EOL;
 foreach ($table_row_data as $key => $value)
 {
-    echo str_repeat(' ', 4 * 7) . '<td>' . $key . '</td>' . PHP_EOL;
+    echo str_repeat(' ', 4 * 6) . '<td>' . $key . '</td>' . PHP_EOL;
 }
 ?>
-                            <td>操作</td>
-                        </tr>
+                        <td>操作</td>
+                    </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -113,8 +117,8 @@ foreach ($table_row_data as $key => $value)
 </div>
 <?php if ($primary_id[0] !== ''){ ?>
 <!-- modal -->
-<div id="modal<?php echo $form_name_postfix; ?>" class="modal fade" >
-    <div class="modal-dialog bill_modal_<?php echo $view_modal_size; ?>" >
+<div id="modal<?php echo $form_name_postfix; ?>" class="modal fade">
+    <div class="modal-dialog bill_modal_<?php echo $view_modal_size; ?>">
         <div class="modal-content">
             <div class="modal-header">
                 <span>新增/修改</span>
@@ -129,7 +133,8 @@ foreach ($table_row_data as $key => $value)
         echo str_repeat(' ', 4 * 5) . '<div class="input-group">' . PHP_EOL;
         echo str_repeat(' ', 4 * 6) . '<span class="input-group-addon">' . $key . '：</span>' . PHP_EOL;
         echo str_repeat(' ', 4 * 6) . '<input type="text" name="' . $form_element_prefix . '_' . $key . '" id="' . $form_element_prefix. '_'  . $key . '" class="form-control"/>' . PHP_EOL;
-        echo str_repeat(' ', 4 * 5) . '</div><br />' . PHP_EOL;
+        echo str_repeat(' ', 4 * 5) . '</div>' . PHP_EOL;
+        echo str_repeat(' ', 4 * 5) . '<br />' . PHP_EOL;
     }
 }
 ?>

@@ -29,7 +29,7 @@ table td {
 .bill_table_input {
     width: 100%;
     box-sizing: border-box;
-    -webkit-box-sizing:border-box;
+    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 
@@ -39,7 +39,7 @@ table css
 .bill_table {
     float: left;
     width: 100%;
-    table-layout:fixed;
+    table-layout: fixed;
     word-break: break-all;
 }
 
@@ -50,8 +50,8 @@ table css
 }
 
 .bill_table_td_60 {
-    width : 60%;
-    text-align : center;
+    width: 60%;
+    text-align: center;
 }
 
 .bill_cursor_pointer {
@@ -115,8 +115,8 @@ bootstrap modal css
 }
 
 .div_text_vertical_align {
-    display:table-cell;
-    vertical-align:middle;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .bill-ime-disabled {

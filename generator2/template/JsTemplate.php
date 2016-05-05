@@ -16,7 +16,7 @@
 
 $table_keys = array_keys($table_data);
 ?>
-$(document).ready(function() {
+$(document).ready(function () {
     ajaxIndex();
 });
 
@@ -47,13 +47,17 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data.items[i]['<?php echo $value; ?>']))
 <?php } ?>
                         .append($('<td>')
-                        .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '修改'})
-                            .click(function(){modify<?php echo $form_name_postfix; ?>(this.id);})
-                        )
-                        .append('  ')
-                        .append($('<a>', {href: '#', id:'delete_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '删除'})
-                            .click(function(){delete<?php echo $form_name_postfix; ?>(this.id);})
-                        )
+                            .append($('<a>', {href: '#', id:'modify_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '修改'})
+                                .click(function () {
+                                    modify<?php echo $form_name_postfix; ?>(this.id);
+                                })
+                            )
+                            .append('  ')
+                            .append($('<a>', {href: '#', id:'delete_' + result.data.items[i]['<?php echo $primary_id[0]; ?>'], text: '删除'})
+                                .click(function () {
+                                    delete<?php echo $form_name_postfix; ?>(this.id);
+                                })
+                            )
                     )
                 );
             }
@@ -75,7 +79,7 @@ function ajaxIndex() {
 <?php } ?>
 <?php if(!empty($tab_types)){ ?>
 
-$('#ul_tab_type').find('li').on('click', function(){
+$('#ul_tab_type').find('li').on('click', function () {
     var tabValue = parseInt($(this).attr('id').substr('li_tab_type_'.length));
     tabValue = isNaN(tabValue) ? <?php echo ($default_tab_value == '') ? 0 : $default_tab_value; ?> : tabValue;
     $('#tab_type').val(tabValue);
@@ -86,7 +90,7 @@ $('#ul_tab_type').find('li').on('click', function(){
 });
 <?php } ?>
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#btn_add').on('click', function(){
+$('#btn_add').on('click', function () {
     window.form<?php echo $form_name_postfix; ?>.reset();
 <?php if ($using_ckeditor){ ?>
     CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.setData('');
@@ -96,23 +100,23 @@ $('#btn_add').on('click', function(){
     $('#modal<?php echo $form_name_postfix; ?>').modal('show');
 });
 
-$('#form<?php echo $form_name_postfix; ?>').on('submit', (function(event){
+$('#form<?php echo $form_name_postfix; ?>').on('submit', (function (event) {
     event.preventDefault();
 
     var <?php echo $primary_id[0]; ?> = $('#<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>').val();
     var type = (<?php echo $primary_id[0]; ?> == '') ? 'add' : 'modify';
-    if(isValidInput(type)) {
+    if (isValidInput(type)) {
         $('#btn_submit_<?php echo $form_element_prefix; ?>').attr('disabled', true);
 <?php if ($using_ckeditor){ ?>
         var content = $.trim(CKEDITOR.instances.ck_<?php echo $form_element_prefix; ?>_intro.getData());
         $('#<?php echo $form_element_prefix; ?>_intro').val(content);
 <?php } ?>
-        var postUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type +'-<?php echo strtolower($controller_name); ?>';
+        var postUrl = '<?php echo $module_name == '' ? '' : '/' . $module_name; ?>/<?php echo strtolower($controller_name); ?>/' + type + '-<?php echo strtolower($controller_name); ?>';
         var postData = {
             "params": $('#form<?php echo $form_name_postfix; ?>').serializeObject()
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function(result) {
             $('#modal<?php echo $form_name_postfix; ?>').modal('hide');
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
@@ -166,7 +170,7 @@ function delete<?php echo $form_name_postfix; ?>(deleteId) {
             }
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {
@@ -178,8 +182,7 @@ function delete<?php echo $form_name_postfix; ?>(deleteId) {
     }
 }
 
-function isValidInput(type)
-{
+function isValidInput(type) {
     var isVerified = true;
 <?php foreach ($table_data as $key => $default_value)
 {
@@ -232,7 +235,7 @@ foreach ($table_data as $key => $default_value)
 }
 <?php if($all_batch_id !== ''){ ?>
 /*  --------------------------------------------------------------------------------------------------------  */
-$('#<?php echo $all_batch_id; ?>').on('click', function(){
+$('#<?php echo $all_batch_id; ?>').on('click', function () {
     batchMute(this, '<?php echo $batch_id; ?>');
 });
 <?php } ?>

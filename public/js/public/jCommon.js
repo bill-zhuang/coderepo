@@ -1,25 +1,25 @@
-var jCommon = (function() {
+var jCommon = (function () {
     return {
-        deleteDiv: function(divID) {
+        deleteDiv: function (divID) {
             $('#' + divID).remove();
         },
 
-        getImageSrcsInDiv: function(divID) {
+        getImageSrcsInDiv: function (divID) {
             var pics = [];
-            $('#' + divID + ' img').each(function() {
+            $('#' + divID + ' img').each(function () {
                 pics.push($(this).attr('src'));
             });
 
             return pics;
         },
 
-        batchMute: function(obj, childName) {
+        batchMute: function (obj, childName) {
             $('input[name="' + childName + '"]').each(function () {
                 $(this).prop('checked', obj.checked);
             });
         },
 
-        closeBatch: function(obj, parentID) {
+        closeBatch: function (obj, parentID) {
             if (!obj.checked) {
                 $('#' + parentID).prop('checked', false);
             } else {
@@ -29,7 +29,7 @@ var jCommon = (function() {
             }
         },
 
-        getBatchIDs: function(childName) {
+        getBatchIDs: function (childName) {
             var selected = [];
             $("input[name='" + childName + "']:checked").each(function () {
                 selected.push(this.value);
@@ -38,7 +38,7 @@ var jCommon = (function() {
             return selected;
         },
 
-        getCheckboxIDs: function(divID) {
+        getCheckboxIDs: function (divID) {
             var selected = [];
             $('#' + divID + ' input:checked').each(function () {
                 selected.push(this.value);
@@ -47,7 +47,7 @@ var jCommon = (function() {
             return selected;
         },
 
-        getFileImageCount: function(fileID) {
+        getFileImageCount: function (fileID) {
             return $('#' + fileID)[0]['files'].length;
         }
     }

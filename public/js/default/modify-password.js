@@ -22,7 +22,7 @@ $('#formModifyPassword').on('submit', function (event) {
             "params": $('#formModifyPassword').serializeObject()
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 alert(result.data.message);
             } else {

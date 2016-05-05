@@ -24,7 +24,7 @@ $('#formLogin').on('submit', function (event) {
             "params": $('#formLogin').serializeObject()
         };
         var method = 'post';
-        var successFunc = function(result){
+        var successFunc = function (result) {
             if (typeof result.data != 'undefined') {
                 window.location.href = result.data.redirectUrl;
             } else {
