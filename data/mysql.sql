@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2016-03-04 22:11:28
+Date: 2016-05-05 16:17:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -84,7 +84,7 @@ CREATE TABLE `backend_user` (
   `name` varchar(128) NOT NULL DEFAULT '',
   `password` varchar(64) NOT NULL DEFAULT '',
   `salt` char(64) NOT NULL COMMENT 'password salt',
-  `brid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'backend role pkid',
+  `brid` int(10) unsigned NOT NULL COMMENT 'backend role pkid',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '1:valid, 0: invalid',
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -92,31 +92,19 @@ CREATE TABLE `backend_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for bad_history
+-- Table structure for eject_history
 -- ----------------------------
-DROP TABLE IF EXISTS `bad_history`;
-CREATE TABLE `bad_history` (
-  `bhid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `happen_date` date NOT NULL,
+DROP TABLE IF EXISTS `eject_history`;
+CREATE TABLE `eject_history` (
+  `ehid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `happen_date` datetime NOT NULL,
   `count` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1-dream, 2-bad',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'status',
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`bhid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for dream_history
--- ----------------------------
-DROP TABLE IF EXISTS `dream_history`;
-CREATE TABLE `dream_history` (
-  `dhid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `happen_date` date NOT NULL,
-  `count` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`dhid`)
+  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ehid`),
+  UNIQUE KEY `idx_happend_date_type` (`happen_date`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -174,5 +162,6 @@ CREATE TABLE `grain_recycle_history` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'status',
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`grhid`)
+  PRIMARY KEY (`grhid`),
+  UNIQUE KEY `idx_happen_date` (`happen_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
