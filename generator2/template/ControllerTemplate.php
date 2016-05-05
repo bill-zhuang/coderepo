@@ -65,7 +65,9 @@ echo PHP_EOL;
         if ($this->getRequest()->isPost()) {
             try {
                 $params = $this->getRequest()->getPost('params', []);
+<?php if(count($table_names) > 1){ ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
+<?php } ?>
                 $data = [
 <?php foreach ($table_data as $key => $default_value)
 {
@@ -82,7 +84,9 @@ echo PHP_EOL;
                     $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($affected_rows, '<?php echo $form_element_prefix; ?>_image');
                 }
 <?php } ?>
+<?php if(count($table_names) > 1){ ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+<?php } ?>
                 $json_array = [
                     'data' => [
                         'code' => $affected_rows,
@@ -91,7 +95,9 @@ echo PHP_EOL;
                     ],
                 ];
             } catch (Exception $e) {
+<?php if(count($table_names) > 1){ ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
+<?php } ?>
                 Bill_Util::handleException($e, 'Error From add<?php echo $controller_name; ?>');
             }
         }
@@ -110,7 +116,9 @@ echo PHP_EOL;
         if ($this->getRequest()->isPost()) {
             try {
                 $params = $this->getRequest()->getPost('params', []);
+<?php if(count($table_names) > 1){ ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
+<?php } ?>
                 $<?php echo $primary_id[0]; ?> = intval($params['<?php echo $form_element_prefix; ?>_<?php echo $primary_id[0]; ?>']);
                 if ($<?php echo $primary_id[0]; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $data = [
@@ -130,7 +138,9 @@ echo PHP_EOL;
                         $affected_rows += $this->_update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, '<?php echo $form_element_prefix; ?>_image');
                     }
 <?php } ?>
+<?php if(count($table_names) > 1){ ?>
                     $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+<?php } ?>
                     $json_array = [
                         'data' => [
                             'code' => $affected_rows,
@@ -140,7 +150,9 @@ echo PHP_EOL;
                     ];
                 }
             } catch (Exception $e) {
+<?php if(count($table_names) > 1){ ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
+<?php } ?>
                 Bill_Util::handleException($e, 'Error From modify<?php echo $controller_name; ?>');
             }
         }
@@ -159,7 +171,9 @@ echo PHP_EOL;
         if ($this->getRequest()->isPost()) {
             try {
                 $params = $this->getRequest()->getPost('params', []);
+<?php if(count($table_names) > 1){ ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->beginTransaction();
+<?php } ?>
                 $<?php echo $primary_id[0]; ?> = isset($params['<?php echo $primary_id[0]; ?>']) ? intval($params['<?php echo $primary_id[0]; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
                 if ($<?php echo $primary_id[0]; ?> > Bill_Constant::INVALID_PRIMARY_ID) {
                     $update_data = [
@@ -172,7 +186,9 @@ echo PHP_EOL;
                         $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                     ];
                     $affected_rows = $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->update($update_data, $where);
+<?php if(count($table_names) > 1){ ?>
                     $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->commit();
+<?php } ?>
                     $json_array = [
                         'data' => [
                             'code' => $affected_rows,
@@ -182,7 +198,9 @@ echo PHP_EOL;
                     ];
                 }
             } catch (Exception $e) {
+<?php if(count($table_names) > 1){ ?>
                 $this->_adapter_<?php echo str_replace($table_prefix, '', $table_names[0]); ?>->getAdapter()->rollBack();
+<?php } ?>
                 Bill_Util::handleException($e, 'Error From delete<?php echo $controller_name; ?>');
             }
         }
