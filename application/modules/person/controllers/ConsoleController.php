@@ -51,4 +51,21 @@ class person_ConsoleController extends Zend_Controller_Action
             echo 'User name already exist, change another one.';
         }
     }
+
+    public function transferDreamBadDataToEjectAction()
+    {
+        $sql =  'SELECT 1 AS type, d.happen_date, d.count, d.`status`, d.create_time, d.update_time FROM dream_history AS d'
+            . ' UNION ALL'
+            . ' SELECT 2 AS type, b.happen_date, b.count, b.`status`, b.create_time, b.update_time FROM bad_history AS b'
+            . ' ORDER BY happen_date ASC';
+        $adapter_eject_history = new Application_Model_DBTable_EjectHistory();
+        $data = $adapter_eject_history->getAdapter()->query($sql)->fetchAll();
+        foreach ($data as $item) {
+            try {
+                $adapter_eject_history->insert($item);
+            } catch (Exception $e) {
+                ;
+            }
+        }
+    }
 }

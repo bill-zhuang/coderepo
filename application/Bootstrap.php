@@ -65,6 +65,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 array(
                     'index|i' => 'index',
                     'createUser|c' => 'create user',
+                    'transferDreamBadData|t' => 'transfer dream & bad data to eject',
                 )
             );
             if(isset($opts->index)) {
@@ -84,6 +85,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                         'module' => 'person',
                         'controller' => 'console',
                         'action' => 'create-user',
+                    )
+                );
+            }
+            if (isset($opts->transferDreamBadData)) {
+                $route = new Zend_Controller_Router_Route_Hostname(
+                    '',
+                    array(
+                        'module' => 'person',
+                        'controller' => 'console',
+                        'action' => 'transfer-dream-bad-data-to-eject',
                     )
                 );
             }
