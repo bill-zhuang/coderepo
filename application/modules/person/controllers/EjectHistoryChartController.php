@@ -115,15 +115,14 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
 
     private function _getMonthsRange(array $months)
     {
+
         if (count($months) > 2) {
             sort($months);
-            $data['months'] = $months;
             $min_month = $months[0];
-            $max_month = $months[count($months) - 1];
-            $data['months'][] = $months[0];
+            $max_month_timestamp = $months[count($months) - 1];
             for ($i = 1; ; $i++) {
                 $next_month = date('Y-m', strtotime($min_month . "+ {$i} month"));
-                if (strtotime($next_month) <= strtotime($max_month)) {
+                if ((strtotime($next_month) <= $max_month_timestamp) && !in_array($next_month, $months)) {
                     $months[] = $next_month;
                 } else {
                     break;
