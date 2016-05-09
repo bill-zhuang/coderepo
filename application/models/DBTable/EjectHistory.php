@@ -48,4 +48,39 @@ class Application_Model_DBTable_EjectHistory extends Application_Model_DBTableFa
             ->query()->fetchAll();
         return ($data[0]['total'] > 0) ? true : false;
     }
+
+    public function getTotalEjectHistoryDataByDay($start_date, $end_date, $type)
+    {
+        $select = $this->select()->reset()
+            ->from($this->_name, array('happen_date as period', 'count as number'))
+            ->where('type=?', $type)
+            ->where('status=?', Bill_Constant::VALID_STATUS);
+        if ($start_date !== '') {
+            $select->where('happen_date>=?', $start_date);
+        }
+        if ($end_date !== '') {
+            $select->where('happen_date<=?', $end_date);
+        }
+
+        return $select
+            ->order('period asc')
+            ->query()->fetchAll();
+    }
+
+    public function getTotalEjectHistoryGroupData($start_date, $end_date, $type)
+    {
+        $select = $this->select()->reset()
+            ->from($this->_name, array('date_format(happen_date, "%Y-%m") as period', 'sum(count) as number'))
+            ->where('type=?', $type)
+            ->where('status=?', Bill_Constant::VALID_STATUS);
+        if ($start_date !== '') {
+            $select->where('happen_date>=?', $start_date);
+        }
+        if ($end_date !== '') {
+            $select->where('happen_date<=?', $end_date);
+        }
+        return $select
+            ->group('date_format(happen_date, "%Y%m")')
+            ->query()->fetchAll();
+    }
 }
