@@ -65,6 +65,7 @@ $('#ul_tab_type').find('li').on('click', function () {
 $('#btn_add').on('click', function () {
     window.formEjectHistory.reset();
     $('#eject_history_ehid').val('');
+    $('#eject_history_happen_date').val(DateWidget.getCurrentDate()).attr('disabled', false);
     $('#btn_submit_eject_history').attr('disabled', false);
     $('#modalEjectHistory').modal('show');
 });
