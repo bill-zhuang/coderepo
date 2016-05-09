@@ -69,8 +69,8 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
         }
 
         if ($sql != '') {
-            $user_id = isset(Application_Model_Auth::getIdentity()->bu_id) ?
-                Application_Model_Auth::getIdentity()->bu_id : Bill_Constant::INVALID_PRIMARY_ID;
+            $user_id = isset(Application_Model_Auth::getIdentity()->buid) ?
+                Application_Model_Auth::getIdentity()->buid : Bill_Constant::INVALID_PRIMARY_ID;
             $date_time = date('Y-m-d H:i:s');
             $insert_data = [
                 'type' => $type,
