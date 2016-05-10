@@ -29,9 +29,28 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
         $end_date = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
             ? trim($params['day_end_date']) : date('Y-m-d');
-        $data = $this->_getAllGrainRecycleHistoryDataByDay($start_date, $end_date);
+        $data = [];
+        $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
+        for($i = 0; $i <= $day_interval; $i++) {
+            $period_date = date('Y-m-d', strtotime($start_date . " + {$i} day"));
+            $data[$period_date] = 0;
+        }
+        $day_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryDataByDay($start_date, $end_date);
+        foreach ($day_data as $day_value) {
+            if (isset($data[$day_value['period']])) {
+                $data[$day_value['period']] = intval($day_value['number']);
+            }
+        }
         $json_array = [
-            'data' => $data
+            'data' => [
+                'days' => array_keys($data),
+                'data' => [
+                    [
+                        'name' => 'Grain Recycle Count',
+                        'data' => array_values($data),
+                    ],
+                ],
+            ],
         ];
 
         echo json_encode($json_array);
@@ -44,7 +63,33 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             ? trim($params['month_start_date']) : date('Y-m', strtotime('-11 month')) . '-01';
         $end_date = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
             ? trim($params['month_end_date']) : '';
-        $data = $this->_getAllDreamHistoryDataByMonth($start_date, $end_date);
+        $data = [
+            'months' => [],
+            'data' => [],
+        ];
+        $months = [];
+        $temp_data = [];
+        $month_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupData($start_date, $end_date);
+        foreach ($month_data as $month_value) {
+            if (!in_array($month_value['period'], $months)) {
+                $months[] = $month_value['period'];
+            }
+            $temp_data[$month_value['period']] = $month_value['number'];
+        }
+        $data['months'] = $this->_getMonthsRange($months);
+
+        $type_data = [];
+        foreach ($data['months'] as $month) {
+            if (isset($temp_data[$month])) {
+                $type_data[] = intval($temp_data[$month]);
+            } else {
+                $type_data[] = 0;
+            }
+        }
+        $data['data'][] = [
+            'name' => 'Grain Recycle Count',
+            'data' => $type_data,
+        ];
         $json_array = [
             'data' => $data
         ];
@@ -52,67 +97,24 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         echo json_encode($json_array);
     }
 
-    public function getGrainRecycleHistoryMonthDetailAction()
+    private function _getMonthsRange(array $months)
     {
-        $chart_data = [
-            'period' => [],
-            'number' => [],
-        ];
-        if (isset($_POST['select_date'])) {
-            $select_date = $_POST['select_date'];
-            $group_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupDataByYearMonth($select_date);
-            foreach ($group_data as $group_value) {
-                $chart_data['period'][] = $group_value['period'];
-                $chart_data['number'][] = $group_value['number'];
-            }
-        }
 
-        echo json_encode($chart_data);
-    }
-
-    private function _getAllGrainRecycleHistoryDataByDay($start_date, $end_date)
-    {
-        $all_chart_data = [
-            'period' => [],
-            'number' => [],
-        ];
-        $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
-        $all_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryDataByDay($start_date, $end_date);
-        foreach ($all_data as $all_value) {
-            $all_chart_data['period'][] = $all_value['period'];
-            $all_chart_data['number'][] = $all_value['number'];
-        }
-
-        if (count($all_chart_data['period']) != $day_interval) {
-            $sort_chart_data = [];
-            for($i = 1; $i <= $day_interval; $i++) {
-                $period_date = date('Y-m-d', strtotime($start_date . ' + ' . $i . ' day'));
-                $sort_chart_data['period'][] = $period_date;
-                if (!in_array($period_date, $all_chart_data['period'])) {
-                    $sort_chart_data['number'][] = 0;
+        if (count($months) > 2) {
+            sort($months);
+            $min_month = $months[0];
+            $max_month_timestamp = $months[count($months) - 1];
+            for ($i = 1; ; $i++) {
+                $next_month = date('Y-m', strtotime($min_month . "+ {$i} month"));
+                if ((strtotime($next_month) <= $max_month_timestamp) && !in_array($next_month, $months)) {
+                    $months[] = $next_month;
                 } else {
-                    $period_key = array_search($period_date, $all_chart_data['period']);
-                    $sort_chart_data['number'][] = $all_chart_data['number'][$period_key];
+                    break;
                 }
             }
-            $all_chart_data = $sort_chart_data;
+            sort($months);
         }
 
-        return $all_chart_data;
-    }
-
-    private function _getAllDreamHistoryDataByMonth($start_date, $end_date)
-    {
-        $data = [
-            'period' => [],
-            'number' => [],
-        ];
-        $month_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupData($start_date, $end_date);
-        foreach ($month_data as $month_value) {
-            $data['period'][] = $month_value['period'];
-            $data['number'][] = $month_value['number'];
-        }
-
-        return $data;
+        return $months;
     }
 }

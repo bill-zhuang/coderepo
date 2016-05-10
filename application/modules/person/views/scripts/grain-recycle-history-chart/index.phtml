@@ -9,9 +9,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-12 col-md-10 col-lg-12">
-                <span class="bill_font_bold_green">All Grain Recycle History data by day</span>
-                <hr>
-                <form action="#" method="get" id="formSearch" class="form-inline">
+                <form action="#" method="get" id="formSearchDay" class="form-inline">
                     Start Date: <input type="text" class="form-control form_date bill-ime-disabled"
                                        id="day_start_date" name="day_start_date"/>
                     End Date: <input type="text" class="form-control form_date bill-ime-disabled"
@@ -24,13 +22,10 @@
                 </form>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="bill-chart-canvas_all">
-                    <canvas id="grain_recycle_history_line_chart_all"></canvas>
-                </div>
+                <div class="bill-chart-canvas_all" id="grain_recycle_history_line_chart_all"></div>
             </div>
 
             <div class="col-sm-12 col-md-10 col-lg-12">
-                <span class="bill-margin-left bill_font_bold_green">All Grain Recycle History data by month</span>
                 <hr>
                 <form action="#" method="get" id="formSearchMonth" class="form-inline">
                     Start Date: <input type="text" class="form-control form_date bill-ime-disabled"
@@ -46,12 +41,10 @@
             </div>
 
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="bill-chart-canvas">
-                    <canvas id="grain_recycle_history_line_chart"></canvas>
-                </div>
-                <div class="bill-chart-canvas bill-margin-left">
-                    <canvas id="grain_recycle_history_bar_chart"></canvas>
-                </div>
+                <div id="grain_recycle_history_line_chart"></div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div id="grain_recycle_history_bar_chart"></div>
             </div>
         </div>
     </div>
@@ -61,11 +54,10 @@
 </div>
 
 <!-- ------------------------------------------javascript--------------------------------------------------- -->
-<script src="/assets/chart.js/Chart.min.js"></script>
+<script src="/assets/highCharts/highcharts.src.js"></script>
 <script src="/assets/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script src="/assets/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script src="/js/public/datetimepicker.js"></script>
 <script src="/assets/jquery-serialize-object/js/jquery.serialize-object.min.js"></script>
 <script src="/js/public/jAjaxWidget.js"></script>
 <script src="/js/person/grain-recycle-history-chart.js"></script>
-<script src="/js/public/chart.js"></script>

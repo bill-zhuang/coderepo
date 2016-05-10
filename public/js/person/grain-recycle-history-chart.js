@@ -10,15 +10,38 @@ function initPeriodChart() {
     };
     var method = 'get';
     var successFunc = function (result) {
-        var lineOption = {
-            responsive: true,
-            scaleOverride: true,
-            scaleSteps: 5, //y axis length = steps * step_width
-            scaleStepWidth: 1, // y axis
-            scaleStartValue: 0 // y axis start value
-        };
         if (typeof result.data != "undefined") {
-            initLineChart('grain_recycle_history_line_chart_all', result.data['period'], result.data['number'], lineOption);
+            $('#grain_recycle_history_line_chart_all').highcharts({
+                title: {
+                    text: 'Grain recycle history(day)'
+                },
+                xAxis: {
+                    categories: result.data.days
+                },
+                yAxis: {
+                    title: {
+                        text: 'Grain Recycle Count'
+                    },
+                    plotLines: [
+                        {
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }
+                    ],
+                    tickInterval: 1
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: result.data.data
+            });
         } else {
             alert(result.error.message);
         }
@@ -34,15 +57,72 @@ function initMonthChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var lineOption = {
-                responsive: true,
-                scaleOverride: true,
-                scaleSteps: 10, //y axis length = steps * step_width
-                scaleStepWidth: 5, // y axis
-                scaleStartValue: 0 // y axis start value
-            };
-            initLineChart('grain_recycle_history_line_chart', result.data['period'], result.data['number'], lineOption);
-            initBarChart('grain_recycle_history_bar_chart', result.data['period'], result.data['number']);
+            $('#grain_recycle_history_line_chart').highcharts({
+                title: {
+                    text: 'Grain recycle history(month)'
+                },
+                xAxis: {
+                    categories: result.data.months
+                },
+                yAxis: {
+                    title: {
+                        text: 'Grain recycle Count'
+                    },
+                    plotLines: [
+                        {
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }
+                    ],
+                    tickInterval: 1
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: result.data.data
+            });
+
+            $('#grain_recycle_history_bar_chart').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Grain recycle history(month)'
+                },
+                xAxis: {
+                    categories: result.data.months,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Grain recycle Count'
+                    },
+                    tickInterval: 1
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: result.data.data
+            });
         } else {
             alert(result.error.message);
         }
