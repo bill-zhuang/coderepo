@@ -62,7 +62,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     public function ajaxFinanceHistoryMonthCategoryAction()
     {
-        $month_category_data = $this->_getFinanceHistoryMonthCategoryData();
+        $start_date = date('Y-m-d', strtotime('-1 month'));
+        $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
         $json_array = [
             'data' => $month_category_data,
         ];
@@ -72,7 +73,8 @@ class person_FinanceHistoryController extends Zend_Controller_Action
 
     public function ajaxFinanceHistoryYearCategoryAction()
     {
-        $year_category_data = $this->_getFinanceHistoryYearCategoryData();
+        $start_date = date('Y-m-d', strtotime('- 1 year'));
+        $year_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
         $json_array = [
             'data' => $year_category_data,
         ];
@@ -155,22 +157,6 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         }
 
         return $data;
-    }
-
-    private function _getFinanceHistoryMonthCategoryData()
-    {
-        $start_date = date('Y-m-d', strtotime('-1 month'));
-        $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
-
-        return $month_category_data;
-    }
-
-    private function _getFinanceHistoryYearCategoryData()
-    {
-        $start_date = date('Y-m-d', strtotime('- 1 year'));
-        $year_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
-
-        return $year_category_data;
     }
 
     private function _getAllPaymentHistoryDataByDay($start_date, $end_date, $fcid)
