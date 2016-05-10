@@ -52,38 +52,6 @@ class person_DreamHistoryChartController extends Zend_Controller_Action
         echo json_encode($json_array);
     }
 
-    //not used
-    public function getDreamHistoryMonthDetailAction()
-    {
-        $json_array = [];
-        $chart_data = [
-            'period' => [],
-            'number' => [],
-        ];
-        if ($this->getRequest()->isPost()) {
-            $params = $this->getRequest()->getPost('params', []);
-            $select_date = isset($params['select_date']) ? $params['select_date'] : '';
-            if (Bill_Util::validDate($select_date)) {
-                $group_data = $this->_adapter_dream_history->getTotalDreamHistoryGroupDataByYearMonth($select_date);
-                foreach ($group_data as $group_value) {
-                    $chart_data['period'][] = $group_value['period'];
-                    $chart_data['number'][] = $group_value['number'];
-                }
-                $json_array = [
-                    'data' => $chart_data,
-                ];
-            }
-        }
-
-        if (!isset($json_array['data'])) {
-            $json_array = [
-                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
-            ];
-        }
-
-        echo json_encode($json_array);
-    }
-
     private function _getAllDreamHistoryDataByDay($start_date, $end_date)
     {
         $all_chart_data = [
