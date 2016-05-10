@@ -76,7 +76,7 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             }
             $temp_data[$month_value['period']] = $month_value['number'];
         }
-        $data['months'] = $this->_getMonthsRange($months);
+        $data['months'] = Bill_Util::getMonthRange($months);
 
         $type_data = [];
         foreach ($data['months'] as $month) {
@@ -95,26 +95,5 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         ];
 
         echo json_encode($json_array);
-    }
-
-    private function _getMonthsRange(array $months)
-    {
-
-        if (count($months) > 2) {
-            sort($months);
-            $min_month = $months[0];
-            $max_month_timestamp = $months[count($months) - 1];
-            for ($i = 1; ; $i++) {
-                $next_month = date('Y-m', strtotime($min_month . "+ {$i} month"));
-                if ((strtotime($next_month) <= $max_month_timestamp) && !in_array($next_month, $months)) {
-                    $months[] = $next_month;
-                } else {
-                    break;
-                }
-            }
-            sort($months);
-        }
-
-        return $months;
     }
 }

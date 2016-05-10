@@ -81,7 +81,7 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
             $temp_data[$type_name] = $type_data;
         }
 
-        $data['months'] = $this->_getMonthsRange($months);
+        $data['months'] = Bill_Util::getMonthRange($months);
 
         foreach ($types as $type_name => $type) {
             $type_data = [];
@@ -111,26 +111,5 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
             'Bad' => Bill_Constant::EJECT_TYPE_BAD,
         ];
         return $types;
-    }
-
-    private function _getMonthsRange(array $months)
-    {
-
-        if (count($months) > 2) {
-            sort($months);
-            $min_month = $months[0];
-            $max_month_timestamp = $months[count($months) - 1];
-            for ($i = 1; ; $i++) {
-                $next_month = date('Y-m', strtotime($min_month . "+ {$i} month"));
-                if ((strtotime($next_month) <= $max_month_timestamp) && !in_array($next_month, $months)) {
-                    $months[] = $next_month;
-                } else {
-                    break;
-                }
-            }
-            sort($months);
-        }
-
-        return $months;
     }
 }

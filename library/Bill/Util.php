@@ -38,6 +38,26 @@ class Bill_Util
         return $d && $d->format('Y-m-d') == $date;
     }
 
+    public static function getMonthRange(array $months)
+    {
+        if (count($months) > 2) {
+            sort($months);
+            $minMonth = $months[0];
+            $maxMonthTimestamp = $months[count($months) - 1];
+            for ($i = 1; ; $i++) {
+                $nextMonth = date('Y-m', strtotime($minMonth . "+ {$i} month"));
+                if ((strtotime($nextMonth) <= $maxMonthTimestamp) && !in_array($nextMonth, $months)) {
+                    $months[] = $nextMonth;
+                } else {
+                    break;
+                }
+            }
+            sort($months);
+        }
+
+        return $months;
+    }
+
     public static function isProductionEnv()
     {
         return ($_SERVER['HTTP_HOST'] == Bill_Constant::PRODUCTION_HOST) ? true : false;
