@@ -12,6 +12,9 @@ function initPeriodChart() {
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
             $('#grain_recycle_history_line_chart_all').highcharts({
+                chart: {
+                    type: 'spline'
+                },
                 title: {
                     text: 'Grain recycle history(day)'
                 },
