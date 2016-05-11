@@ -3,8 +3,6 @@ $(document).ready(function () {
     initMonthChart();
     initMonthCategoryChart();
     initYearCategoryChart();
-    initMonthSpent();
-    initYearSpent();
     loadMainCategory('day_category_id');
 });
 
@@ -16,7 +14,45 @@ function initPeriodChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            initLineChart('payment_history_line_chart_all', result.data['period'], result.data['payment']);
+            //initLineChart('payment_history_line_chart_all', result.data['period'], result.data['payment']);
+            $('#payment_history_line_chart_all').highcharts({
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: 'Finance History(day)'
+                },
+                xAxis: {
+                    categories: result.data.days
+                },
+                yAxis: {
+                    title: {
+                        text: 'Finance Spent'
+                    },
+                    plotLines: [
+                        {
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }
+                    ]
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [
+                    {
+                        name: 'Finance Spent',
+                        data: result.data.data
+                    }
+                ]
+            });
         } else {
             alert(result.error.message);
         }
@@ -32,12 +68,51 @@ function initMonthChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var dataPeriod = result.data['period'];
-            var dataPayment = result.data['payment'];
-            var lineCanvasId = 'payment_history_line_chart';
-            var barCanvasId = 'payment_history_bar_chart';
-            initLineChart(lineCanvasId, dataPeriod, dataPayment);
-            initBarChart(barCanvasId, dataPeriod, dataPayment);
+            $('#payment_history_month_chart').highcharts({
+                title: {
+                    text: 'Finance History(month)'
+                },
+                xAxis: {
+                    categories: result.data.months,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Finance Spent'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    {
+                        type: 'column',
+                        name: 'Finance History(Bar)',
+                        data: result.data.data
+                    },
+                    {
+                        name: 'Finance History(Line)',
+                        data: result.data.data,
+                        marker: {
+                            lineWidth: 2,
+                            lineColor: Highcharts.getOptions().colors[3],
+                            fillColor: 'white'
+                        }
+                    }
+                ]
+            });
         } else {
             alert(result.error.message);
         }
@@ -53,12 +128,51 @@ function initMonthCategoryChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var dataCategory = result.data['category'];
-            var dataPayment = result.data['payment'];
-            var lineCanvasId = 'month_category_payment_history_line_chart';
-            var barCanvasId = 'month_category_payment_history_bar_chart';
-            initLineChart(lineCanvasId, dataCategory, dataPayment);
-            initBarChart(barCanvasId, dataCategory, dataPayment);
+            $('#category_payment_history_month_chart').highcharts({
+                title: {
+                    text: 'Finance History(last 30 days)---' + result.data.total
+                },
+                xAxis: {
+                    categories: result.data.categories,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Finance Spent'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    {
+                        type: 'column',
+                        name: 'Finance History(Bar)',
+                        data: result.data.data
+                    },
+                    {
+                        name: 'Finance History(Line)',
+                        data: result.data.data,
+                        marker: {
+                            lineWidth: 2,
+                            lineColor: Highcharts.getOptions().colors[3],
+                            fillColor: 'white'
+                        }
+                    }
+                ]
+            });
         } else {
             alert(result.error.message);
         }
@@ -74,44 +188,51 @@ function initYearCategoryChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            var dataCategory = result.data['category'];
-            var dataPayment = result.data['payment'];
-            var lineCanvasId = 'category_payment_history_line_chart';
-            var barCanvasId = 'category_payment_history_bar_chart';
-            initLineChart(lineCanvasId, dataCategory, dataPayment);
-            initBarChart(barCanvasId, dataCategory, dataPayment);
-        } else {
-            alert(result.error.message);
-        }
-    };
-    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
-}
-
-function initMonthSpent() {
-    var getUrl = '/person/finance-history/ajax-finance-history-month-spent';
-    var getData = {
-        "params": {}
-    };
-    var method = 'get';
-    var successFunc = function (result) {
-        if (typeof result.data != "undefined") {
-            $('#month_spent').text('(' + result.data.monthSpent + ')');
-        } else {
-            alert(result.error.message);
-        }
-    };
-    jAjaxWidget.additionFunc(getUrl, getData, successFunc, method);
-}
-
-function initYearSpent() {
-    var getUrl = '/person/finance-history/ajax-finance-history-year-spent';
-    var getData = {
-        "params": {}
-    };
-    var method = 'get';
-    var successFunc = function (result) {
-        if (typeof result.data != "undefined") {
-            $('#year_spent').text('(' + result.data.yearSpent + ')');
+            $('#category_payment_history_year_chart').highcharts({
+                title: {
+                    text: 'Finance History(last year)---' + result.data.total
+                },
+                xAxis: {
+                    categories: result.data.categories,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Finance Spent'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    {
+                        type: 'column',
+                        name: 'Finance History(Bar)',
+                        data: result.data.data
+                    },
+                    {
+                        name: 'Finance History(Line)',
+                        data: result.data.data,
+                        marker: {
+                            lineWidth: 2,
+                            lineColor: Highcharts.getOptions().colors[3],
+                            fillColor: 'white'
+                        }
+                    }
+                ]
+            });
         } else {
             alert(result.error.message);
         }

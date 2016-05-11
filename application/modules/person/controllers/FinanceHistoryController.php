@@ -37,9 +37,23 @@ class person_FinanceHistoryController extends Zend_Controller_Action
         $end_date = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
             ? trim($params['day_end_date']) : date('Y-m-d');
         $fcid = (isset($params['day_category_id'])) ? intval($params['day_category_id']) : 0;
-        $period_data = $this->_getFinanceHistoryPeriodData($start_date, $end_date, $fcid);
+        $data = [];
+        $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
+        for($i = 0; $i <= $day_interval; $i++) {
+            $period_date = date('Y-m-d', strtotime($start_date . " + {$i} day"));
+            $data[$period_date] = 0.00;
+        }
+        $day_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date, $end_date, $fcid);
+        foreach ($day_data as $day_value) {
+            if (isset($data[$day_value['period']])) {
+                $data[$day_value['period']] = floatval($day_value['payment']);
+            }
+        }
         $json_array = [
-            'data' => $period_data
+            'data' => [
+                'days' => array_keys($data),
+                'data' => array_values($data),
+            ],
         ];
 
         echo json_encode($json_array);
@@ -52,9 +66,26 @@ class person_FinanceHistoryController extends Zend_Controller_Action
             ? trim($params['month_start_date']) : date('Y-m', strtotime('-11 month')) . '-01';
         $end_date = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
             ? trim($params['month_end_date']) : '';
-        $month_data = $this->_getFinanceHistoryMonthData($start_date, $end_date);
+        $data = [
+            'months' => [],
+            'data' => [],
+        ];
+        $temp_data = [];
+        $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData($start_date, $end_date);
+        foreach ($month_data as $month_value) {
+            $data['months'][] = $month_value['period'];
+            $temp_data[$month_value['period']] = $month_value['payment'];
+        }
+        $data['months'] = Bill_Util::getMonthRange($data['months']);
+        foreach ($data['months'] as $month) {
+            if (isset($temp_data[$month])) {
+                $data['data'][] = floatval($temp_data[$month]);
+            } else {
+                $data['data'][] = 0.00;
+            }
+        }
         $json_array = [
-            'data' => $month_data
+            'data' => $data,
         ];
 
         echo json_encode($json_array);
@@ -63,9 +94,10 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     public function ajaxFinanceHistoryMonthCategoryAction()
     {
         $start_date = date('Y-m-d', strtotime('-1 month'));
-        $month_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
+        $month_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
+        $month_data['total'] = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
         $json_array = [
-            'data' => $month_category_data,
+            'data' => $month_data,
         ];
 
         echo json_encode($json_array);
@@ -74,118 +106,28 @@ class person_FinanceHistoryController extends Zend_Controller_Action
     public function ajaxFinanceHistoryYearCategoryAction()
     {
         $start_date = date('Y-m-d', strtotime('- 1 year'));
-        $year_category_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
+        $year_data = $this->_getAllPaymentHistoryDataByCategory($start_date);
+        $year_data['total'] = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
         $json_array = [
-            'data' => $year_category_data,
+            'data' => $year_data,
         ];
 
         echo json_encode($json_array);
-    }
-
-    public function ajaxFinanceHistoryMonthSpentAction()
-    {
-        $start_date = date('Y-m-d', strtotime('-1 month'));
-        $month_spent = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
-        $json_array = [
-            'data' => [
-                'monthSpent' => $month_spent,
-            ],
-        ];
-
-        echo json_encode($json_array);
-    }
-
-    public function ajaxFinanceHistoryYearSpentAction()
-    {
-        $start_date = date('Y-m-d', strtotime('- 1 year'));
-        $year_spent = $this->_adapter_finance_payment->getSumPaymentByDate($start_date);
-        $json_array = [
-            'data' => [
-                'yearSpent' => $year_spent,
-            ],
-        ];
-
-        echo json_encode($json_array);
-    }
-
-    private function _getFinanceHistoryPeriodData($start_date, $end_date, $fcid)
-    {
-        $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
-        $all_chart_data = $this->_getAllPaymentHistoryDataByDay($start_date, $end_date, $fcid);
-        $sort_chart_data = [];
-        if (count($all_chart_data['period']) != $day_interval) {
-            for($i = 1; $i <= $day_interval; $i++) {
-                $period_date = date('Y-m-d', strtotime($start_date . ' + ' . $i . ' day'));
-                $sort_chart_data['period'][] = $period_date;
-                if (!in_array($period_date, $all_chart_data['period'])) {
-                    $sort_chart_data['payment'][] = 0;
-                } else {
-                    $period_key = array_search($period_date, $all_chart_data['period']);
-                    $sort_chart_data['payment'][] = $all_chart_data['payment'][$period_key];
-                }
-            }
-            $all_chart_data = $sort_chart_data;
-        }
-
-        return $all_chart_data;
-    }
-
-    private function _getFinanceHistoryMonthData($start_date, $end_date)
-    {
-        $data = [
-            'period' => [],
-            'payment' => [],
-        ];
-        $month_data = $this->_adapter_finance_payment->getTotalPaymentHistoryGroupData($start_date, $end_date);
-        foreach ($month_data as $key => $month_value) {
-            if ($key > 0) {
-                $previous_month = date('Y-m', strtotime($month_value['period'] . ' - 1 month'));
-                while (1) {
-                    if ($previous_month != end($data['period'])) {
-                        $data['period'][] = date('Y-m', strtotime(end($data['period']) . ' + 1 month'));
-                        $data['payment'][] = 0;
-                    } else {
-                        $data['period'][] = $month_value['period'];
-                        $data['payment'][] = $month_value['payment'];
-                        break;
-                    }
-                }
-            } else {
-                $data['period'][] = $month_value['period'];
-                $data['payment'][] = $month_value['payment'];
-            }
-        }
-
-        return $data;
-    }
-
-    private function _getAllPaymentHistoryDataByDay($start_date, $end_date, $fcid)
-    {
-        $all_chart_data = [
-            'period' => [],
-            'payment' => [],
-        ];
-        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByDay($start_date, $end_date, $fcid);
-        foreach ($all_data as $all_value) {
-            $all_chart_data['period'][] = $all_value['period'];
-            $all_chart_data['payment'][] = $all_value['payment'];
-        }
-
-        return $all_chart_data;
     }
 
     private function _getAllPaymentHistoryDataByCategory($start_date)
     {
-        $all_chart_data = [
-            'category' => [],
-            'payment' => [],
+        $data = [
+            'categories' => [],
+            'data' => [],
         ];
-        $all_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByCategory($start_date);
-        foreach ($all_data as $all_value) {
-            $all_chart_data['category'][] = $this->_categories[$all_value['fcid']];
-            $all_chart_data['payment'][] = $all_value['payment'];
+        $year_data = $this->_adapter_finance_payment->getTotalPaymentHistoryDataByCategory($start_date);
+        foreach ($year_data as $year_value) {
+            $data['categories'][] = isset($this->_categories[$year_value['fcid']])
+                ? $this->_categories[$year_value['fcid']] : '';
+            $data['data'][] = floatval($year_value['payment']);
         }
 
-        return $all_chart_data;
+        return $data;
     }
 }
