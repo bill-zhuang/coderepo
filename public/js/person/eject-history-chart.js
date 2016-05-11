@@ -16,7 +16,7 @@ function initPeriodChart() {
                     type: 'spline'
                 },
                 title: {
-                    text: 'Eject history(day)'
+                    text: 'Eject History(day)'
                 },
                 subtitle: {
                     text: ''
@@ -26,9 +26,6 @@ function initPeriodChart() {
                     dateTimeLabelFormats: { // don't display the dummy year
                         month: '%e. %b',
                         year: '%b'
-                    },
-                    title: {
-                        text: 'Eject date'
                     }
                 },
                 yAxis: {
@@ -68,7 +65,7 @@ function initMonthChart() {
         if (typeof result.data != "undefined") {
             $('#eject_history_line_chart').highcharts({
                 title: {
-                    text: 'Eject history(month)'
+                    text: 'Eject History(month)'
                 },
                 xAxis: {
                     categories: result.data.months
@@ -103,7 +100,7 @@ function initMonthChart() {
                     type: 'column'
                 },
                 title: {
-                    text: 'Eject history(month)'
+                    text: 'Eject History(month)'
                 },
                 xAxis: {
                     categories: result.data.months,

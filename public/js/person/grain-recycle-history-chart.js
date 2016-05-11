@@ -16,7 +16,7 @@ function initPeriodChart() {
                     type: 'spline'
                 },
                 title: {
-                    text: 'Grain recycle history(day)'
+                    text: 'Grain Recycle History(day)'
                 },
                 xAxis: {
                     categories: result.data.days
@@ -67,7 +67,7 @@ function initMonthChart() {
         if (typeof result.data != "undefined") {
             $('#grain_recycle_history_month_chart').highcharts({
                 title: {
-                    text: 'Grain recycle history(month)'
+                    text: 'Grain Recycle History(month)'
                 },
                 xAxis: {
                     categories: result.data.months,
@@ -76,7 +76,7 @@ function initMonthChart() {
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Grain recycle Count'
+                        text: 'Grain Recycle Count'
                     },
                     tickInterval: 1
                 },
