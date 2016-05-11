@@ -62,17 +62,14 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             'months' => [],
             'data' => [],
         ];
-        $months = [];
         $temp_data = [];
         $month_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupData($start_date, $end_date);
         foreach ($month_data as $month_value) {
-            if (!in_array($month_value['period'], $months)) {
-                $months[] = $month_value['period'];
-            }
+            $data['months'][] = $month_value['period'];
             $temp_data[$month_value['period']] = $month_value['number'];
         }
-        $data['months'] = Bill_Util::getMonthRange($months);
 
+        $data['months'] = Bill_Util::getMonthRange($data['months']);
         foreach ($data['months'] as $month) {
             if (isset($temp_data[$month])) {
                 $data['data'][] = intval($temp_data[$month]);
