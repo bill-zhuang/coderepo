@@ -43,7 +43,12 @@ function initPeriodChart() {
                     verticalAlign: 'middle',
                     borderWidth: 0
                 },
-                series: result.data.data
+                series: [
+                    {
+                        name: 'Grain Recycle Count',
+                        data: result.data.data
+                    }
+                ]
             });
         } else {
             alert(result.error.message);
@@ -89,19 +94,22 @@ function initMonthChart() {
                         borderWidth: 0
                     }
                 },
-                series: [{
-                    type: 'column',
-                    name: 'Grain Recycle History(Bar)',
-                    data: result.data.data
-                }, {
-                    name: 'Grain Recycle History(Line)',
-                    data: result.data.data,
-                    marker: {
-                        lineWidth: 2,
-                        lineColor: Highcharts.getOptions().colors[3],
-                        fillColor: 'white'
+                series: [
+                    {
+                        type: 'column',
+                        name: 'Grain Recycle History(Bar)',
+                        data: result.data.data
+                    },
+                    {
+                        name: 'Grain Recycle History(Line)',
+                        data: result.data.data,
+                        marker: {
+                            lineWidth: 2,
+                            lineColor: Highcharts.getOptions().colors[3],
+                            fillColor: 'white'
+                        }
                     }
-                }]
+                ]
             });
         } else {
             alert(result.error.message);

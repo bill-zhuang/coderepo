@@ -44,12 +44,7 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         $json_array = [
             'data' => [
                 'days' => array_keys($data),
-                'data' => [
-                    [
-                        'name' => 'Grain Recycle Count',
-                        'data' => array_values($data),
-                    ],
-                ],
+                'data' => array_values($data),
             ],
         ];
 
