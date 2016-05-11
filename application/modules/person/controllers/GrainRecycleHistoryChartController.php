@@ -78,18 +78,13 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
         }
         $data['months'] = Bill_Util::getMonthRange($months);
 
-        $type_data = [];
         foreach ($data['months'] as $month) {
             if (isset($temp_data[$month])) {
-                $type_data[] = intval($temp_data[$month]);
+                $data['data'][] = intval($temp_data[$month]);
             } else {
-                $type_data[] = 0;
+                $data['data'][] = 0;
             }
         }
-        $data['data'][] = [
-            'name' => 'Grain Recycle Count',
-            'data' => $type_data,
-        ];
         $json_array = [
             'data' => $data
         ];

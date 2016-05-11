@@ -60,42 +60,7 @@ function initMonthChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            $('#grain_recycle_history_line_chart').highcharts({
-                title: {
-                    text: 'Grain recycle history(month)'
-                },
-                xAxis: {
-                    categories: result.data.months
-                },
-                yAxis: {
-                    title: {
-                        text: 'Grain recycle Count'
-                    },
-                    plotLines: [
-                        {
-                            value: 0,
-                            width: 1,
-                            color: '#808080'
-                        }
-                    ],
-                    tickInterval: 1
-                },
-                tooltip: {
-                    valueSuffix: ''
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
-                },
-                series: result.data.data
-            });
-
-            $('#grain_recycle_history_bar_chart').highcharts({
-                chart: {
-                    type: 'column'
-                },
+            $('#grain_recycle_history_month_chart').highcharts({
                 title: {
                     text: 'Grain recycle history(month)'
                 },
@@ -124,7 +89,19 @@ function initMonthChart() {
                         borderWidth: 0
                     }
                 },
-                series: result.data.data
+                series: [{
+                    type: 'column',
+                    name: 'Grain Recycle History(Bar)',
+                    data: result.data.data
+                }, {
+                    name: 'Grain Recycle History(Line)',
+                    data: result.data.data,
+                    marker: {
+                        lineWidth: 2,
+                        lineColor: Highcharts.getOptions().colors[3],
+                        fillColor: 'white'
+                    }
+                }]
             });
         } else {
             alert(result.error.message);
