@@ -43,11 +43,13 @@ class Bill_Util
         if (count($months) > 2) {
             sort($months);
             $minMonth = $months[0];
-            $maxMonthTimestamp = $months[count($months) - 1];
+            $maxMonthTimestamp = strtotime($months[count($months) - 1]);
             for ($i = 1; ; $i++) {
                 $nextMonth = date('Y-m', strtotime($minMonth . "+ {$i} month"));
-                if ((strtotime($nextMonth) <= $maxMonthTimestamp) && !in_array($nextMonth, $months)) {
-                    $months[] = $nextMonth;
+                if ((strtotime($nextMonth) <= $maxMonthTimestamp)) {
+                    if (!in_array($nextMonth, $months)) {
+                        $months[] = $nextMonth;
+                    }
                 } else {
                     break;
                 }
