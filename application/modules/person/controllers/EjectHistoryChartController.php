@@ -34,11 +34,14 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
         foreach ($types as $type_name => $type) {
             $eject_data = $this->_adapter_eject_history->getTotalEjectHistoryDataByDay($start_date, $end_date, $type);
             $type_data = [];
-            foreach ($eject_data as $eject_value) {
+            $previous_timestamp = 0;
+            foreach ($eject_data as $ejct_key => $eject_value) {
+                $current_timestamp = strtotime($eject_value['period']);
                 $type_data[] = [
-                    strtotime($eject_value['period']) * 1000,
-                    intval($eject_value['number']),
+                     $current_timestamp * 1000,
+                    ($ejct_key > 0 ? (intval($current_timestamp - $previous_timestamp) / Bill_Constant::DAY_SECONDS) : 0),
                 ];
+                $previous_timestamp = $current_timestamp;
             }
             $data[] = [
                 'name' => $type_name,

@@ -30,14 +30,14 @@ function initPeriodChart() {
                 },
                 yAxis: {
                     title: {
-                        text: 'Eject Count'
+                        text: 'Eject Day Interval'
                     },
                     min: 0,
                     tickInterval: 1
                 },
                 tooltip: {
                     headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.x:%e. %b}: {point.y:f}'
+                    pointFormat: 'Interval: {point.y:f} days'
                 },
                 plotOptions: {
                     spline: {
