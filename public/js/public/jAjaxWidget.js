@@ -24,6 +24,7 @@ var jAjaxWidget = (function () {
                 success: successFunc,
                 error: ajaxErrorFunction()
             });
+            trackWidget.trackUser(url);
         },
 
         formSubmit: function (url, data, successFunc, method) {
@@ -37,6 +38,7 @@ var jAjaxWidget = (function () {
                 success: successFunc,
                 error: ajaxErrorFunction()
             });
+            trackWidget.trackUser(url);
         }
     }
 }());

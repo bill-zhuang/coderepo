@@ -20,6 +20,8 @@ $(document).ready(function () {
             }, 500);
         }
     });
+    //
+    trackWidget.trackUser();
 });
 
 $('ul.treeview-menu li a').on('click', function () {
