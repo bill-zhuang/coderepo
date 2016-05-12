@@ -36,9 +36,9 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
             $type_data = [];
             $previous_timestamp = 0;
             foreach ($eject_data as $ejct_key => $eject_value) {
-                $current_timestamp = strtotime($eject_value['period']);
+                $current_timestamp = strtotime($eject_value['period'] . ' 08:00:00');
                 $type_data[] = [
-                     $current_timestamp * 1000,
+                    $current_timestamp * 1000,
                     ($ejct_key > 0 ? (intval($current_timestamp - $previous_timestamp) / Bill_Constant::DAY_SECONDS) : 0),
                 ];
                 $previous_timestamp = $current_timestamp;

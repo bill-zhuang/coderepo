@@ -37,7 +37,7 @@ function initPeriodChart() {
                 },
                 tooltip: {
                     headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: 'Interval: {point.y:f} days'
+                    pointFormat: '{point.x:%b %e}: {point.y:f} days'
                 },
                 plotOptions: {
                     spline: {
