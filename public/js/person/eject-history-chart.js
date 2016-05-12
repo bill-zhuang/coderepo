@@ -83,15 +83,6 @@ function initMonthChart() {
                     ],
                     tickInterval: 1
                 },
-                tooltip: {
-                    valueSuffix: ''
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
-                },
                 series: result.data.data
             });
 
@@ -120,12 +111,6 @@ function initMonthChart() {
                     footerFormat: '</table>',
                     shared: true,
                     useHTML: true
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
                 },
                 series: result.data.data
             });

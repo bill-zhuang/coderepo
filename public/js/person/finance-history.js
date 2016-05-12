@@ -14,7 +14,6 @@ function initPeriodChart() {
     var method = 'get';
     var successFunc = function (result) {
         if (typeof result.data != "undefined") {
-            //initLineChart('payment_history_line_chart_all', result.data['period'], result.data['payment']);
             $('#payment_history_line_chart_all').highcharts({
                 chart: {
                     type: 'spline'
@@ -28,23 +27,7 @@ function initPeriodChart() {
                 yAxis: {
                     title: {
                         text: 'Finance Spent'
-                    },
-                    plotLines: [
-                        {
-                            value: 0,
-                            width: 1,
-                            color: '#808080'
-                        }
-                    ]
-                },
-                tooltip: {
-                    valueSuffix: ''
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
+                    }
                 },
                 series: [
                     {
@@ -89,12 +72,6 @@ function initMonthChart() {
                     footerFormat: '</table>',
                     shared: true,
                     useHTML: true
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
                 },
                 series: [
                     {
@@ -150,12 +127,6 @@ function initMonthCategoryChart() {
                     shared: true,
                     useHTML: true
                 },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
-                },
                 series: [
                     {
                         type: 'column',
@@ -209,12 +180,6 @@ function initYearCategoryChart() {
                     footerFormat: '</table>',
                     shared: true,
                     useHTML: true
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
                 },
                 series: [
                     {
