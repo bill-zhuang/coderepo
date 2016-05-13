@@ -119,7 +119,7 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
 
     private function _getDeleteSQL($table, $where)
     {
-        $sql = 'delete from' . $table . ' where ' . $this->_processWhere($where) . ';';
+        $sql = 'delete from ' . $table . ' where ' . $this->_processWhere($where) . ';';
 
         return $sql;
     }
