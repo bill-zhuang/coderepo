@@ -252,9 +252,9 @@ class BackendAclController extends Zend_Controller_Action
     private function _removeInvalidAcl($module, $controller, array $valid_actions)
     {
         if (!is_array($controller)) {
-            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidActionAclIDs($module, $controller, $valid_actions);
+            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidActionsAclIDs($module, $controller, $valid_actions);
         } else {
-            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidControllerAclIDs($module, $controller);
+            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidControllersAclIDs($module, $controller);
         }
         if (!empty($invalid_acl_ids)) {
             $delete_where = [

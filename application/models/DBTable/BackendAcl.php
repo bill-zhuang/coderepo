@@ -63,7 +63,7 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         return isset($data['baid']) ? $data['baid'] : Bill_Constant::INVALID_PRIMARY_ID;
     }
 
-    public function getInvalidActionAclIDs($module, $controller, array $valid_actions)
+    public function getInvalidActionsAclIDs($module, $controller, array $valid_actions)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'baid')
@@ -83,7 +83,7 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         return $baids;
     }
 
-    public function getInvalidControllerAclIDs($module, array $valid_controllers)
+    public function getInvalidControllersAclIDs($module, array $valid_controllers)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'baid')
