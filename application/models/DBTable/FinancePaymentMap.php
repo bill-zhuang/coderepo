@@ -18,14 +18,14 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
         return $count[0]['total'];
     }
 
-    public function getFinancePaymentMapData(array $conditions, $startPage, $pageLength, $order_by)
+    public function getFinancePaymentMapData(array $conditions, $startPage, $pageLength, $orderBy)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select
-            ->order($order_by)
+            ->order($orderBy)
             ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
@@ -53,13 +53,13 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
         return $fcids;
     }
 
-    public function getFpidByFcid($fcid, $order_by, $startPage, $pageLength)
+    public function getFpidByFcid($fcid, $orderBy, $startPage, $pageLength)
     {
         $data = $this->select()->reset()
             ->from($this->_name, 'fpid')
             ->where('fcid=?', $fcid)
             ->where('status=?', Bill_Constant::VALID_STATUS)
-            ->order($order_by)
+            ->order($orderBy)
             ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         $fpids = [];

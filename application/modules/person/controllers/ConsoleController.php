@@ -23,21 +23,21 @@ class person_ConsoleController extends Zend_Controller_Action
 
     public function createUserAction()
     {
-        $user_name = Bill_Constant::ADMIN_NAME;
-        $adapter_backend_role = new Application_Model_DBTable_BackendRole();
-        $adapter_backend_user = new Application_Model_DBTable_BackendUser();
-        if (!$adapter_backend_user->isUserNameExist($user_name, Bill_Constant::INVALID_PRIMARY_ID)) {
-            $insert_data = [
+        $userName = Bill_Constant::ADMIN_NAME;
+        $adapterBackendRole = new Application_Model_DBTable_BackendRole();
+        $adapterBackendUser = new Application_Model_DBTable_BackendUser();
+        if (!$adapterBackendUser->isUserNameExist($userName, Bill_Constant::INVALID_PRIMARY_ID)) {
+            $insertData = [
                 'role' => 'admin',
                 'status' => Bill_Constant::VALID_STATUS,
                 'create_time' => date('Y-m-d H:i:s'),
                 'update_time' => date('Y-m-d H:i:s'),
             ];
-            $brid = $adapter_backend_role->insert($insert_data);
+            $brid = $adapterBackendRole->insert($insertData);
             $security = new Bill_Security();
             $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
-            $insert_data = [
-                'name' => $user_name,
+            $insertData = [
+                'name' => $userName,
                 'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
                 'salt' => $salt,
                 'brid' => $brid,
@@ -45,7 +45,7 @@ class person_ConsoleController extends Zend_Controller_Action
                 'create_time' => date('Y-m-d H:i:s'),
                 'update_time' => date('Y-m-d H:i:s'),
             ];
-            $adapter_backend_user->insert($insert_data);
+            $adapterBackendUser->insert($insertData);
             echo 'User create successfully.';
         } else {
             echo 'User name already exist, change another one.';
@@ -58,11 +58,11 @@ class person_ConsoleController extends Zend_Controller_Action
             . ' UNION ALL'
             . ' SELECT 2 AS type, b.happen_date, b.count, b.`status`, b.create_time, b.update_time FROM bad_history AS b'
             . ' ORDER BY happen_date ASC';
-        $adapter_eject_history = new Application_Model_DBTable_EjectHistory();
-        $data = $adapter_eject_history->getAdapter()->query($sql)->fetchAll();
+        $adapterEjectHistory = new Application_Model_DBTable_EjectHistory();
+        $data = $adapterEjectHistory->getAdapter()->query($sql)->fetchAll();
         foreach ($data as $item) {
             try {
-                $adapter_eject_history->insert($item);
+                $adapterEjectHistory->insert($item);
             } catch (Exception $e) {
                 ;
             }

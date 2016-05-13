@@ -5,19 +5,19 @@ class BackendAclController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_BackendAcl
      */
-    private $_adapter_backend_acl;
+    private $_adapterBackendAcl;
     /**
      * @var Application_Model_DBTable_BackendRoleAcl
      */
-    private $_adapter_backend_role_acl;
+    private $_adapterBackendRoleAcl;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_backend_acl= new Application_Model_DBTable_BackendAcl();
-        $this->_adapter_backend_role_acl = new Application_Model_DBTable_BackendRoleAcl();
+        $this->_adapterBackendAcl = new Application_Model_DBTable_BackendAcl();
+        $this->_adapterBackendRoleAcl = new Application_Model_DBTable_BackendRoleAcl();
     }
 
     public function indexAction()
@@ -34,38 +34,38 @@ class BackendAclController extends Zend_Controller_Action
 
     public function loadBackendAclAction()
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        $default_controller_dir = APPLICATION_PATH . '/controllers/';
-        $module_dir = APPLICATION_PATH . '/modules/';
+        $affectedRows = Bill_Constant::INIT_AFFECTED_ROWS;
+        $defaultControllerDir = APPLICATION_PATH . '/controllers/';
+        $moduleDir = APPLICATION_PATH . '/modules/';
         //default
-        $this->_loadAcl2DB('default', $default_controller_dir);
+        $this->_loadAcl2DB('default', $defaultControllerDir);
         //modules
-        if (is_dir($module_dir)) {
-            $modules = scandir($module_dir);
+        if (is_dir($moduleDir)) {
+            $modules = scandir($moduleDir);
             foreach ($modules as $module) {
-                if ($module != '.' && $module != '..' && is_dir($module_dir . $module . DIRECTORY_SEPARATOR)) {
-                    $controller_dir_path = $module_dir . $module . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR;
-                    if (is_dir($controller_dir_path)) {
-                        $affected_rows += $this->_loadAcl2DB(strtolower($module), $controller_dir_path);
+                if ($module != '.' && $module != '..' && is_dir($moduleDir . $module . DIRECTORY_SEPARATOR)) {
+                    $controllerDirPath = $moduleDir . $module . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR;
+                    if (is_dir($controllerDirPath)) {
+                        $affectedRows += $this->_loadAcl2DB(strtolower($module), $controllerDirPath);
                     }
                 }
             }
-            $json_array = [
+            $jsonArray = [
                 'data' => [
-                    'code' => $affected_rows,
-                    'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                    'code' => $affectedRows,
+                    'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                             ? Bill_JsMessage::LOAD_ACL_SUCCESS : Bill_JsMessage::LOAD_ACL_NO_ACL_LOADED,
                 ],
             ];
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function modifyBackendAclAction()
@@ -79,12 +79,12 @@ class BackendAclController extends Zend_Controller_Action
                         'name' => trim($params['backend_acl_name']),
                         'update_time' => date('Y-m-d H:i:s'),
                     ];
-                    $where = $this->_adapter_backend_acl->getAdapter()->quoteInto('baid=?', $baid);
-                    $affected_rows = $this->_adapter_backend_acl->update($data, $where);
-                    $json_array = [
+                    $where = $this->_adapterBackendAcl->getAdapter()->quoteInto('baid=?', $baid);
+                    $affectedRows = $this->_adapterBackendAcl->update($data, $where);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ]
                     ];
@@ -94,13 +94,13 @@ class BackendAclController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function deleteBackendAclAction()
@@ -110,35 +110,35 @@ class BackendAclController extends Zend_Controller_Action
             $baid = isset($params['baid']) ? intval($params['baid']) : Bill_Constant::INVALID_PRIMARY_ID;
             if ($baid > Bill_Constant::INVALID_PRIMARY_ID) {
                 $where = [
-                    $this->_adapter_backend_acl->getAdapter()->quoteInto('baid=?', $baid),
-                    $this->_adapter_backend_acl->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                    $this->_adapterBackendAcl->getAdapter()->quoteInto('baid=?', $baid),
+                    $this->_adapterBackendAcl->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                 ];
                 try {
-                    $this->_adapter_backend_acl->getAdapter()->beginTransaction();
-                    $affected_rows = $this->_adapter_backend_acl->delete($where);
-                    $this->_adapter_backend_role_acl->delete($where);
-                    $this->_adapter_backend_acl->getAdapter()->commit();
-                    $json_array = [
+                    $this->_adapterBackendAcl->getAdapter()->beginTransaction();
+                    $affectedRows = $this->_adapterBackendAcl->delete($where);
+                    $this->_adapterBackendRoleAcl->delete($where);
+                    $this->_adapterBackendAcl->getAdapter()->commit();
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
                 } catch (Exception $e) {
-                    $this->_adapter_backend_acl->getAdapter()->rollBack();
+                    $this->_adapterBackendAcl->getAdapter()->rollBack();
                     Bill_Util::handleException($e, 'Error From deleteBackendAcl');
                 }
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function getBackendAclAction()
@@ -146,27 +146,27 @@ class BackendAclController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $baid = (isset($params['baid'])) ? intval($params['baid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapter_backend_acl->getBackendAclByID($baid);
+            $data = $this->_adapterBackendAcl->getBackendAclByID($baid);
             if (!empty($data)) {
-                $json_array = [
+                $jsonArray = [
                     'data' => $data,
                 ];
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     private function _index()
     {
         $params = $this->_getParam('params', []);
-        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        list($currentPage, $pageLength, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 
         $conditions = [
@@ -175,32 +175,32 @@ class BackendAclController extends Zend_Controller_Action
         if ($keyword !== '') {
             $conditions['module LIKE ? OR controller LIKE ? OR action LIKE ?'] = Bill_Util::getLikeString($keyword);
         }
-        $order_by = null;
-        $group_by = ['module', 'controller', 'action'];
-        $total = $this->_adapter_backend_acl->getBackendAclCount($conditions);
-        $data = $this->_adapter_backend_acl->getBackendAclData($conditions, $current_page, $page_length, $order_by, $group_by);
+        $orderBy = null;
+        $groupBy = ['module', 'controller', 'action'];
+        $total = $this->_adapterBackendAcl->getBackendAclCount($conditions);
+        $data = $this->_adapterBackendAcl->getBackendAclData($conditions, $currentPage, $pageLength, $orderBy, $groupBy);
 
-        $json_data = [
+        $jsonData = [
             'data' => [
-                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
-                'pageIndex' => $current_page,
+                'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
+                'pageIndex' => $currentPage,
                 'totalItems' => $total,
                 'startIndex' => $start + 1,
-                'itemsPerPage' => $page_length,
+                'itemsPerPage' => $pageLength,
                 'currentItemCount' => count($data),
                 'items' => $data,
             ],
         ];
-        return $json_data;
+        return $jsonData;
     }
 
-    private function _loadAcl2DB($module_name, $controller_path)
+    private function _loadAcl2DB($moduleName, $controllerPath)
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
-        $preg_controller = '/.*?Controller.php$/';
-        $preg_controller_postfix = '/Controller.php$/';
-        $preg_action = '/public\s+function\s+(.*?)Action\(\)/';
-        $preg_action_postfix = '/Action$/';
+        $affectedRows = Bill_Constant::INIT_AFFECTED_ROWS;
+        $pregController = '/.*?Controller.php$/';
+        $pregController_postfix = '/Controller.php$/';
+        $pregAction = '/public\s+function\s+(.*?)Action\(\)/';
+        $pregAction_postfix = '/Action$/';
         $data = [
             'name' => '',
             'module' => '',
@@ -211,71 +211,71 @@ class BackendAclController extends Zend_Controller_Action
             'update_time' => date('Y-m-d H:i:s'),
         ];
 
-        if (is_dir($controller_path)) {
-            $valid_controllers = [];
-            $controllers = scandir($controller_path);
+        if (is_dir($controllerPath)) {
+            $validControllers = [];
+            $controllers = scandir($controllerPath);
             foreach ($controllers as $controller) {
                 if ($controller != '.' && $controller != '..') {
-                    if (preg_match($preg_controller, $controller) !== 0) {
-                        $controller_name = preg_replace($preg_controller_postfix, '', $controller);
-                        $controller_name = strtolower(implode('-', $this->_splitCamel($controller_name)));
-                        $controller_content = file_get_contents($controller_path . $controller);
-                        $is_match = preg_match_all($preg_action, $controller_content, $action_matches);
-                        $data['module'] = $module_name;
-                        $data['controller'] = $controller_name;
-                        $valid_controllers[] = $controller_name;
-                        $valid_actions = [];
-                        if ($is_match) {
-                            foreach ($action_matches[1] as $action) {
-                                $action_name = preg_replace($preg_action_postfix, '', $action);
-                                $action_name = strtolower(implode('-', $this->_splitCamel($action_name)));
-                                $data['action'] = $action_name;
-                                $valid_actions[] = $action_name;
-                                if (!$this->_adapter_backend_acl->isAclExist($data['module'], $data['controller'], $data['action'])) {
+                    if (preg_match($pregController, $controller) !== 0) {
+                        $controllerName = preg_replace($pregController_postfix, '', $controller);
+                        $controllerName = strtolower(implode('-', $this->_splitCamel($controllerName)));
+                        $controllerContent = file_get_contents($controllerPath . $controller);
+                        $isMatch = preg_match_all($pregAction, $controllerContent, $actionMatches);
+                        $data['module'] = $moduleName;
+                        $data['controller'] = $controllerName;
+                        $validControllers[] = $controllerName;
+                        $validActions = [];
+                        if ($isMatch) {
+                            foreach ($actionMatches[1] as $action) {
+                                $actionName = preg_replace($pregAction_postfix, '', $action);
+                                $actionName = strtolower(implode('-', $this->_splitCamel($actionName)));
+                                $data['action'] = $actionName;
+                                $validActions[] = $actionName;
+                                if (!$this->_adapterBackendAcl->isAclExist($data['module'], $data['controller'], $data['action'])) {
                                     $data['name'] = $data['module'] . '/' . $data['controller'] . '/' . $data['action'];
-                                    $affected_rows += $this->_adapter_backend_acl->insert($data);
+                                    $affectedRows += $this->_adapterBackendAcl->insert($data);
                                 }
                             }
                         }
                         //delete unused action
-                        $this->_removeInvalidAcl($data['module'], $data['controller'], $valid_actions);
+                        $this->_removeInvalidAcl($data['module'], $data['controller'], $validActions);
                     }
                 }
             }
             //delete unused controller
-            $this->_removeInvalidAcl($module_name, $valid_controllers, array());
+            $this->_removeInvalidAcl($moduleName, $validControllers, array());
         }
 
-        return $affected_rows;
+        return $affectedRows;
     }
 
-    private function _removeInvalidAcl($module, $controller, array $valid_actions)
+    private function _removeInvalidAcl($module, $controller, array $validActions)
     {
         if (!is_array($controller)) {
-            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidActionsAclIDs($module, $controller, $valid_actions);
+            $invalidAclIds = $this->_adapterBackendAcl->getInvalidActionsAclIDs($module, $controller, $validActions);
         } else {
-            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidControllersAclIDs($module, $controller);
+            $invalidAclIds = $this->_adapterBackendAcl->getInvalidControllersAclIDs($module, $controller);
         }
-        if (!empty($invalid_acl_ids)) {
-            $delete_where = [
-                $this->_adapter_backend_acl->getAdapter()->quoteInto('baid in (?)', $invalid_acl_ids),
+        if (!empty($invalidAclIds)) {
+            $deleteWhere = [
+                $this->_adapterBackendAcl->getAdapter()->quoteInto('baid in (?)', $invalidAclIds),
             ];
             try {
-                $this->_adapter_backend_acl->getAdapter()->beginTransaction();
-                $this->_adapter_backend_acl->delete($delete_where);
-                $this->_adapter_backend_role_acl->delete($delete_where);
-                $this->_adapter_backend_acl->getAdapter()->commit();
+                $this->_adapterBackendAcl->getAdapter()->beginTransaction();
+                $this->_adapterBackendAcl->delete($deleteWhere);
+                $this->_adapterBackendRoleAcl->delete($deleteWhere);
+                $this->_adapterBackendAcl->getAdapter()->commit();
             } catch (Exception $e) {
-                $this->_adapter_backend_acl->getAdapter()->rollBack();
+                $this->_adapterBackendAcl->getAdapter()->rollBack();
             }
         }
     }
 
     private function _splitCamel($controller)
     {
-        $preg_controller = '/([A-Z][a-z\d]*)/';
-        $is_match = preg_match_all($preg_controller, ucfirst($controller), $matches);
-        if ($is_match) {
+        $pregController = '/([A-Z][a-z\d]*)/';
+        $isMatch = preg_match_all($pregController, ucfirst($controller), $matches);
+        if ($isMatch) {
             return $matches[1];
         } else {
             return [];

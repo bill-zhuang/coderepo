@@ -7,19 +7,19 @@ class Bill_File
         return pathinfo($filename, PATHINFO_EXTENSION);
     }
 
-    public static function moveUploadFile($upload_id, $destination_directory)
+    public static function moveUploadFile($uploadId, $destinationDirectory)
     {
-        if ($_FILES && array_key_exists($upload_id, $_FILES) && $_FILES[$upload_id]['size'] != 0) {
-            $upload_path = $_FILES[$upload_id]['tmp_name'];
+        if ($_FILES && array_key_exists($uploadId, $_FILES) && $_FILES[$uploadId]['size'] != 0) {
+            $uploadPath = $_FILES[$uploadId]['tmp_name'];
             //!!!!!!filename with non-ascii character will failed use move_uploaded_file function, here rename.
-            //use $dest_file_name = mb_convert_encoding($_FILES[$upload_id]['name'], 'utf-8');
+            //use $destFileName = mb_convert_encoding($_FILES[$uploadId]['name'], 'utf-8');
             //or use unix timestamp to rename filename.
-            $dest_filename = time() . '.' . self::getFileExtension($_FILES[$upload_id]['name']);
+            $destFilename = time() . '.' . self::getFileExtension($_FILES[$uploadId]['name']);
 
-            $move_ok = move_uploaded_file($upload_path, $destination_directory . $dest_filename);
+            $moveOk = move_uploaded_file($uploadPath, $destinationDirectory . $destFilename);
 
-            if ($move_ok) {
-                return $dest_filename;
+            if ($moveOk) {
+                return $destFilename;
             }
         }
 
@@ -45,17 +45,17 @@ class Bill_File
         }
     }
 
-    public static function deleteDirectory($dir_path)
+    public static function deleteDirectory($dirPath)
     {
-        if (file_exists($dir_path)) {
-            $files = array_diff(scandir($dir_path), array('.', '..')); //scandir can retrive hidden files
+        if (file_exists($dirPath)) {
+            $files = array_diff(scandir($dirPath), array('.', '..')); //scandir can retrive hidden files
 
             foreach ($files as $file) {
-                $path = $dir_path . DIRECTORY_SEPARATOR . $file;
+                $path = $dirPath . DIRECTORY_SEPARATOR . $file;
                 (is_dir($path)) ? self::deleteDirectory($path) : unlink($path);
             }
 
-            return rmdir($dir_path); //rmdir success when dir is empty.
+            return rmdir($dirPath); //rmdir success when dir is empty.
         }
     }
 

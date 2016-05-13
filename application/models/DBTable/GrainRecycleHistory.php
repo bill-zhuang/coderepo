@@ -17,7 +17,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         return intval($count[0]['total']);
     }
 
-    public function getGrainRecycleHistoryData(array $conditions, $startPage, $pageLength, $order_by)
+    public function getGrainRecycleHistoryData(array $conditions, $startPage, $pageLength, $orderBy)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value) {
@@ -25,7 +25,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         }
         $data = $select
             ->limitPage($startPage, $pageLength)
-            ->order($order_by)
+            ->order($orderBy)
             ->query()->fetchAll();
         return $data;
     }
@@ -37,25 +37,25 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
             ->query()->fetch();
     }
 
-    public function getTotalGrainRecycleHistoryGroupDataByYearMonth($select_date)
+    public function getTotalGrainRecycleHistoryGroupDataByYearMonth($selectDate)
     {
         return $this->select()->reset()
             ->from($this->_name, array('happen_date as period', 'count as number'))
             ->where('status=?', Bill_Constant::VALID_STATUS)
-            ->where('date_format(happen_date, "%Y-%m")=?', $select_date)
+            ->where('date_format(happen_date, "%Y-%m")=?', $selectDate)
             ->query()->fetchAll();
     }
 
-    public function getTotalGrainRecycleHistoryGroupData($start_date, $end_date)
+    public function getTotalGrainRecycleHistoryGroupData($startDate, $endDate)
     {
         $select = $this->select()->reset()
             ->from($this->_name, array('date_format(happen_date, "%Y-%m") as period', 'sum(count) as number'))
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '') {
-            $select->where('happen_date>=?', $start_date);
+        if ($startDate !== '') {
+            $select->where('happen_date>=?', $startDate);
         }
-        if ($end_date !== '') {
-            $select->where('happen_date<=?', $end_date);
+        if ($endDate !== '') {
+            $select->where('happen_date<=?', $endDate);
         }
 
         return $select
@@ -63,16 +63,16 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
             ->query()->fetchAll();
     }
 
-    public function getTotalGrainRecycleHistoryDataByDay($start_date, $end_date)
+    public function getTotalGrainRecycleHistoryDataByDay($startDate, $endDate)
     {
         $select = $this->select()->reset()
             ->from($this->_name, array('happen_date as period', 'count as number'))
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '') {
-            $select->where('happen_date>=?', $start_date);
+        if ($startDate !== '') {
+            $select->where('happen_date>=?', $startDate);
         }
-        if ($end_date !== '') {
-            $select->where('happen_date<=?', $end_date);
+        if ($endDate !== '') {
+            $select->where('happen_date<=?', $endDate);
         }
 
         return $select

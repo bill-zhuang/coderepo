@@ -5,14 +5,14 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_EjectHistory
      */
-    private $_adapter_eject_history;
+    private $_adapterEjectHistory;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_eject_history= new Application_Model_DBTable_EjectHistory();
+        $this->_adapterEjectHistory = new Application_Model_DBTable_EjectHistory();
     }
 
     public function indexAction()
@@ -25,43 +25,43 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
     public function ajaxEjectHistoryPeriodAction()
     {
         $params = $this->_getParam('params', []);
-        $start_date = (isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date']))
+        $startDate = (isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date']))
             ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 year'));
-        $end_date = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
+        $endDate = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
             ? trim($params['day_end_date']) : '';
         $data = [];
         $types = $this->_getEjectTypes();
-        foreach ($types as $type_name => $type) {
-            $eject_data = $this->_adapter_eject_history->getTotalEjectHistoryDataByDay($start_date, $end_date, $type);
-            $type_data = [];
-            $previous_timestamp = 0;
-            foreach ($eject_data as $ejct_key => $eject_value) {
-                $current_timestamp = strtotime($eject_value['period'] . ' 08:00:00');
-                $type_data[] = [
-                    $current_timestamp * 1000,
-                    ($ejct_key > 0 ? (intval($current_timestamp - $previous_timestamp) / Bill_Constant::DAY_SECONDS) : 0),
+        foreach ($types as $typeName => $type) {
+            $ejectData = $this->_adapterEjectHistory->getTotalEjectHistoryDataByDay($startDate, $endDate, $type);
+            $typeData = [];
+            $previousTimestamp = 0;
+            foreach ($ejectData as $ejctKey => $ejectValue) {
+                $currentTimestamp = strtotime($ejectValue['period'] . ' 08:00:00');
+                $typeData[] = [
+                    $currentTimestamp * 1000,
+                    ($ejctKey > 0 ? (intval($currentTimestamp - $previousTimestamp) / Bill_Constant::DAY_SECONDS) : 0),
                 ];
-                $previous_timestamp = $current_timestamp;
+                $previousTimestamp = $currentTimestamp;
             }
             $data[] = [
-                'name' => $type_name,
-                'data' => $type_data,
+                'name' => $typeName,
+                'data' => $typeData,
             ];
         }
 
-        $json_array = [
+        $jsonArray = [
             'data' => $data
         ];
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     public function ajaxEjectHistoryMonthAction()
     {
         $params = $this->_getParam('params', []);
-        $start_date = (isset($params['month_start_date']) && Bill_Util::validDate($params['month_start_date']))
+        $startDate = (isset($params['month_start_date']) && Bill_Util::validDate($params['month_start_date']))
             ? trim($params['month_start_date']) : date('Y-m', strtotime('-11 month')) . '-01';
-        $end_date = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
+        $endDate = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
             ? trim($params['month_end_date']) : '';
         $data = [
             'months' => [],
@@ -70,41 +70,41 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
 
         $types = $this->_getEjectTypes();
         $months = [];
-        $temp_data = [];
-        foreach ($types as $type_name => $type) {
-            $type_data = [];
-            $month_data = $this->_adapter_eject_history->getTotalEjectHistoryGroupData($start_date, $end_date, $type);
-            foreach ($month_data as $month_value) {
-                $type_data[] = intval($month_value['number']);
-                if (!in_array($month_value['period'], $months)) {
-                    $months[] = $month_value['period'];
+        $tempData = [];
+        foreach ($types as $typeName => $type) {
+            $typeData = [];
+            $monthData = $this->_adapterEjectHistory->getTotalEjectHistoryGroupData($startDate, $endDate, $type);
+            foreach ($monthData as $monthValue) {
+                $typeData[] = intval($monthValue['number']);
+                if (!in_array($monthValue['period'], $months)) {
+                    $months[] = $monthValue['period'];
                 }
-                $type_data[$month_value['period']] = $month_value['number'];
+                $typeData[$monthValue['period']] = $monthValue['number'];
             }
-            $temp_data[$type_name] = $type_data;
+            $tempData[$typeName] = $typeData;
         }
 
         $data['months'] = Bill_Util::getMonthRange($months);
 
-        foreach ($types as $type_name => $type) {
-            $type_data = [];
+        foreach ($types as $typeName => $type) {
+            $typeData = [];
             foreach ($data['months'] as $month) {
-                if (isset($temp_data[$type_name][$month])) {
-                    $type_data[] = intval($temp_data[$type_name][$month]);
+                if (isset($tempData[$typeName][$month])) {
+                    $typeData[] = intval($tempData[$typeName][$month]);
                 } else {
-                    $type_data[] = 0;
+                    $typeData[] = 0;
                 }
             }
             $data['data'][] = [
-                'name' => $type_name,
-                'data' => $type_data,
+                'name' => $typeName,
+                'data' => $typeData,
             ];
         }
-        $json_array = [
+        $jsonArray = [
             'data' => $data
         ];
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     private function _getEjectTypes()

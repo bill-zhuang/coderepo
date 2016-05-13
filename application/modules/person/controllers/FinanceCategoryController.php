@@ -5,14 +5,14 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_FinanceCategory
      */
-    private $_adapter_finance_category;
+    private $_adapterFinanceCategory;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
+        $this->_adapterFinanceCategory = new Application_Model_DBTable_FinanceCategory();
     }
 
     public function indexAction()
@@ -29,30 +29,30 @@ class person_FinanceCategoryController extends Zend_Controller_Action
 
     public function addFinanceCategoryAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if ($this->getRequest()->isPost()) {
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $name = isset($params['finance_category_name']) ? trim($params['finance_category_name']) : '';
-                $parent_id = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
+                $parentId = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
                 $weight = isset($params['finance_category_weight'])
                     ? intval($params['finance_category_weight']) : Bill_Constant::DEFAULT_WEIGHT;
-                $add_time = date('Y-m-d H:i:s');
+                $addTime = date('Y-m-d H:i:s');
 
-                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, 0)) {
+                if (!$this->_adapterFinanceCategory->isFinanceCategoryExist($name, 0)) {
                     $data = [
                         'name' => $name,
-                        'parent_id' => $parent_id,
+                        'parent_id' => $parentId,
                         'weight' => $weight,
                         'status' => Bill_Constant::VALID_STATUS,
-                        'create_time' => $add_time,
-                        'update_time' => $add_time
+                        'create_time' => $addTime,
+                        'update_time' => $addTime
                     ];
-                    $affected_rows = $this->_adapter_finance_category->insert($data);
-                    $json_array = [
+                    $affectedRows = $this->_adapterFinanceCategory->insert($data);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                         ],
                     ];
@@ -62,40 +62,40 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function modifyFinanceCategoryAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if ($this->getRequest()->isPost()) {
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $fcid = isset($params['finance_category_fcid']) ? intval($params['finance_category_fcid']) : 0;
                 $name = isset($params['finance_category_name']) ? trim($params['finance_category_name']) : '';
-                $parent_id = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
+                $parentId = isset($params['finance_category_parent_id']) ? intval($params['finance_category_parent_id']) : 0;
                 $weight = isset($params['finance_category_weight'])
                     ? intval($params['finance_category_weight']) : Bill_Constant::DEFAULT_WEIGHT;
 
-                if (!$this->_adapter_finance_category->isFinanceCategoryExist($name, $fcid)) {
+                if (!$this->_adapterFinanceCategory->isFinanceCategoryExist($name, $fcid)) {
                     $data = [
                         'name' => $name,
-                        'parent_id' => $parent_id,
+                        'parent_id' => $parentId,
                         'weight' => $weight,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $where = $this->_adapter_finance_category->getAdapter()->quoteInto('fcid=?', $fcid);
-                    $affected_rows = $this->_adapter_finance_category->update($data, $where);
-                    $json_array = [
+                    $where = $this->_adapterFinanceCategory->getAdapter()->quoteInto('fcid=?', $fcid);
+                    $affectedRows = $this->_adapterFinanceCategory->update($data, $where);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ],
                     ];
@@ -105,43 +105,43 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function deleteFinanceCategoryAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if ($this->getRequest()->isPost()) {
-            $adapter_finance_payment_map = new Application_Model_DBTable_FinancePaymentMap();
+            $adapterFinancePaymentMap = new Application_Model_DBTable_FinancePaymentMap();
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $fcid = isset($params['fcid']) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
-                $isPaymentExistUnderCategory = $adapter_finance_payment_map->isPaymentExistUnderFcid($fcid);
+                $isPaymentExistUnderCategory = $adapterFinancePaymentMap->isPaymentExistUnderFcid($fcid);
                 if (!$isPaymentExistUnderCategory) {
-                    $update_data = [
+                    $updateData = [
                         'status' => Bill_Constant::INVALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
                     $where = [
-                        $this->_adapter_finance_category->getAdapter()->quoteInto('(fcid=? or parent_id=?)', $fcid),
-                        $this->_adapter_finance_category->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                        $this->_adapterFinanceCategory->getAdapter()->quoteInto('(fcid=? or parent_id=?)', $fcid),
+                        $this->_adapterFinanceCategory->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                     ];
-                    $affected_rows = $this->_adapter_finance_category->update($update_data, $where);
-                    $json_array = [
+                    $affectedRows = $this->_adapterFinanceCategory->update($updateData, $where);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
                 } else {
-                    $json_array = [
+                    $jsonArray = [
                         'data' => [
                             'code' => 0,
                             'message' => Bill_JsMessage::PAYMENT_EXIST_UNDER_CATEGORY,
@@ -153,13 +153,13 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function getFinanceCategoryAction()
@@ -167,65 +167,65 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $fcid = (isset($params['fcid'])) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapter_finance_category->getFinanceCategoryByID($fcid);
+            $data = $this->_adapterFinanceCategory->getFinanceCategoryByID($fcid);
             if (!empty($data)) {
-                $json_array = [
+                $jsonArray = [
                     'data' => $data,
                 ];
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     public function getFinanceSubcategoryAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if (isset($_GET['parent_id'])) {
             $params = $this->_getParam('params', []);
-            $parent_id = isset($params['parent_id']) ? intval($params['parent_id']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $subcategory_data = $this->_adapter_finance_category->getFinanceSubcategory($parent_id);
+            $parentId = isset($params['parent_id']) ? intval($params['parent_id']) : Bill_Constant::INVALID_PRIMARY_ID;
+            $subcategoryData = $this->_adapterFinanceCategory->getFinanceSubcategory($parentId);
             if (!empty($data)) {
-                $json_array = [
+                $jsonArray = [
                     'data' => [
-                        'currentItemCount' => count($subcategory_data),
-                        'items' => $subcategory_data,
+                        'currentItemCount' => count($subcategoryData),
+                        'items' => $subcategoryData,
                     ],
                 ];
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     public function getFinanceMainCategoryAction()
     {
-        $data = $this->_adapter_finance_category->getAllParentCategory();
-        $json_data = [
+        $data = $this->_adapterFinanceCategory->getAllParentCategory();
+        $jsonData = [
             'data' => [
                 'currentItemCount' => count($data),
                 'items' => $data,
             ],
         ];
-        echo json_encode($json_data);
+        echo json_encode($jsonData);
     }
 
     private function _index()
     {
         $params = $this->_getParam('params', []);
-        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        list($currentPage, $pageLength, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 
         $conditions = [
@@ -234,25 +234,25 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         if ('' !== $keyword) {
             $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
         }
-        $order_by = 'weight desc';
-        $total = $this->_adapter_finance_category->getFinanceCategoryCount($conditions);
-        $data = $this->_adapter_finance_category->getFinanceCategoryData($conditions, $current_page, $page_length, $order_by);
+        $orderBy = 'weight desc';
+        $total = $this->_adapterFinanceCategory->getFinanceCategoryCount($conditions);
+        $data = $this->_adapterFinanceCategory->getFinanceCategoryData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
             $value['parent'] = $value['fc_parent_id'] == 0 ?
-                '无' : $this->_adapter_finance_category->getParentCategoryName($value['fc_parent_id']);
+                '无' : $this->_adapterFinanceCategory->getParentCategoryName($value['fc_parent_id']);
         }
 
-        $json_data = [
+        $jsonData = [
             'data' => [
-                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
-                'pageIndex' => $current_page,
+                'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
+                'pageIndex' => $currentPage,
                 'totalItems' => $total,
                 'startIndex' => $start + 1,
-                'itemsPerPage' => $page_length,
+                'itemsPerPage' => $pageLength,
                 'currentItemCount' => count($data),
                 'items' => $data,
             ],
         ];
-        return $json_data;
+        return $jsonData;
     }
 }

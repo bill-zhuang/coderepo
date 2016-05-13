@@ -30,11 +30,11 @@ class Bill_Zip
     public function unrar($rarPath, $unrarPath)
     {
         if (function_exists('rar_open')) {
-            $rar_file = rar_open($rarPath);
-            $list = rar_list($rar_file);
+            $rarFile = rar_open($rarPath);
+            $list = rar_list($rarFile);
             Bill_File::createDirectory($unrarPath);
             foreach ($list as $file) {
-                $entry = rar_entry_get($rar_file, $file->getName());
+                $entry = rar_entry_get($rarFile, $file->getName());
                 $entry->extract($unrarPath);
             }
             return true;

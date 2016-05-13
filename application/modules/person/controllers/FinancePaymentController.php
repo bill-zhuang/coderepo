@@ -5,24 +5,24 @@ class person_FinancePaymentController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_FinanceCategory
      */
-    private $_adapter_finance_category;
+    private $_adapterFinanceCategory;
     /**
      * @var Application_Model_DBTable_FinancePaymentMap
      */
-    private $_adapter_finance_payment_map;
+    private $_adapterFinancePaymentMap;
     /**
      * @var Application_Model_DBTable_FinancePayment
      */
-    private $_adapter_finance_payment;
+    private $_adapterFinancePayment;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_finance_category = new Application_Model_DBTable_FinanceCategory();
-        $this->_adapter_finance_payment = new Application_Model_DBTable_FinancePayment();
-        $this->_adapter_finance_payment_map = new Application_Model_DBTable_FinancePaymentMap();
+        $this->_adapterFinanceCategory = new Application_Model_DBTable_FinanceCategory();
+        $this->_adapterFinancePayment = new Application_Model_DBTable_FinancePayment();
+        $this->_adapterFinancePaymentMap = new Application_Model_DBTable_FinancePaymentMap();
     }
 
     public function indexAction()
@@ -39,286 +39,286 @@ class person_FinancePaymentController extends Zend_Controller_Action
 
     public function addFinancePaymentAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if ($this->getRequest()->isPost()) {
             try {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
+                $affectedRows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $params = $this->getRequest()->getPost('params', []);
-                $this->_adapter_finance_payment->getAdapter()->beginTransaction();
+                $this->_adapterFinancePayment->getAdapter()->beginTransaction();
                 $payments = isset($params['finance_payment_payment']) ? array_filter(explode(',', $params['finance_payment_payment'])) : [];
-                $payment_date = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
-                $category_ids = isset($params['finance_payment_fcid']) ? $params['finance_payment_fcid'] : [];
+                $paymentDate = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
+                $categoryIds = isset($params['finance_payment_fcid']) ? $params['finance_payment_fcid'] : [];
                 $intro = isset($params['finance_payment_intro']) ? trim($params['finance_payment_intro']) : '';
-                $add_time = date('Y-m-d H:i:s');
+                $addTime = date('Y-m-d H:i:s');
 
                 $data = [
-                    'payment_date' => $payment_date,
+                    'payment_date' => $paymentDate,
                     'detail' => $intro,
                     'status' => Bill_Constant::VALID_STATUS,
-                    'create_time' => $add_time,
-                    'update_time' => $add_time
+                    'create_time' => $addTime,
+                    'update_time' => $addTime
                 ];
-                if (Bill_Util::validDate($payment_date)) {
+                if (Bill_Util::validDate($paymentDate)) {
                     foreach ($payments as $payment) {
                         $payment = floatval($payment);
                         if ($payment > 0) {
                             $data['payment'] = $payment;
-                            $fp_id = $this->_adapter_finance_payment->insert($data);
-                            $this->_addFinancePaymentMap($fp_id, $category_ids);
-                            $affected_rows += $fp_id;
+                            $fpId = $this->_adapterFinancePayment->insert($data);
+                            $this->_addFinancePaymentMap($fpId, $categoryIds);
+                            $affectedRows += $fpId;
                         }
                     }
                 }
-                $this->_adapter_finance_payment->getAdapter()->commit();
-                $json_array = [
+                $this->_adapterFinancePayment->getAdapter()->commit();
+                $jsonArray = [
                     'data' => [
-                        'code' => $affected_rows,
-                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                        'code' => $affectedRows,
+                        'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                 ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                     ],
                 ];
             } catch (Exception $e) {
-                $this->_adapter_finance_payment->getAdapter()->rollBack();
+                $this->_adapterFinancePayment->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From addFinancePayment');
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function modifyFinancePaymentAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if ($this->getRequest()->isPost()) {
             try {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
+                $affectedRows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $params = $this->getRequest()->getPost('params', []);
-                $this->_adapter_finance_payment->getAdapter()->beginTransaction();
+                $this->_adapterFinancePayment->getAdapter()->beginTransaction();
                 $fpid = isset($params['finance_payment_fpid']) ? intval($params['finance_payment_fpid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 $payment = isset($params['finance_payment_payment']) ? floatval($params['finance_payment_payment']) : 0;
-                $payment_date = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
-                $category_ids = isset($params['finance_payment_fcid']) ? $params['finance_payment_fcid'] : [];
+                $paymentDate = isset($params['finance_payment_payment_date']) ? trim($params['finance_payment_payment_date']) : '';
+                $categoryIds = isset($params['finance_payment_fcid']) ? $params['finance_payment_fcid'] : [];
                 $intro = isset($params['finance_payment_intro']) ? trim($params['finance_payment_intro']) : '';
 
-                if (Bill_Util::validDate($payment_date) && $payment > 0) {
+                if (Bill_Util::validDate($paymentDate) && $payment > 0) {
                     $data = [
                         'payment' => $payment,
-                        'payment_date' => $payment_date,
+                        'payment_date' => $paymentDate,
                         'detail' => $intro,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $where = $this->_adapter_finance_payment->getAdapter()->quoteInto('fpid=?', $fpid);
-                    $affected_rows = $this->_adapter_finance_payment->update($data, $where);
-                    $affected_rows += $this->_updateFinancePaymentMap($fpid, $category_ids);
+                    $where = $this->_adapterFinancePayment->getAdapter()->quoteInto('fpid=?', $fpid);
+                    $affectedRows = $this->_adapterFinancePayment->update($data, $where);
+                    $affectedRows += $this->_updateFinancePaymentMap($fpid, $categoryIds);
                 }
-                $this->_adapter_finance_payment->getAdapter()->commit();
-                $json_array = [
+                $this->_adapterFinancePayment->getAdapter()->commit();
+                $jsonArray = [
                     'data' => [
-                        'code' => $affected_rows,
-                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                        'code' => $affectedRows,
+                        'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                 ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                     ],
                 ];
             } catch (Exception $e) {
-                $this->_adapter_finance_payment->getAdapter()->rollBack();
+                $this->_adapterFinancePayment->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From modifyFinancePayment');
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function deleteFinancePaymentAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if ($this->getRequest()->isPost()) {
             try {
-                $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
+                $affectedRows = Bill_Constant::INIT_AFFECTED_ROWS;
                 $params = $this->getRequest()->getPost('params', []);
-                $this->_adapter_finance_payment->getAdapter()->beginTransaction();
+                $this->_adapterFinancePayment->getAdapter()->beginTransaction();
                 $fpid = isset($params['fpid']) ? intval($params['fpid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 if ($fpid > Bill_Constant::INVALID_PRIMARY_ID) {
-                    $payment_update_data = [
+                    $paymentUpdateData = [
                         'status' => Bill_Constant::INVALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $payment_where = [
-                        $this->_adapter_finance_payment->getAdapter()->quoteInto('fpid=?', $fpid),
-                        $this->_adapter_finance_payment->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS)
+                    $paymentWhere = [
+                        $this->_adapterFinancePayment->getAdapter()->quoteInto('fpid=?', $fpid),
+                        $this->_adapterFinancePayment->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS)
                     ];
-                    $affected_rows = $this->_adapter_finance_payment->update($payment_update_data, $payment_where);
+                    $affectedRows = $this->_adapterFinancePayment->update($paymentUpdateData, $paymentWhere);
                     //update map table
-                    $map_update_data = [
+                    $mapUpdateData = [
                         'status' => Bill_Constant::INVALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $map_where = [
-                        $this->_adapter_finance_payment_map->getAdapter()->quoteInto('fpid=?', $fpid),
-                        $this->_adapter_finance_payment_map->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                    $mapWhere = [
+                        $this->_adapterFinancePaymentMap->getAdapter()->quoteInto('fpid=?', $fpid),
+                        $this->_adapterFinancePaymentMap->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                     ];
-                    $affected_rows += $this->_adapter_finance_payment_map->update($map_update_data, $map_where);
+                    $affectedRows += $this->_adapterFinancePaymentMap->update($mapUpdateData, $mapWhere);
                 }
-                $this->_adapter_finance_payment->getAdapter()->commit();
-                $json_array = [
+                $this->_adapterFinancePayment->getAdapter()->commit();
+                $jsonArray = [
                     'data' => [
-                        'code' => $affected_rows,
-                        'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                        'code' => $affectedRows,
+                        'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                 ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                     ],
                 ];
             } catch (Exception $e) {
-                $this->_adapter_finance_payment->getAdapter()->rollBack();
+                $this->_adapterFinancePayment->getAdapter()->rollBack();
                 Bill_Util::handleException($e, 'Error From deleteFinancePayment');
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function getFinancePaymentAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $fpid = isset($params['fpid']) ? intval($params['fpid']) : Bill_Constant::INVALID_PRIMARY_ID;
             if ($fpid > Bill_Constant::INVALID_PRIMARY_ID) {
-                $data = $this->_adapter_finance_payment->getFinancePaymentByID($fpid);
-                $data['fcids'] = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($fpid);
+                $data = $this->_adapterFinancePayment->getFinancePaymentByID($fpid);
+                $data['fcids'] = $this->_adapterFinancePaymentMap->getFinanceCategoryIDs($fpid);
                 if (!empty($data)) {
-                    $json_array = [
+                    $jsonArray = [
                         'data' => $data,
                     ];
                 }
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     private function _index()
     {
         $params = $this->_getParam('params', []);
-        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
-        $payment_date = isset($params['payment_date']) ? trim($params['payment_date']) : '';
-        $finance_category_id = isset($params['category_parent_id']) ? intval($params['category_parent_id']) : 0;
+        list($currentPage, $pageLength, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        $paymentDate = isset($params['payment_date']) ? trim($params['payment_date']) : '';
+        $financeCategoryId = isset($params['category_parent_id']) ? intval($params['category_parent_id']) : 0;
 
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS
         ];
-        if ('' != $payment_date) {
-            $conditions['payment_date =?'] = $payment_date;
+        if ('' != $paymentDate) {
+            $conditions['payment_date =?'] = $paymentDate;
         }
-        if (0 !== $finance_category_id) {
-            $adapter_payment_map = new Application_Model_DBTable_FinancePaymentMap();
-            $fpids = $adapter_payment_map->getFpidByFcid($finance_category_id, 'create_time desc', $current_page, $page_length);
+        if (0 !== $financeCategoryId) {
+            $adapterPaymentMap = new Application_Model_DBTable_FinancePaymentMap();
+            $fpids = $adapterPaymentMap->getFpidByFcid($financeCategoryId, 'create_time desc', $currentPage, $pageLength);
             if (!empty($fpids)) {
                 $conditions['fpid in (?)'] = $fpids;
             } else {
                 $conditions['1 =?'] = 0;
             }
         }
-        $order_by = 'payment_date desc';
-        $total = $this->_adapter_finance_payment->getFinancePaymentCount($conditions);
-        $data = $this->_adapter_finance_payment->getFinancePaymentData($conditions, $current_page, $page_length, $order_by);
+        $orderBy = 'payment_date desc';
+        $total = $this->_adapterFinancePayment->getFinancePaymentCount($conditions);
+        $data = $this->_adapterFinancePayment->getFinancePaymentData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
-            $fcids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($value['fpid']);
+            $fcids = $this->_adapterFinancePaymentMap->getFinanceCategoryIDs($value['fpid']);
             if (!empty($fcids)) {
                 $value['category'] =
-                    implode(',', $this->_adapter_finance_category->getFinanceCategoryNames($fcids));
+                    implode(',', $this->_adapterFinanceCategory->getFinanceCategoryNames($fcids));
             } else {
                 $value['category'] = '';
             }
         }
 
-        $json_data = [
+        $jsonData = [
             'data' => [
-                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
-                'pageIndex' => $current_page,
+                'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
+                'pageIndex' => $currentPage,
                 'totalItems' => $total,
                 'startIndex' => $start + 1,
-                'itemsPerPage' => $page_length,
+                'itemsPerPage' => $pageLength,
                 'currentItemCount' => count($data),
                 'items' => $data,
             ],
         ];
-        return $json_data;
+        return $jsonData;
     }
 
     private function _addFinancePaymentMap($fpid, array $fcids)
     {
-        $add_time = date('Y-m-d H:i:s');
-        $map_data = [
+        $addTime = date('Y-m-d H:i:s');
+        $mapData = [
             'fpid' => 0,
             'fcid' => 0,
             'status' => Bill_Constant::VALID_STATUS,
-            'create_time' => $add_time,
-            'update_time' => $add_time
+            'create_time' => $addTime,
+            'update_time' => $addTime
         ];
 
-        $map_data['fpid'] = $fpid;
-        foreach ($fcids as $category_id) {
-            $map_data['fcid'] = $category_id;
-            $this->_adapter_finance_payment_map->insert($map_data);
+        $mapData['fpid'] = $fpid;
+        foreach ($fcids as $categoryId) {
+            $mapData['fcid'] = $categoryId;
+            $this->_adapterFinancePaymentMap->insert($mapData);
         }
     }
     
     private function _updateFinancePaymentMap($fpid, array $fcids)
     {
-        $affected_rows = Bill_Constant::INIT_AFFECTED_ROWS;
+        $affectedRows = Bill_Constant::INIT_AFFECTED_ROWS;
 
-        $update_data = [
+        $updateData = [
             'status' => Bill_Constant::INVALID_STATUS,
             'update_time' => date('Y-m-d H:i:s')
         ];
-        $insert_data = [
+        $insertData = [
             'fpid' => $fpid,
             'fcid' => 0,
             'status' => Bill_Constant::VALID_STATUS,
             'create_time' => date('Y-m-d H:i:s'),
             'update_time' => date('Y-m-d H:i:s')
         ];
-        $origin_fcids = $this->_adapter_finance_payment_map->getFinanceCategoryIDs($fpid);
-        $update_fcids = array_diff($origin_fcids, $fcids);
-        $insert_fcids = array_diff($fcids, $origin_fcids);
-        foreach ($update_fcids as $fcid) {
+        $originFcids = $this->_adapterFinancePaymentMap->getFinanceCategoryIDs($fpid);
+        $updateFcids = array_diff($originFcids, $fcids);
+        $insertFcids = array_diff($fcids, $originFcids);
+        foreach ($updateFcids as $fcid) {
             $where = [
-                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fpid=?", $fpid),
-                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("status=?", Bill_Constant::VALID_STATUS),
-                $this->_adapter_finance_payment_map->getAdapter()->quoteInto("fcid=?", $fcid),
+                $this->_adapterFinancePaymentMap->getAdapter()->quoteInto("fpid=?", $fpid),
+                $this->_adapterFinancePaymentMap->getAdapter()->quoteInto("status=?", Bill_Constant::VALID_STATUS),
+                $this->_adapterFinancePaymentMap->getAdapter()->quoteInto("fcid=?", $fcid),
             ];
-            $affected_rows += $this->_adapter_finance_payment_map->update($update_data, $where);
+            $affectedRows += $this->_adapterFinancePaymentMap->update($updateData, $where);
         }
 
-        foreach ($insert_fcids as $fcid) {
-            $insert_data['fcid'] = $fcid;
-            $affected_rows += $this->_adapter_finance_payment_map->insert($insert_data);
+        foreach ($insertFcids as $fcid) {
+            $insertData['fcid'] = $fcid;
+            $affectedRows += $this->_adapterFinancePaymentMap->insert($insertData);
         }
 
-        return $affected_rows;
+        return $affectedRows;
     }
 
 }

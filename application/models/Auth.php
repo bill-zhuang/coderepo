@@ -4,34 +4,34 @@ class Application_Model_Auth
 {
     protected $authAdapter;
 
-    protected function setAuth($table_name, $column_name, $column_password, $database_adapter)
+    protected function setAuth($tableName, $columnName, $columnPassword, $databaseAdapter)
     {
         $this->authAdapter = new Zend_Auth_Adapter_DbTable(
-            $database_adapter,
-            $table_name,
-            $column_name,
-            $column_password,
+            $databaseAdapter,
+            $tableName,
+            $columnName,
+            $columnPassword,
             'MD5(CONCAT(?, salt)) AND status=1'
         );
     }
 
-    public function logIn($username, $password, $table_name = null, $database_adapter = null)
+    public function logIn($username, $password, $tableName = null, $databaseAdapter = null)
     {
-        if ($table_name == null) {
-            $table_name = 'backend_user';
+        if ($tableName == null) {
+            $tableName = 'backend_user';
         }
-        if ($database_adapter == null) {
+        if ($databaseAdapter == null) {
             $database = new Application_Model_DBTable_BackendUser();
-            $database_adapter = $database->getAdapter();
+            $databaseAdapter = $database->getAdapter();
         }
-        $this->setauth($table_name, 'name', 'password', $database_adapter);
+        $this->setauth($tableName, 'name', 'password', $databaseAdapter);
         $this->authAdapter->setIdentity($username);
         $this->authAdapter->setCredential($password);
 
         $auth = Zend_Auth::getInstance();
         $auth->setStorage(new Zend_Auth_Storage_Session('user_info'));
-        $user_info = new Zend_Session_Namespace('user_info');
-        $user_info->setExpirationSeconds(G_SESSIONTIMEOUT);
+        $userInfo = new Zend_Session_Namespace('user_info');
+        $userInfo->setExpirationSeconds(G_SESSIONTIMEOUT);
         $result = $auth->authenticate($this->authAdapter);
 
         if($result->isValid()) {
@@ -66,8 +66,8 @@ class Application_Model_Auth
         $auth->setStorage(new Zend_Auth_Storage_Session('user_info'));
 
         if($auth->hasIdentity()) {
-            $user_info = new Zend_Session_Namespace('user_info');
-            $user_info->setExpirationSeconds(G_SESSIONTIMEOUT);
+            $userInfo = new Zend_Session_Namespace('user_info');
+            $userInfo->setExpirationSeconds(G_SESSIONTIMEOUT);
             return true;
         } else {
             return false;

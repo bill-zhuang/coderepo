@@ -5,19 +5,19 @@ class BackendUserController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_BackendUser
      */
-    private $_adapter_backend_user;
+    private $_adapterBackendUser;
     /**
      * @var Application_Model_DBTable_BackendRole
      */
-    private $_adapter_backend_role;
+    private $_adapterBackendRole;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_backend_user= new Application_Model_DBTable_BackendUser();
-        $this->_adapter_backend_role= new Application_Model_DBTable_BackendRole();
+        $this->_adapterBackendUser = new Application_Model_DBTable_BackendUser();
+        $this->_adapterBackendRole = new Application_Model_DBTable_BackendRole();
     }
 
     public function indexAction()
@@ -38,7 +38,7 @@ class BackendUserController extends Zend_Controller_Action
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $name = trim($params['backend_user_name']);
-                if (!$this->_adapter_backend_user->isUserNameExist($name, Bill_Constant::INVALID_PRIMARY_ID)) {
+                if (!$this->_adapterBackendUser->isUserNameExist($name, Bill_Constant::INVALID_PRIMARY_ID)) {
                     $security = new Bill_Security();
                     $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
                     $data = [
@@ -50,16 +50,16 @@ class BackendUserController extends Zend_Controller_Action
                         'create_time' => date('Y-m-d H:i:s'),
                         'update_time' => date('Y-m-d H:i:s'),
                     ];
-                    $affected_rows = $this->_adapter_backend_user->insert($data);
-                    $json_array = [
+                    $affectedRows = $this->_adapterBackendUser->insert($data);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                         ],
                     ];
                 } else {
-                    $json_array = [
+                    $jsonArray = [
                         'data' => [
                             'code' => Bill_Constant::INIT_AFFECTED_ROWS,
                             'message' => Bill_JsMessage::ACCOUNT_EXIST,
@@ -71,13 +71,13 @@ class BackendUserController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function modifyBackendUserAction()
@@ -88,23 +88,23 @@ class BackendUserController extends Zend_Controller_Action
                 $buid = intval($params['backend_user_buid']);
                 if ($buid > Bill_Constant::INVALID_PRIMARY_ID) {
                     $name = trim($params['backend_user_name']);
-                    if (!$this->_adapter_backend_user->isUserNameExist($name, $buid)) {
+                    if (!$this->_adapterBackendUser->isUserNameExist($name, $buid)) {
                         $data = [
                             'name' => $name,
                             'brid' => intval($params['backend_user_brid']),
                             'update_time' => date('Y-m-d H:i:s'),
                         ];
-                        $where = $this->_adapter_backend_user->getAdapter()->quoteInto('buid=?', $buid);
-                        $affected_rows = $this->_adapter_backend_user->update($data, $where);
-                        $json_array = [
+                        $where = $this->_adapterBackendUser->getAdapter()->quoteInto('buid=?', $buid);
+                        $affectedRows = $this->_adapterBackendUser->update($data, $where);
+                        $jsonArray = [
                             'data' => [
-                                'code' => $affected_rows,
-                                'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                'code' => $affectedRows,
+                                'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                         ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                             ]
                         ];
                     } else {
-                        $json_array = [
+                        $jsonArray = [
                             'data' => [
                                 'code' => Bill_Constant::INIT_AFFECTED_ROWS,
                                 'message' => Bill_JsMessage::ACCOUNT_EXIST,
@@ -117,13 +117,13 @@ class BackendUserController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function deleteBackendUserAction()
@@ -133,19 +133,19 @@ class BackendUserController extends Zend_Controller_Action
                 $params = $this->getRequest()->getPost('params', []);
                 $buid = isset($params['buid']) ? intval($params['buid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 if ($buid > Bill_Constant::INVALID_PRIMARY_ID) {
-                    $update_data = [
+                    $updateData = [
                         'status' => Bill_Constant::INVALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s'),
                     ];
                     $where = [
-                        $this->_adapter_backend_user->getAdapter()->quoteInto('buid=?', $buid),
-                        $this->_adapter_backend_user->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                        $this->_adapterBackendUser->getAdapter()->quoteInto('buid=?', $buid),
+                        $this->_adapterBackendUser->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                     ];
-                    $affected_rows = $this->_adapter_backend_user->update($update_data, $where);
-                    $json_array = [
+                    $affectedRows = $this->_adapterBackendUser->update($updateData, $where);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
@@ -155,13 +155,13 @@ class BackendUserController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     public function recoverBackendUserAction()
@@ -171,19 +171,19 @@ class BackendUserController extends Zend_Controller_Action
                 $params = $this->getRequest()->getPost('params', []);
                 $buid = isset($params['buid']) ? intval($params['buid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 if ($buid > Bill_Constant::INVALID_PRIMARY_ID) {
-                    $update_data = [
+                    $updateData = [
                         'status' => Bill_Constant::VALID_STATUS,
                         'update_time' => date('Y-m-d H:i:s'),
                     ];
                     $where = [
-                        $this->_adapter_backend_user->getAdapter()->quoteInto('buid=?', $buid),
-                        $this->_adapter_backend_user->getAdapter()->quoteInto('status=?', Bill_Constant::INVALID_STATUS),
+                        $this->_adapterBackendUser->getAdapter()->quoteInto('buid=?', $buid),
+                        $this->_adapterBackendUser->getAdapter()->quoteInto('status=?', Bill_Constant::INVALID_STATUS),
                     ];
-                    $affected_rows = $this->_adapter_backend_user->update($update_data, $where);
-                    $json_array = [
+                    $affectedRows = $this->_adapterBackendUser->update($updateData, $where);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::RECOVER_ACCOUNT_SUCCESS : Bill_JsMessage::RECOVER_ACCOUNT_FAIL,
                         ]
                     ];
@@ -193,13 +193,13 @@ class BackendUserController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function getBackendUserAction()
@@ -207,46 +207,46 @@ class BackendUserController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $buid = (isset($params['buid'])) ? intval($params['buid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapter_backend_user->getBackendUserByID($buid);
+            $data = $this->_adapterBackendUser->getBackendUserByID($buid);
             if (!empty($data)) {
-                $json_array = [
+                $jsonArray = [
                     'data' => [
                         'buid' => $data['buid'],
                         'name' => $data['name'],
                         'brid' => $data['brid'],
-                        'roles' => $this->_adapter_backend_role->getAllRoles(),
+                        'roles' => $this->_adapterBackendRole->getAllRoles(),
                     ],
                 ];
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     private function _index()
     {
         $params = $this->_getParam('params', []);
-        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        list($currentPage, $pageLength, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
-        $tab_type = isset($params['tab_type']) ? intval($params['tab_type']) : 1;
+        $tabType = isset($params['tab_type']) ? intval($params['tab_type']) : 1;
 
         $conditions = [
-            'status =?' => $tab_type,
+            'status =?' => $tabType,
             'name!=?' => Bill_Constant::ADMIN_NAME,
         ];
         if ($keyword !== '') {
             $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
         }
-        $order_by = 'buid ASC';
-        $total = $this->_adapter_backend_user->getBackendUserCount($conditions);
-        $data = $this->_adapter_backend_user->getBackendUserData($conditions, $current_page, $page_length, $order_by);
-        $roles = $this->_adapter_backend_role->getAllRoles();
+        $orderBy = 'buid ASC';
+        $total = $this->_adapterBackendUser->getBackendUserCount($conditions);
+        $data = $this->_adapterBackendUser->getBackendUserData($conditions, $currentPage, $pageLength, $orderBy);
+        $roles = $this->_adapterBackendRole->getAllRoles();
         $output = [];
         foreach ($data as $value) {
             $output[] = [
@@ -256,18 +256,18 @@ class BackendUserController extends Zend_Controller_Action
             ];
         }
 
-        $json_data = [
+        $jsonData = [
             'data' => [
-                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
-                'pageIndex' => $current_page,
+                'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
+                'pageIndex' => $currentPage,
                 'totalItems' => $total,
                 'startIndex' => $start + 1,
-                'itemsPerPage' => $page_length,
+                'itemsPerPage' => $pageLength,
                 'currentItemCount' => count($output),
                 'items' => $output,
             ],
         ];
-        return $json_data;
+        return $jsonData;
     }
     
 }

@@ -5,14 +5,14 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_GrainRecycleHistory
      */
-    private $_adapter_grain_recycle_history;
+    private $_adapterGrainRecycleHistory;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_grain_recycle_history = new Application_Model_DBTable_GrainRecycleHistory();
+        $this->_adapterGrainRecycleHistory = new Application_Model_DBTable_GrainRecycleHistory();
     }
 
     public function indexAction()
@@ -25,62 +25,62 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
     public function ajaxGrainRecycleHistoryPeriodAction()
     {
         $params = $this->_getParam('params', []);
-        $start_date = (isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date']))
+        $startDate = (isset($params['day_start_date']) && Bill_Util::validDate($params['day_start_date']))
             ? trim($params['day_start_date']) : date('Y-m-d', strtotime('-1 month'));
-        $end_date = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
+        $endDate = (isset($params['day_end_date']) && Bill_Util::validDate($params['day_end_date']))
             ? trim($params['day_end_date']) : date('Y-m-d');
         $data = [];
-        $day_interval = intval((strtotime($end_date) - strtotime($start_date)) / 86400);
-        for($i = 0; $i <= $day_interval; $i++) {
-            $period_date = date('Y-m-d', strtotime($start_date . " + {$i} day"));
-            $data[$period_date] = 0;
+        $dayInterval = intval((strtotime($endDate) - strtotime($startDate)) / 86400);
+        for($i = 0; $i <= $dayInterval; $i++) {
+            $periodDate = date('Y-m-d', strtotime($startDate . " + {$i} day"));
+            $data[$periodDate] = 0;
         }
-        $day_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryDataByDay($start_date, $end_date);
-        foreach ($day_data as $day_value) {
-            if (isset($data[$day_value['period']])) {
-                $data[$day_value['period']] = intval($day_value['number']);
+        $dayData = $this->_adapterGrainRecycleHistory->getTotalGrainRecycleHistoryDataByDay($startDate, $endDate);
+        foreach ($dayData as $dayValue) {
+            if (isset($data[$dayValue['period']])) {
+                $data[$dayValue['period']] = intval($dayValue['number']);
             }
         }
-        $json_array = [
+        $jsonArray = [
             'data' => [
                 'days' => array_keys($data),
                 'data' => array_values($data),
             ],
         ];
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     public function ajaxGrainRecycleHistoryMonthAction()
     {
         $params = trim($this->_getParam('params', []));
-        $start_date = (isset($params['month_start_date']) && Bill_Util::validDate($params['month_start_date']))
+        $startDate = (isset($params['month_start_date']) && Bill_Util::validDate($params['month_start_date']))
             ? trim($params['month_start_date']) : date('Y-m', strtotime('-11 month')) . '-01';
-        $end_date = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
+        $endDate = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
             ? trim($params['month_end_date']) : '';
         $data = [
             'months' => [],
             'data' => [],
         ];
-        $temp_data = [];
-        $month_data = $this->_adapter_grain_recycle_history->getTotalGrainRecycleHistoryGroupData($start_date, $end_date);
-        foreach ($month_data as $month_value) {
-            $data['months'][] = $month_value['period'];
-            $temp_data[$month_value['period']] = $month_value['number'];
+        $tempData = [];
+        $monthData = $this->_adapterGrainRecycleHistory->getTotalGrainRecycleHistoryGroupData($startDate, $endDate);
+        foreach ($monthData as $monthValue) {
+            $data['months'][] = $monthValue['period'];
+            $tempData[$monthValue['period']] = $monthValue['number'];
         }
 
         $data['months'] = Bill_Util::getMonthRange($data['months']);
         foreach ($data['months'] as $month) {
-            if (isset($temp_data[$month])) {
-                $data['data'][] = intval($temp_data[$month]);
+            if (isset($tempData[$month])) {
+                $data['data'][] = intval($tempData[$month]);
             } else {
                 $data['data'][] = 0;
             }
         }
-        $json_array = [
+        $jsonArray = [
             'data' => $data
         ];
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 }

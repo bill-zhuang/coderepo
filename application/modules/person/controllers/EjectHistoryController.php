@@ -5,14 +5,14 @@ class person_EjectHistoryController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_EjectHistory
      */
-    private $_adapter_eject_history;
+    private $_adapterEjectHistory;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_eject_history= new Application_Model_DBTable_EjectHistory();
+        $this->_adapterEjectHistory = new Application_Model_DBTable_EjectHistory();
     }
 
     public function indexAction()
@@ -32,29 +32,29 @@ class person_EjectHistoryController extends Zend_Controller_Action
         if ($this->getRequest()->isPost()) {
             try {
                 $params = $this->getRequest()->getPost('params', []);
-                $happen_date = isset($params['eject_history_happen_date']) ? $params['eject_history_happen_date'] : '';
+                $happenDate = isset($params['eject_history_happen_date']) ? $params['eject_history_happen_date'] : '';
                 $count = isset($params['eject_history_count']) ? intval($params['eject_history_count']) : 0;
                 $type = isset($params['eject_history_type']) ? intval($params['eject_history_type']) : Bill_Constant::EJECT_TYPE_DREAM;
-                if (Bill_Util::validDate($happen_date) && $count > 0) {
-                    if (!$this->_adapter_eject_history->isHistoryExistByHappenDateTypeEhid($happen_date, $type)) {
+                if (Bill_Util::validDate($happenDate) && $count > 0) {
+                    if (!$this->_adapterEjectHistory->isHistoryExistByHappenDateTypeEhid($happenDate, $type)) {
                         $data = [
-                            'happen_date' => $happen_date,
+                            'happen_date' => $happenDate,
                             'count' => $count,
                             'type' => $type,
                             'status' => Bill_Constant::VALID_STATUS,
                             'create_time' => date('Y-m-d H:i:s'),
                             'update_time' => date('Y-m-d H:i:s'),
                         ];
-                        $affected_rows = $this->_adapter_eject_history->insert($data);
-                        $json_array = [
+                        $affectedRows = $this->_adapterEjectHistory->insert($data);
+                        $jsonArray = [
                             'data' => [
-                                'code' => $affected_rows,
-                                'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                'code' => $affectedRows,
+                                'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                         ? Bill_JsMessage::ADD_SUCCESS : Bill_JsMessage::ADD_FAIL,
                             ],
                         ];
                     } else {
-                        $json_array = [
+                        $jsonArray = [
                             'data' => [
                                 'code' => Bill_Constant::INIT_AFFECTED_ROWS,
                                 'message' => Bill_JsMessage::ADD_FAIL,
@@ -67,13 +67,13 @@ class person_EjectHistoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function modifyEjectHistoryAction()
@@ -82,28 +82,28 @@ class person_EjectHistoryController extends Zend_Controller_Action
             try {
                 $params = $this->getRequest()->getPost('params', []);
                 $ehid = isset($params['eject_history_ehid']) ? intval($params['eject_history_ehid']) : Bill_Constant::INVALID_PRIMARY_ID;
-                $happen_date = isset($params['eject_history_happen_date']) ? $params['eject_history_happen_date'] : '';
+                $happenDate = isset($params['eject_history_happen_date']) ? $params['eject_history_happen_date'] : '';
                 $count = isset($params['eject_history_count']) ? intval($params['eject_history_count']) : 0;
                 $type = isset($params['eject_history_type']) ? intval($params['eject_history_type']) : Bill_Constant::EJECT_TYPE_DREAM;
                 if ($ehid > Bill_Constant::INVALID_PRIMARY_ID && $count > 0) {
-                    if (!$this->_adapter_eject_history->isHistoryExistByHappenDateTypeEhid($happen_date, $type, $ehid)) {
+                    if (!$this->_adapterEjectHistory->isHistoryExistByHappenDateTypeEhid($happenDate, $type, $ehid)) {
                         $data = [
-                            'happen_date' => $happen_date,
+                            'happen_date' => $happenDate,
                             'count' => $count,
                             'type' => $type,
                             'update_time' => date('Y-m-d H:i:s'),
                         ];
-                        $where = $this->_adapter_eject_history->getAdapter()->quoteInto('ehid=?', $ehid);
-                        $affected_rows = $this->_adapter_eject_history->update($data, $where);
-                        $json_array = [
+                        $where = $this->_adapterEjectHistory->getAdapter()->quoteInto('ehid=?', $ehid);
+                        $affectedRows = $this->_adapterEjectHistory->update($data, $where);
+                        $jsonArray = [
                             'data' => [
-                                'code' => $affected_rows,
-                                'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                                'code' => $affectedRows,
+                                'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                         ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                             ]
                         ];
                     } else {
-                        $json_array = [
+                        $jsonArray = [
                             'data' => [
                                 'code' => Bill_Constant::INIT_AFFECTED_ROWS,
                                 'message' => Bill_JsMessage::MODIFY_FAIL,
@@ -116,13 +116,13 @@ class person_EjectHistoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function deleteEjectHistoryAction()
@@ -133,14 +133,14 @@ class person_EjectHistoryController extends Zend_Controller_Action
                 $ehid = isset($params['ehid']) ? intval($params['ehid']) : Bill_Constant::INVALID_PRIMARY_ID;
                 if ($ehid > Bill_Constant::INVALID_PRIMARY_ID) {
                     $where = [
-                        $this->_adapter_eject_history->getAdapter()->quoteInto('ehid=?', $ehid),
-                        $this->_adapter_eject_history->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                        $this->_adapterEjectHistory->getAdapter()->quoteInto('ehid=?', $ehid),
+                        $this->_adapterEjectHistory->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
                     ];
-                    $affected_rows = $this->_adapter_eject_history->delete($where);
-                    $json_array = [
+                    $affectedRows = $this->_adapterEjectHistory->delete($where);
+                    $jsonArray = [
                         'data' => [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
@@ -150,13 +150,13 @@ class person_EjectHistoryController extends Zend_Controller_Action
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     public function getEjectHistoryAction()
@@ -164,21 +164,21 @@ class person_EjectHistoryController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $ehid = (isset($params['ehid'])) ? intval($params['ehid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapter_eject_history->getEjectHistoryByID($ehid);
+            $data = $this->_adapterEjectHistory->getEjectHistoryByID($ehid);
             if (!empty($data)) {
-                $json_array = [
+                $jsonArray = [
                     'data' => $data,
                 ];
             }
         }
 
-        if (!isset($json_array['data'])) {
-            $json_array = [
+        if (!isset($jsonArray['data'])) {
+            $jsonArray = [
                 'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     private function _index()
@@ -188,34 +188,34 @@ class person_EjectHistoryController extends Zend_Controller_Action
             2 => 'Bad',
         ];
         $params = $this->_getParam('params', []);
-        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
-        $tab_type = isset($params['tab_type']) ? intval($params['tab_type']) : 0;
+        list($currentPage, $pageLength, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        $tabType = isset($params['tab_type']) ? intval($params['tab_type']) : 0;
 
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS
         ];
-        if ($tab_type !== 0) {
-            $conditions['type=?'] = $tab_type;
+        if ($tabType !== 0) {
+            $conditions['type=?'] = $tabType;
         }
-        $order_by = 'happen_date DESC';
-        $total = $this->_adapter_eject_history->getEjectHistoryCount($conditions);
-        $data = $this->_adapter_eject_history->getEjectHistoryData($conditions, $current_page, $page_length, $order_by);
+        $orderBy = 'happen_date DESC';
+        $total = $this->_adapterEjectHistory->getEjectHistoryCount($conditions);
+        $data = $this->_adapterEjectHistory->getEjectHistoryData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
             $value['type'] = isset($types[$value['type']]) ? $types[$value['type']] : 'Unknown';
         }
 
-        $json_data = [
+        $jsonData = [
             'data' => [
-                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
-                'pageIndex' => $current_page,
+                'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
+                'pageIndex' => $currentPage,
                 'totalItems' => $total,
                 'startIndex' => $start + 1,
-                'itemsPerPage' => $page_length,
+                'itemsPerPage' => $pageLength,
                 'currentItemCount' => count($data),
                 'items' => $data,
             ],
         ];
-        return $json_data;
+        return $jsonData;
     }
     
 }

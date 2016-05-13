@@ -9,7 +9,7 @@ class MainController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_BackendUser
      */
-	private $_adapter_backend_user;
+	private $_adapterBackendUser;
     
     public function init ()
     {
@@ -17,7 +17,7 @@ class MainController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
         $this->_auth = new Application_Model_Auth();
-        $this->_adapter_backend_user = new Application_Model_DBTable_BackendUser();
+        $this->_adapterBackendUser = new Application_Model_DBTable_BackendUser();
     }
     public function indexAction()
     {
@@ -28,45 +28,45 @@ class MainController extends Zend_Controller_Action
     public function modifyPasswordAction()
     {
         if ($this->getRequest()->isPost()) {
-            $json_array = [];
-            $user_name = Application_Model_Auth::getIdentity()->name;
+            $jsonArray = [];
+            $userName = Application_Model_Auth::getIdentity()->name;
             $salt = Application_Model_Auth::getIdentity()->salt;
             $params = $this->getRequest()->getPost('params', []);
-            $old_password = isset($params['old_password']) ? addslashes($params['old_password']) : '';
-            $new_password = isset($params['new_password']) ? addslashes($params['new_password']) : '';
-            $user_info = $this->_adapter_backend_user->getUserInfo($user_name);
-            if (isset($user_info['password'])) {
-                if ($user_info['password'] !== md5($old_password . $salt)) {
-                    $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, '原密码错误!');
+            $oldPassword = isset($params['old_password']) ? addslashes($params['old_password']) : '';
+            $newPassword = isset($params['new_password']) ? addslashes($params['new_password']) : '';
+            $userInfo = $this->_adapterBackendUser->getUserInfo($userName);
+            if (isset($userInfo['password'])) {
+                if ($userInfo['password'] !== md5($oldPassword . $salt)) {
+                    $jsonArray['error'] = Bill_Util::getJsonResponseErrorArray(200, '原密码错误!');
                 } else {
                     $security = new Bill_Security();
-                    $new_salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
-                    $where = $this->_adapter_backend_user->getAdapter()->quoteInto('name = ?', $user_name);
-                    $update_data = [
-                        'password' => md5($new_password . $new_salt),
-                        'salt' => $new_salt,
+                    $newSalt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
+                    $where = $this->_adapterBackendUser->getAdapter()->quoteInto('name = ?', $userName);
+                    $updateData = [
+                        'password' => md5($newPassword . $newSalt),
+                        'salt' => $newSalt,
                         'update_time' => date('Y-m-d H:i:s')
                     ];
-                    $affected_rows = $this->_adapter_backend_user->update($update_data, $where);
-                    if ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS) {
-                        $this->_auth->logIn($user_name, $new_password, 'backend_user',
-                            $this->_adapter_backend_user->getAdapter());
-                        $json_array['data'] = [
-                            'code' => $affected_rows,
-                            'message' => ($affected_rows > Bill_Constant::INIT_AFFECTED_ROWS)
+                    $affectedRows = $this->_adapterBackendUser->update($updateData, $where);
+                    if ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS) {
+                        $this->_auth->logIn($userName, $newPassword, 'backend_user',
+                            $this->_adapterBackendUser->getAdapter());
+                        $jsonArray['data'] = [
+                            'code' => $affectedRows,
+                            'message' => ($affectedRows > Bill_Constant::INIT_AFFECTED_ROWS)
                                     ? Bill_JsMessage::MODIFY_SUCCESS : Bill_JsMessage::MODIFY_FAIL,
                         ];
                     } else {
-                        $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, '修改失败!');
+                        $jsonArray['error'] = Bill_Util::getJsonResponseErrorArray(200, '修改失败!');
                     }
                 }
             }
 
-            if (!isset($json_array['data']) && !isset($json_array['error'])) {
-                $json_array['error'] = Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO);
+            if (!isset($jsonArray['data']) && !isset($jsonArray['error'])) {
+                $jsonArray['error'] = Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO);
             }
 
-            echo json_encode($json_array);
+            echo json_encode($jsonArray);
         } else {
             $this->_helper->layout()->enableLayout();
             $this->_helper->viewRenderer->setNoRender(false);

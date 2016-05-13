@@ -18,15 +18,15 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         return intval($count[0]['total']);
     }
 
-    public function getBackendAclData(array $conditions, $startPage, $pageLength, $order_by, $group_by)
+    public function getBackendAclData(array $conditions, $startPage, $pageLength, $orderBy, $groupBy)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select
-            ->order($order_by)
-            ->group($group_by)
+            ->order($orderBy)
+            ->group($groupBy)
             ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
@@ -63,15 +63,15 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         return isset($data['baid']) ? $data['baid'] : Bill_Constant::INVALID_PRIMARY_ID;
     }
 
-    public function getInvalidActionsAclIDs($module, $controller, array $valid_actions)
+    public function getInvalidActionsAclIDs($module, $controller, array $validActions)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'baid')
             ->where('module=?', $module)
             ->where('controller=?', $controller)
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if (!empty($valid_actions)) {
-            $select->where('action not in (?)', $valid_actions);
+        if (!empty($validActions)) {
+            $select->where('action not in (?)', $validActions);
         }
         $data = $select
             ->query()->fetchAll();
@@ -83,14 +83,14 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         return $baids;
     }
 
-    public function getInvalidControllersAclIDs($module, array $valid_controllers)
+    public function getInvalidControllersAclIDs($module, array $validControllers)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'baid')
             ->where('module=?', $module)
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if (!empty($valid_controllers)) {
-            $select->where('controller not in (?)', $valid_controllers);
+        if (!empty($validControllers)) {
+            $select->where('controller not in (?)', $validControllers);
         }
         $data = $select
             ->query()->fetchAll();
@@ -146,8 +146,8 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
             ->query()->fetchAll();
         $map = [];
         foreach ($data as $value) {
-            $acl_map_key = Bill_Util::getAclMapKey($value['module'], $value['controller'], $value['action']);
-            $map[$acl_map_key] = $value['baid'];
+            $aclMapKey = Bill_Util::getAclMapKey($value['module'], $value['controller'], $value['action']);
+            $map[$aclMapKey] = $value['baid'];
         }
 
         return $map;

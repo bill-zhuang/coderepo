@@ -2,10 +2,10 @@
 
 class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
 {
-    public function __construct($section_name = Bill_Constant::LOCAL_DB)
+    public function __construct($sectionName = Bill_Constant::LOCAL_DB)
     {
         $config = [
-            Zend_Db_Table_Abstract::ADAPTER => Application_Model_DBAdapter::getDBAdapter($section_name),
+            Zend_Db_Table_Abstract::ADAPTER => Application_Model_DBAdapter::getDBAdapter($sectionName),
             Zend_Db_Table_Abstract::NAME => 'backend_log'
         ];
         parent::__construct($config);
@@ -22,7 +22,7 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
         return $count[0]['total'];
     }
 
-    public function getBackendLogData(array $conditions, $startPage, $pageLength, $order_by)
+    public function getBackendLogData(array $conditions, $startPage, $pageLength, $orderBy)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value) {
@@ -30,7 +30,7 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
         }
         $data = $select
             ->limitPage($startPage, $pageLength)
-            ->order($order_by)
+            ->order($orderBy)
             ->query()->fetchAll();
         return $data;
     }
@@ -51,37 +51,37 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
         return $data;
     }
 
-    public function writeLog($type, $table_name, $data, $where = '')
+    public function writeLog($type, $tableName, $data, $where = '')
     {
         $sql = '';
         switch($type) {
             case 'insert':
-                $sql = $this->_getInsertSQL($table_name, $data);
+                $sql = $this->_getInsertSQL($tableName, $data);
                 break;
             case 'update':
-                $sql = $this->_getUpdateSQL($table_name, $data, $where);
+                $sql = $this->_getUpdateSQL($tableName, $data, $where);
                 break;
             case 'delete':
-                $sql = $this->_getDeleteSQL($table_name, $where);
+                $sql = $this->_getDeleteSQL($tableName, $where);
                 break;
             default:
                 break;
         }
 
         if ($sql != '') {
-            $user_id = isset(Application_Model_Auth::getIdentity()->buid) ?
+            $userId = isset(Application_Model_Auth::getIdentity()->buid) ?
                 Application_Model_Auth::getIdentity()->buid : Bill_Constant::INVALID_PRIMARY_ID;
-            $date_time = date('Y-m-d H:i:s');
-            $insert_data = [
+            $dateTime = date('Y-m-d H:i:s');
+            $insertData = [
                 'type' => $type,
-                'table' => $table_name,
+                'table' => $tableName,
                 'content' => $sql,
-                'buid' => $user_id,
+                'buid' => $userId,
                 'status' => Bill_Constant::VALID_STATUS,
-                'create_time' => $date_time,
-                'update_time' => $date_time
+                'create_time' => $dateTime,
+                'update_time' => $dateTime
             ];
-            parent::insert($insert_data);
+            parent::insert($insertData);
         }
     }
 
@@ -90,9 +90,9 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
         $sql = 'insert into ' . $table . '(';
         $names = '';
         $values = '';
-        foreach ($bind as $column_name => $column_value) {
-            $names .= $column_name . ',';
-            $values .= '\'' . addslashes($column_value) . '\',';
+        foreach ($bind as $columnName => $columnValue) {
+            $names .= $columnName . ',';
+            $values .= '\'' . addslashes($columnValue) . '\',';
         }
         $names = substr($names, 0, -1);
         $values = substr($values, 0, -1);
@@ -104,15 +104,15 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
     private function _getUpdateSQL($table, array $bind, $where)
     {
         $sql = 'update ' . $table . ' set ';
-        $set_sql = '';
-        foreach ($bind as $column_name => $column_value) {
-            if ($column_value instanceof Zend_Db_Expr) {
-                $column_value = $column_value->__toString();
+        $setSql = '';
+        foreach ($bind as $columnName => $columnValue) {
+            if ($columnValue instanceof Zend_Db_Expr) {
+                $columnValue = $columnValue->__toString();
             }
-            $set_sql .= $column_name . '=\'' . addslashes($column_value) . '\',';
+            $setSql .= $columnName . '=\'' . addslashes($columnValue) . '\',';
         }
-        $set_sql = substr($set_sql, 0, -1);
-        $sql .= $set_sql . ' where ' . $this->_processWhere($where) . ';';
+        $setSql = substr($setSql, 0, -1);
+        $sql .= $setSql . ' where ' . $this->_processWhere($where) . ';';
 
         return $sql;
     }

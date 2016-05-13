@@ -26,60 +26,60 @@ class Bill_Image
         $ratio = floatval($ratio);
         if ($ratio > 0) {
             if ($ratio != 1.0) {
-                $scale_width = intval($this->_width * $ratio);
-                $scale_height = intval($this->_height * $ratio);
-                $this->resize($scale_width, $scale_height);
+                $scaleWidth = intval($this->_width * $ratio);
+                $scaleHeight = intval($this->_height * $ratio);
+                $this->resize($scaleWidth, $scaleHeight);
             }
         }
 
         return $this;
     }
 
-    public function resizeWidth($resize_width)
+    public function resizeWidth($resizeWidth)
     {
-        $resize_width = intval($resize_width);
-        if ($resize_width > 0) {
-            if ($resize_width != $this->_width) {
-                $ratio = floatval($resize_width / $this->_width);
-                $resize_height = intval($this->_height * $ratio);
-                $this->resize($resize_width, $resize_height);
+        $resizeWidth = intval($resizeWidth);
+        if ($resizeWidth > 0) {
+            if ($resizeWidth != $this->_width) {
+                $ratio = floatval($resizeWidth / $this->_width);
+                $resizeHeight = intval($this->_height * $ratio);
+                $this->resize($resizeWidth, $resizeHeight);
             }
         }
 
         return $this;
     }
 
-    public function resizeHeight($resize_height)
+    public function resizeHeight($resizeHeight)
     {
-        $resize_height = intval($resize_height);
-        if ($resize_height > 0) {
-            if ($resize_height != $this->_height) {
-                $ratio = floatval($resize_height / $this->_height);
-                $resize_width = intval($this->_width * $ratio);
-                $this->resize($resize_width, $resize_height);
+        $resizeHeight = intval($resizeHeight);
+        if ($resizeHeight > 0) {
+            if ($resizeHeight != $this->_height) {
+                $ratio = floatval($resizeHeight / $this->_height);
+                $resizeWidth = intval($this->_width * $ratio);
+                $this->resize($resizeWidth, $resizeHeight);
             }
         }
 
         return $this;
     }
 
-    public function resize($resize_width, $resize_height)
+    public function resize($resizeWidth, $resizeHeight)
     {
-        if ($resize_width > 0 && $resize_height > 0) {
-            if ($resize_width != $this->_width || $resize_height != $this->_height) {
-                $resize_image = imagecreatetruecolor($resize_width, $resize_height);
-                imagecopyresampled($resize_image, $this->_image, 0, 0, 0, 0,
-                    $resize_width, $resize_height, $this->getImageWidth(), $this->getImageHeight());
-                $this->_width = $resize_width;
-                $this->_height = $resize_height;
-                $this->_image = $resize_image;
+        if ($resizeWidth > 0 && $resizeHeight > 0) {
+            if ($resizeWidth != $this->_width || $resizeHeight != $this->_height) {
+                $resizeImage = imagecreatetruecolor($resizeWidth, $resizeHeight);
+                imagecopyresampled($resizeImage, $this->_image, 0, 0, 0, 0,
+                    $resizeWidth, $resizeHeight, $this->getImageWidth(), $this->getImageHeight());
+                $this->_width = $resizeWidth;
+                $this->_height = $resizeHeight;
+                $this->_image = $resizeImage;
             }
         }
 
         return $this;
     }
 
-    public function save($save_path, $extension = null, $quality = null)
+    public function save($savePath, $extension = null, $quality = null)
     {
         if ($quality !== null) {
             $quality = intval($quality);
@@ -93,16 +93,16 @@ class Bill_Image
         switch($extension) {
             case 'jpg':
             case 'jpeg':
-                imagejpeg($this->_image, $save_path, $quality);
+                imagejpeg($this->_image, $savePath, $quality);
                 break;
             case 'png':
-                imagepng($this->_image, $save_path, $quality);
+                imagepng($this->_image, $savePath, $quality);
                 break;
             case 'gif':
-                imagegif($this->_image, $save_path);
+                imagegif($this->_image, $savePath);
                 break;
             case 'bmp':
-                imagewbmp($this->_path, $save_path);
+                imagewbmp($this->_path, $savePath);
                 break;
             default:
                 throw new Exception('Unsupported image extension.');
@@ -125,13 +125,13 @@ class Bill_Image
     }
 
     /**
-     * @param string $blur_type string gaussian|selective
+     * @param string $blurType string gaussian|selective
      * @return $this
      */
-    public function blur($blur_type = 'gaussian')
+    public function blur($blurType = 'gaussian')
     {
-        $blur_type = strtolower($blur_type);
-        switch ($blur_type) {
+        $blurType = strtolower($blurType);
+        switch ($blurType) {
             case 'gaussian':
                 imagefilter($this->_image, IMG_FILTER_GAUSSIAN_BLUR);
                 break;
@@ -144,21 +144,21 @@ class Bill_Image
         return $this;
     }
 
-    public function rotate($angle, $bg_color_hex = '#000000')
+    public function rotate($angle, $bgColorHex = '#000000')
     {
         $angle = intval($angle);
         if ($angle >= 0 && $angle <= 360) {
-            $bg_color = 0;
-            if (strlen($bg_color_hex) == 7) {
-                list($red, $green, $blue) = sscanf($bg_color_hex, '#%02x%02x%02x');
-                $bg_color = imagecolorallocate($this->_image, $red, $green, $blue);
+            $bgColor = 0;
+            if (strlen($bgColorHex) == 7) {
+                list($red, $green, $blue) = sscanf($bgColorHex, '#%02x%02x%02x');
+                $bgColor = imagecolorallocate($this->_image, $red, $green, $blue);
             }
-            $rotate_image = imagerotate($this->_image, $angle, $bg_color);
-            imagesavealpha($rotate_image, true);
-            imagealphablending($rotate_image, true);
-            $this->_image = $rotate_image;
-            $this->_width = imagesx($rotate_image);
-            $this->_height = imagesy($rotate_image);
+            $rotateImage = imagerotate($this->_image, $angle, $bgColor);
+            imagesavealpha($rotateImage, true);
+            imagealphablending($rotateImage, true);
+            $this->_image = $rotateImage;
+            $this->_width = imagesx($rotateImage);
+            $this->_height = imagesy($rotateImage);
         }
 
         return $this;
@@ -170,23 +170,23 @@ class Bill_Image
      */
     public function flip($direction)
     {
-        $flip_image = imagecreatetruecolor($this->_width, $this->_height);
-        imagealphablending($flip_image, false);
-        imagesavealpha($flip_image, true);
+        $flipImage = imagecreatetruecolor($this->_width, $this->_height);
+        imagealphablending($flipImage, false);
+        imagesavealpha($flipImage, true);
         //
         $direction = strtolower($direction);
         switch ($direction) {
             case 'x':
                 for ($x = 0; $x < $this->_width; $x++) {
-                    imagecopy($flip_image, $this->_image, $x, 0, $this->_width - $x - 1, 0, 1, $this->_height);
+                    imagecopy($flipImage, $this->_image, $x, 0, $this->_width - $x - 1, 0, 1, $this->_height);
                 }
-                $this->_image = $flip_image;
+                $this->_image = $flipImage;
                 break;
             case 'y':
                 for ($y = 0; $y < $this->_height; $y++) {
-                    imagecopy($flip_image, $this->_image, 0, $y, 0, $this->_height - $y - 1, $this->_width, 1);
+                    imagecopy($flipImage, $this->_image, 0, $y, 0, $this->_height - $y - 1, $this->_width, 1);
                 }
-                $this->_image = $flip_image;
+                $this->_image = $flipImage;
                 break;
             default:
                 break;
@@ -196,26 +196,26 @@ class Bill_Image
 
     /**
      * combine two images together, both two images width & height should same
-     * @param $background_path string background image path
-     * @param $foreground_path string foreground image path
+     * @param $backgroundPath string background image path
+     * @param $foregroundPath string foreground image path
      * @return string result image path
      */
-    public static function cover($background_path, $foreground_path)
+    public static function cover($backgroundPath, $foregroundPath)
     {
-        if (file_exists($background_path) && file_exists($foreground_path)) {
-            $output_path = Bill_File::getTempDir() . uniqid() . 'cover.png';
-            $background_size = getimagesize($background_path);
-            $foreground_size = getimagesize($foreground_path);
-            if ($background_size[0] == $foreground_size[0] && $background_size[1] == $foreground_size[1]) {
-                $back_image = imagecreatefrompng($background_path);
-                $fore_image = imagecreatefrompng($foreground_path);
+        if (file_exists($backgroundPath) && file_exists($foregroundPath)) {
+            $outputPath = Bill_File::getTempDir() . uniqid() . 'cover.png';
+            $backgroundSize = getimagesize($backgroundPath);
+            $foregroundSize = getimagesize($foregroundPath);
+            if ($backgroundSize[0] == $foregroundSize[0] && $backgroundSize[1] == $foregroundSize[1]) {
+                $backImage = imagecreatefrompng($backgroundPath);
+                $foreImage = imagecreatefrompng($foregroundPath);
 
-                imagesavealpha($fore_image, true);
-                imagealphablending($fore_image, true);
-                imagecopy($back_image, $fore_image, 0, 0, 0, 0, $foreground_size[0], $foreground_size[1]);
-                imagepng($back_image, $output_path);
-                if (file_exists($output_path)) {
-                    return $output_path;
+                imagesavealpha($foreImage, true);
+                imagealphablending($foreImage, true);
+                imagecopy($backImage, $foreImage, 0, 0, 0, 0, $foregroundSize[0], $foregroundSize[1]);
+                imagepng($backImage, $outputPath);
+                if (file_exists($outputPath)) {
+                    return $outputPath;
                 }
             }
         }
@@ -226,45 +226,45 @@ class Bill_Image
     /**
      * @param array $paths join images path
      * @param $direction string acceptable argument: x|y, x: join height, y: join width
-     * @param $direction_length integer join image width/height
+     * @param $directionLength integer join image width/height
      * @return string join image path
      * @throws Exception
      */
-    public function joinMultipleImages(array $paths, $direction, $direction_length)
+    public function joinMultipleImages(array $paths, $direction, $directionLength)
     {
-        $join_path = Bill_File::getTempDir() . uniqid() . 'join.png';
+        $joinPath = Bill_File::getTempDir() . uniqid() . 'join.png';
         if (!empty($paths)) {
             if ($direction == 'x' || $direction == 'y') {
-                if ($direction_length > 0) {
-                    list($join_width, $join_height) = ($direction == 'x') ? [$direction_length, 0] : [0, $direction_length];
+                if ($directionLength > 0) {
+                    list($joinWidth, $joinHeight) = ($direction == 'x') ? [$directionLength, 0] : [0, $directionLength];
                     $widths = [];
                     $heights = [];
                     foreach ($paths as $path) {
                         $this->_loadImage($path);
                         if ($direction == 'x') {
-                            $this->resizeWidth($direction_length)->save($path);
+                            $this->resizeWidth($directionLength)->save($path);
                         } else {
-                            $this->resizeHeight($direction_length)->save($path);
+                            $this->resizeHeight($directionLength)->save($path);
                         }
-                        $join_height += $this->getImageHeight();
+                        $joinHeight += $this->getImageHeight();
                         $widths[] = $this->getImageWidth();
                         $heights[] = $this->getImageHeight();
                     }
-                    $join_image = imagecreatetruecolor($join_width, $join_height);
-                    $start_x = 0;
-                    $start_y = 0;
-                    foreach ($paths as $path_key => $path) {
+                    $joinImage = imagecreatetruecolor($joinWidth, $joinHeight);
+                    $startX = 0;
+                    $startY = 0;
+                    foreach ($paths as $pathKey => $path) {
                         $im = imagecreatefrompng($path);
-                        imagecopyresampled($join_image, $im, $start_x, $start_y, 0, 0,
-                            $widths[$path_key], $heights[$path_key], $widths[$path_key], $heights[$path_key]);
+                        imagecopyresampled($joinImage, $im, $startX, $startY, 0, 0,
+                            $widths[$pathKey], $heights[$pathKey], $widths[$pathKey], $heights[$pathKey]);
                         //increase width/height
-                        $start_x += ($direction == 'x') ? 0 : $widths[$path_key];
-                        $start_y += ($direction == 'x') ? $heights[$path_key] : 0;
+                        $startX += ($direction == 'x') ? 0 : $widths[$pathKey];
+                        $startY += ($direction == 'x') ? $heights[$pathKey] : 0;
                         //remove file
                         imagedestroy($im);
                         //@unlink($path);
                     }
-                    imagepng($join_image, $join_path);
+                    imagepng($joinImage, $joinPath);
                 } else {
                     throw new Exception('Join image direction length can\'t lower than 0.');
                 }
@@ -275,7 +275,7 @@ class Bill_Image
             throw new Exception('Join image path empty!');
         }
 
-        return $join_path;
+        return $joinPath;
     }
 
     public function getImageWidth()

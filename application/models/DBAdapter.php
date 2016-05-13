@@ -9,14 +9,14 @@
 class Application_Model_DBAdapter
 {
     /**
-     * @param string $section_name in db.ini file
+     * @param string $sectionName in db.ini file
      * @return mixed|Zend_Db_Adapter_Abstract
      * @throws Exception when no db config exist
      */
-    public static function getDBAdapter($section_name = Bill_Constant::LOCAL_DB)
+    public static function getDBAdapter($sectionName = Bill_Constant::LOCAL_DB)
     {
-        if (Zend_Registry::isRegistered($section_name)) {
-            return Zend_Registry::get($section_name);
+        if (Zend_Registry::isRegistered($sectionName)) {
+            return Zend_Registry::get($sectionName);
         } else {
             throw new Exception('Database config error!');
         }

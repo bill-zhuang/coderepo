@@ -25,24 +25,24 @@ class LoginController extends Zend_Controller_Action
     
     public function loginAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         $params = $this->getRequest()->getPost('params', []);
-        $user_name = isset($params['username']) ? addslashes($params['username']) : '';
-        $user_password = isset($params['password']) ? addslashes($params['password']) : '';
+        $userName = isset($params['username']) ? addslashes($params['username']) : '';
+        $userPassword = isset($params['password']) ? addslashes($params['password']) : '';
         $database = new Application_Model_DBTable_BackendUser();
-        $this->_auth->logIn($user_name, $user_password, 'backend_user', $database->getAdapter());
+        $this->_auth->logIn($userName, $userPassword, 'backend_user', $database->getAdapter());
 
         if (Application_Model_Auth::isValid()) {
-            $json_array['data'] = [
+            $jsonArray['data'] = [
                 'redirectUrl' => '/main/index',
             ];
         } else {
-            $json_array['error'] = [
+            $jsonArray['error'] = [
                 'message' => Bill_JsMessage::ACCOUNT_PASSWORD_ERROR,
             ];
         }
 
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
     
     

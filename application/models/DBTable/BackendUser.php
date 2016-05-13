@@ -18,14 +18,14 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
         return $count[0]['total'];
     }
 
-    public function getBackendUserData(array $conditions, $startPage, $pageLength, $order_by)
+    public function getBackendUserData(array $conditions, $startPage, $pageLength, $orderBy)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select
-            ->order($order_by)
+            ->order($orderBy)
             ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
@@ -38,10 +38,10 @@ class Application_Model_DBTable_BackendUser extends Application_Model_DBTableFac
             ->query()->fetch();
     }
 
-    public function getUserInfo($user_name)
+    public function getUserInfo($userName)
     {
         return $this->select()->reset()
-            ->where('name=?', $user_name)
+            ->where('name=?', $userName)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetch();
     }

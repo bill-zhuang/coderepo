@@ -2,84 +2,84 @@
 
 class Bill_ConvertCoordinate
 {
-    private static $baidu_url_api_convert_prefix = 'http://api.map.baidu.com/ag/coord/convert?';
+    private static $baiduUrlApiConvertPrefix = 'http://api.map.baidu.com/ag/coord/convert?';
 
     //�����,�ȸ�õ��ľ�γ�Ⱦ������¼�����Ƽ��ɵõ��ٶȵ�lng + 0.0065 lat + 0.0060
     //x/y����γ�����from/to������ת��Ч��������������£�from=2��ʾ�ȸ�from=0��ʾgpsto=4 ��ʾ�ٶ�
     public static function fromGoogleToBaiduByApi($lng, $lat)
     {
-        $http_query = "from=2&to=4&x={$lng}&y={$lat}";
-        $content = file_get_contents(self::$baidu_url_api_convert_prefix . $http_query);
-        $decode_content = json_decode($content, true);
+        $httpQuery = "from=2&to=4&x={$lng}&y={$lat}";
+        $content = file_get_contents(self::$baiduUrlApiConvertPrefix . $httpQuery);
+        $decodeContent = json_decode($content, true);
 
-        return $decode_content;
+        return $decodeContent;
     }
 
     //all below url reference: https://on4wp7.codeplex.com/SourceControl/changeset/view/21483#353936
-    public static function fromGCJToBD($gcj_lat, $gcj_lng)
+    public static function fromGCJToBD($gcjLat, $gcjLng)
     {
-        $lat_pi = M_PI * 3000.0 / 180.0;
+        $latPi = M_PI * 3000.0 / 180.0;
 
-        $z = sqrt($gcj_lat * $gcj_lat + $gcj_lng * $gcj_lng) + 0.00002 * sin($gcj_lat * $lat_pi);
-        $theta = atan2($gcj_lat, $gcj_lng) - 0.000003 * cos($gcj_lng * $lat_pi);
+        $z = sqrt($gcjLat * $gcjLat + $gcjLng * $gcjLng) + 0.00002 * sin($gcjLat * $latPi);
+        $theta = atan2($gcjLat, $gcjLng) - 0.000003 * cos($gcjLng * $latPi);
 
-        $bd_lng = $z * cos($theta) + 0.0065;
-        $bd_lat = $z * sin($theta) + 0.006;
+        $bdLng = $z * cos($theta) + 0.0065;
+        $bdLat = $z * sin($theta) + 0.006;
 
-        return array('Longitude' => $bd_lng, 'Latitude' => $bd_lat);
+        return array('Longitude' => $bdLng, 'Latitude' => $bdLat);
     }
 
-    public static function fromBDToGCJ($db_lat, $bd_lng)
+    public static function fromBDToGCJ($dbLat, $bdLng)
     {
-        $lat_pi = M_PI * 3000.0 / 180.0;
+        $latPi = M_PI * 3000.0 / 180.0;
 
-        $lng = $bd_lng - 0.0065;
-        $lat = $db_lat - 0.006;
+        $lng = $bdLng - 0.0065;
+        $lat = $dbLat - 0.006;
 
-        $z = sqrt($lat * $lat + $lng * $lng) - 0.00002 * sin($lat * $lat_pi);
-        $theta = atan2($lat, $lng) - 0.000003 * cos($lng * $lat_pi);
+        $z = sqrt($lat * $lat + $lng * $lng) - 0.00002 * sin($lat * $latPi);
+        $theta = atan2($lat, $lng) - 0.000003 * cos($lng * $latPi);
 
-        $gcj_lng = $z * cos($theta);
-        $gcj_lat = $z * sin($theta);
+        $gcjLng = $z * cos($theta);
+        $gcjLat = $z * sin($theta);
 
-        return array('Longitude' => $gcj_lng, 'Latitude' => $gcj_lat);
+        return array('Longitude' => $gcjLng, 'Latitude' => $gcjLat);
     }
 
-    public static function fromWGSToGCJ($wgs_lat, $wgs_lng)
+    public static function fromWGSToGCJ($wgsLat, $wgsLng)
     {
         $a = 6378245.0;
         $ee = 0.00669342162296594323;
 
-        $d_lat = self::wgsLat($wgs_lng - 105.0, $wgs_lat - 35.0);
-        $d_lng = self::wgsLng($wgs_lng - 105.0, $wgs_lat - 35.0);
+        $dLat = self::wgsLat($wgsLng - 105.0, $wgsLat - 35.0);
+        $dLng = self::wgsLng($wgsLng - 105.0, $wgsLat - 35.0);
 
-        $rad_lat = $wgs_lat / 180.0 * M_PI;
-        $magic_lat = sin($rad_lat);
-        $magic_lat = 1 - $ee * $magic_lat * $magic_lat;
-        $magic_lat_sqrt = sqrt($magic_lat);
+        $radLat = $wgsLat / 180.0 * M_PI;
+        $magicLat = sin($radLat);
+        $magicLat = 1 - $ee * $magicLat * $magicLat;
+        $magicLat_sqrt = sqrt($magicLat);
 
-        $d_lat = ($d_lat * 180.0) / (($a * (1 - $ee))) / (($magic_lat * $magic_lat_sqrt) * M_PI);
-        $d_lng = ($d_lng * 180.0) / ($a / $magic_lat_sqrt * cos($rad_lat) * M_PI);
+        $dLat = ($dLat * 180.0) / (($a * (1 - $ee))) / (($magicLat * $magicLat_sqrt) * M_PI);
+        $dLng = ($dLng * 180.0) / ($a / $magicLat_sqrt * cos($radLat) * M_PI);
 
-        return array('Longitude' => $wgs_lng + $d_lng, 'Latitude' => $wgs_lat + $wgs_lat);
+        return array('Longitude' => $wgsLng + $dLng, 'Latitude' => $wgsLat + $wgsLat);
     }
 
-    private static function wgsLat($wgs_lng, $wgs_lat)
+    private static function wgsLat($wgsLng, $wgsLat)
     {
-        $ret = -100.0 + 2.0 * $wgs_lng + 3.0 * $wgs_lat + 0.2 * $wgs_lat * $wgs_lat + 0.1 * $wgs_lng * $wgs_lat + 0.2 * sqrt(abs($wgs_lng));
-        $ret += (20.0 * sin(6.0 * $wgs_lng * M_PI) + 20.0 * sin(2.0 * $wgs_lng * M_PI)) * 2.0 / 3.0;
-        $ret += (20.0 * sin($wgs_lat * M_PI) + 40.0 * sin($wgs_lat / 3.0 * M_PI)) * 2.0 / 3.0;
-        $ret += (160.0 * sin($wgs_lat / 12.0 * M_PI) + 320 * sin($wgs_lat * M_PI / 30.0)) * 2.0 / 3.0;
+        $ret = -100.0 + 2.0 * $wgsLng + 3.0 * $wgsLat + 0.2 * $wgsLat * $wgsLat + 0.1 * $wgsLng * $wgsLat + 0.2 * sqrt(abs($wgsLng));
+        $ret += (20.0 * sin(6.0 * $wgsLng * M_PI) + 20.0 * sin(2.0 * $wgsLng * M_PI)) * 2.0 / 3.0;
+        $ret += (20.0 * sin($wgsLat * M_PI) + 40.0 * sin($wgsLat / 3.0 * M_PI)) * 2.0 / 3.0;
+        $ret += (160.0 * sin($wgsLat / 12.0 * M_PI) + 320 * sin($wgsLat * M_PI / 30.0)) * 2.0 / 3.0;
 
         return $ret;
     }
 
-    private static function wgsLng($wgs_lng, $wgs_lat)
+    private static function wgsLng($wgsLng, $wgsLat)
     {
-        $ret = 300.0 + $wgs_lng + 2.0 * $wgs_lat + 0.1 * $wgs_lng * $wgs_lng + 0.1 * $wgs_lng * $wgs_lat + 0.1 * sqrt(abs($wgs_lng));
-        $ret += (20.0 * sin(6.0 * $wgs_lng * M_PI) + 20.0 * sin(2.0 * $wgs_lng * M_PI)) * 2.0 / 3.0;
-        $ret += (20.0 * sin($wgs_lng * M_PI) + 40.0 * sin($wgs_lng / 3.0 * M_PI)) * 2.0 / 3.0;
-        $ret += (150.0 * sin($wgs_lng / 12.0 * M_PI) + 300.0 * sin($wgs_lng / 30.0 * M_PI)) * 2.0 / 3.0;
+        $ret = 300.0 + $wgsLng + 2.0 * $wgsLat + 0.1 * $wgsLng * $wgsLng + 0.1 * $wgsLng * $wgsLat + 0.1 * sqrt(abs($wgsLng));
+        $ret += (20.0 * sin(6.0 * $wgsLng * M_PI) + 20.0 * sin(2.0 * $wgsLng * M_PI)) * 2.0 / 3.0;
+        $ret += (20.0 * sin($wgsLng * M_PI) + 40.0 * sin($wgsLng / 3.0 * M_PI)) * 2.0 / 3.0;
+        $ret += (150.0 * sin($wgsLng / 12.0 * M_PI) + 300.0 * sin($wgsLng / 30.0 * M_PI)) * 2.0 / 3.0;
 
         return $ret;
     }

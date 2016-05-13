@@ -19,20 +19,20 @@ class GoogleMapController extends Zend_Controller_Action
     
     public function markLocationAction()
     {
-        $json_array = [];
+        $jsonArray = [];
         $params = $this->_getParam('params', []);
         if(isset($params['location'])) {
-            $coordinate_info = Bill_GoogleMap::getLngLatByAddress($params['location']);
-            if (!empty($coordinate_info)) {
-                $json_array['data'] = $coordinate_info;
+            $coordinateInfo = Bill_GoogleMap::getLngLatByAddress($params['location']);
+            if (!empty($coordinateInfo)) {
+                $jsonArray['data'] = $coordinateInfo;
             } else {
-                $json_array['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Fetch Location coordinate failed.');
+                $jsonArray['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Fetch Location coordinate failed.');
             }
         } else {
-            $json_array['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Param location not provided.');
+            $jsonArray['error'] = Bill_Util::getJsonResponseErrorArray('200', 'Param location not provided.');
         }
         
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     public function multipleLocationAction()
@@ -43,24 +43,24 @@ class GoogleMapController extends Zend_Controller_Action
 
     public function ajaxMultipleLocationAction()
     {
-        $json_array = [
+        $jsonArray = [
             'data' => [
                 'coordinates' => $this->_multipleLocation()
             ],
         ];
-        echo json_encode($json_array);
+        echo json_encode($jsonArray);
     }
 
     private function _multipleLocation()
     {
-        $lng_diff = 121.43 - 121.06;
-        $lat_diff = 31.21 - 30.55;
-        $lng_lat = array();
+        $lngDiff = 121.43 - 121.06;
+        $latDiff = 31.21 - 30.55;
+        $lngLat = array();
         for($i = 0; $i < 100; $i++) {
-            $lng_lat[] = array('Longitude' => 120.51 + $lng_diff * lcg_value(), 'Latitude' => 30.40 + $lat_diff * lcg_value());
+            $lngLat[] = array('Longitude' => 120.51 + $lngDiff * lcg_value(), 'Latitude' => 30.40 + $latDiff * lcg_value());
         }
 
-        return $lng_lat;
+        return $lngLat;
     }
 }
 

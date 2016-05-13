@@ -18,14 +18,14 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
         return $count[0]['total'];
     }
 
-    public function getFinanceCategoryData(array $conditions, $startPage, $pageLength, $order_by)
+    public function getFinanceCategoryData(array $conditions, $startPage, $pageLength, $orderBy)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select
-            ->order($order_by)
+            ->order($orderBy)
             ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
@@ -38,22 +38,22 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
             ->query()->fetch();
     }
 
-    public function getAllParentCategory($is_key_value_format = false)
+    public function getAllParentCategory($isKeyValueFormat = false)
     {
-        $parent_data = $this->select()->reset()
+        $parentData = $this->select()->reset()
             ->from($this->_name, ['fcid', 'name'])
             ->where('parent_id=?', 0)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->order('weight desc')
             ->query()->fetchAll();
-        if ($is_key_value_format) {
+        if ($isKeyValueFormat) {
             $data = [];
-            foreach ($parent_data as $parent_value) {
-                $data[$parent_value['fcid']] = $parent_value['name'];
+            foreach ($parentData as $parentValue) {
+                $data[$parentValue['fcid']] = $parentValue['name'];
             }
             return $data;
         }
-        return $parent_data;
+        return $parentData;
     }
 
     public function isFinanceCategoryExist($name, $fcid)
@@ -91,16 +91,16 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
         return $names;
     }
 
-    public function getFinanceSubcategory($parent_id)
+    public function getFinanceSubcategory($parentId)
     {
-        $subcategory_data = $this->select()->reset()
+        $subcategoryData = $this->select()->reset()
             ->from($this->_name, ['fcid', 'name'])
-            ->where('parent_id=?', $parent_id)
+            ->where('parent_id=?', $parentId)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
         $data = [];
-        foreach ($subcategory_data as $subcategory_value) {
-            $data[$subcategory_value['fcid']] = $subcategory_value['name'];
+        foreach ($subcategoryData as $subcategoryValue) {
+            $data[$subcategoryValue['fcid']] = $subcategoryValue['name'];
         }
 
         return $data;

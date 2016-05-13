@@ -17,11 +17,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         try {
             $config = Zend_Registry::get('config');
-            $db_adapter = Zend_Db::factory($config->localdb->adapter, $config->localdb->toArray());
+            $dbAdapter = Zend_Db::factory($config->localdb->adapter, $config->localdb->toArray());
             if ($config->localdb->profiler) {
-                $db_adapter->setProfiler($this->_getDbProfileFirebug());
+                $dbAdapter->setProfiler($this->_getDbProfileFirebug());
             }
-            Zend_Registry::set(Bill_Constant::LOCAL_DB, $db_adapter);
+            Zend_Registry::set(Bill_Constant::LOCAL_DB, $dbAdapter);
         } catch (Exception $e) {
             echo $e->getMessage();
             die('Init local db failed.');
@@ -32,11 +32,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         try {
             $config = Zend_Registry::get('config');
-            $db_adapter = Zend_Db::factory($config->alphadb->adapter, $config->alphadb->toArray());
+            $dbAdapter = Zend_Db::factory($config->alphadb->adapter, $config->alphadb->toArray());
             if ($config->localdb->profiler) {
-                $db_adapter->setProfiler($this->_getDbProfileFirebug());
+                $dbAdapter->setProfiler($this->_getDbProfileFirebug());
             }
-            Zend_Registry::set(Bill_Constant::ALPHA_DB, $db_adapter);
+            Zend_Registry::set(Bill_Constant::ALPHA_DB, $dbAdapter);
         } catch (Exception $e) {
             echo $e->getMessage();
             die('Init alpha db failed.');
@@ -47,11 +47,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         try {
             $config = Zend_Registry::get('config');
-            $db_adapter = Zend_Db::factory($config->releasedb->adapter, $config->releasedb->toArray());
+            $dbAdapter = Zend_Db::factory($config->releasedb->adapter, $config->releasedb->toArray());
             if ($config->localdb->profiler) {
-                $db_adapter->setProfiler($this->_getDbProfileFirebug());
+                $dbAdapter->setProfiler($this->_getDbProfileFirebug());
             }
-            Zend_Registry::set(Bill_Constant::RELEASE_DB, $db_adapter);
+            Zend_Registry::set(Bill_Constant::RELEASE_DB, $dbAdapter);
         } catch (Exception $e) {
             echo $e->getMessage();
             die('Init release db failed.');
@@ -120,17 +120,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 }
 
-function errorHandler($error_number, $error_message, $filename, $line_number, $vars)
+function errorHandler($errorNumber, $errorMessage, $filename, $lineNumber, $vars)
 {
-    if ($error_number == E_NOTICE || $error_number == E_WARNING || $error_number == E_STRICT) {
+    if ($errorNumber == E_NOTICE || $errorNumber == E_WARNING || $errorNumber == E_STRICT) {
         return;
     }
     $title = 'Error from errorHandler';
     $content = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\n"
-        . 'Error number: ' . $error_number . "\n"
-        . 'Error message: ' . $error_message . "\n"
+        . 'Error number: ' . $errorNumber . "\n"
+        . 'Error message: ' . $errorMessage . "\n"
         . 'Filename: ' . $filename . "\n"
-        . 'Line number: ' . $line_number . "\n"
+        . 'Line number: ' . $lineNumber . "\n"
         . 'Vars: ' . $vars;
     Bill_Mail::send($title, $content);
 }

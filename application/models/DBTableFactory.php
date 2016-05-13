@@ -8,35 +8,35 @@
 
 class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
 {
-    private $_table_name;
-    private $_adapter_backend_log;
+    private $_tableName;
+    private $_adapterBackendLog;
 
-    public function __construct($table_name, $section_name = Bill_Constant::LOCAL_DB)
+    public function __construct($tableName, $sectionName = Bill_Constant::LOCAL_DB)
     {
-        $this->_table_name = $table_name;
+        $this->_tableName = $tableName;
         $config = [
-            Zend_Db_Table_Abstract::ADAPTER => Application_Model_DBAdapter::getDBAdapter($section_name),
-            Zend_Db_Table_Abstract::NAME => $this->_table_name,
+            Zend_Db_Table_Abstract::ADAPTER => Application_Model_DBAdapter::getDBAdapter($sectionName),
+            Zend_Db_Table_Abstract::NAME => $this->_tableName,
         ];
         parent::__construct($config);
-        $this->_adapter_backend_log = new Application_Model_DBTable_BackendLog();
+        $this->_adapterBackendLog = new Application_Model_DBTable_BackendLog();
     }
 
     public function insert(array $data)
     {
-        $this->_adapter_backend_log->writeLog('insert', $this->_table_name, $data);
+        $this->_adapterBackendLog->writeLog('insert', $this->_tableName, $data);
         return parent::insert($data);
     }
 
     public function update(array $data, $where)
     {
-        $this->_adapter_backend_log->writeLog('update', $this->_table_name, $data, $where);
+        $this->_adapterBackendLog->writeLog('update', $this->_tableName, $data, $where);
         return parent::update($data, $where);
     }
 
     public function delete($where)
     {
-        $this->_adapter_backend_log->writeLog('delete', $this->_table_name, [], $where);
+        $this->_adapterBackendLog->writeLog('delete', $this->_tableName, [], $where);
         return parent::delete($where);
     }
 }

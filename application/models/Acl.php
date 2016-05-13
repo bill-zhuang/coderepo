@@ -4,33 +4,33 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
         //return;
-        $request_module = $request->getModuleName();
-        $request_controller = $request->getControllerName();
-        $request_action = $request->getActionName();
-        if ($request_module == 'default' && $request_controller == 'login') {
+        $requestModule = $request->getModuleName();
+        $requestController = $request->getControllerName();
+        $requestAction = $request->getActionName();
+        if ($requestModule == 'default' && $requestController == 'login') {
             return;
         }
-        if ($request_module == 'person' && $request_controller == 'console') {
+        if ($requestModule == 'person' && $requestController == 'console') {
             //console not auth
             return;
         }
 
         if (Application_Model_Auth::isValid()) {
             if (Application_Model_Auth::getIdentity()->name != Bill_Constant::ADMIN_NAME) {
-                $adapter_role_acl = new Application_Model_DBTable_BackendRoleAcl();
-                $baid = $this->_getAclID($request_module, $request_controller, $request_action);
+                $adapterRoleAcl = new Application_Model_DBTable_BackendRoleAcl();
+                $baid = $this->_getAclID($requestModule, $requestController, $requestAction);
                 if ($baid > Bill_Constant::INVALID_PRIMARY_ID
-                    && $adapter_role_acl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)
+                    && $adapterRoleAcl->isAccessGranted(Application_Model_Auth::getIdentity()->brid, $baid)
                 ) {
                     return;
                 } else {
                     if ($this->getRequest()->isXmlHttpRequest()) {
-                        $json_array = [
+                        $jsonArray = [
                             'error' => [
                                 'message' => '无权限访问',
                             ],
                         ];
-                        echo json_encode($json_array);
+                        echo json_encode($jsonArray);
                         exit;
                     } else {
                         $request->setModuleName('default');
@@ -54,17 +54,17 @@ class Application_Model_Acl extends Zend_Controller_Plugin_Abstract
             Bill_Util::printSQL();
         }
 
-        $sql_info = Bill_Util::getSQLInfo();
-        if (isset($sql_info['queryCost']) && $sql_info['queryCost'] > Bill_Constant::SQL_QUERY_COST_TRIGGER) {
+        $sqlInfo = Bill_Util::getSQLInfo();
+        if (isset($sqlInfo['queryCost']) && $sqlInfo['queryCost'] > Bill_Constant::SQL_QUERY_COST_TRIGGER) {
             //TODO slow query trigger
         }
     }
 
     private function _getAclID($module, $controller, $action)
     {
-        $adapter_acl = new Application_Model_DBTable_BackendAcl();
-        $acl_map = $adapter_acl->getAclMap();
-        $acl_map_key = Bill_Util::getAclMapKey($module, $controller, $action);
-        return isset($acl_map[$acl_map_key]) ? $acl_map[$acl_map_key] : Bill_Constant::INVALID_PRIMARY_ID;
+        $adapterAcl = new Application_Model_DBTable_BackendAcl();
+        $aclMap = $adapterAcl->getAclMap();
+        $aclMap_key = Bill_Util::getAclMapKey($module, $controller, $action);
+        return isset($aclMap[$aclMap_key]) ? $aclMap[$aclMap_key] : Bill_Constant::INVALID_PRIMARY_ID;
     }
 }

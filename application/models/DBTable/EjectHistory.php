@@ -18,14 +18,14 @@ class Application_Model_DBTable_EjectHistory extends Application_Model_DBTableFa
         return intval($count[0]['total']);
     }
 
-    public function getEjectHistoryData(array $conditions, $startPage, $pageLength, $order_by)
+    public function getEjectHistoryData(array $conditions, $startPage, $pageLength, $orderBy)
     {
         $select = $this->select()->reset();
         foreach ($conditions as $cond => $value) {
             $select->where($cond, $value);
         }
         $data = $select
-            ->order($order_by)
+            ->order($orderBy)
             ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
         return $data;
@@ -49,17 +49,17 @@ class Application_Model_DBTable_EjectHistory extends Application_Model_DBTableFa
         return ($data[0]['total'] > 0) ? true : false;
     }
 
-    public function getTotalEjectHistoryDataByDay($start_date, $end_date, $type)
+    public function getTotalEjectHistoryDataByDay($startDate, $endDate, $type)
     {
         $select = $this->select()->reset()
             ->from($this->_name, array('happen_date as period', 'count as number'))
             ->where('type=?', $type)
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '') {
-            $select->where('happen_date>=?', $start_date);
+        if ($startDate !== '') {
+            $select->where('happen_date>=?', $startDate);
         }
-        if ($end_date !== '') {
-            $select->where('happen_date<=?', $end_date);
+        if ($endDate !== '') {
+            $select->where('happen_date<=?', $endDate);
         }
 
         return $select
@@ -67,17 +67,17 @@ class Application_Model_DBTable_EjectHistory extends Application_Model_DBTableFa
             ->query()->fetchAll();
     }
 
-    public function getTotalEjectHistoryGroupData($start_date, $end_date, $type)
+    public function getTotalEjectHistoryGroupData($startDate, $endDate, $type)
     {
         $select = $this->select()->reset()
             ->from($this->_name, array('date_format(happen_date, "%Y-%m") as period', 'sum(count) as number'))
             ->where('type=?', $type)
             ->where('status=?', Bill_Constant::VALID_STATUS);
-        if ($start_date !== '') {
-            $select->where('happen_date>=?', $start_date);
+        if ($startDate !== '') {
+            $select->where('happen_date>=?', $startDate);
         }
-        if ($end_date !== '') {
-            $select->where('happen_date<=?', $end_date);
+        if ($endDate !== '') {
+            $select->where('happen_date<=?', $endDate);
         }
         return $select
             ->group('date_format(happen_date, "%Y%m")')

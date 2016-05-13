@@ -11,19 +11,19 @@ class Bill_Util
 
     public static function extractImageBase64Content($content)
     {
-        $preg_img = '/<img.*?src="([^"]+)"/';
-        $preg_image_base64 = '/^data.*?64,/';
-        $is_match = preg_match_all($preg_img, $content, $matches);
-        if ($is_match > 0) {
-            $image_base64_contents = array();
+        $pregImg = '/<img.*?src="([^"]+)"/';
+        $pregImageBase64 = '/^data.*?64,/';
+        $isMatch = preg_match_all($pregImg, $content, $matches);
+        if ($isMatch > 0) {
+            $imageBase64Contents = array();
             foreach ($matches[1] as $value) {
                 if (substr($value, 0, 4) != 'http') {
-                    $image_base64_contents[] = $value;
+                    $imageBase64Contents[] = $value;
                 }
             }
-            if (!empty($image_base64_contents)) {
-                foreach ($image_base64_contents as $image_base64_content) {
-                    //return base64_decode(preg_replace($preg_image_base64, '', $image_base64_content));
+            if (!empty($imageBase64Contents)) {
+                foreach ($imageBase64Contents as $imageBase64Content) {
+                    //return base64_decode(preg_replace($pregImageBase64, '', $imageBase64Content));
                     //save image or upload image here
                 }
             }
@@ -92,24 +92,24 @@ class Bill_Util
         Bill_Mail::send($title, $content);
     }
 
-    public static function getJsonResponseErrorArray($error_code, $error_message)
+    public static function getJsonResponseErrorArray($errorCode, $errorMessage)
     {
         return [
-            'code' => $error_code,
-            'message' => $error_message,
+            'code' => $errorCode,
+            'message' => $errorMessage,
         ];
     }
 
     public static function getPaginationParamsFromUrlParamsArray(array $params)
     {
-        $current_page = (isset($params['current_page']) && intval($params['current_page']) > 0)
+        $currentPage = (isset($params['current_page']) && intval($params['current_page']) > 0)
             ? intval($params['current_page']) : Bill_Constant::INIT_START_PAGE;
-        $page_length = (isset($params['page_length']) && intval($params['page_length']) > 0)
+        $pageLength = (isset($params['page_length']) && intval($params['page_length']) > 0)
             ? intval($params['page_length']) : Bill_Constant::INIT_PAGE_LENGTH;
-        $start = ($current_page - Bill_Constant::INIT_START_PAGE) * $page_length;
+        $start = ($currentPage - Bill_Constant::INIT_START_PAGE) * $pageLength;
         return [
-            $current_page,
-            $page_length,
+            $currentPage,
+            $pageLength,
             $start
         ];
     }
@@ -119,9 +119,9 @@ class Bill_Util
         return ceil($totalItems / $itemsPerPage) ? ceil($totalItems / $itemsPerPage) : Bill_Constant::INIT_TOTAL_PAGE;
     }
 
-    public static function getLikeString($keyword, $like_type = Bill_Constant::LIKE_FULL)
+    public static function getLikeString($keyword, $likeType = Bill_Constant::LIKE_FULL)
     {
-        switch($like_type) {
+        switch($likeType) {
             case Bill_Constant::LIKE_FULL:
                 $keyword = '%' . $keyword . '%';
                 break;

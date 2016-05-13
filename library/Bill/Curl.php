@@ -2,9 +2,9 @@
 
 class Bill_Curl
 {
-    public static function getResponseHeaders($request_url)
+    public static function getResponseHeaders($requestUrl)
     {
-        $ch = curl_init($request_url);
+        $ch = curl_init($requestUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, TRUE);
 
@@ -12,14 +12,14 @@ class Bill_Curl
         return curl_getinfo($ch);
     }
 
-    public static function sendRequestByCurl($request_url, array $data, $method = Bill_Constant::HTTP_METHOD_POST)
+    public static function sendRequestByCurl($requestUrl, array $data, $method = Bill_Constant::HTTP_METHOD_POST)
     {
         $ch = curl_init();
         //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         if (strtoupper($method) == Bill_Constant::HTTP_METHOD_GET) {
-            curl_setopt($ch, CURLOPT_URL, $request_url . '?' . http_build_query($data));
+            curl_setopt($ch, CURLOPT_URL, $requestUrl . '?' . http_build_query($data));
         } else {
-            curl_setopt($ch, CURLOPT_URL, $request_url);
+            curl_setopt($ch, CURLOPT_URL, $requestUrl);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }

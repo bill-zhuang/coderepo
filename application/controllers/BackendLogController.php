@@ -5,19 +5,19 @@ class BackendLogController extends Zend_Controller_Action
     /**
      * @var Application_Model_DBTable_BackendLog
      */
-    private $_adapter_backend_log;
+    private $_adapterBackendLog;
     /**
      * @var Application_Model_DBTable_BackendUser
      */
-    private $_adapter_backend_user;
+    private $_adapterBackendUser;
 
     public function init()
     {
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
-        $this->_adapter_backend_log= new Application_Model_DBTable_BackendLog();
-        $this->_adapter_backend_user= new Application_Model_DBTable_BackendUser();
+        $this->_adapterBackendLog = new Application_Model_DBTable_BackendLog();
+        $this->_adapterBackendUser = new Application_Model_DBTable_BackendUser();
     }
 
     public function indexAction()
@@ -35,7 +35,7 @@ class BackendLogController extends Zend_Controller_Action
     private function _index()
     {
         $params = $this->_getParam('params', []);
-        list($current_page, $page_length, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
+        list($currentPage, $pageLength, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 
         $conditions = [
@@ -44,29 +44,29 @@ class BackendLogController extends Zend_Controller_Action
         if ('' !== $keyword) {
             $conditions['content like ?'] = Bill_Util::getLikeString($keyword);
         }
-        $order_by = 'blid DESC';
-        $total = $this->_adapter_backend_log->getBackendLogCount($conditions);
-        $data = $this->_adapter_backend_log->getBackendLogData($conditions, $current_page, $page_length, $order_by);
+        $orderBy = 'blid DESC';
+        $total = $this->_adapterBackendLog->getBackendLogCount($conditions);
+        $data = $this->_adapterBackendLog->getBackendLogData($conditions, $currentPage, $pageLength, $orderBy);
         $cacheUserName = [];
         foreach ($data as &$value) {
             if (!isset($cacheUserName[$value['buid']])) {
-                $cacheUserName[$value['buid']] = $this->_adapter_backend_user->getUserName($value['buid']);
+                $cacheUserName[$value['buid']] = $this->_adapterBackendUser->getUserName($value['buid']);
             }
             $value['name'] = $cacheUserName[$value['buid']];
         }
 
-        $json_array = [
+        $jsonArray = [
             'data' => [
-                'totalPages' => Bill_Util::getTotalPages($total, $page_length),
-                'pageIndex' => $current_page,
+                'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
+                'pageIndex' => $currentPage,
                 'totalItems' => $total,
                 'startIndex' => $start + 1,
-                'itemsPerPage' => $page_length,
+                'itemsPerPage' => $pageLength,
                 'currentItemCount' => count($data),
                 'items' => $data,
             ],
         ];
 
-        return $json_array;
+        return $jsonArray;
     }
 }
