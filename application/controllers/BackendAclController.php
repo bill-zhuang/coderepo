@@ -106,15 +106,18 @@ class BackendAclController extends Zend_Controller_Action
     public function deleteBackendAclAction()
     {
         if ($this->getRequest()->isPost()) {
-            try {
-                $params = $this->getRequest()->getPost('params', []);
-                $baid = isset($params['baid']) ? intval($params['baid']) : Bill_Constant::INVALID_PRIMARY_ID;
-                if ($baid > Bill_Constant::INVALID_PRIMARY_ID) {
-                    $where = [
-                        $this->_adapter_backend_acl->getAdapter()->quoteInto('baid=?', $baid),
-                        $this->_adapter_backend_acl->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
-                    ];
+            $params = $this->getRequest()->getPost('params', []);
+            $baid = isset($params['baid']) ? intval($params['baid']) : Bill_Constant::INVALID_PRIMARY_ID;
+            if ($baid > Bill_Constant::INVALID_PRIMARY_ID) {
+                $where = [
+                    $this->_adapter_backend_acl->getAdapter()->quoteInto('baid=?', $baid),
+                    $this->_adapter_backend_acl->getAdapter()->quoteInto('status=?', Bill_Constant::VALID_STATUS),
+                ];
+                try {
+                    $this->_adapter_backend_acl->getAdapter()->beginTransaction();
                     $affected_rows = $this->_adapter_backend_acl->delete($where);
+                    $this->_adapter_backend_role_acl->delete($where);
+                    $this->_adapter_backend_acl->getAdapter()->commit();
                     $json_array = [
                         'data' => [
                             'code' => $affected_rows,
@@ -122,9 +125,10 @@ class BackendAclController extends Zend_Controller_Action
                                     ? Bill_JsMessage::DELETE_SUCCESS : Bill_JsMessage::DELETE_FAIL,
                         ]
                     ];
+                } catch (Exception $e) {
+                    $this->_adapter_backend_acl->getAdapter()->rollBack();
+                    Bill_Util::handleException($e, 'Error From deleteBackendAcl');
                 }
-            } catch (Exception $e) {
-                Bill_Util::handleException($e, 'Error From deleteBackendAcl');
             }
         }
 
