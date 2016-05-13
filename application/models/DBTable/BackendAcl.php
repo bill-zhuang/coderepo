@@ -63,7 +63,7 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         return isset($data['baid']) ? $data['baid'] : Bill_Constant::INVALID_PRIMARY_ID;
     }
 
-    public function getInvalidAclIDs($module, $controller, array $valid_actions)
+    public function getInvalidActionAclIDs($module, $controller, array $valid_actions)
     {
         $select = $this->select()->reset()
             ->from($this->_name, 'baid')
@@ -72,6 +72,25 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
             ->where('status=?', Bill_Constant::VALID_STATUS);
         if (!empty($valid_actions)) {
             $select->where('action not in (?)', $valid_actions);
+        }
+        $data = $select
+            ->query()->fetchAll();
+        $baids = [];
+        foreach ($data as $value) {
+            $baids[] = $value['baid'];
+        }
+
+        return $baids;
+    }
+
+    public function getInvalidControllerAclIDs($module, array $valid_controllers)
+    {
+        $select = $this->select()->reset()
+            ->from($this->_name, 'baid')
+            ->where('module=?', $module)
+            ->where('status=?', Bill_Constant::VALID_STATUS);
+        if (!empty($valid_controllers)) {
+            $select->where('controller not in (?)', $valid_controllers);
         }
         $data = $select
             ->query()->fetchAll();

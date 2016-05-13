@@ -212,6 +212,7 @@ class BackendAclController extends Zend_Controller_Action
         ];
 
         if (is_dir($controller_path)) {
+            $valid_controllers = [];
             $controllers = scandir($controller_path);
             foreach ($controllers as $controller) {
                 if ($controller != '.' && $controller != '..') {
@@ -222,8 +223,9 @@ class BackendAclController extends Zend_Controller_Action
                         $is_match = preg_match_all($preg_action, $controller_content, $action_matches);
                         $data['module'] = $module_name;
                         $data['controller'] = $controller_name;
+                        $valid_controllers[] = $controller_name;
+                        $valid_actions = [];
                         if ($is_match) {
-                            $valid_actions = [];
                             foreach ($action_matches[1] as $action) {
                                 $action_name = preg_replace($preg_action_postfix, '', $action);
                                 $action_name = strtolower(implode('-', $this->_splitCamel($action_name)));
@@ -234,16 +236,14 @@ class BackendAclController extends Zend_Controller_Action
                                     $affected_rows += $this->_adapter_backend_acl->insert($data);
                                 }
                             }
-                            //delete unused action
-                            if (!empty($valid_actions)) {
-                                $this->_removeInvalidAcl($data['module'], $data['controller'], $valid_actions);
-                            }
-                        } else {
-                            $this->_removeInvalidAcl($data['module'], $data['controller'], array());
                         }
+                        //delete unused action
+                        $this->_removeInvalidAcl($data['module'], $data['controller'], $valid_actions);
                     }
                 }
             }
+            //delete unused controller
+            $this->_removeInvalidAcl($module_name, $valid_controllers, array());
         }
 
         return $affected_rows;
@@ -251,7 +251,11 @@ class BackendAclController extends Zend_Controller_Action
 
     private function _removeInvalidAcl($module, $controller, array $valid_actions)
     {
-        $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidAclIDs($module, $controller, $valid_actions);
+        if (!is_array($controller)) {
+            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidActionAclIDs($module, $controller, $valid_actions);
+        } else {
+            $invalid_acl_ids = $this->_adapter_backend_acl->getInvalidControllerAclIDs($module, $controller);
+        }
         if (!empty($invalid_acl_ids)) {
             $delete_where = [
                 $this->_adapter_backend_acl->getAdapter()->quoteInto('baid in (?)', $invalid_acl_ids),
