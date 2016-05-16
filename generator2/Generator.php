@@ -44,7 +44,7 @@ class TemplateGenerator
             $this->_tab_types = array_filter($configs['view']['tabOptions']);
             $this->_default_tab_value = $configs['view']['defaultTabValue'];
         } else {
-            echo 'config.init not exist.', PHP_EOL;
+            echo 'config.ini not exist.', PHP_EOL;
             exit;
         }
         if (!empty($this->_table_names)) {
