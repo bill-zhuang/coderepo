@@ -2,6 +2,7 @@
 
 class TemplateGenerator
 {
+    private $_configs;
     private $_module_name;
     private $_controller_name;
     private $_page_title;
@@ -22,39 +23,30 @@ class TemplateGenerator
 
     public function __construct()
     {
-        //module
-        $this->_module_name = '';
-        //controller
-        $this->_controller_name = 'FinanceCategoryTest'; //camel case
-        //view
-        $this->_page_title = 'FinanceCategory';
-        $this->_all_batch_id = '';
-        $this->_batch_id = '';
-        $this->_table_row_data = [
-            'name' => 'fc_name',
-            'weight' => 'fc_weight',
-            'create time' => 'fc_create_time',
-            'update time' => 'fc_update_time',
-        ];
-        $this->_view_modal_size = 'md'; //optional: sm/md/lg, refer to small/middle/large
-        $this->_using_ckeditor = false;
-        $this->_using_datetime_picker = false;
-        /*
-         * //tab 标签 key => value,如果没有tab，请置空数组
-         * 1 => 'First',
-         * 2 => 'Second',
-         * */
-        $this->_tab_types = [
-        ];
-        /*
-         * 默认tab标签选中项，为变量 $this->_tab_types key 值
-         * */
-        $this->_default_tab_value = '';
-        //tables
-        $this->_table_names = [
-            'finance_category',
-        ];
-        $this->_table_prefix = ''; //like bill_
+        $configs = $this->_getConfig('config.ini');
+        if ($configs !== null) {
+            $this->_configs = $configs;
+            //table
+            $this->_table_names = $configs['table']['tableNames'];
+            $this->_table_prefix = $configs['table']['tablePrefix'];
+            //module
+            $this->_module_name = $configs['module']['moduleName'];
+            //controller
+            $this->_controller_name = $configs['controller']['controllerName'];
+            //view
+            $this->_page_title = $configs['view']['pageTitle'];
+            $this->_table_row_data = $configs['view']['tableColumns'];
+            $this->_all_batch_id = $configs['view']['allCheckboxID'];
+            $this->_batch_id = $configs['view']['checkboxID'];
+            $this->_view_modal_size = $configs['view']['modalSize'];
+            $this->_using_ckeditor = boolval($configs['view']['usingCKEditor']);
+            $this->_using_datetime_picker = boolval($configs['view']['usingDatetimePicker']);
+            $this->_tab_types = array_filter($configs['view']['tabOptions']);
+            $this->_default_tab_value = $configs['view']['defaultTabValue'];
+        } else {
+            echo 'config.init not exist.', PHP_EOL;
+            exit;
+        }
         if (!empty($this->_table_names)) {
             $this->_primary_id = $this->_getTablePrimaryID($this->_table_names[0]);
             //models
@@ -352,13 +344,13 @@ class TemplateGenerator
             return $this->_cache_table_info[$table_name];
         }
 
-        $db_config = $this->_getConfig('db.ini');
+        $db_config = $this->_configs['db'];
         if ($db_config !== null) {
             try {
                 $adapter = new \PDO(
-                    "mysql:host={$db_config['db']['host']};dbname={$db_config['db']['dbname']}",
-                    $db_config['db']['username'],
-                    $db_config['db']['password'],
+                    "mysql:host={$db_config['host']};dbname={$db_config['dbname']}",
+                    $db_config['username'],
+                    $db_config['password'],
                     []
                 );
                 $sql = 'SHOW FULL COLUMNS FROM ' . $table_name;
