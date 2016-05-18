@@ -64,6 +64,7 @@ class TemplateGenerator
     {
         $this->_generateModuleDirectory();
         $this->_generateModelFile();
+        //$this->_generateModelObjectFile();
         $this->_generateControllerFile();
         $this->_generateViewFile();
         $this->_generateJsFile();
@@ -184,6 +185,32 @@ class TemplateGenerator
                 } else {
                     echo 'Create Model File ' . $model_name . '.php Failed' . PHP_EOL;
                 }
+            }
+        }
+    }
+
+    private function _generateModelObjectFile()
+    {
+        $model_folder_path = __DIR__ . '/../application/models/DBObject/';
+        $this->_createDirectory($model_folder_path);
+        //create table model
+        foreach ($this->_table_names as $table_name) {
+            $model_name = $this->_getModelNameByTableName($table_name);
+
+            $params = [
+                'model_name' => $model_name,
+                'table_name' => $table_name,
+                'primary_id' => $this->_getTablePrimaryID($table_name),
+                'table_fields' => $this->_getTableInfo($table_name),
+            ];
+            $template_path = __DIR__ . '/template/ModelObjectTemplate.php';
+            $dest_path = $model_folder_path . '/' . $model_name . '.php';
+
+            $create_result = $this->_renderFile($template_path, $dest_path, $params);
+            if ($create_result !== false) {
+                echo 'Create Model Object File ' . $model_name . '.php Successfully' . PHP_EOL;
+            } else {
+                echo 'Create Model Object File ' . $model_name . '.php Failed' . PHP_EOL;
             }
         }
     }
