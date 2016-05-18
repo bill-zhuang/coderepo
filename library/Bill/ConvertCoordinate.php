@@ -4,8 +4,8 @@ class Bill_ConvertCoordinate
 {
     private static $baiduUrlApiConvertPrefix = 'http://api.map.baidu.com/ag/coord/convert?';
 
-    //�����,�ȸ�õ��ľ�γ�Ⱦ������¼�����Ƽ��ɵõ��ٶȵ�lng + 0.0065 lat + 0.0060
-    //x/y����γ�����from/to������ת��Ч��������������£�from=2��ʾ�ȸ�from=0��ʾgpsto=4 ��ʾ�ٶ�
+    //如需简化,谷歌得到的经纬度经过如下计算近似即可得到百度的lng + 0.0065 lat + 0.0060
+    //x/y：经纬度坐标from/to：决定转换效果，具体参数填充如下：from=2表示谷歌from=0表示gpsto=4 表示百度
     public static function fromGoogleToBaiduByApi($lng, $lat)
     {
         $httpQuery = "from=2&to=4&x={$lng}&y={$lat}";

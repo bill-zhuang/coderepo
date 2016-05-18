@@ -25,6 +25,4 @@ class Bill_Network
             echo "$errorStr ($errorNo)<br />\n";
         }
     }
-
-
 }
