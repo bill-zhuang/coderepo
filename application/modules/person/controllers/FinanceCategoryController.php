@@ -238,8 +238,8 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         $total = $this->_adapterFinanceCategory->getFinanceCategoryCount($conditions);
         $data = $this->_adapterFinanceCategory->getFinanceCategoryData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
-            $value['parent'] = $value['fc_parent_id'] == 0 ?
-                '无' : $this->_adapterFinanceCategory->getParentCategoryName($value['fc_parent_id']);
+            $value['parent'] = $value['parent_id'] == 0 ?
+                '无' : $this->_adapterFinanceCategory->getParentCategoryName($value['parent_id']);
         }
 
         $jsonData = [
