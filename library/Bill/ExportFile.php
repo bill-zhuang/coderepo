@@ -3,6 +3,7 @@
 class Bill_ExportFile
 {
     //recommend
+    //如要导出数字开头带0的字符串，如00001，则对于的内容需为 '="00001"', 英文为leading zero
     public static function exportCsv($filename, $csvContent)
     {
         ob_clean();
