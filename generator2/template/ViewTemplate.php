@@ -21,7 +21,7 @@ $table_keys = array_keys($table_data);
 <link href="/assets/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
 <?php } ?>
 <link href="/css/common.css" rel="stylesheet"/>
-<title><?php echo $page_title_name; ?></title>
+<title>Bill Coderepo - <?php echo $page_title_name; ?></title>
 <div class="panel panel-warning">
     <!-- panel heading -->
     <div class="panel-heading">
