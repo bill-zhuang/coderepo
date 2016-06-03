@@ -200,7 +200,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
             $params = $this->getRequest()->getQuery('params', []);
             $fpid = isset($params['fpid']) ? intval($params['fpid']) : Bill_Constant::INVALID_PRIMARY_ID;
             if ($fpid > Bill_Constant::INVALID_PRIMARY_ID) {
-                $data = $this->_adapterFinancePayment->getFinancePaymentByID($fpid);
+                $data = $this->_adapterFinancePayment->getByPrimaryKey($fpid);
                 $data['fcids'] = $this->_adapterFinancePaymentMap->getFinanceCategoryIDs($fpid);
                 if (!empty($data)) {
                     $jsonArray = [
@@ -242,8 +242,8 @@ class person_FinancePaymentController extends Zend_Controller_Action
             }
         }
         $orderBy = 'payment_date desc';
-        $total = $this->_adapterFinancePayment->getFinancePaymentCount($conditions);
-        $data = $this->_adapterFinancePayment->getFinancePaymentData($conditions, $currentPage, $pageLength, $orderBy);
+        $total = $this->_adapterFinancePayment->getSearchCount($conditions);
+        $data = $this->_adapterFinancePayment->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
             $fcids = $this->_adapterFinancePaymentMap->getFinanceCategoryIDs($value['fpid']);
             if (!empty($fcids)) {

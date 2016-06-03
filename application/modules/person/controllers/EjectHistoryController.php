@@ -164,7 +164,7 @@ class person_EjectHistoryController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $ehid = (isset($params['ehid'])) ? intval($params['ehid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapterEjectHistory->getEjectHistoryByID($ehid);
+            $data = $this->_adapterEjectHistory->getByPrimaryKey($ehid);
             if (!empty($data)) {
                 $jsonArray = [
                     'data' => $data,
@@ -198,8 +198,8 @@ class person_EjectHistoryController extends Zend_Controller_Action
             $conditions['type=?'] = $tabType;
         }
         $orderBy = 'happen_date DESC';
-        $total = $this->_adapterEjectHistory->getEjectHistoryCount($conditions);
-        $data = $this->_adapterEjectHistory->getEjectHistoryData($conditions, $currentPage, $pageLength, $orderBy);
+        $total = $this->_adapterEjectHistory->getSearchCount($conditions);
+        $data = $this->_adapterEjectHistory->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
             $value['type'] = isset($types[$value['type']]) ? $types[$value['type']] : 'Unknown';
         }

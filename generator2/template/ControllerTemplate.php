@@ -219,7 +219,7 @@ echo PHP_EOL;
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $<?php echo $primary_id[0]; ?> = (isset($params['<?php echo $primary_id[0]; ?>'])) ? intval($params['<?php echo $primary_id[0]; ?>']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->get<?php echo $model_names[0]; ?>ByID($<?php echo $primary_id[0]; ?>);
+            $data = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getByPrimaryKey($<?php echo $primary_id[0]; ?>);
             if (!empty($data)) {
                 $jsonArray = [
                     'data' => $data,
@@ -250,8 +250,8 @@ echo PHP_EOL;
             '<?php echo ($status_name === '') ? 'todo status' : $status_name; ?> =?' => Bill_Constant::VALID_STATUS
         ];
         $order_by = '<?php echo $primary_id[0]; ?> ASC'; //TODO reset order by
-        $total = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->get<?php echo $model_names[0]; ?>Count($conditions);
-        $data = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->get<?php echo $model_names[0]; ?>Data($conditions, $currentPage, $pageLength, $order_by);
+        $total = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getSearchCount($conditions);
+        $data = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getSearchData($conditions, $currentPage, $pageLength, $order_by);
 
         $json_data = [
             'data' => [

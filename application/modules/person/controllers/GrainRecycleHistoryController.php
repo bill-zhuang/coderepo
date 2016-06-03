@@ -139,7 +139,7 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $grhid = (isset($params['grhid'])) ? intval($params['grhid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $historyData = $this->_adapterGrainRecycleHistory->getGrainRecycleHistoryByID($grhid);
+            $historyData = $this->_adapterGrainRecycleHistory->getByPrimaryKey($grhid);
             if (!empty($historyData)) {
                 $jsonArray = [
                     'data' => $historyData,
@@ -165,8 +165,8 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
             'status =?' => Bill_Constant::VALID_STATUS
         ];
         $orderBy = 'grhid DESC';
-        $total = $this->_adapterGrainRecycleHistory->getGrainRecycleHistoryCount($conditions);
-        $data = $this->_adapterGrainRecycleHistory->getGrainRecycleHistoryData($conditions, $currentPage, $pageLength, $orderBy);
+        $total = $this->_adapterGrainRecycleHistory->getSearchCount($conditions);
+        $data = $this->_adapterGrainRecycleHistory->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
 
         $jsonData = [
             'data' => [

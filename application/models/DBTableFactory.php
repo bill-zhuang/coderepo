@@ -22,6 +22,45 @@ class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
         $this->_adapterBackendLog = new Application_Model_DBTable_BackendLog();
     }
 
+    public function getSearchData(array $conditions, $startPage, $pageLength, $orderBy, $groupBy = null)
+    {
+        $select = $this->select()->reset();
+        foreach ($conditions as $cond => $value) {
+            $select->where($cond, $value);
+        }
+        $select
+            ->limitPage($startPage, $pageLength)
+            ->order($orderBy);
+        if ($groupBy !== null) {
+            $select->group($groupBy);
+        }
+        $data = $select
+            ->query()->fetchAll();
+        return $data;
+    }
+
+    public function getSearchCount(array $conditions)
+    {
+        $select = $this->select()->reset()
+            ->from($this->_name, 'count(*) as total');
+        foreach ($conditions as $cond => $value) {
+            $select->where($cond, $value);
+        }
+        $count = $select->query()->fetchAll();
+        return $count[0]['total'];
+    }
+
+    public function getByPrimaryKey()
+    {
+        $primaryKey = func_get_args();
+        $rowSets = $this->find($primaryKey);
+        if ($rowSets->count() > 0) {
+            return $rowSets->current()->toArray();
+        } else {
+            return array();
+        }
+    }
+
     public function insert(array $data)
     {
         $this->_adapterBackendLog->writeLog('insert', $this->_tableName, $data);

@@ -7,37 +7,6 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
         parent::__construct('finance_payment_map');
     }
 
-    public function getFinancePaymentMapCount(array $conditions)
-    {
-        $select = $this->select()->reset()
-            ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $count = $select->query()->fetchAll();
-        return $count[0]['total'];
-    }
-
-    public function getFinancePaymentMapData(array $conditions, $startPage, $pageLength, $orderBy)
-    {
-        $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $data = $select
-            ->order($orderBy)
-            ->limitPage($startPage, $pageLength)
-            ->query()->fetchAll();
-        return $data;
-    }
-
-    public function getFinancePaymentMapByID($fpmid)
-    {
-        return $this->select()->reset()
-            ->where('fpmid=?', $fpmid)
-            ->query()->fetch();
-    }
-
     public function getFinanceCategoryIDs($fpid)
     {
         $data = $this->select()->reset()

@@ -146,7 +146,7 @@ class BackendAclController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $baid = (isset($params['baid'])) ? intval($params['baid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapterBackendAcl->getBackendAclByID($baid);
+            $data = $this->_adapterBackendAcl->getByPrimaryKey($baid);
             if (!empty($data)) {
                 $jsonArray = [
                     'data' => $data,
@@ -177,8 +177,8 @@ class BackendAclController extends Zend_Controller_Action
         }
         $orderBy = null;
         $groupBy = ['module', 'controller', 'action'];
-        $total = $this->_adapterBackendAcl->getBackendAclCount($conditions);
-        $data = $this->_adapterBackendAcl->getBackendAclData($conditions, $currentPage, $pageLength, $orderBy, $groupBy);
+        $total = $this->_adapterBackendAcl->getSearchCount($conditions);
+        $data = $this->_adapterBackendAcl->getSearchData($conditions, $currentPage, $pageLength, $orderBy, $groupBy);
 
         $jsonData = [
             'data' => [

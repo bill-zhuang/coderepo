@@ -7,37 +7,6 @@ class Application_Model_DBTable_BackendRole extends Application_Model_DBTableFac
         parent::__construct('backend_role');
     }
 
-    public function getBackendRoleCount(array $conditions)
-    {
-        $select = $this->select()->reset()
-            ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $count = $select->query()->fetchAll();
-        return intval($count[0]['total']);
-    }
-
-    public function getBackendRoleData(array $conditions, $startPage, $pageLength, $orderBy)
-    {
-        $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $data = $select
-            ->order($orderBy)
-            ->limitPage($startPage, $pageLength)
-            ->query()->fetchAll();
-        return $data;
-    }
-
-    public function getBackendRoleByID($brid)
-    {
-        return $this->select()->reset()
-            ->where('brid=?', $brid)
-            ->query()->fetch();
-    }
-
     public function isRoleExist($role, $brid)
     {
         $data = $this->select()->reset()

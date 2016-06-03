@@ -7,36 +7,6 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         parent::__construct('grain_recycle_history');
     }
 
-    public function getGrainRecycleHistoryCount(array $conditions)
-    {
-        $select = $this->select()->reset()->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $count = $select->query()->fetchAll();
-        return intval($count[0]['total']);
-    }
-
-    public function getGrainRecycleHistoryData(array $conditions, $startPage, $pageLength, $orderBy)
-    {
-        $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $data = $select
-            ->limitPage($startPage, $pageLength)
-            ->order($orderBy)
-            ->query()->fetchAll();
-        return $data;
-    }
-
-    public function getGrainRecycleHistoryByID($grhid)
-    {
-        return $this->select()->reset()
-            ->where('grhid=?', $grhid)
-            ->query()->fetch();
-    }
-
     public function getTotalGrainRecycleHistoryGroupDataByYearMonth($selectDate)
     {
         return $this->select()->reset()

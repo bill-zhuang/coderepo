@@ -13,37 +13,6 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
         $this->_join_condition = 'finance_payment.fpid=finance_payment_map.fpid';
     }
 
-    public function getFinancePaymentCount(array $conditions)
-    {
-        $select = $this->select()->reset()
-            ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $count = $select->query()->fetchAll();
-        return $count[0]['total'];
-    }
-
-    public function getFinancePaymentData(array $conditions, $startPage, $pageLength, $orderBy)
-    {
-        $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $data = $select
-            ->order($orderBy)
-            ->limitPage($startPage, $pageLength)
-            ->query()->fetchAll();
-        return $data;
-    }
-
-    public function getFinancePaymentByID($fpid)
-    {
-        return $this->select()->reset()
-            ->where('fpid=?', $fpid)
-            ->query()->fetch();
-    }
-
     public function getTotalPaymentHistoryGroupData($startDate, $endDate)
     {
         $select = $this->select()->reset()

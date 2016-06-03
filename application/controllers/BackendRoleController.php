@@ -170,7 +170,7 @@ class BackendRoleController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $brid = (isset($params['brid'])) ? intval($params['brid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapterBackendRole->getBackendRoleByID($brid);
+            $data = $this->_adapterBackendRole->getByPrimaryKey($brid);
             if (!empty($data)) {
                 $jsonArray = [
                     'data' => $data,
@@ -293,8 +293,8 @@ class BackendRoleController extends Zend_Controller_Action
             $conditions['role like ?'] = Bill_Util::getLikeString($keyword);
         }
         $orderBy = 'brid ASC';
-        $total = $this->_adapterBackendRole->getBackendRoleCount($conditions);
-        $data = $this->_adapterBackendRole->getBackendRoleData($conditions, $currentPage, $pageLength, $orderBy);
+        $total = $this->_adapterBackendRole->getSearchCount($conditions);
+        $data = $this->_adapterBackendRole->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
             $value['count'] = $this->_adapterBackendUser->getRoleCount($value['brid']);
         }

@@ -167,7 +167,7 @@ class person_FinanceCategoryController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $fcid = (isset($params['fcid'])) ? intval($params['fcid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapterFinanceCategory->getFinanceCategoryByID($fcid);
+            $data = $this->_adapterFinanceCategory->getByPrimaryKey($fcid);
             if (!empty($data)) {
                 $jsonArray = [
                     'data' => $data,
@@ -235,8 +235,8 @@ class person_FinanceCategoryController extends Zend_Controller_Action
             $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
         }
         $orderBy = 'weight desc';
-        $total = $this->_adapterFinanceCategory->getFinanceCategoryCount($conditions);
-        $data = $this->_adapterFinanceCategory->getFinanceCategoryData($conditions, $currentPage, $pageLength, $orderBy);
+        $total = $this->_adapterFinanceCategory->getSearchCount($conditions);
+        $data = $this->_adapterFinanceCategory->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
             $value['parent'] = $value['parent_id'] == 0 ?
                 '无' : $this->_adapterFinanceCategory->getParentCategoryName($value['parent_id']);

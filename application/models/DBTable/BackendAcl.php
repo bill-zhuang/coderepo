@@ -7,38 +7,6 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         parent::__construct('backend_acl');
     }
 
-    public function getBackendAclCount(array $conditions)
-    {
-        $select = $this->select()->reset()
-            ->from($this->_name, 'count(*) as total');
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $count = $select->query()->fetchAll();
-        return intval($count[0]['total']);
-    }
-
-    public function getBackendAclData(array $conditions, $startPage, $pageLength, $orderBy, $groupBy)
-    {
-        $select = $this->select()->reset();
-        foreach ($conditions as $cond => $value) {
-            $select->where($cond, $value);
-        }
-        $data = $select
-            ->order($orderBy)
-            ->group($groupBy)
-            ->limitPage($startPage, $pageLength)
-            ->query()->fetchAll();
-        return $data;
-    }
-
-    public function getBackendAclByID($baid)
-    {
-        return $this->select()->reset()
-            ->where('baid=?', $baid)
-            ->query()->fetch();
-    }
-
     public function isAclExist($module, $controller, $action)
     {
         $data = $this->select()->reset()

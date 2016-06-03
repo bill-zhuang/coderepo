@@ -35,22 +35,6 @@ class Application_Model_DBTable_BackendLog extends Zend_Db_Table_Abstract
         return $data;
     }
 
-    public function getBackendLogByID($blid)
-    {
-        return $this->select()->reset()
-            ->where('blid=?', $blid)
-            ->query()->fetch();
-    }
-
-    public function getAllBlidAndContent()
-    {
-        $data = $this->select()->reset()
-            ->from($this->_name, ['blid', 'content', 'update_time'])
-            ->where('status=?', Bill_Constant::VALID_STATUS)
-            ->query()->fetchAll();
-        return $data;
-    }
-
     public function writeLog($type, $tableName, $data, $where = '')
     {
         $sql = '';

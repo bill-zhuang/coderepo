@@ -207,7 +207,7 @@ class BackendUserController extends Zend_Controller_Action
         if ($this->getRequest()->isGet()) {
             $params = $this->getRequest()->getQuery('params', []);
             $buid = (isset($params['buid'])) ? intval($params['buid']) : Bill_Constant::INVALID_PRIMARY_ID;
-            $data = $this->_adapterBackendUser->getBackendUserByID($buid);
+            $data = $this->_adapterBackendUser->getByPrimaryKey($buid);
             if (!empty($data)) {
                 $jsonArray = [
                     'data' => [
@@ -244,8 +244,8 @@ class BackendUserController extends Zend_Controller_Action
             $conditions['name like ?'] = Bill_Util::getLikeString($keyword);
         }
         $orderBy = 'buid ASC';
-        $total = $this->_adapterBackendUser->getBackendUserCount($conditions);
-        $data = $this->_adapterBackendUser->getBackendUserData($conditions, $currentPage, $pageLength, $orderBy);
+        $total = $this->_adapterBackendUser->getSearchCount($conditions);
+        $data = $this->_adapterBackendUser->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
         $roles = $this->_adapterBackendRole->getAllRoles();
         $output = [];
         foreach ($data as $value) {
