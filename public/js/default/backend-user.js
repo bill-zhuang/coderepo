@@ -22,6 +22,7 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data.startIndex + i))
                         .append($('<td>').text(result.data.items[i]['name']))
                         .append($('<td>').text(result.data.items[i]['role']))
+                        .append($('<td>').text(result.data.items[i]['remark']))
                         .append($('<td>')
                             .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['buid'], text: '修改'})
                                 .click(function () {
@@ -40,7 +41,7 @@ function ajaxIndex() {
             if (result.data.totalItems == 0) {
                 $tblTbody.append($('<tr>')
                     .append(
-                        $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 4)
+                        $('<td>').text('对不起,没有符合条件的数据').addClass('bill_table_no_data').attr('colspan', 5)
                     )
                 );
             }
@@ -132,6 +133,7 @@ function modifyBackendUser(modifyId) {
             $('#backend_user_buid').val(result.data.buid);
             $('#backend_user_name').val(result.data.name);
             $('#backend_user_brid').empty().append(roleSelect).val(result.data.brid);
+            $('#backend_user_remark').val(result.data.remark);
             $('#btn_submit_backend_user').attr('disabled', false);
             $('#modalBackendUser').modal('show');
         } else {

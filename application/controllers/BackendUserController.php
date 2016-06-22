@@ -46,6 +46,7 @@ class BackendUserController extends Zend_Controller_Action
                         'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
                         'salt' => $salt,
                         'brid' => intval($params['backend_user_brid']),
+                        'remark' => trim($params['backend_user_remark']),
                         'status' => Bill_Constant::VALID_STATUS,
                         'create_time' => date('Y-m-d H:i:s'),
                         'update_time' => date('Y-m-d H:i:s'),
@@ -92,6 +93,7 @@ class BackendUserController extends Zend_Controller_Action
                         $data = [
                             'name' => $name,
                             'brid' => intval($params['backend_user_brid']),
+                            'remark' => trim($params['backend_user_remark']),
                             'update_time' => date('Y-m-d H:i:s'),
                         ];
                         $where = $this->_adapterBackendUser->getAdapter()->quoteInto('buid=?', $buid);
@@ -214,6 +216,7 @@ class BackendUserController extends Zend_Controller_Action
                         'buid' => $data['buid'],
                         'name' => $data['name'],
                         'brid' => $data['brid'],
+                        'remark' => $data['remark'],
                         'roles' => $this->_adapterBackendRole->getAllRoles(),
                     ],
                 ];
@@ -253,6 +256,7 @@ class BackendUserController extends Zend_Controller_Action
                 'buid' => $value['buid'],
                 'name' => $value['name'],
                 'role' => isset($roles[$value['brid']]) ? $roles[$value['brid']] : '-',
+                'remark' => $value['remark'],
             ];
         }
 
