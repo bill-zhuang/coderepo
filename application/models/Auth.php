@@ -18,15 +18,8 @@ class Application_Model_Auth
         );
     }
 
-    public function logIn($username, $password, $tableName = null, $authAdapter = null)
+    public function logIn($username, $password, $tableName, $authAdapter)
     {
-        if ($tableName == null) {
-            $tableName = 'backend_user';
-        }
-        if ($databaseAdapter == null) {
-            $database = new Application_Model_DBTable_BackendUser();
-            $databaseAdapter = $database->getAdapter();
-        }
         $this->setAuth($authAdapter, $tableName, 'name', 'password');
         $this->authAdapter->setIdentity($username);
         $this->authAdapter->setCredential($password);
