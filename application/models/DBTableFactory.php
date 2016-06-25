@@ -61,6 +61,15 @@ class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
         }
     }
 
+    public function fetchColumnByPkid($pkid, $column, $defaultValue = '')
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, $column)
+            ->where($this->_primary[1] . '=?', $pkid)
+            ->query()->fetch();
+        return isset($data[$column]) ? $data[$column] : $defaultValue;
+    }
+
     public function insert(array $data)
     {
         $this->_adapterBackendLog->writeLog('insert', $this->_tableName, $data);
