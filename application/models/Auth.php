@@ -2,20 +2,23 @@
 define("G_SESSIONTIMEOUT",3600);
 class Application_Model_Auth
 {
+    /**
+     * @var Zend_Auth_Adapter_DbTable
+     */
     protected $authAdapter;
 
-    protected function setAuth($tableName, $columnName, $columnPassword, $databaseAdapter)
+    protected function setAuth($authAdapter, $tableName, $identifyColumn, $credentialColumn)
     {
         $this->authAdapter = new Zend_Auth_Adapter_DbTable(
-            $databaseAdapter,
+            $authAdapter,
             $tableName,
-            $columnName,
-            $columnPassword,
+            $identifyColumn,
+            $credentialColumn,
             'MD5(CONCAT(?, salt)) AND status=1'
         );
     }
 
-    public function logIn($username, $password, $tableName = null, $databaseAdapter = null)
+    public function logIn($username, $password, $tableName = null, $authAdapter = null)
     {
         if ($tableName == null) {
             $tableName = 'backend_user';
@@ -24,7 +27,7 @@ class Application_Model_Auth
             $database = new Application_Model_DBTable_BackendUser();
             $databaseAdapter = $database->getAdapter();
         }
-        $this->setauth($tableName, 'name', 'password', $databaseAdapter);
+        $this->setAuth($authAdapter, $tableName, 'name', 'password');
         $this->authAdapter->setIdentity($username);
         $this->authAdapter->setCredential($password);
 
