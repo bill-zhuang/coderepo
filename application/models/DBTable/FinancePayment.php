@@ -30,26 +30,34 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             ->query()->fetchAll();
     }
 
-    public function getTotalPaymentHistoryDataByDay($startDate, $endDate, $fcid)
+    public function getTotalPaymentHistoryDataByDay($startDate, $endDate, $fcid, $ignoreMoney = 0)
     {
         if ($fcid == Bill_Constant::INVALID_PRIMARY_ID) {
-            return $this->select()->reset()
+            $select = $this->select()->reset()
                 ->from($this->_name, ['payment_date as period', 'sum(payment) as payment'])
                 ->where('status=?', Bill_Constant::VALID_STATUS)
                 ->where('payment_date>=?', $startDate)
-                ->where('payment_date<=?', $endDate)
+                ->where('payment_date<=?', $endDate);
+            if ($ignoreMoney > 0) {
+                $select->where('payment<?', $ignoreMoney);
+            }
+            return $select
                 ->group('payment_date')
                 ->order('payment_date asc')
                 ->query()->fetchAll();
         } else {
-            return $this->select()->reset()
+            $select = $this->select()->reset()
                 ->setIntegrityCheck(false)
                 ->from($this->_name, ['payment_date as period', 'sum(payment) as payment'])
                 ->joinInner($this->_join_table, $this->_join_condition, [])
                 ->where($this->_name . '.status=?', Bill_Constant::VALID_STATUS)
                 ->where($this->_name . '.payment_date>=?', $startDate)
                 ->where($this->_name . '.payment_date<=?', $endDate)
-                ->where($this->_join_table . '.fcid=?', $fcid)
+                ->where($this->_join_table . '.fcid=?', $fcid);
+            if ($ignoreMoney > 0) {
+                $select->where('payment<?', $ignoreMoney);
+            }
+            return $select
                 ->group($this->_name . '.payment_date')
                 ->order($this->_name . '.payment_date asc')
                 ->query()->fetchAll();

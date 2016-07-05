@@ -4,6 +4,8 @@ $(document).ready(function () {
     initMonthCategoryChart();
     initYearCategoryChart();
     loadMainCategory('day_category_id');
+    $('#payment_ignore').prop('checked', false);
+    ignoreAmount(false);
 });
 
 function initPeriodChart() {
@@ -218,3 +220,15 @@ $('#btn_search_month').on('click', function (event) {
 $('#day_category_id').on('change', function () {
     $('#btn_search_day').click();
 });
+
+$('#payment_ignore').on('click', function () {
+    ignoreAmount($(this).prop('checked'));
+});
+
+function ignoreAmount(ignore) {
+    if (ignore) {
+        $('#payment_min').prop('disabled', false);
+    } else {
+        $('#payment_min').prop('disabled', true).val('');
+    }
+}
