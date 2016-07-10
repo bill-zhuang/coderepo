@@ -227,7 +227,7 @@ $('#payment_ignore').on('click', function () {
 
 function ignoreAmount(ignore) {
     if (ignore) {
-        $('#payment_min').prop('disabled', false);
+        $('#payment_min').prop('disabled', false).val(1000);
     } else {
         $('#payment_min').prop('disabled', true).val('');
     }
