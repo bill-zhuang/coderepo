@@ -33,8 +33,12 @@ class LoginController extends Zend_Controller_Action
         $this->_auth->logIn($userName, $userPassword, 'backend_user', $database->getAdapter());
 
         if (Application_Model_Auth::isValid()) {
+            $redirectUrl = isset($params['location']) ? urldecode($params['location']) : '';
+            if ($redirectUrl === '' || $redirectUrl === '/') {
+                $redirectUrl = '/main/index';
+            }
             $jsonArray['data'] = [
-                'redirectUrl' => '/main/index',
+                'redirectUrl' => $redirectUrl,
             ];
         } else {
             $jsonArray['error'] = [
