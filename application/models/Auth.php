@@ -1,5 +1,4 @@
 <?php
-define("G_SESSIONTIMEOUT",3600);
 class Application_Model_Auth
 {
     /**
@@ -27,7 +26,7 @@ class Application_Model_Auth
         $auth = Zend_Auth::getInstance();
         $auth->setStorage(new Zend_Auth_Storage_Session('user_info'));
         $userInfo = new Zend_Session_Namespace('user_info');
-        $userInfo->setExpirationSeconds(G_SESSIONTIMEOUT);
+        $userInfo->setExpirationSeconds(Bill_Constant::LOGIN_TIMEOUT);
         $result = $auth->authenticate($this->authAdapter);
 
         if($result->isValid()) {
@@ -63,7 +62,7 @@ class Application_Model_Auth
 
         if($auth->hasIdentity()) {
             $userInfo = new Zend_Session_Namespace('user_info');
-            $userInfo->setExpirationSeconds(G_SESSIONTIMEOUT);
+            $userInfo->setExpirationSeconds(Bill_Constant::LOGIN_TIMEOUT);
             return true;
         } else {
             return false;

@@ -2,6 +2,8 @@
 
 class Bill_Constant
 {
+    const LOGIN_TIMEOUT = 3600; //second
+
     const INIT_START_PAGE = 1;
     const INIT_PAGE_LENGTH = 25;
     const INIT_TOTAL_PAGE = 1;
