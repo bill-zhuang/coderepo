@@ -225,6 +225,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         list($currentPage, $pageLength, $start) = Bill_Util::getPaginationParamsFromUrlParamsArray($params);
         $paymentDate = isset($params['payment_date']) ? trim($params['payment_date']) : '';
         $financeCategoryId = isset($params['category_parent_id']) ? intval($params['category_parent_id']) : 0;
+        $paymentDetail = isset($params['payment_detail']) ? trim($params['payment_detail']) : '';
 
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS
@@ -240,6 +241,9 @@ class person_FinancePaymentController extends Zend_Controller_Action
             } else {
                 $conditions['1 =?'] = 0;
             }
+        }
+        if ('' !== $paymentDetail) {
+            $conditions['detail like ?'] = Bill_Util::getLikeString($paymentDetail);
         }
         $orderBy = 'payment_date desc';
         $total = $this->_adapterFinancePayment->getSearchCount($conditions);
