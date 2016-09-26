@@ -105,6 +105,7 @@ function modifyFinancePayment(modifyId) {
         if (typeof result.data != 'undefined') {
             $('#finance_payment_payment_date').val(result.data.payment_date);
             $('#finance_payment_payment').val(result.data.payment);
+            gSelectpicker.selectpicker('refresh');
             gSelectpicker.selectpicker('val', result.data.fcids);
             $('#finance_payment_intro').val(result.data.detail);
             $('#finance_payment_fpid').val(result.data.fpid);
