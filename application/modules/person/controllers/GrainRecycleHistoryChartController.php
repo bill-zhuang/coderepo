@@ -42,6 +42,10 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             }
         }
         $jsonArray = [
+            'searchData' => [
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ],
             'data' => [
                 'days' => array_keys($data),
                 'data' => array_values($data),
@@ -78,6 +82,10 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
             }
         }
         $jsonArray = [
+            'searchData' => [
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ],
             'data' => $data
         ];
 

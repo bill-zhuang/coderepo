@@ -48,6 +48,8 @@ function initPeriodChart() {
                 },
                 series: result.data
             });
+            $('#day_start_date').val(result.searchData.startDate);
+            $('#day_end_date').val(result.searchData.endDate);
         } else {
             alert(result.error.message);
         }
@@ -114,6 +116,8 @@ function initMonthChart() {
                 },
                 series: result.data.data
             });
+            $('#month_start_date').val(result.searchData.startDate);
+            $('#month_end_date').val(result.searchData.endDate);
         } else {
             alert(result.error.message);
         }

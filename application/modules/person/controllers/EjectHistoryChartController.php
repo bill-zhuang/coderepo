@@ -50,6 +50,10 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
         }
 
         $jsonArray = [
+            'searchData' => [
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ],
             'data' => $data
         ];
 
@@ -101,6 +105,10 @@ class person_EjectHistoryChartController extends Zend_Controller_Action
             ];
         }
         $jsonArray = [
+            'searchData' => [
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ],
             'data' => $data
         ];
 
