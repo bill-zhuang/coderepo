@@ -49,6 +49,18 @@ var jCommon = (function () {
 
         getFileImageCount: function (fileID) {
             return $('#' + fileID)[0]['files'].length;
+        },
+
+        getQueryStringParams: function(param) {
+            var variables = window.location.search.substring(1).split('&');
+            for (var i = 0; i < variables.length; i++) {
+                var parameterName = variables[i].split('=');
+                if (parameterName[0] == param) {
+                    return parameterName[1];
+                }
+            }
+
+            return '';
         }
     }
 }());
