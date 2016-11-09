@@ -145,7 +145,7 @@ class BackendRoleController extends Zend_Controller_Action
                     } else {
                         $jsonArray = [
                             'error' => [
-                                'message' => '改角色下还有用户，删除失败',
+                                'message' => '该角色下还有用户，删除失败',
                             ],
                         ];
                     }
