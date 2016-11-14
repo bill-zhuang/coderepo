@@ -49,8 +49,10 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             foreach ($conditions as $cond => $value) {
                 $select->where($cond, $value);
             }
+            if ($groupBy !== null) {
+                $select->group($groupBy);
+            }
             $count = $select
-                ->group($groupBy)
                 ->query()->fetchAll();
             return $count[0]['total'];
         }

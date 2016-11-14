@@ -235,6 +235,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         }
         if (0 !== $financeCategoryId) {
             $conditions['finance_payment_map.fcid=?'] = $financeCategoryId;
+            $conditions['finance_payment_map.status=?'] = Bill_Constant::VALID_STATUS;
             $groupBy = 'finance_payment.fpid';
         } else {
             $groupBy = null;
