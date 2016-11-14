@@ -13,6 +13,49 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
         $this->_join_condition = 'finance_payment.fpid=finance_payment_map.fpid';
     }
 
+    public function getSearchData(array $conditions, $startPage, $pageLength, $orderBy, $groupBy = null)
+    {
+        if (!isset($conditions['finance_payment_map.fcid=?'])) {
+            return parent::getSearchData($conditions, $startPage, $pageLength, $orderBy, $groupBy);
+        } else {
+            $select = $this->select()->reset()
+                ->setIntegrityCheck(false)
+                ->from($this->_name)
+                ->joinInner($this->_join_table, $this->_join_condition, []);
+            foreach ($conditions as $cond => $value) {
+                $select->where($cond, $value);
+            }
+            $select
+                ->limitPage($startPage, $pageLength)
+                ->order($orderBy);
+            if ($groupBy !== null) {
+                $select->group($groupBy);
+            }
+            $data = $select
+                ->query()->fetchAll();
+            return $data;
+        }
+    }
+
+    public function getSearchCount(array $conditions, $groupBy)
+    {
+        if (!isset($conditions['finance_payment_map.fcid=?'])) {
+            return parent::getSearchCount($conditions);
+        } else {
+            $select = $this->select()->reset()
+                ->setIntegrityCheck(false)
+                ->from($this->_name, 'count(*) as total')
+                ->joinInner($this->_join_table, $this->_join_condition, []);
+            foreach ($conditions as $cond => $value) {
+                $select->where($cond, $value);
+            }
+            $count = $select
+                ->group($groupBy)
+                ->query()->fetchAll();
+            return $count[0]['total'];
+        }
+    }
+
     public function getTotalPaymentHistoryGroupData($startDate, $endDate)
     {
         $select = $this->select()->reset()

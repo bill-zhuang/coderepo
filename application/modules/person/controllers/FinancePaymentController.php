@@ -228,26 +228,23 @@ class person_FinancePaymentController extends Zend_Controller_Action
         $paymentDetail = isset($params['payment_detail']) ? trim($params['payment_detail']) : '';
 
         $conditions = [
-            'status =?' => Bill_Constant::VALID_STATUS
+            'finance_payment.status =?' => Bill_Constant::VALID_STATUS
         ];
         if ('' != $paymentDate) {
-            $conditions['payment_date =?'] = $paymentDate;
+            $conditions['finance_payment.payment_date =?'] = $paymentDate;
         }
         if (0 !== $financeCategoryId) {
-            $adapterPaymentMap = new Application_Model_DBTable_FinancePaymentMap();
-            $fpids = $adapterPaymentMap->getFpidByFcid($financeCategoryId, 'create_time desc', $currentPage, $pageLength);
-            if (!empty($fpids)) {
-                $conditions['fpid in (?)'] = $fpids;
-            } else {
-                $conditions['1 =?'] = 0;
-            }
+            $conditions['finance_payment_map.fcid=?'] = $financeCategoryId;
+            $groupBy = 'finance_payment.fpid';
+        } else {
+            $groupBy = null;
         }
         if ('' !== $paymentDetail) {
-            $conditions['detail like ?'] = Bill_Util::getLikeString($paymentDetail);
+            $conditions['finance_payment.detail like ?'] = Bill_Util::getLikeString($paymentDetail);
         }
         $orderBy = 'payment_date desc';
-        $total = $this->_adapterFinancePayment->getSearchCount($conditions);
-        $data = $this->_adapterFinancePayment->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
+        $total = $this->_adapterFinancePayment->getSearchCount($conditions, $groupBy);
+        $data = $this->_adapterFinancePayment->getSearchData($conditions, $currentPage, $pageLength, $orderBy, $groupBy);
         foreach ($data as &$value) {
             $fcids = $this->_adapterFinancePaymentMap->getFinanceCategoryIDs($value['fpid']);
             if (!empty($fcids)) {
