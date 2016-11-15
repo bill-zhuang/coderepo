@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50522
 File Encoding         : 65001
 
-Date: 2016-11-15 16:43:01
+Date: 2016-11-15 17:10:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -179,4 +179,19 @@ CREATE TABLE `house_sale` (
   `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`hsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for toutiao
+-- ----------------------------
+DROP TABLE IF EXISTS `toutiao`;
+CREATE TABLE `toutiao` (
+  `ttid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(2) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ttid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -54,6 +54,11 @@ table css
     text-align: center;
 }
 
+.bill_table_td_50 {
+    width: 50%;
+    text-align: center;
+}
+
 .bill_cursor_pointer {
     cursor: pointer;
 }
