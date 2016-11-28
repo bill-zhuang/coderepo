@@ -236,16 +236,13 @@ class person_FinancePaymentController extends Zend_Controller_Action
         if (0 !== $financeCategoryId) {
             $conditions['finance_payment_map.fcid=?'] = $financeCategoryId;
             $conditions['finance_payment_map.status=?'] = Bill_Constant::VALID_STATUS;
-            $groupBy = 'finance_payment.fpid';
-        } else {
-            $groupBy = null;
         }
         if ('' !== $paymentDetail) {
             $conditions['finance_payment.detail like ?'] = Bill_Util::getLikeString($paymentDetail);
         }
         $orderBy = 'payment_date desc';
-        $total = $this->_adapterFinancePayment->getSearchCount($conditions, $groupBy);
-        $data = $this->_adapterFinancePayment->getSearchData($conditions, $currentPage, $pageLength, $orderBy, $groupBy);
+        $total = $this->_adapterFinancePayment->getSearchCount($conditions);
+        $data = $this->_adapterFinancePayment->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
             $fcids = $this->_adapterFinancePaymentMap->getFinanceCategoryIDs($value['fpid']);
             if (!empty($fcids)) {

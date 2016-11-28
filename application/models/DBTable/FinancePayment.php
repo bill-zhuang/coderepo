@@ -37,7 +37,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
         }
     }
 
-    public function getSearchCount(array $conditions, $groupBy)
+    public function getSearchCount(array $conditions)
     {
         if (!isset($conditions['finance_payment_map.fcid=?'])) {
             return parent::getSearchCount($conditions);
@@ -48,9 +48,6 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
                 ->joinInner($this->_join_table, $this->_join_condition, []);
             foreach ($conditions as $cond => $value) {
                 $select->where($cond, $value);
-            }
-            if ($groupBy !== null) {
-                $select->group($groupBy);
             }
             $count = $select
                 ->query()->fetchAll();
