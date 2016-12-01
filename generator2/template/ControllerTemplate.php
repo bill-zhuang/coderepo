@@ -249,9 +249,9 @@ echo PHP_EOL;
         $conditions = [
             '<?php echo ($status_name === '') ? 'todo status' : $status_name; ?> =?' => Bill_Constant::VALID_STATUS
         ];
-        $order_by = '<?php echo $primary_id[0]; ?> ASC'; //TODO reset order by
+        $orderBy = '<?php echo $primary_id[0]; ?> ASC'; //TODO reset order by
         $total = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getSearchCount($conditions);
-        $data = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getSearchData($conditions, $currentPage, $pageLength, $order_by);
+        $data = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
 
         $json_data = [
             'data' => [

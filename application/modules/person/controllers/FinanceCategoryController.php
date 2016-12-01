@@ -187,11 +187,11 @@ class person_FinanceCategoryController extends Zend_Controller_Action
     public function getFinanceSubcategoryAction()
     {
         $jsonArray = [];
-        if (isset($_GET['parent_id'])) {
+        if (isset($_GET['params'])) {
             $params = $this->_getParam('params', []);
             $parentId = isset($params['parent_id']) ? intval($params['parent_id']) : Bill_Constant::INVALID_PRIMARY_ID;
             $subcategoryData = $this->_adapterFinanceCategory->getFinanceSubcategory($parentId);
-            if (!empty($data)) {
+            if (!empty($subcategoryData)) {
                 $jsonArray = [
                     'data' => [
                         'currentItemCount' => count($subcategoryData),
