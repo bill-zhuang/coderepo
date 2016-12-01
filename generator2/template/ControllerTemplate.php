@@ -253,7 +253,7 @@ echo PHP_EOL;
         $total = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getSearchCount($conditions);
         $data = $this->_adapter<?php echo implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[0])))); ?>->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
 
-        $json_data = [
+        $jsonData = [
             'data' => [
                 'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
                 'pageIndex' => $currentPage,
@@ -264,7 +264,7 @@ echo PHP_EOL;
                 'items' => $data,
             ],
         ];
-        return $json_data;
+        return $jsonData;
 <?php } ?>
     }
     

@@ -61,7 +61,7 @@ class person_LagouJobController extends Zend_Controller_Action
             $value['sub'] = $subName;
         }
 
-        $json_data = [
+        $jsonData = [
             'data' => [
                 'totalPages' => Bill_Util::getTotalPages($total, $pageLength),
                 'pageIndex' => $currentPage,
@@ -72,7 +72,7 @@ class person_LagouJobController extends Zend_Controller_Action
                 'items' => $data,
             ],
         ];
-        return $json_data;
+        return $jsonData;
     }
     
 }
