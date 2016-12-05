@@ -195,3 +195,66 @@ CREATE TABLE `toutiao` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ttid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for lagou_category
+-- ----------------------------
+DROP TABLE IF EXISTS `lagou_category`;
+CREATE TABLE `lagou_category` (
+  `caid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `pid` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`caid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for lagou_city
+-- ----------------------------
+DROP TABLE IF EXISTS `lagou_city`;
+CREATE TABLE `lagou_city` (
+  `ctid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `letter` varchar(10) NOT NULL DEFAULT '' COMMENT 'city first letter',
+  `lg_ctid` int(10) unsigned NOT NULL DEFAULT '0',
+  `lg_code` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ctid`),
+  UNIQUE KEY `idx_lg_ctid` (`lg_ctid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for lagou_job
+-- ----------------------------
+DROP TABLE IF EXISTS `lagou_job`;
+CREATE TABLE `lagou_job` (
+  `joid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `caid` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`joid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for lagou_job_analysis
+-- ----------------------------
+DROP TABLE IF EXISTS `lagou_job_analysis`;
+CREATE TABLE `lagou_job_analysis` (
+  `jaid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `joid` int(10) unsigned NOT NULL DEFAULT '0',
+  `lg_ctid` int(10) unsigned NOT NULL DEFAULT '0',
+  `date` date NOT NULL,
+  `num` int(10) unsigned NOT NULL DEFAULT '0',
+  `num_plus` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '职位数是否超过500（拉勾职位数超过500用500+标记）',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`jaid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
