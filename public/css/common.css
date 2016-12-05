@@ -129,5 +129,9 @@ bootstrap modal css
 }
 
 .bill-job-analysis-line {
-    height: 700px;
+    height: 600px !important;
+}
+
+.bill-input-sm {
+    width: 120px !important;
 }
