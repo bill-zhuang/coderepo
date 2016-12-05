@@ -53,6 +53,7 @@ class person_LagouJobAnalysisController extends Zend_Controller_Action
         $subCaid = isset($params['subCaid']) ? intval($params['subCaid']) : 0;
         $joid = isset($params['joid']) ? intval($params['joid']) : 0;
         $lgCtid = isset($params['lgCtid']) ? intval($params['lgCtid']) : 0;
+        $ignoreJobNum = (isset($params['jobNumIgnore'])) ? floatval($params['jobNumMin']) : 0;
 
         if($joid == 0 && $lgCtid == 0) {
             $jsonData = [
@@ -78,6 +79,9 @@ class person_LagouJobAnalysisController extends Zend_Controller_Action
         }
         if ($lgCtid > 0) {
             $conditions['lg_ctid =?'] = $lgCtid;
+        }
+        if ($ignoreJobNum > 0) {
+            $conditions['num <?'] = $ignoreJobNum;
         }
 
         $data = $this->_adapterLagouJobAnalysis->getJobAnalysisData($conditions);
@@ -129,6 +133,7 @@ class person_LagouJobAnalysisController extends Zend_Controller_Action
                 'subCaid' => $subCaid,
                 'joid' => $joid,
                 'lgCtid' => $lgCtid,
+                'jobNumMin' => $ignoreJobNum,
             ],
             'data' => [
                 'lineData' => $lineChartData,

@@ -1,6 +1,8 @@
 $(document).ready(function () {
     initAlphabat();
     loadLagouMainCategory('mainCaid');
+    $('#jobNumIgnore').prop('checked', false);
+    ignoreJobNum(false);
 });
 
 function ajaxIndex() {
@@ -149,4 +151,16 @@ $('#cityFirstLetter').on('change', function() {
         $('#lgCtid').empty().append('<option value="0">全部</option>');
     }
 });
+
+$('#jobNumIgnore').on('click', function () {
+    ignoreJobNum($(this).prop('checked'));
+});
+
+function ignoreJobNum(ignore) {
+    if (ignore) {
+        $('#jobNumMin').prop('disabled', false).val(480);
+    } else {
+        $('#jobNumMin').prop('disabled', true).val('');
+    }
+}
 /*  --------------------------------------------------------------------------------------------------------  */
