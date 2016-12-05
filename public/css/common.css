@@ -127,3 +127,7 @@ bootstrap modal css
 .bill-ime-disabled {
     ime-mode: disabled;
 }
+
+.bill-job-analysis-line {
+    height: 700px;
+}

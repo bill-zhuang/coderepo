@@ -1,10 +1,16 @@
 $(document).ready(function () {
     initAlphabat();
     loadLagouMainCategory('mainCaid');
-    //ajaxIndex();
 });
 
 function ajaxIndex() {
+    var joid = $('#joid').val();
+    var lgCtid = $('#lgCtid').val();
+    if (joid == '' && lgCtid == '') {
+        alert('Job和城市不能同时为全部');
+        return;
+    }
+
     var $tblTbody = $('#tbl').find('tbody');
     var getUrl = '/person/lagou-job-analysis/ajax-index';
     var getData = {
@@ -14,49 +20,45 @@ function ajaxIndex() {
     var successFunc = function (result) {
         $tblTbody.empty();
         if (typeof result.data != "undefined") {
-            if (typeof result.data != "undefined") {
-                $('#job_analysis_chart').highcharts({
-                    chart: {
-                        type: 'spline'
-                    },
+            $('#job_analysis_chart').highcharts({
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: 'Job Analysis'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        month: '%e. %b',
+                        year: '%b'
+                    }
+                },
+                yAxis: {
                     title: {
-                        text: 'Job Analysis'
+                        text: 'Job Num'
                     },
-                    subtitle: {
-                        text: ''
-                    },
-                    xAxis: {
-                        type: 'datetime',
-                        dateTimeLabelFormats: { // don't display the dummy year
-                            month: '%e. %b',
-                            year: '%b'
+                    min: 0,
+                    tickInterval: 1
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x:%b %e}: {point.y:f} Jobs'
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            enabled: true
                         }
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Job Num'
-                        },
-                        min: 0,
-                        tickInterval: 1
-                    },
-                    tooltip: {
-                        headerFormat: '<b>{series.name}</b><br>',
-                        pointFormat: '{point.x:%b %e}: {point.y:f} days'
-                    },
-                    plotOptions: {
-                        spline: {
-                            marker: {
-                                enabled: true
-                            }
-                        }
-                    },
-                    series: result.data
-                });
-                $('#startDate').val(result.searchData.startDate);
-                $('#endDate').val(result.searchData.endDate);
-            } else {
-                alert(result.error.message);
-            }
+                    }
+                },
+                series: result.data
+            });
+            $('#startDate').val(result.searchData.startDate);
+            $('#endDate').val(result.searchData.endDate);
         } else {
             alert(result.error.message);
         }

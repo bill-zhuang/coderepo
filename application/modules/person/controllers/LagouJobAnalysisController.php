@@ -54,6 +54,13 @@ class person_LagouJobAnalysisController extends Zend_Controller_Action
         $joid = isset($params['joid']) ? intval($params['joid']) : 0;
         $lgCtid = isset($params['lgCtid']) ? intval($params['lgCtid']) : 0;
 
+        if($joid == 0 && $lgCtid == 0) {
+            $jsonData = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, 'Job和城市不能同时为全部')
+            ];
+            return $jsonData;
+        }
+
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS,
         ];
