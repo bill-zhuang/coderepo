@@ -32,6 +32,36 @@ class person_LagouJobController extends Zend_Controller_Action
         echo json_encode($this->_index());
     }
 
+    public function getJobListAction()
+    {
+        $params = $this->_getParam('params', []);
+        $caid = isset($params['caid']) ? intval($params['caid']) : 0;
+        if ($caid > 0) {
+            $jobList = $this->_adapterLagouJob->getJobListByCaid($caid);
+            $data = [
+                'data' => [
+                    'currentItemCount' => count($jobList),
+                    'items' => $jobList,
+                ]
+            ];
+        } else {
+            $data = [
+                'data' => [
+                    'currentItemCount' => 0,
+                    'items' => [],
+                ]
+            ];
+        }
+
+        if (!isset($data['data'])) {
+            $data = [
+                'error' => Bill_Util::getJsonResponseErrorArray(200, Bill_Constant::ACTION_ERROR_INFO),
+            ];
+        }
+
+        echo json_encode($data);
+    }
+
     private function _index()
     {
         $params = $this->_getParam('params', []);

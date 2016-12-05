@@ -17,4 +17,15 @@ class Application_Model_DBTable_LagouCity extends Application_Model_DBTableFacto
 
         return $data;
     }
+
+    public function getNameByLgCtid($lgCtid)
+    {
+        $data = $this->select()->reset()
+            ->from($this->_name, 'name')
+            ->where('lg_ctid=?', $lgCtid)
+            ->where('status=?', Bill_Constant::VALID_STATUS)
+            ->query()->fetch();
+
+        return isset($data['name']) ? $data['name'] : '';
+    }
 }
