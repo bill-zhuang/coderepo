@@ -55,7 +55,35 @@ function ajaxIndex() {
                         }
                     }
                 },
-                series: result.data
+                series: result.data.lineData
+            });
+            $('#job_analysis_bar_chart').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Job Analysis'
+                },
+                xAxis: {
+                    categories: result.data.days,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Job Num'
+                    },
+                    tickInterval: 1
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                series: result.data.barData
             });
             $('#startDate').val(result.searchData.startDate);
             $('#endDate').val(result.searchData.endDate);

@@ -82,26 +82,42 @@ class person_LagouJobAnalysisController extends Zend_Controller_Action
 
         $data = $this->_adapterLagouJobAnalysis->getJobAnalysisData($conditions);
 
+        $days = [];
         $hashTable = [];
         foreach ($data as $value) {
             $hashKey = $value['joid'] . '-' . $value['lg_ctid'];
             if (!isset($hashTable[$hashKey])) {
-                $hashTable[$hashKey] = [];
+                $hashTable[$hashKey] = [
+                    'line' => [],
+                    'bar' => [],
+                ];
             }
-            $hashTable[$hashKey][] = [
+            $hashTable[$hashKey]['line'][] = [
                 strtotime($value['date'] . ' 08:00:00') * 1000,
                 intval($value['num']),
             ];
+            $hashTable[$hashKey]['bar'][] = [
+                $value['date'],
+                intval($value['num']),
+            ];
+            if (!in_array($value['date'], $days)) {
+                $days[] = $value['date'];
+            }
         }
 
-        $chartData = [];
+        $lineChartData = [];
+        $barChartData = [];
         foreach ($hashTable as $hashKey => $hashValue) {
             list($chartJoid, $chartCtid) = explode('-', $hashKey);
             $chartName = $this->_adapterLagouJob->getNameByJoid($chartJoid) . '-'
                 . $this->_adapterLagouCity->getNameByLgCtid($chartCtid);
-            $chartData[] = [
+            $lineChartData[] = [
                 'name' => $chartName,
-                'data' => $hashValue,
+                'data' => $hashValue['line'],
+            ];
+            $barChartData[] = [
+                'name' => $chartName,
+                'data' => $hashValue['bar'],
             ];
         }
 
@@ -114,7 +130,11 @@ class person_LagouJobAnalysisController extends Zend_Controller_Action
                 'joid' => $joid,
                 'lgCtid' => $lgCtid,
             ],
-            'data' => $chartData,
+            'data' => [
+                'lineData' => $lineChartData,
+                'barData' => $barChartData,
+                'days' => $days,
+            ],
         ];
         return $jsonData;
     }
