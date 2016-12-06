@@ -13,7 +13,8 @@ function ajaxIndex() {
         if (typeof result.data != "undefined") {
             $('#eft_fund_analysis_chart').highcharts({
                 chart: {
-                    zoomType: 'x'
+                    zoomType: 'x',
+                    type: 'area'
                 },
                 title: {
                     text: 'ETF Fund Analysis'
@@ -53,7 +54,8 @@ function ajaxIndex() {
                             month: '%Y-%m',
                             year: '%Y'
                         }
-                    }
+                    },
+                    shared: true
                 },
                 plotOptions: {
                     area: {
@@ -79,16 +81,17 @@ function ajaxIndex() {
                             }
                         },
                         threshold: null
+                    },
+                    areaspline: {
+                        fillOpacity: 0.5
                     }
                 },
                 series: [
                     {
-                        type: 'area',
                         name: 'Unit Net Value',
                         data: result.data.unitNetData
                     },
                     {
-                        type: 'area',
                         name: 'Accum Net Value',
                         data: result.data.accumNetData
                     }
