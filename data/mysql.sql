@@ -258,3 +258,36 @@ CREATE TABLE `lagou_job_analysis` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`jaid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for etf_fund
+-- ----------------------------
+DROP TABLE IF EXISTS `etf_fund`;
+CREATE TABLE `etf_fund` (
+  `fuid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tt_code` varchar(255) NOT NULL DEFAULT '' COMMENT '天天基金网code',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`fuid`),
+  UNIQUE KEY `idx_ttid` (`tt_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for etf_fund_analysis
+-- ----------------------------
+DROP TABLE IF EXISTS `etf_fund_analysis`;
+CREATE TABLE `etf_fund_analysis` (
+  `faid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fuid` int(10) unsigned NOT NULL DEFAULT '0',
+  `date` date NOT NULL,
+  `unit_net_value` decimal(8,4) NOT NULL DEFAULT '0.0000',
+  `accum_net_value` decimal(8,4) NOT NULL DEFAULT '0.0000',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`faid`),
+  UNIQUE KEY `idx_efid_date` (`fuid`,`date`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

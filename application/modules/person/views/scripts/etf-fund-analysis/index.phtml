@@ -1,0 +1,50 @@
+<link href="/assets/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"/>
+<link href="/css/common.css" rel="stylesheet"/>
+<title>ETF Fund Analysis - Bill Coderepo</title>
+<div class="panel panel-warning">
+    <!-- panel heading -->
+    <div class="panel-heading">
+        <h2>ETF Fund Analysis</h2>
+    </div>
+    <!-- panel body -->
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <form action="#" method="get" id="formSearch" class="form-inline">
+                    开始日期: <input type="text" class="form-control form_date bill-ime-disabled bill-input-sm"
+                                 id="startDate" name="startDate"/>
+                    结束日期: <input type="text" class="form-control form_date bill-ime-disabled bill-input-sm"
+                                 id="endDate" name="endDate"/>
+                    ETF: <select class="form-control" id="fuid" name="fuid"></select>
+                    <button class="btn btn-primary" type="submit" id="btn_search">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span>搜索</span>
+                    </button>
+                </form>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="bill-chart-canvas_all" id="eft_fund_analysis_chart"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+            </div>
+        </div>
+    </div>
+    <!-- panel footer -->
+    <div class="panel-footer">
+        <div class="row">
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<!-- ------------------------------------------javascript--------------------------------------------------- -->
+<script src="/assets/datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script src="/assets/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script src="/js/public/datetimepicker.js"></script>
+<script src="/assets/highCharts/highcharts.src.js"></script>
+<script src="/assets/jquery-serialize-object/js/jquery.serialize-object.min.js"></script>
+<script src="/js/public/jAjaxWidget.js"></script>
+<script src="/js/public/jCommon.js"></script>
+<script src="/js/person/etf-fund-analysis.js"></script>
