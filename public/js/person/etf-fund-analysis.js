@@ -43,17 +43,16 @@ function ajaxIndex() {
                     }
                 },
                 tooltip: {
-                    tooltip: {
-                        dateTimeLabelFormats: {
-                            millisecond: '%H:%M:%S.%L',
-                            second: '%H:%M:%S',
-                            minute: '%H:%M',
-                            hour: '%H:%M',
-                            day: '%Y-%m-%d',
-                            week: '%m-%d',
-                            month: '%Y-%m',
-                            year: '%Y'
-                        }
+                    type: 'datetime',
+                    dateTimeLabelFormats: {
+                        millisecond: '%H:%M:%S.%L',
+                        second: '%H:%M:%S',
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%Y-%m-%d',
+                        week: '%m-%d',
+                        month: '%Y-%m',
+                        year: '%Y'
                     },
                     shared: true
                 },
