@@ -13,14 +13,12 @@ function ajaxIndex() {
         return;
     }
 
-    var $tblTbody = $('#tbl').find('tbody');
     var getUrl = '/person/lagou-job-analysis/ajax-index';
     var getData = {
         "params": $('#formSearch').serializeObject()
     };
     var method = 'get';
     var successFunc = function (result) {
-        $tblTbody.empty();
         if (typeof result.data != "undefined") {
             $('#job_analysis_chart').highcharts({
                 chart: {
