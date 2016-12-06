@@ -80,9 +80,7 @@ function ajaxIndex() {
                                 lineWidth: 1
                             }
                         },
-                        threshold: null
-                    },
-                    areaspline: {
+                        threshold: null,
                         fillOpacity: 0.5
                     }
                 },
