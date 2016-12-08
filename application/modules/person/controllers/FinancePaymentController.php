@@ -20,6 +20,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->_adapterFinanceCategory = new Application_Model_DBTable_FinanceCategory();
         $this->_adapterFinancePayment = new Application_Model_DBTable_FinancePayment();
         $this->_adapterFinancePaymentMap = new Application_Model_DBTable_FinancePaymentMap();
@@ -30,6 +31,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         // action body
         $this->_helper->layout()->enableLayout();
         $this->_helper->viewRenderer->setNoRender(false);
+        $this->getResponse()->setHeader('Content-Type', 'text/html');
     }
 
     public function ajaxIndexAction()

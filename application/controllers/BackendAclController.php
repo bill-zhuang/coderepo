@@ -16,6 +16,7 @@ class BackendAclController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->_adapterBackendAcl = new Application_Model_DBTable_BackendAcl();
         $this->_adapterBackendRoleAcl = new Application_Model_DBTable_BackendRoleAcl();
     }
@@ -25,6 +26,7 @@ class BackendAclController extends Zend_Controller_Action
         // action body
         $this->_helper->layout()->enableLayout();
         $this->_helper->viewRenderer->setNoRender(false);
+        $this->getResponse()->setHeader('Content-Type', 'text/html');
     }
 
     public function ajaxIndexAction()

@@ -16,6 +16,7 @@ class BackendUserController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->_adapterBackendUser = new Application_Model_DBTable_BackendUser();
         $this->_adapterBackendRole = new Application_Model_DBTable_BackendRole();
     }
@@ -25,6 +26,7 @@ class BackendUserController extends Zend_Controller_Action
         // action body
         $this->_helper->layout()->enableLayout();
         $this->_helper->viewRenderer->setNoRender(false);
+        $this->getResponse()->setHeader('Content-Type', 'text/html');
     }
 
     public function ajaxIndexAction()

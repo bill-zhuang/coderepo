@@ -11,6 +11,7 @@ class LoginController extends Zend_Controller_Action
     {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->_auth = new Application_Model_Auth();
     }
     public function indexAction()
@@ -18,6 +19,7 @@ class LoginController extends Zend_Controller_Action
         // action body
         $this->_helper->viewRenderer->setNoRender(false);
         $this->_helper->layout->setLayout('layout-login');
+        $this->getResponse()->setHeader('Content-Type', 'text/html');
         if (Application_Model_Auth::isValid()) {
             $this->redirect('/main/index');
         }

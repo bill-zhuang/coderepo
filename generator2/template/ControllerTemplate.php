@@ -40,6 +40,7 @@ echo PHP_EOL;
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
 <?php foreach ($model_names as $key => $model_name)
 {
     echo str_repeat(' ', 4 * 2) . '$this->_adapter' . implode('', array_map('ucfirst', explode('_', str_replace($table_prefix, '', $table_names[$key])))) . ' = new Application_Model_DBTable_' . $model_name . '();' . PHP_EOL;
@@ -52,6 +53,7 @@ echo PHP_EOL;
         // action body
         $this->_helper->layout()->enableLayout();
         $this->_helper->viewRenderer->setNoRender(false);
+        $this->getResponse()->setHeader('Content-Type', 'text/html');
     }
 
     public function ajaxIndexAction()
@@ -272,8 +274,8 @@ echo PHP_EOL;
     private function _update<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $fileID)
     {
         $affectedRows = Bill_Constant::INIT_AFFECTED_ROWS;
-        $image_url = $this->_upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $fileID);
-        if ($image_url != '') {
+        $imageUrl = $this->_upload<?php echo $model_names[0]; ?>Image($<?php echo $primary_id[0]; ?>, $fileID);
+        if ($imageUrl != '') {
             $updateData = [
                 //todo update image field
                 '<?php echo $form_element_prefix; ?>_update_time' => date('Y-m-d H:i:s')

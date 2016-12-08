@@ -12,6 +12,7 @@ class person_LagouCityController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->_adapterLagouCity = new Application_Model_DBTable_LagouCity();
     }
 

@@ -16,6 +16,7 @@ class MainController extends Zend_Controller_Action
         /* Initialize action controller here */
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->_auth = new Application_Model_Auth();
         $this->_adapterBackendUser = new Application_Model_DBTable_BackendUser();
     }
@@ -23,6 +24,7 @@ class MainController extends Zend_Controller_Action
     {
         $this->_helper->layout()->enableLayout();
         $this->_helper->viewRenderer->setNoRender(false);
+        $this->getResponse()->setHeader('Content-Type', 'text/html');
     }
     
     public function modifyPasswordAction()
@@ -70,6 +72,7 @@ class MainController extends Zend_Controller_Action
         } else {
             $this->_helper->layout()->enableLayout();
             $this->_helper->viewRenderer->setNoRender(false);
+            $this->getResponse()->setHeader('Content-Type', 'text/html');
         }
     }
 
