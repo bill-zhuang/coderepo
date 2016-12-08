@@ -188,8 +188,8 @@ function isValidInput(type) {
 {
     if ($key != $primary_id[0])
     {
-        if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){
-            echo str_repeat(' ', 4 * 1) . 'var image = $(\'#' . $form_element_prefix . '_image\').val();' . PHP_EOL;
+        if(strpos($key, 'img') !== false || strpos($key, 'image') !== false){
+            echo str_repeat(' ', 4 * 1) . 'var imageCount = $(\'#' . $form_element_prefix . '_image\').files.length;' . PHP_EOL;
         } else if (strpos($key, 'create_time') === false && strpos($key, 'update_time') === false && strpos($key, 'status') === false) {
             echo str_repeat(' ', 4 * 1) . 'var '. $key . ' = $(\'#' . $form_element_prefix . '_' . $key . '\').val();' . PHP_EOL;
         }
@@ -208,21 +208,18 @@ foreach ($table_keys as $table_key)
         $table_keys_no_pkid[] = $table_key;
     }
 }
-foreach ($table_data as $key => $default_value)
+foreach ($table_keys_no_pkid as $tb_index => $tb_key)
 {
-    if ($key != $primary_id[0])
-    {
-        if(strpos(implode('', $table_keys), 'img') !== false || strpos(implode('', $table_keys), 'image') !== false){
-            echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (type == \'add\' && image == \'\') {' . PHP_EOL;
-            echo str_repeat(' ', 4 * 2) . 'isVerified = false;' . PHP_EOL;
-            echo str_repeat(' ', 4 * 2) . 'alert(alertMessage.UPLOAD_IMAGE_ERROR)' . PHP_EOL;
-            echo str_repeat(' ', 4 * 1) . '} ';
-        } else if (strpos($key, 'create_time') && strpos($key, 'update_time') && strpos($key, 'status') === false) {
-            echo (array_search($key, $table_keys_no_pkid) === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (' . $key . ' == \'\') {' . PHP_EOL;
-            echo str_repeat(' ', 4 * 2) . 'isVerified = false;' . PHP_EOL;
-            echo str_repeat(' ', 4 * 2) . 'alert(\'todo set alert message\')' . PHP_EOL;
-            echo str_repeat(' ', 4 * 1) . '} ';
-        }
+    if(strpos($tb_key, 'img') !== false || strpos($tb_key, 'image') !== false){
+        echo ($tb_index === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (type == \'add\' && imageCount == 0) {' . PHP_EOL;
+        echo str_repeat(' ', 4 * 2) . 'isVerified = false;' . PHP_EOL;
+        echo str_repeat(' ', 4 * 2) . 'alert(alertMessage.UPLOAD_IMAGE_ERROR)' . PHP_EOL;
+        echo str_repeat(' ', 4 * 1) . '} ';
+    } else if (strpos($tb_key, 'create_time') === false && strpos($tb_key, 'update_time') === false && strpos($tb_key, 'status') === false) {
+        echo ($tb_index === 0 ? str_repeat(' ', 4 * 1) : 'else ') . 'if (' . $tb_key . ' == \'\') {' . PHP_EOL;
+        echo str_repeat(' ', 4 * 2) . 'isVerified = false;' . PHP_EOL;
+        echo str_repeat(' ', 4 * 2) . 'alert(\'todo set alert message\')' . PHP_EOL;
+        echo str_repeat(' ', 4 * 1) . '} ';
     }
 }
 ?>
