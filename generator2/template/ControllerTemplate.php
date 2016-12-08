@@ -9,6 +9,7 @@
 /* @var $form_element_prefix string prefix of form element */
 /* @var $tab_types array tab types for select */
 /* @var $default_tab_value mixed default selected tab value */
+/* @var $using_datetime_picker bool use datetimepicker or not */
 
 $table_keys = array_keys($table_data);
 $status_name = '';
@@ -246,6 +247,12 @@ echo PHP_EOL;
         $keyword = isset($params['keyword']) ? trim($params['keyword']) : '';
 <?php if(!empty($tab_types)){ ?>
         $tabType = isset($params['tab_type']) ? intval($params['tab_type']) : 1;
+<?php } ?>
+<?php if($using_datetime_picker){ ?>
+        $startDate = (isset($params['startDate']) && Bill_Util::validDate($params['startDate']))
+            ? trim($params['startDate']) : date('Y-m-d', strtotime('-1 month'));
+        $endDate = (isset($params['endDate']) && Bill_Util::validDate($params['endDate']))
+            ? trim($params['endDate']) : date('Y-m-d');
 <?php } ?>
 
         $conditions = [

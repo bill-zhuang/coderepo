@@ -237,6 +237,7 @@ class TemplateGenerator
             'form_element_prefix' => strtolower(implode('_', $this->_splitControllerName())),
             'tab_types' => $this->_tab_types,
             'default_tab_value' => $this->_default_tab_value,
+            'using_datetime_picker' => $this->_using_datetime_picker,
         ];
         $template_path = __DIR__ . '/template/ControllerTemplate.php';
         $dest_path = $controller_folder_path . '/' . $this->_controller_name . 'Controller.php';

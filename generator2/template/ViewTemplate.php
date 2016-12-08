@@ -34,6 +34,12 @@ $table_keys = array_keys($table_data);
             <form action="#" method="get" id="formSearch" class="form-inline">
                 <div class="col-sm-10 col-md-10 col-lg-10">
                     关键字: <input type="text" class="form-control" id="keyword" name="keyword"/>
+<?php if($using_datetime_picker){ ?>
+                    开始日期: <input type="text" class="form-control form_date bill-ime-disabled bill-input-sm"
+                                 id="startDate" name="startDate"/>
+                    结束日期: <input type="text" class="form-control form_date bill-ime-disabled bill-input-sm"
+                                 id="endDate" name="endDate"/>
+<?php } ?>
                     <button class="btn btn-primary" type="submit" id="btn_search">
                         <span class="glyphicon glyphicon-search"></span>
                         <span>搜索</span>
