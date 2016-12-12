@@ -22,6 +22,38 @@ class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
         $this->_adapterBackendLog = new Application_Model_DBTable_BackendLog();
     }
 
+    public function paginator($where, $orderBy = null, $groupBy = null, $pageLength = Bill_Constant::INIT_PAGE_LENGTH,
+                              $startPage = Bill_Constant::INIT_START_PAGE)
+    {
+        $select = $this->select()->reset();
+        foreach ($where as $cond => $value) {
+            $select->where($cond, $value);
+        }
+        if ($orderBy !== null) {
+            $select->order($orderBy);
+        }
+        if ($groupBy !== null) {
+            $select->group($groupBy);
+        }
+
+        $pagination = new Zend_Paginator(new Zend_Paginator_Adapter_DbTableSelect($select));
+        $pagination
+            ->setItemCountPerPage($pageLength)
+            ->setCurrentPageNumber($startPage)
+        ;
+        $resultSet = $pagination->getCurrentItems();
+        $items = array();
+        foreach ($resultSet as $row) {
+            $items[] = $row->toArray();
+        }
+        return [
+            'items' => $items,
+            'currentItemCount' => $pagination->getCurrentItemCount(),
+            'totalPages' => $pagination->count(),
+            'totalItems' => $pagination->getTotalItemCount(),
+        ];
+    }
+
     public function getSearchData(array $conditions, $startPage, $pageLength, $orderBy, $groupBy = null)
     {
         $select = $this->select()->reset();
