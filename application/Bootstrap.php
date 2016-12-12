@@ -33,7 +33,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $dbAdapter = Zend_Db::factory($config->alphadb->adapter, $config->alphadb->toArray());
-            if ($config->localdb->profiler) {
+            if ($config->alphadb->profiler) {
                 $dbAdapter->setProfiler($this->_getDbProfileFirebug());
             }
             Zend_Registry::set(Bill_Constant::ALPHA_DB, $dbAdapter);
@@ -48,7 +48,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try {
             $config = Zend_Registry::get('config');
             $dbAdapter = Zend_Db::factory($config->releasedb->adapter, $config->releasedb->toArray());
-            if ($config->localdb->profiler) {
+            if ($config->releasedb->profiler) {
                 $dbAdapter->setProfiler($this->_getDbProfileFirebug());
             }
             Zend_Registry::set(Bill_Constant::RELEASE_DB, $dbAdapter);
