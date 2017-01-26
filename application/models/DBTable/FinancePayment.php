@@ -95,7 +95,8 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
                 ->where($this->_name . '.status=?', Bill_Constant::VALID_STATUS)
                 ->where($this->_name . '.payment_date>=?', $startDate)
                 ->where($this->_name . '.payment_date<=?', $endDate)
-                ->where($this->_join_table . '.fcid=?', $fcid);
+                ->where($this->_join_table . '.fcid=?', $fcid)
+                ->where($this->_join_table . '.status=?', Bill_Constant::VALID_STATUS);
             if ($ignoreMoney > 0) {
                 $select->where('payment<?', $ignoreMoney);
             }
