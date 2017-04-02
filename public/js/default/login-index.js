@@ -10,11 +10,14 @@ $('#formLogin').on('submit', function (event) {
     event.preventDefault();
     var name = $.trim($('#username').val());
     var password = $.trim($('#password').val());
+    var googleCode = $.trim($('#googleCode').val());
 
     if (name === '') {
         alert('用户名不能为空！');
     } else if (password === '') {
         alert('密码不能为空！');
+    } else if (googleCode === '') {
+        alert('Google验证码不能为空');
     } else {
         if ($('#remember').prop('checked')) {
             $.cookie('name', name, {expires: 1, path: '/'});
@@ -31,6 +34,7 @@ $('#formLogin').on('submit', function (event) {
                 alert(result.error.message);
                 $('#username').val('').focus();
                 $('#password').val('');
+                $('#googleCode').val('');
             }
         };
         jAjaxWidget.additionFunc(postUrl, postData, successFunc, method);

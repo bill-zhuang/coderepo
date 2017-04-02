@@ -31,17 +31,25 @@ class LoginController extends Zend_Controller_Action
         $params = $this->getRequest()->getPost('params', []);
         $userName = isset($params['username']) ? addslashes($params['username']) : '';
         $userPassword = isset($params['password']) ? addslashes($params['password']) : '';
+        $googleCode = isset($params['googleCode']) ? ($params['googleCode']) : '';
         $database = new Application_Model_DBTable_BackendUser();
         $this->_auth->logIn($userName, $userPassword, 'backend_user', $database->getAdapter());
 
         if (Application_Model_Auth::isValid()) {
-            $redirectUrl = isset($params['location']) ? urldecode($params['location']) : '';
-            if ($redirectUrl === '' || $redirectUrl === '/') {
-                $redirectUrl = '/main/index';
+            if (Bill_GoogleAuthenticator::checkCode(Application_Model_Auth::getIdentity()->google_secret, $googleCode)) {
+                $redirectUrl = isset($params['location']) ? urldecode($params['location']) : '';
+                if ($redirectUrl === '' || $redirectUrl === '/') {
+                    $redirectUrl = '/main/index';
+                }
+                $jsonArray['data'] = [
+                    'redirectUrl' => $redirectUrl,
+                ];
+            } else {
+                Application_Model_Auth::logOut();
+                $jsonArray['error'] = [
+                    'message' => Bill_JsMessage::ACCOUNT_GOOGLE_CODE_ERROR,
+                ];
             }
-            $jsonArray['data'] = [
-                'redirectUrl' => $redirectUrl,
-            ];
         } else {
             $jsonArray['error'] = [
                 'message' => Bill_JsMessage::ACCOUNT_PASSWORD_ERROR,

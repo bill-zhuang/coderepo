@@ -36,18 +36,21 @@ class person_ConsoleController extends Zend_Controller_Action
             $brid = $adapterBackendRole->insert($insertData);
             $security = new Bill_Security();
             $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
+            $googleAuthenticator = Bill_GoogleAuthenticator::createUserSecretAndQRUrl($userName);
             $insertData = [
                 'name' => $userName,
                 'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
                 'salt' => $salt,
                 'brid' => $brid,
+                'google_secret' => $googleAuthenticator['secret'],
+                'google_qr_url' => $googleAuthenticator['qrCodeUrl'],
                 'remark' => '',
                 'status' => Bill_Constant::VALID_STATUS,
                 'create_time' => date('Y-m-d H:i:s'),
                 'update_time' => date('Y-m-d H:i:s'),
             ];
             $adapterBackendUser->insert($insertData);
-            echo 'User create successfully.';
+            echo 'User create successfully. Google QR Code Url is: ' . $googleAuthenticator['qrCodeUrl'];
         } else {
             echo 'User name already exist, change another one.';
         }

@@ -1,6 +1,13 @@
 {
     "require": {
         "php": ">=5.4.0",
-        "zendframework/zendframework1": "1.12.*"
+        "zendframework/zendframework1": "1.12.*",
+        "phpgangsta/googleauthenticator": "dev-master"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }
