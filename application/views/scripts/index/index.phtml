@@ -30,6 +30,64 @@
                 </div>
             </form>
         </div>
+        <div class="row col-sm-12 col-md-12 col-lg-12">
+            <form class="form-inline">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" title="Select columns to export" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-list"></i><span>Export Fields</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu kv-checkbox-list">
+                        <li>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="export_columns_toggle" value="1" checked>
+                                    <span class="kv-toggle-all">Toggle All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+
+                        <li>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="export_columns_selector[]" value="1" checked data-key="1">
+                                    ID
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox">
+                                <label class="disabled">
+                                    <input type="checkbox" name="export_columns_selector[]" value="1" checked disabled data-key="2">
+                                    Name
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="export_columns_selector[]" value="1" checked data-key="3">
+                                    CellPhone
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-default dropdown-toggle" title="Export data in selected format" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-export"></i> Export Data <span class="caret"></span>
+                    </button>
+
+                    <ul id="w2" class="dropdown-menu">
+                        <li>
+                            <a id="w0-txt" class="export-full-txt" href="#" data-format="TXT" tabindex="-1">
+                                <i class="text-muted fa fa-file-text-o"></i> Text
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
     </div>
     <!-- panel footer -->
     <!--<div class="panel-footer">
