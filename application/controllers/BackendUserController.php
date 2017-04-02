@@ -43,11 +43,14 @@ class BackendUserController extends Zend_Controller_Action
                 if (!$this->_adapterBackendUser->isUserNameExist($name, Bill_Constant::INVALID_PRIMARY_ID)) {
                     $security = new Bill_Security();
                     $salt = $security->generateRandomString(Bill_Constant::SALT_STRING_LENGTH);
+                    $googleAuthenticator = Bill_GoogleAuthenticator::createUserSecretAndQRUrl($name);
                     $data = [
                         'name' => $name,
                         'password' => md5(Bill_Constant::DEFAULT_PASSWORD . $salt),
                         'salt' => $salt,
                         'brid' => intval($params['backend_user_brid']),
+                        'google_secret' => $googleAuthenticator['secret'],
+                        'google_qr_url' => $googleAuthenticator['qrCodeUrl'],
                         'remark' => trim($params['backend_user_remark']),
                         'status' => Bill_Constant::VALID_STATUS,
                         'create_time' => date('Y-m-d H:i:s'),
@@ -259,6 +262,7 @@ class BackendUserController extends Zend_Controller_Action
                 'name' => $value['name'],
                 'role' => isset($roles[$value['brid']]) ? $roles[$value['brid']] : '-',
                 'remark' => $value['remark'],
+                'googleQrUrl' => $value['google_qr_url'],
             ];
         }
 

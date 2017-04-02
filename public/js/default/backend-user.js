@@ -24,6 +24,9 @@ function ajaxIndex() {
                         .append($('<td>').text(result.data.items[i]['role']))
                         .append($('<td>').text(result.data.items[i]['remark']))
                         .append($('<td>')
+                            .append($('<a>', {href: result.data.items[i]['googleQrUrl'], target: '_blank', text: '查看'}))
+                        )
+                        .append($('<td>')
                             .append($('<a>', {href: '#', id: 'modify_' + result.data.items[i]['buid'], text: '修改'})
                                 .click(function () {
                                     modifyBackendUser(this.id);
