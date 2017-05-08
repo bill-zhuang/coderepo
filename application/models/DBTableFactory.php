@@ -79,7 +79,7 @@ class Application_Model_DBTableFactory extends Zend_Db_Table_Abstract
             $select->where($cond, $value);
         }
         $count = $select->query()->fetchAll();
-        return $count[0]['total'];
+        return intval($count[0]['total']);
     }
 
     public function getByPrimaryKey()
