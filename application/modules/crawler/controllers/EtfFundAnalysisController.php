@@ -1,6 +1,6 @@
 <?php
 
-class person_EtfFundAnalysisController extends Zend_Controller_Action
+class crawler_EtfFundAnalysisController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_EtfFund

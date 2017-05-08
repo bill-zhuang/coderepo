@@ -1,6 +1,6 @@
 <?php
 
-class person_LagouJobController extends Zend_Controller_Action
+class crawler_LagouJobController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_LagouCategory

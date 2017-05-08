@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var getUrl = '/person/toutiao-article/ajax-index';
+    var getUrl = '/crawler/toutiao-article/ajax-index';
     var getData = {
         "params": $('#formSearch').serializeObject()
     };
@@ -59,7 +59,7 @@ $('#formToutiaoArticle').on('submit', (function (event) {
 
     if (isValidInput('modify')) {
         $('#btn_submit_toutiao_article').attr('disabled', true);
-        var postUrl = '/person/toutiao-article/modify-toutiao-article';
+        var postUrl = '/crawler/toutiao-article/modify-toutiao-article';
         var postData = {
             "params": $('#formToutiaoArticle').serializeObject()
         };
@@ -79,7 +79,7 @@ $('#formToutiaoArticle').on('submit', (function (event) {
 
 function modifyToutiaoArticle(modifyId) {
     var ttid = modifyId.substr('modify_'.length);
-    var getUrl = '/person/toutiao-article/get-toutiao-article';
+    var getUrl = '/crawler/toutiao-article/get-toutiao-article';
     var getData = {
         "params": {
             "ttid": ttid
@@ -104,7 +104,7 @@ function modifyToutiaoArticle(modifyId) {
 function deleteToutiaoArticle(deleteId) {
     if (confirm(alertMessage.DELETE_CONFIRM)) {
         var ttid = deleteId.substr('delete_'.length);
-        var postUrl = '/person/toutiao-article/delete-toutiao-article';
+        var postUrl = '/crawler/toutiao-article/delete-toutiao-article';
         var postData = {
             "params": {
                 "ttid": ttid

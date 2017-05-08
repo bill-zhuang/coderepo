@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 function ajaxIndex() {
-    var getUrl = '/person/etf-fund-analysis/ajax-index';
+    var getUrl = '/crawler/etf-fund-analysis/ajax-index';
     var getData = {
         "params": $('#formSearch').serializeObject()
     };
@@ -109,7 +109,7 @@ $('#btn_search').on('click', function (event) {
 });
 
 function loadETFFunds() {
-    var getUrl = '/person/etf-fund/get-fund-list';
+    var getUrl = '/crawler/etf-fund/get-fund-list';
     var getData = {
         "params": {}
     };

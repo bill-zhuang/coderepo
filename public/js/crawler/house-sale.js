@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 function initPeriodChart() {
-    var getUrl = '/person/house-sale/ajax-house-sale-day';
+    var getUrl = '/crawler/house-sale/ajax-house-sale-day';
     var getData = {
         "params": $('#formSearchDay').serializeObject()
     };
@@ -43,7 +43,7 @@ function initPeriodChart() {
 }
 
 function initMonthChart() {
-    var getUrl = '/person/house-sale/ajax-house-sale-month';
+    var getUrl = '/crawler/house-sale/ajax-house-sale-month';
     var getData = {
         "params": $('#formSearchMonth').serializeObject()
     };

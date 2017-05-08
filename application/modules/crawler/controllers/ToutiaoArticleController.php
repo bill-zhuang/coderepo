@@ -1,6 +1,6 @@
 <?php
 
-class person_ToutiaoArticleController extends Zend_Controller_Action
+class crawler_ToutiaoArticleController extends Zend_Controller_Action
 {
     /**
      * @var Application_Model_DBTable_Toutiao

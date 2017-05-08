@@ -1,5 +1,5 @@
 function loadLagouMainCategory(selectID, isContainAllOption) {
-    var getUrl = '/person/lagou-category/get-main-category';
+    var getUrl = '/crawler/lagou-category/get-main-category';
     var getData = {
         "params": {}
     };
@@ -25,7 +25,7 @@ function loadLagouMainCategory(selectID, isContainAllOption) {
 }
 
 function loadLagouSubCategory(selectID, pid, isContainAllOption) {
-    var getUrl = '/person/lagou-category/get-sub-category';
+    var getUrl = '/crawler/lagou-category/get-sub-category';
     var getData = {
         "params": {
             'pid': pid

@@ -13,7 +13,7 @@ function ajaxIndex() {
         return;
     }
 
-    var getUrl = '/person/lagou-job-analysis/ajax-index';
+    var getUrl = '/crawler/lagou-job-analysis/ajax-index';
     var getData = {
         "params": $('#formSearch').serializeObject()
     };
@@ -110,7 +110,7 @@ $('#mainCaid').on('change', function() {
 
 $('#subCaid').on('change', function() {
     if (this.value > 0) {
-        var getUrl = '/person/lagou-job/get-job-list';
+        var getUrl = '/crawler/lagou-job/get-job-list';
         var getData = {
             "params": {
                 'caid': this.value

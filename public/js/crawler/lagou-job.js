@@ -5,7 +5,7 @@ $(document).ready(function () {
 
 function ajaxIndex() {
     var $tblTbody = $('#tbl').find('tbody');
-    var getUrl = '/person/lagou-job/ajax-index';
+    var getUrl = '/crawler/lagou-job/ajax-index';
     var getData = {
         "params": $('#formSearch').serializeObject()
     };

@@ -1,5 +1,5 @@
 function loadLagouCity(selectID, firstLetter) {
-    var getUrl = '/person/lagou-city/get-city-list';
+    var getUrl = '/crawler/lagou-city/get-city-list';
     var getData = {
         "params": {
             'firstLetter': firstLetter
