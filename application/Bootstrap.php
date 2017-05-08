@@ -13,48 +13,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         }
     }
 
-    protected function _initLocalDB()
+    protected function _initDB()
     {
-        try {
-            $config = Zend_Registry::get('config');
-            $dbAdapter = Zend_Db::factory($config->localdb->adapter, $config->localdb->toArray());
-            if ($config->localdb->profiler) {
-                $dbAdapter->setProfiler($this->_getDbProfileFirebug());
+        $dbList = [
+            'localdb' => Bill_Constant::LOCAL_DB,
+            'alphadb' => Bill_Constant::ALPHA_DB,
+            'releasedb' => Bill_Constant::RELEASE_DB,
+        ];
+        foreach ($dbList as $dbName => $dbConstant) {
+            try {
+                $config = Zend_Registry::get('config');
+                $dbAdapter = Zend_Db::factory($config->$dbName->adapter, $config->$dbName->toArray());
+                if ($config->$dbName->profiler) {
+                    $dbAdapter->setProfiler($this->_getDbProfileFirebug());
+                }
+                Zend_Registry::set($dbConstant, $dbAdapter);
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                die('Init ' . $dbName . ' failed.');
             }
-            Zend_Registry::set(Bill_Constant::LOCAL_DB, $dbAdapter);
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            die('Init local db failed.');
-        }
-    }
-
-    protected function _initAlphaDB()
-    {
-        try {
-            $config = Zend_Registry::get('config');
-            $dbAdapter = Zend_Db::factory($config->alphadb->adapter, $config->alphadb->toArray());
-            if ($config->alphadb->profiler) {
-                $dbAdapter->setProfiler($this->_getDbProfileFirebug());
-            }
-            Zend_Registry::set(Bill_Constant::ALPHA_DB, $dbAdapter);
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            die('Init alpha db failed.');
-        }
-    }
-
-    protected function _initReleaseDB()
-    {
-        try {
-            $config = Zend_Registry::get('config');
-            $dbAdapter = Zend_Db::factory($config->releasedb->adapter, $config->releasedb->toArray());
-            if ($config->releasedb->profiler) {
-                $dbAdapter->setProfiler($this->_getDbProfileFirebug());
-            }
-            Zend_Registry::set(Bill_Constant::RELEASE_DB, $dbAdapter);
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            die('Init release db failed.');
         }
     }
 
