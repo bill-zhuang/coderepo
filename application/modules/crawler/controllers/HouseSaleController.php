@@ -6,6 +6,10 @@ class crawler_HouseSaleController extends Zend_Controller_Action
      * @var Application_Model_DBTable_HouseSale
      */
     private $_adapterHouseSale;
+    /**
+     * @var Application_Model_DBTable_CnnbfdcSale
+     */
+    private $_adapterCnnbfdcSale;
 
     public function init()
     {
@@ -14,6 +18,7 @@ class crawler_HouseSaleController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender(true);
         $this->getResponse()->setHeader('Content-Type', 'application/json');
         $this->_adapterHouseSale = new Application_Model_DBTable_HouseSale();
+        $this->_adapterCnnbfdcSale = new Application_Model_DBTable_CnnbfdcSale();
     }
 
     public function indexAction()
@@ -37,24 +42,31 @@ class crawler_HouseSaleController extends Zend_Controller_Action
             $periodDate = date('Y-m-d', strtotime($startDate . " + {$i} day"));
             $data[$periodDate] = 0;
         }
-        $tempData = [];
+        $lejuData = [];
         $dayData = $this->_adapterHouseSale->getSaleDataByDay($startDate, $endDate);
         foreach ($dayData as $dayValue) {
-            if (isset($data[$dayValue['period']])) {
-                $data[$dayValue['period']] = intval($dayValue['sales']);
-                if ($dayValue['sales'] > 0) {
-                    $tempData[$dayValue['period']] = intval($dayValue['sales']);
-                }
-            }
+            $lejuData[] = [
+                strtotime($dayValue['period'] . ' 08:00:00') * 1000,
+                floatval($dayValue['sales']),
+            ];
         }
+        $officialData = [];
+        $officialDayData = $this->_adapterCnnbfdcSale->getSaleDataByDay($startDate, $endDate);
+        foreach ($officialDayData as $officialDayValue) {
+            $officialData[] = [
+                strtotime($officialDayValue['period'] . ' 08:00:00') * 1000,
+                floatval($officialDayValue['sales']),
+            ];
+        }
+
         $jsonArray = [
             'searchData' => [
                 'startDate' => $startDate,
                 'endDate' => $endDate,
             ],
             'data' => [
-                'days' => array_keys($tempData),
-                'data' => array_values($tempData),
+                'leju' => $lejuData,
+                'official' => $officialData,
             ],
         ];
         echo json_encode($jsonArray);

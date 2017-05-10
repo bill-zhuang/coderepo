@@ -19,7 +19,17 @@ function initPeriodChart() {
                     text: 'House Sale(day)'
                 },
                 xAxis: {
-                    categories: result.data.days
+                    type: 'datetime',
+                    dateTimeLabelFormats: {
+                        millisecond: '%H:%M:%S.%L',
+                        second: '%H:%M:%S',
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%m-%d',
+                        week: '%m-%d',
+                        month: '%Y-%m',
+                        year: '%Y'
+                    }
                 },
                 yAxis: {
                     title: {
@@ -28,8 +38,12 @@ function initPeriodChart() {
                 },
                 series: [
                     {
-                        name: 'Sales',
-                        data: result.data.data
+                        name: 'Leju Sales',
+                        data: result.data.leju
+                    },
+                    {
+                        name: 'Official Sales',
+                        data: result.data.official
                     }
                 ]
             });
