@@ -51,11 +51,17 @@ class crawler_HouseSaleController extends Zend_Controller_Action
             ];
         }
         $officialData = [];
-        $officialDayData = $this->_adapterCnnbfdcSale->getSaleDataByDay($startDate, $endDate);
+        $officialPriceData = [];
+        $officialDayData = $this->_adapterCnnbfdcSale->getSaleAndAveragePriceDataByDay($startDate, $endDate);
         foreach ($officialDayData as $officialDayValue) {
+            $officialPeriod = strtotime($officialDayValue['period'] . ' 08:00:00') * 1000;
             $officialData[] = [
-                strtotime($officialDayValue['period'] . ' 08:00:00') * 1000,
+                $officialPeriod,
                 floatval($officialDayValue['sales']),
+            ];
+            $officialPriceData[] = [
+                $officialPeriod,
+                floatval($officialDayValue['avgPrice']),
             ];
         }
 
@@ -67,6 +73,7 @@ class crawler_HouseSaleController extends Zend_Controller_Action
             'data' => [
                 'leju' => $lejuData,
                 'official' => $officialData,
+                'price' => $officialPriceData,
             ],
         ];
         echo json_encode($jsonArray);

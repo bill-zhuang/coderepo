@@ -13,7 +13,8 @@ function initPeriodChart() {
         if (typeof result.data != "undefined") {
             $('#house_sale_line_chart_all').highcharts({
                 chart: {
-                    type: 'spline'
+                    type: 'spline',
+                    zoomType: 'xy'
                 },
                 title: {
                     text: 'House Sale(day)'
@@ -31,11 +32,17 @@ function initPeriodChart() {
                         year: '%Y'
                     }
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
                         text: 'Sales'
                     }
-                },
+                },{
+                    title: {
+                        text: 'Average Price'
+                    },
+                    opposite: true
+                }
+                ],
                 series: [
                     {
                         name: 'Leju Sales',
@@ -44,6 +51,11 @@ function initPeriodChart() {
                     {
                         name: 'Official Sales',
                         data: result.data.official
+                    },
+                    {
+                        name: 'Official Price',
+                        yAxis: 1,
+                        data: result.data.price
                     }
                 ]
             });

@@ -7,10 +7,10 @@ class Application_Model_DBTable_CnnbfdcSale extends Application_Model_DBTableFac
         parent::__construct('cnnbfdc_sale');
     }
 
-    public function getSaleDataByDay($startDate, $endDate)
+    public function getSaleAndAveragePriceDataByDay($startDate, $endDate)
     {
         $select = $this->select()->reset()
-            ->from($this->_name, ['date as period', 'sales'])
+            ->from($this->_name, ['date as period', 'sales', 'round(money/area, 2) as avgPrice'])
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->where('date>=?', $startDate)
             ->where('date<=?', $endDate);
