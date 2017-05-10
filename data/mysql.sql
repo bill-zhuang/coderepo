@@ -293,3 +293,19 @@ CREATE TABLE `etf_fund_analysis` (
   UNIQUE KEY `idx_efid_date` (`fuid`,`date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+-- Table structure for cnnbfdc_sale
+-- ----------------------------
+DROP TABLE IF EXISTS `cnnbfdc_sale`;
+CREATE TABLE `cnnbfdc_sale` (
+  `csid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `sales` int(10) NOT NULL DEFAULT '0',
+  `area` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `money` decimal(20,2) NOT NULL DEFAULT '0.00',
+  `status` tinyint(2) unsigned NOT NULL DEFAULT '1',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`csid`),
+  UNIQUE KEY `idx_date` (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
