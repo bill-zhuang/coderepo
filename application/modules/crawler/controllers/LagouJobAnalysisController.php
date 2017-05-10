@@ -48,7 +48,7 @@ class crawler_LagouJobAnalysisController extends Zend_Controller_Action
     {
         $params = $this->_getParam('params', []);
         $startDate = (isset($params['startDate']) && Bill_Util::validDate($params['startDate']))
-            ? trim($params['startDate']) : date('Y-m-d', strtotime('-1 month'));
+            ? trim($params['startDate']) : date('Y-m-d', strtotime('-6 month'));
         $endDate = (isset($params['endDate']) && Bill_Util::validDate($params['endDate']))
             ? trim($params['endDate']) : date('Y-m-d');
         $mainCaid = isset($params['mainCaid']) ? intval($params['mainCaid']) : 0;
@@ -56,6 +56,7 @@ class crawler_LagouJobAnalysisController extends Zend_Controller_Action
         $joid = isset($params['joid']) ? intval($params['joid']) : 0;
         $lgCtid = isset($params['lgCtid']) ? intval($params['lgCtid']) : 0;
         $ignoreJobNum = (isset($params['jobNumIgnore'])) ? floatval($params['jobNumMin']) : 0;
+        $singleCityFlag = ($lgCtid == 0) ? false : true;
 
         if($joid == 0 && $lgCtid == 0) {
             $jsonData = [
@@ -114,6 +115,10 @@ class crawler_LagouJobAnalysisController extends Zend_Controller_Action
         $lineChartData = [];
         $barChartData = [];
         foreach ($hashTable as $hashKey => $hashValue) {
+            //remove daily job num is 0 city
+            if (!$singleCityFlag && array_sum(array_column($hashValue['line'], 1)) == 0) {
+                continue;
+            }
             list($chartJoid, $chartCtid) = explode('-', $hashKey);
             $chartName = $this->_adapterLagouJob->getNameByJoid($chartJoid) . '-'
                 . $this->_adapterLagouCity->getNameByLgCtid($chartCtid);
