@@ -16,11 +16,7 @@ class Application_Model_DBTable_LagouJob extends Application_Model_DBTableFactor
         }
         $data = $select
             ->query()->fetchAll();
-        $joids = [];
-        foreach ($data as $value) {
-            $joids[] = $value['joid'];
-        }
-        return $joids;
+        return array_column($data, 'joid');
     }
 
     public function getNameByJoid($joid)

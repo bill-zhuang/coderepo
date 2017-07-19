@@ -14,12 +14,7 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
             ->where('fpid=?', $fpid)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
-        $fcids = [];
-        foreach ($data as $value) {
-            $fcids[] = $value['fcid'];
-        }
-
-        return $fcids;
+        return array_column($data, 'fcid');
     }
 
     public function getFpidByFcid($fcid, $orderBy, $startPage, $pageLength)
@@ -31,12 +26,7 @@ class Application_Model_DBTable_FinancePaymentMap extends Application_Model_DBTa
             ->order($orderBy)
             ->limitPage($startPage, $pageLength)
             ->query()->fetchAll();
-        $fpids = [];
-        foreach ($data as $value) {
-            $fpids[] = $value['fpid'];
-        }
-
-        return $fpids;
+        return array_column($data, 'fpid');
     }
 
     public function isPaymentExistUnderFcid($fcid)

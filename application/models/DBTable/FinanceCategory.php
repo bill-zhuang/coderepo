@@ -16,11 +16,7 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
             ->order('weight desc')
             ->query()->fetchAll();
         if ($isKeyValueFormat) {
-            $data = [];
-            foreach ($parentData as $parentValue) {
-                $data[$parentValue['fcid']] = $parentValue['name'];
-            }
-            return $data;
+            return array_column($parentData, 'name', 'fcid');
         }
         return $parentData;
     }
@@ -52,12 +48,7 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
             ->where('fcid in(?)', $fcids)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
-        $names = [];
-        foreach ($data as $value) {
-            $names[] = $value['name'];
-        }
-
-        return $names;
+        return array_column($data, 'name');
     }
 
     public function getFinanceSubcategory($parentId)
@@ -67,12 +58,7 @@ class Application_Model_DBTable_FinanceCategory extends Application_Model_DBTabl
             ->where('parent_id=?', $parentId)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
-        $data = [];
-        foreach ($subcategoryData as $subcategoryValue) {
-            $data[$subcategoryValue['fcid']] = $subcategoryValue['name'];
-        }
-
-        return $data;
+        return array_column($subcategoryData, 'name', 'fcid');
     }
 
     public function getFinanceParentCategory($fcid)

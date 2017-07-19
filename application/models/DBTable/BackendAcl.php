@@ -43,12 +43,7 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         }
         $data = $select
             ->query()->fetchAll();
-        $baids = [];
-        foreach ($data as $value) {
-            $baids[] = $value['baid'];
-        }
-
-        return $baids;
+        return array_column($data, 'baid');
     }
 
     public function getInvalidControllersAclIDs($module, array $validControllers)
@@ -62,12 +57,7 @@ class Application_Model_DBTable_BackendAcl extends Application_Model_DBTableFact
         }
         $data = $select
             ->query()->fetchAll();
-        $baids = [];
-        foreach ($data as $value) {
-            $baids[] = $value['baid'];
-        }
-
-        return $baids;
+        return array_column($data, 'baid');
     }
 
     public function getAclList()

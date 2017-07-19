@@ -24,11 +24,6 @@ class Application_Model_DBTable_BackendRole extends Application_Model_DBTableFac
             ->from($this->_name, ['brid', 'role'])
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
-        $roles = [];
-        foreach ($data as $value) {
-            $roles[$value['brid']] = $value['role'];
-        }
-
-        return $roles;
+        return array_column($data, 'role', 'brid');
     }
 }

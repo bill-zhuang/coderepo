@@ -14,12 +14,7 @@ class Application_Model_DBTable_BackendRoleAcl extends Application_Model_DBTable
             ->where('brid=?', $brid)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
-        $baids = [];
-        foreach ($data as $value) {
-            $baids[] = $value['baid'];
-        }
-
-        return $baids;
+        return array_column($data, 'baid');
     }
 
     public function isAccessGranted($brid, $baid)

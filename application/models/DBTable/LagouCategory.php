@@ -36,12 +36,7 @@ class Application_Model_DBTable_LagouCategory extends Application_Model_DBTableF
             ->where('pid=?', $pid)
             ->where('status=?', Bill_Constant::VALID_STATUS)
             ->query()->fetchAll();
-        $caids = [];
-        foreach ($data as $value) {
-            $caids[] = $value['caid'];
-        }
-
-        return $caids;
+        return array_column($data, 'caid');
     }
 
     public function getCategoryName($caid)
