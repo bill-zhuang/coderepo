@@ -242,7 +242,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
         if ('' !== $paymentDetail) {
             $conditions['finance_payment.detail like ?'] = Bill_Util::getLikeString($paymentDetail);
         }
-        $orderBy = 'payment_date desc';
+        $orderBy = ['payment_date desc', 'fpid desc'];
         $total = $this->_adapterFinancePayment->getSearchCount($conditions);
         $data = $this->_adapterFinancePayment->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
         foreach ($data as &$value) {
