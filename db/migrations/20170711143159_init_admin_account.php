@@ -35,8 +35,8 @@ class InitAdminAccount extends AbstractMigration
      */
     public function up()
     {
-        require_once '/../../library/Bill/Security.php';
-        require_once '/../../library/Bill/GoogleAuthenticator.php';
+        require_once dirname(__FILE__) . '/../../library/Bill/Security.php';
+        require_once dirname(__FILE__) . '/../../library/Bill/GoogleAuthenticator.php';
         $userName = 'admin';
         $password = '123456';
         $insertData = [
