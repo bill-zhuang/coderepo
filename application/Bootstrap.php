@@ -83,15 +83,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         }
     }
 
-    /*protected function _initSentry()
-    {
-        $client = new Raven_Client('https://4e711ef3119f491ba0dd9a27e813eb0c:4bf3e159d9b744809cc4de2d20bb3728@sentry.io/218067');
-        $error_handler = new Raven_ErrorHandler($client);
-        $error_handler->registerExceptionHandler();
-        $error_handler->registerErrorHandler();
-        $error_handler->registerShutdownFunction();
-    }*/
-
     protected function _initError()
     {
         set_error_handler('errorHandler');
