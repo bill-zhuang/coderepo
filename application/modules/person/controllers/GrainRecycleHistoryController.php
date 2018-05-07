@@ -166,7 +166,7 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
         $conditions = [
             'status =?' => Bill_Constant::VALID_STATUS
         ];
-        $orderBy = 'grhid DESC';
+        $orderBy = ['happen_date DESC', 'grhid DESC'];
         $total = $this->_adapterGrainRecycleHistory->getSearchCount($conditions);
         $data = $this->_adapterGrainRecycleHistory->getSearchData($conditions, $currentPage, $pageLength, $orderBy);
 
