@@ -63,7 +63,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 if (Bill_Util::validDate($paymentDate)) {
                     foreach ($payments as $payment) {
                         $payment = floatval($payment);
-                        if ($payment > 0) {
+                        if ($payment != 0) {
                             $data['payment'] = $payment;
                             $fpId = $this->_adapterFinancePayment->insert($data);
                             $this->_addFinancePaymentMap($fpId, $categoryIds);
@@ -108,7 +108,7 @@ class person_FinancePaymentController extends Zend_Controller_Action
                 $categoryIds = isset($params['finance_payment_fcid']) ? $params['finance_payment_fcid'] : [];
                 $intro = isset($params['finance_payment_intro']) ? trim($params['finance_payment_intro']) : '';
 
-                if (Bill_Util::validDate($paymentDate) && $payment > 0) {
+                if (Bill_Util::validDate($paymentDate) && $payment != 0) {
                     $data = [
                         'payment' => $payment,
                         'payment_date' => $paymentDate,
