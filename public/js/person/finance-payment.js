@@ -54,6 +54,10 @@ function ajaxIndex() {
     //load main category
     loadMainCategory('finance_payment_fcid', false);
 }
+$('#category_parent_id').on('change', function () {
+    $('#current_page').val(1);
+    ajaxIndex();
+});
 /*  --------------------------------------------------------------------------------------------------------  */
 var gSelectpicker = $('#finance_payment_fcid').selectpicker();
 
