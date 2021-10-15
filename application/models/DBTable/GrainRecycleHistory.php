@@ -48,4 +48,13 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         return $select
             ->query()->fetchAll();
     }
+
+    public function getRecordByDate($occurDate)
+    {
+        return $this->select()->reset()
+            ->from($this->_name)
+            ->where('happen_date=?', $occurDate)
+            ->query()
+            ->fetch();
+    }
 }

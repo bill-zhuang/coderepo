@@ -45,7 +45,14 @@ class person_GrainRecycleHistoryController extends Zend_Controller_Action
                     'create_time' => $date,
                     'update_time' => $date
                 ];
-                $affectedRows = $this->_adapterGrainRecycleHistory->insert($data);
+                $existData = $this->_adapterGrainRecycleHistory->getRecordByDate($occurDate);
+                if (isset($existData['grhid'])) {
+                    $where = $this->_adapterGrainRecycleHistory->getAdapter()->quoteInto('grhid=?', $existData['grhid']);
+                    unset($data['create_time']);
+                    $affectedRows = $this->_adapterGrainRecycleHistory->update($data, $where);
+                } else {
+                    $affectedRows = $this->_adapterGrainRecycleHistory->insert($data);
+                }
                 $jsonArray = [
                     'data' => [
                         'code' => $affectedRows,
