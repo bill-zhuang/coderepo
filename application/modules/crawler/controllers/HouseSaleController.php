@@ -85,7 +85,7 @@ class crawler_HouseSaleController extends Zend_Controller_Action
         $startDate = (isset($params['month_start_date']) && Bill_Util::validDate($params['month_start_date']))
             ? trim($params['month_start_date']) : date('Y-m', strtotime('-11 month')) . '-01';
         $endDate = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
-            ? trim($params['month_end_date']) : '';
+            ? trim($params['month_end_date']) : date('Y-m-d');
         $data = [
             'months' => [],
             'data' => [],
@@ -96,7 +96,7 @@ class crawler_HouseSaleController extends Zend_Controller_Action
             $data['months'][] = $monthValue['period'];
             $tempData[$monthValue['period']] = $monthValue['sales'];
         }
-        $data['months'] = Bill_Util::getMonthRange($data['months']);
+        $data['months'] = Bill_Util::getMonthsByStartEnd($startDate, $endDate);
         foreach ($data['months'] as $month) {
             if (isset($tempData[$month])) {
                 $data['data'][] = intval($tempData[$month]);

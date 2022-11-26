@@ -64,7 +64,7 @@ function initMonthChart() {
                     crosshair: true
                 },
                 yAxis: {
-                    min: 0,
+                    //min: 0,
                     title: {
                         text: 'Finance Spent'
                     }
@@ -120,7 +120,7 @@ function initMonthCategoryChart() {
                     crosshair: true
                 },
                 yAxis: {
-                    min: 0,
+                    //min: 0,
                     title: {
                         text: 'Finance Spent'
                     }
@@ -174,7 +174,7 @@ function initYearCategoryChart() {
                     crosshair: true
                 },
                 yAxis: {
-                    min: 0,
+                    //min: 0,
                     title: {
                         text: 'Finance Spent'
                     }

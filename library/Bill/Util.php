@@ -60,6 +60,18 @@ class Bill_Util
         return $months;
     }
 
+    public static function getMonthsByStartEnd($start, $end)
+    {
+        $months = [];
+        while (strtotime($start) <= strtotime($end)) {
+            $months[] = date('Y-m', strtotime($start));
+            //
+            $start = date('Y-m-d', strtotime($start . "+ 1 month"));
+        }
+
+        return $months;
+    }
+
     public static function isProductionEnv()
     {
         return ($_SERVER['HTTP_HOST'] == Bill_Constant::PRODUCTION_HOST) ? true : false;
