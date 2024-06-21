@@ -43,8 +43,8 @@ CREATE TABLE `lagou_city` (
   `lg_ctid` int(10) unsigned NOT NULL DEFAULT '0',
   `lg_code` varchar(255) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ctid`),
   UNIQUE KEY `idx_lg_ctid` (`lg_ctid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

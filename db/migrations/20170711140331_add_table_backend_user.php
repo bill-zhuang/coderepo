@@ -46,8 +46,8 @@ CREATE TABLE `backend_user` (
   `google_qr_url` varchar(512) DEFAULT '' COMMENT 'google qr code url',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT 'remark',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '1:valid, 0: invalid',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`buid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 EOF;

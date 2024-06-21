@@ -38,11 +38,11 @@ class AddTableEtfFund extends AbstractMigration
         $sql = <<<EOF
 CREATE TABLE `etf_fund` (
   `fuid` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `tt_code` varchar(255) NOT NULL DEFAULT '' COMMENT 'ÌìÌì»ù½ðÍøcode',
+  `tt_code` varchar(255) NOT NULL DEFAULT '' COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½code',
   `name` varchar(255) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`fuid`),
   UNIQUE KEY `idx_ttid` (`tt_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

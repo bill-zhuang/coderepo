@@ -43,8 +43,8 @@ CREATE TABLE `cnnbfdc_sale` (
   `area` decimal(10,2) NOT NULL DEFAULT '0.00',
   `money` decimal(20,2) NOT NULL DEFAULT '0.00',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`csid`),
   UNIQUE KEY `idx_date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

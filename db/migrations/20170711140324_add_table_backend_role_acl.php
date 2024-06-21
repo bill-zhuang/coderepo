@@ -41,8 +41,8 @@ CREATE TABLE `backend_role_acl` (
   `brid` int(10) unsigned NOT NULL COMMENT 'backend role pkid',
   `baid` int(10) unsigned NOT NULL COMMENT 'backend_acl pkid',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'status: 1-valid, 0-invalid',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`braid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 EOF;

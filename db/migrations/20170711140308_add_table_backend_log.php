@@ -43,8 +43,8 @@ CREATE TABLE `backend_log` (
   `content` text NOT NULL COMMENT 'SQL',
   `buid` int(11) NOT NULL COMMENT 'backend_user primary key',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 : valid 0 : invalid',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`blid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 EOF;

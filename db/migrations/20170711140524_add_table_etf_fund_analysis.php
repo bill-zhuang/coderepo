@@ -43,8 +43,8 @@ CREATE TABLE `etf_fund_analysis` (
   `unit_net_value` decimal(8,4) NOT NULL DEFAULT '0.0000',
   `accum_net_value` decimal(8,4) NOT NULL DEFAULT '0.0000',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`faid`),
   UNIQUE KEY `idx_efid_date` (`fuid`,`date`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

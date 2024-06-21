@@ -42,8 +42,8 @@ CREATE TABLE `eject_history` (
   `count` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1-dream, 2-bad',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'status',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ehid`),
   UNIQUE KEY `idx_happend_date_type` (`happen_date`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

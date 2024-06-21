@@ -41,8 +41,8 @@ CREATE TABLE `house_sale` (
   `date` date NOT NULL,
   `sales` int(10) NOT NULL DEFAULT '0',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`hsid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 EOF;

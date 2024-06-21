@@ -41,8 +41,8 @@ CREATE TABLE `grain_recycle_history` (
   `happen_date` date NOT NULL,
   `count` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'status',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`grhid`),
   UNIQUE KEY `idx_happen_date` (`happen_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -42,10 +42,10 @@ CREATE TABLE `lagou_job_analysis` (
   `lg_ctid` int(10) unsigned NOT NULL DEFAULT '0',
   `date` date NOT NULL,
   `num` int(10) unsigned NOT NULL DEFAULT '0',
-  `num_plus` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '职位数是否超过500（拉勾职位数超过500用500+标记）',
+  `num_plus` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '职',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`jaid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 EOF;

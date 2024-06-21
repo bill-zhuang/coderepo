@@ -41,8 +41,8 @@ CREATE TABLE `finance_payment_map` (
   `fpid` int(10) unsigned NOT NULL COMMENT 'finance payment primary key',
   `fcid` int(10) unsigned NOT NULL COMMENT 'finance category primary key',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`fpmid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 EOF;
