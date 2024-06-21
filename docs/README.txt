@@ -15,16 +15,20 @@ The following is a sample VHOST you might want to consider for your project.
 
 <VirtualHost *:80>
    DocumentRoot "D:/PHP_Project/coderepo/public"
-   ServerName .local
+   ServerName xxxxx.local  # set in your hosts file
 
    # This should be omitted in the production environment
-   SetEnv APPLICATION_ENV development
+   # SetEnv APPLICATION_ENV development
 
    <Directory "D:/PHP_Project/coderepo/public">
-       Options Indexes MultiViews FollowSymLinks
-       AllowOverride All
-       Order allow,deny
-       Allow from all
+       AllowOverride none
+       Require all granted
+
+       RewriteEngine On
+
+       RewriteCond %{REQUEST_FILENAME} !-f
+       RewriteCond %{REQUEST_FILENAME} !-d
+       RewriteRule . index.php
    </Directory>
 
 </VirtualHost>
