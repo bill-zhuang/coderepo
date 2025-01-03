@@ -29,7 +29,7 @@ class Application_Model_DBTable_GrainRecycleHistory extends Application_Model_DB
         }
 
         return $select
-            ->group('date_format(happen_date, "%Y%m")')
+            ->group('date_format(happen_date, "%Y-%m")')
             ->query()->fetchAll();
     }
 

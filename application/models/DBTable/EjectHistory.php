@@ -49,7 +49,7 @@ class Application_Model_DBTable_EjectHistory extends Application_Model_DBTableFa
             $select->where('happen_date<=?', $endDate);
         }
         return $select
-            ->group('date_format(happen_date, "%Y%m")')
+            ->group('date_format(happen_date, "%Y-%m")')
             ->query()->fetchAll();
     }
 }
