@@ -67,7 +67,7 @@ class Application_Model_DBTable_FinancePayment extends Application_Model_DBTable
             $select->where('payment_date<=?', $endDate);
         }
         return $select
-            ->group('date_format(payment_date, "%Y%m")')
+            ->group('date_format(payment_date, "%Y-%m")')
             ->order('payment_date asc')
             ->query()->fetchAll();
     }

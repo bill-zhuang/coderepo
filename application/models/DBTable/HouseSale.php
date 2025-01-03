@@ -31,7 +31,7 @@ class Application_Model_DBTable_HouseSale extends Application_Model_DBTableFacto
             $select->where('date<=?', $endDate);
         }
         return $select
-            ->group('date_format(date, "%Y%m")')
+            ->group('date_format(date, "%Y-%m")')
             ->order('date asc')
             ->query()->fetchAll();
     }
