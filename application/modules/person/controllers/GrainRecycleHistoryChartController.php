@@ -59,7 +59,7 @@ class person_GrainRecycleHistoryChartController extends Zend_Controller_Action
 
     public function ajaxGrainRecycleHistoryMonthAction()
     {
-        $params = trim($this->_getParam('params', []));
+        $params = $this->_getParam('params', []);
         $startDate = (isset($params['month_start_date']) && Bill_Util::validDate($params['month_start_date']))
             ? trim($params['month_start_date']) : date('Y-m', strtotime('-11 month')) . '-01';
         $endDate = (isset($params['month_end_date']) && Bill_Util::validDate($params['month_end_date']))
