@@ -108,7 +108,8 @@ function errorHandler($errorNumber, $errorMessage, $filename, $lineNumber, $vars
         . 'Error message: ' . $errorMessage . "\n"
         . 'Filename: ' . $filename . "\n"
         . 'Line number: ' . $lineNumber . "\n"
-        . 'Vars: ' . $vars;
+        . 'Vars: ' . (is_array($vars) ? implode(',', $vars) : $vars);
+    //echo str_replace("\n", '<br/>',$content);exit;
     Bill_Mail::send($title, $content);
 }
 
